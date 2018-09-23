@@ -1,58 +1,92 @@
-
+/*  */
 .log-paragraph {
-    margin-bottom: 0;
+  margin-bottom: 0; }
+
+canvas {
+  position:absolute;
+  left: 0;
+  right: 0;
+  margin: auto
+  /*alpha:0.5;*/
 }
-
-
-canvas#main-canvas {
-    background: #D4A190;
-    z-index: 2;
-    outline: 2px solid #3f3f3f;
+canvas#background-canvas {
+  /*background: #D4A190;*/
+  background: #b2cfff;
+  /*z-index: 2;*/
+  /*outline: 2px solid #3f3f3f; */
+}
+canvas#unit-canvas {
+  /*background: red;*/
+  /*outline: 1px solid red;*/
 }
 
 .canvas-container {
-    z-index: 2; // Keep above log-container so don't catch scroll events
-    position: absolute;
-}
+  z-index: 2;
+  /* Keep above log-container so don't catch scroll events */
+  position: absolute; }
 
 .log-container {
-    overflow-y: scroll;
-}
+  overflow-y: scroll; }
 
 #base-log {
-    height: 200px;
+  height: 200px; }
+
+html,
+body {
+  height: 100%;
+  margin: 0
 }
 
-body.nightmode {
-    background: #3f3f3f;
-    color: #d7d7d7;
+.flex-box {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
 }
-body.nightmode .glow {
-    -webkit-animation: white-glow 0.5s 2 alternate;
+
+.flex-box .flex-row {
+  /*border: 1px dotted grey;*/
 }
-body.nightmode h1, h2, h3, h4, h5, h6, a, a:link {
-    color: #d7d7d7;
+
+.flex-box .flex-row.flex-header {
+  flex: 0 1 auto;
+  /* The above is shorthand for:
+  flex-grow: 0,
+  flex-shrink: 1,
+  flex-basis: auto
+  */
+  background: #5f5f5f;
 }
-body.nightmode a:hover {
-    color: #289beb;
+
+.flex-box .flex-row.flex-content {
+  flex: 1 1 auto;
+  text-align: center;
+  background: #181918;
+  padding: 2px;
 }
-body .tabs dd > a {
-    color: #d7d7d7;
+
+.flex-box .flex-row.flex-footer {
+  flex: 0 1 5rem;
+  background: #5f5f5f;
+  /*border: 1px solid #181918;*/
 }
-body.nightmode .tabs .tab-title > a {
-    color: #d7d7d7;
+
+.tabs {
+  background: transparent;
+  border: none;
 }
-body .tabs dd > a:hover {
-    color: #289beb;
+.tabs li a {
+  background: transparent;
+  color: #bfbfbf;
 }
-body.nightmode .tabs .tab-title > a:hover {
-    color: #289beb;
+.tabs li.is-active a {
+  background: transparent;
+  color: white;
+  border-bottom: 2px solid white;
+  /*background: #6f6f6f;*/
 }
-body .tabs dd.active > a {
-    color: #289beb;
-    border-bottom: 0.250em solid #289beb;
-}
-body.nightmode .tabs .tab-title.active > a {
-    color: #289beb;
-    border-bottom: 0.250em solid #289beb;
+.tabs li a:hover {
+  background: transparent;
+  color: white;
+  border-bottom: 2px solid white;
+  /*background: #6f6f6f;*/
 }

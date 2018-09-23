@@ -4,7 +4,6 @@
 
     $(document).foundation();
 
-    Game.Constants.init();
     Game.Settings.init();
     Game.Clock.init();
     Game.Log.init($('#log'));
@@ -14,7 +13,7 @@
 
     Game.Clock.setInterval(
         'debug',
-        function(/* iterations, period */) {
+        function(/* iterations, seconds */) {
             var fps = (1000 / Game.Clock.delta).toFixed(1);
             var total = (Game.Clock.total / 1000).toFixed(0);
 
@@ -22,48 +21,18 @@
             $('#total-time').text(total);
             $('#memory').text(Game.Util.roundToDecimal(Game.Util.getMemoryUsage(), 1) + 'MB');
         },
-        1000
+        1
     );
 
     Game.Log.logMessage('Initializing 1...');
     Game.Log.logMessage('Initializing 2...');
     Game.Log.logMessage('Initializing 3...');
 
-    var exampleCanvas = new Game.Display.Canvas(
-        $('#main-canvas')
-    );
-    $('.canvas-container').width(exampleCanvas.width());
-
-    var image = [
-        '                                                                                   (90x25)',
-        '                                                                                          ',
-        '                                                                                          ',
-        '                                                                                          ',
-        '                                                                                          ',
-        '                                                                                          ',
-        '                                                                                          ',
-        '                                                                                          ',
-        '                                                                                          ',
-        '                                                                                          ',
-        '                                                                                          ',
-        '                                                                                          ',
-        '                                                                                          ',
-        '                                     [>                                                   ',
-        '  XXXXXXXXXXXX                      /==;>                                                 ',
-        '         X    XXXXXXXXXXXXX          /\\                                                   ',
-        '         X                 XXXXXXXXXXXX                                                   ',
-        '                                                                                          ',
-        '                                                                                          ',
-        '                                                                                          ',
-        '                                                                                          ',
-        '                                                                                          ',
-        '                                                                                          ',
-        '                         XXXXXX                                                           ',
-        'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
-    ];
-    exampleCanvas.drawImage(image);
+    Game.World.Engine.init();
 
     Game.Clock.run();
+
+    Game.World.Engine.loadLevel(1);
 
     Game.Log.logMessage('Game started!');
 

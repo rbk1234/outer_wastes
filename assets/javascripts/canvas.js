@@ -1,5 +1,8 @@
 
 (function($) {
+    'use strict';
+
+    var CONTINUOUS_DRAWING = true;
 
     var Canvas = function($canvas, config) {
         this._init($canvas, config);
@@ -7,8 +10,8 @@
     Canvas.prototype = {
 
         _defaultConfig: {
-            rows: 25,
-            columns: 90
+            rows: 30,
+            columns: 80
         },
 
         _init: function($canvas, config) {
@@ -19,16 +22,20 @@
             this.context = this.canvas.getContext('2d');
             this._convertCanvasToHiDPI(this.width(), this.height());
 
-            this.context.font = Game.Settings.fontHeight() + 'px monospace';
+            this.context.font = this.fontHeight() + 'px monospace';
             this.context.fillStyle = "#3f3f3f";
         },
 
-        clear: function() {
-            this.context.clearRect(0, 0, this.width(), this.height());
+        clearAll: function() {
+            this.clearArea(0, 0, this.width(), this.height());
+        },
+
+        clearArea: function(x, y, width, height) {
+            this.context.clearRect(x, y, width, height);
         },
 
         drawImage: function(charArray, x, y) {
-            if (Game.Constants.continuousDrawing) {
+            if (CONTINUOUS_DRAWING) {
                 x = Game.Util.defaultFor(x, 0);
                 y = Game.Util.defaultFor(y, 0);
             }
@@ -37,9 +44,9 @@
                 y = Game.Util.round(Game.Util.defaultFor(y, 0));
             }
 
-            var scaledX = x * Game.Settings.fontWidth();
-            var scaledY = y * Game.Settings.fontHeight();
-            scaledY += (Game.Settings.fontHeight() - 2); // Move down one row. Move up a tiny bit.
+            var scaledX = x * this.fontWidth();
+            var scaledY = y * this.fontHeight();
+            scaledY += (this.fontHeight() - 2); // Move down one row. Move up a tiny bit.
 
             // Draw one character at a time (inefficient)
             //for (var row = 0; row < charArray.length; row++) {
@@ -57,17 +64,26 @@
                 this.context.fillText(
                     charArray[row],
                     scaledX,
-                    scaledY + row * Game.Settings.fontHeight()
+                    scaledY + row * this.fontHeight()
                 )
             }
         },
 
         width: function() {
-            return this._config.columns * Game.Settings.fontWidth();
+            return this.fontWidth() * this._config.columns;
         },
 
         height: function() {
-            return this._config.rows * Game.Settings.fontHeight();
+            return this.$canvas.parent().height();
+        },
+
+        fontWidth: function() {
+            // width should be 3/5 the height
+            return this.fontHeight() * 3.0 / 5.0;
+        },
+
+        fontHeight: function() {
+            return this.height() / this._config.rows;
         },
 
         _convertCanvasToHiDPI: function(width, height, ratio) {

@@ -1,0 +1,85 @@
+/* This scss file is not included in index.html - it is used to generate main.css */
+/* Generate main.css by running `sass assets/stylesheets/main.scss assets/stylesheets/main.css` */
+
+
+.log-paragraph {
+  margin-bottom: 0;
+}
+
+
+canvas#main-canvas {
+  background: #D4A190;
+  z-index: 2;
+  outline: 2px solid #3f3f3f;
+}
+
+.canvas-container {
+  z-index: 2; /* Keep above log-container so don't catch scroll events */
+  position: absolute;
+}
+
+.log-container {
+  overflow-y: scroll;
+}
+
+#base-log {
+  height: 200px;
+}
+
+
+
+
+
+
+
+
+
+body.nightmode {
+  background: #3f3f3f;
+  color: #d7d7d7;
+
+  .glow {
+    -webkit-animation: white-glow 0.5s 2 alternate;
+  }
+
+  h1, h2, h3, h4, h5, h6, a, a:link {
+    color: #d7d7d7;
+  }
+
+  a:hover {
+    color: #289beb;
+  }
+
+  .tabs {
+    background: transparent;
+    border: none;
+  }
+}
+
+
+body.nightmode .tabs li > a {
+  padding: 0.75rem 1.25rem;
+  color: #d7d7d7;
+  background: transparent;
+}
+body.nightmode .tabs .tab-title > a {
+  color: #d7d7d7;
+}
+body.nightmode .tabs li > a:hover {
+  color: #289beb;
+}
+body.nightmode .tabs .tab-title > a:hover {
+  color: #289beb;
+}
+body.nightmode .tabs li.is-active > a {
+  color: #289beb;
+  border-bottom: 0.250em solid #289beb;
+}
+body.nightmode .tabs .tab-title.is-active > a {
+  color: #289beb;
+  border-bottom: 0.250em solid #289beb;
+}
+body.nightmode .tabs-content {
+  background: transparent;
+  border: none;
+}

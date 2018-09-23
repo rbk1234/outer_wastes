@@ -1,5 +1,5 @@
 /* Handles keyboard input */
-// TODO This needs to be fleshed out
+/* Singleton */
 
 (function($) {
     'use strict';

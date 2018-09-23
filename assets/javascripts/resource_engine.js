@@ -1,7 +1,10 @@
 /* Handles resources and resource generation */
+/* Singleton */
 
 (function ($) {
     'use strict';
+
+    var UPDATES_PER_SECOND = 1;
 
     var ResourceEngine = function() {};
 
@@ -19,13 +22,11 @@
             Game.Clock.setInterval(
                 'updateResources',
                 Game.Util.makeCallback(this, this._update),
-                1000.0 / Game.Constants.resourceUpdatesPerSecond
+                1.0 / UPDATES_PER_SECOND
             );
         },
 
-        _update: function(iterations, period) {
-            var seconds = iterations * period / 1000.0;
-
+        _update: function(iterations, seconds) {
             Game.Util.iterateObject(this._resources, function(key, resource) {
                 resource.amount += resource.rate * seconds;
             });

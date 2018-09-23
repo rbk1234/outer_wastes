@@ -1,4 +1,5 @@
 /* Handles message logging (messages for the player; i.e. not to the console) */
+/* Singleton */
 
 (function($) {
     'use strict';

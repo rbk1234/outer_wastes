@@ -46,14 +46,17 @@
 
     var EPSILON = 0.000001; // Adding an epsilon to handle floating point rounding errors
 
+    // Rounds to 5 decimals by default. Use roundToDecimal for more precision
+    // This should be used before any comparisons (e.g. < <= > >=) because of floating point rounding errors
+    Game.Util.round = function(num) {
+        return Game.Util.roundToDecimal(num, 5);
+    };
+
     Game.Util.roundToDecimal = function(num, numDecimals) {
         var factor = 10 * numDecimals;
         return Math.round((num + EPSILON) * factor) / factor;
     };
 
-    Game.Util.round = function(num) {
-        return Math.round(num + EPSILON);
-    };
 
     Game.Util.minScreenWidth = function() {
         return parseInt($('.main-content').css('min-width'));

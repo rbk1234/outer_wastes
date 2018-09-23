@@ -1,4 +1,5 @@
 /* Statistics about the current game session */
+/* Singleton */
 
 (function ($) {
     'use strict';
