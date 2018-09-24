@@ -1,24 +1,29 @@
-/*  */
+/* This scss file is not included in index.html - it is used to generate main.css */
+/* Generate main.css by running `sass assets/stylesheets/main.scss assets/stylesheets/main.css` */
+.no-margin {
+  margin: 0; }
+
+.no-bottom-margin {
+  margin-bottom: 0; }
+
 .log-paragraph {
   margin-bottom: 0; }
 
 canvas {
-  position:absolute;
+  position: absolute;
   left: 0;
   right: 0;
-  margin: auto
-  /*alpha:0.5;*/
-}
+  margin: auto; }
+
 canvas#background-canvas {
   /*background: #D4A190;*/
   background: #b2cfff;
   /*z-index: 2;*/
-  /*outline: 2px solid #3f3f3f; */
-}
+  /*outline: 2px solid #3f3f3f; */ }
+
 canvas#unit-canvas {
   /*background: red;*/
-  /*outline: 1px solid red;*/
-}
+  /*outline: 1px solid red;*/ }
 
 .canvas-container {
   z-index: 2;
@@ -34,18 +39,15 @@ canvas#unit-canvas {
 html,
 body {
   height: 100%;
-  margin: 0
-}
+  margin: 0; }
 
 .flex-box {
   display: flex;
   flex-flow: column;
-  height: 100%;
-}
+  height: 100%; }
 
 .flex-box .flex-row {
-  /*border: 1px dotted grey;*/
-}
+  /*border: 1px dotted grey;*/ }
 
 .flex-box .flex-row.flex-header {
   flex: 0 1 auto;
@@ -54,39 +56,182 @@ body {
   flex-shrink: 1,
   flex-basis: auto
   */
-  background: #5f5f5f;
-}
+  background: #5f5f5f; }
 
 .flex-box .flex-row.flex-content {
   flex: 1 1 auto;
   text-align: center;
   background: #181918;
-  padding: 2px;
-}
+  padding: 2px; }
 
 .flex-box .flex-row.flex-footer {
-  flex: 0 1 5rem;
+  flex: 0 1 auto;
+  /*border: 1px solid #181918;*/ }
+
+.game-button {
+  display: inline-block;
+  margin: 0;
+  font-family: inherit;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  -webkit-appearance: none;
+  transition: background-color 0.25s ease-out, color 0.25s ease-out;
+  font-size: 0.9rem;
+  line-height: 1;
+  text-align: center;
+  cursor: pointer;
+  color: white;
+  border-radius: 6px;
+  border: 1px solid #333; }
+
+.game-button.vibrating-shield:before {
+  content: url("icons/vibrating-shield.svg"); }
+
+.game-button.blank:before {
+  content: url("icons/blank.svg"); }
+
+.bottom-bar {
   background: #5f5f5f;
-  /*border: 1px solid #181918;*/
-}
+  color: white;
+  font-size: 0.75rem;
+  padding: 0.15rem;
+  border: 6px ridge rgba(50, 50, 50, 0.5); }
+  .bottom-bar .bar-container {
+    font-size: 0;
+    position: relative;
+    overflow: hidden;
+    height: 1rem;
+    width: 100%; }
+    .bottom-bar .bar-container .progress {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 1rem;
+      display: inline-block;
+      margin-bottom: 0; }
+    .bottom-bar .bar-container .health-grid {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 0.3rem; }
+    .bottom-bar .bar-container .health-border {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 1rem;
+      border: 1px solid rgba(0, 0, 0, 0.5); }
+  .bottom-bar .progress.health-bar .progress-meter {
+    background: linear-gradient(#00ff55, #009933); }
+  .bottom-bar .progress.shield-bar .progress-meter {
+    background: linear-gradient(#0099ff, #005c99); }
+  .bottom-bar .progress.energy-bar .progress-meter {
+    background: linear-gradient(#ffff00, #999900); }
+  .bottom-bar .progress.background-bar .progress-meter {
+    background: linear-gradient(#ffffff, #bbbbbb); }
+  .bottom-bar .health-icon {
+    color: #00ff55; }
+  .bottom-bar .energy-icon {
+    color: #ffff00; }
+  .bottom-bar .health-value {
+    display: block;
+    min-width: 1.5rem; }
 
 .tabs {
   background: transparent;
-  border: none;
-}
+  border: none; }
+
 .tabs li a {
   background: transparent;
-  color: #bfbfbf;
-}
+  color: #bfbfbf; }
+
 .tabs li.is-active a {
   background: transparent;
   color: white;
   border-bottom: 2px solid white;
-  /*background: #6f6f6f;*/
-}
+  /*background: #6f6f6f;*/ }
+
 .tabs li a:hover {
   background: transparent;
   color: white;
   border-bottom: 2px solid white;
-  /*background: #6f6f6f;*/
+  /*background: #6f6f6f;*/ }
+
+td.nostretch, th.nostretch {
+  width: 1%;
+  white-space: nowrap; }
+
+table {
+  background: transparent; }
+  table tbody {
+    background: transparent;
+    border: none; }
+
+table.no-rows tbody tr.even,
+table.no-rows tbody tr:nth-of-type(even),
+table.no-rows tbody tr.odd,
+table.no-rows tbody tr:nth-of-type(odd) {
+  background: transparent; }
+
+table.tight-spacing tbody tr td {
+  padding: 0.25em 0.25em; }
+
+table.no-spacing tbody tr td {
+  padding: 0; }
+
+/*
+
+body.nightmode {
+  background: #3f3f3f;
+  color: #d7d7d7;
+
+  .glow {
+    -webkit-animation: white-glow 0.5s 2 alternate;
+  }
+
+  h1, h2, h3, h4, h5, h6, a, a:link {
+    color: #d7d7d7;
+  }
+
+  a:hover {
+    color: #289beb;
+  }
+
+  .tabs {
+    background: transparent;
+    border: none;
+  }
 }
+
+
+body.nightmode .tabs li > a {
+  padding: 0.75rem 1.25rem;
+  color: #d7d7d7;
+  background: transparent;
+}
+body.nightmode .tabs .tab-title > a {
+  color: #d7d7d7;
+}
+body.nightmode .tabs li > a:hover {
+  color: #289beb;
+}
+body.nightmode .tabs .tab-title > a:hover {
+  color: #289beb;
+}
+body.nightmode .tabs li.is-active > a {
+  color: #289beb;
+  border-bottom: 0.250em solid #289beb;
+}
+body.nightmode .tabs .tab-title.is-active > a {
+  color: #289beb;
+  border-bottom: 0.250em solid #289beb;
+}
+body.nightmode .tabs-content {
+  background: transparent;
+  border: none;
+}
+*/
+
+/*# sourceMappingURL=main.css.map */

@@ -53,8 +53,13 @@
     };
 
     Game.Util.roundToDecimal = function(num, numDecimals) {
-        var factor = 10 * numDecimals;
-        return Math.round((num + EPSILON) * factor) / factor;
+        if (numDecimals === 0) {
+            return Math.round(num + EPSILON)
+        }
+        else {
+            var factor = 10 * numDecimals;
+            return Math.round((num + EPSILON) * factor) / factor;
+        }
     };
 
 

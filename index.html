@@ -63,8 +63,64 @@
         <canvas id="unit-canvas">Your browser does not support HTML5 Canvas.</canvas>
       <!--</p>-->
     </div>
-    <div class="flex-row flex-footer">
-      <p><b>footer</b> (fixed height)</p>
+    <div class="flex-row flex-footer bottom-bar">
+
+      <div class="grid-x">
+        <div class="cell shrink" style="padding:0.1rem;">
+          <button class="game-button vibrating-shield"></button>
+          <button class="game-button blank"></button>
+          <button class="game-button blank"></button>
+          <button class="game-button blank"></button>
+          &emsp;
+        </div>
+        <div class="cell small-5 player-bars">
+
+          <table class="no-rows tight-spacing no-bottom-margin">
+            <tbody>
+            <tr>
+              <td class="nostretch text-center"><span class="fa fa-fw fa-plus-square health-icon"></span></td>
+              <td>
+                <div class="bar-container">
+                  <div class="progress background-bar" tabindex="0" style="width:100%;">
+                    <div class="progress-meter" style="width: 100%"></div>
+                  </div>
+                  <div class="progress shield-bar" tabindex="0">
+                    <div class="progress-meter" style="width: 100%"></div>
+                  </div>
+                  <div class="progress health-bar" tabindex="0" style="width:100%;">
+                    <div class="progress-meter" style="width: 100%"></div>
+                  </div>
+                  <div class="health-grid"></div>
+                  <div class="health-border"></div>
+                </div>
+              </td>
+              <td class="nostretch"><span class="health-value"></span></td>
+            </tr>
+            <tr>
+              <td class="nostretch text-center"><span class="fa fa-fw fa-bolt energy-icon"></span></td>
+              <td>
+                <div class="bar-container">
+                  <div class="progress background-bar" tabindex="0" style="width:100%;">
+                    <div class="progress-meter" style="width: 100%"></div>
+                  </div>
+                  <div class="progress energy-bar" tabindex="0" style="width:100%;">
+                    <div class="progress-meter" style="width: 100%"></div>
+                  </div>
+                  <div class="health-border"></div>
+                </div>
+              </td>
+              <td class="nostretch"><span class="energy-value"></span></td>
+            </tr>
+            </tbody>
+          </table>
+
+        </div>
+        <div class="cell auto">
+
+        </div>
+      </div>
+
+
     </div>
   </div>
 
@@ -105,6 +161,7 @@
   <script src="assets/javascripts/world/level.js"></script>
   <script src="assets/javascripts/world/unit.js"></script>
   <script src="assets/javascripts/world/player.js"></script><!-- Subclass of unit.js; needs to come after -->
+  <script src="assets/javascripts/bottom_bar.js"></script>
   <script src="assets/javascripts/canvas.js"></script>
   <script src="assets/javascripts/clock.js"></script>
   <script src="assets/javascripts/helpers.js"></script>

@@ -10,6 +10,7 @@
     Game.Keyboard.init();
     Game.ResourceEngine.init();
     Game.Statistics.init();
+    Game.BottomBar.init();
 
     Game.Clock.setInterval(
         'debug',

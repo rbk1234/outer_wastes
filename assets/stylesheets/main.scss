@@ -2,28 +2,244 @@
 /* Generate main.css by running `sass assets/stylesheets/main.scss assets/stylesheets/main.css` */
 
 
-.log-paragraph {
+.no-margin {
+  margin: 0;
+}
+.no-bottom-margin {
   margin-bottom: 0;
 }
 
 
-canvas#main-canvas {
-  background: #D4A190;
-  z-index: 2;
-  outline: 2px solid #3f3f3f;
+.log-paragraph {
+  margin-bottom: 0; }
+
+canvas {
+  position:absolute;
+  left: 0;
+  right: 0;
+  margin: auto
+  /*alpha:0.5;*/
+}
+canvas#background-canvas {
+  /*background: #D4A190;*/
+  background: #b2cfff;
+  /*z-index: 2;*/
+  /*outline: 2px solid #3f3f3f; */
+}
+canvas#unit-canvas {
+  /*background: red;*/
+  /*outline: 1px solid red;*/
 }
 
 .canvas-container {
-  z-index: 2; /* Keep above log-container so don't catch scroll events */
-  position: absolute;
-}
+  z-index: 2;
+  /* Keep above log-container so don't catch scroll events */
+  position: absolute; }
 
 .log-container {
-  overflow-y: scroll;
-}
+  overflow-y: scroll; }
 
 #base-log {
-  height: 200px;
+  height: 200px; }
+
+html,
+body {
+  height: 100%;
+  margin: 0
+}
+
+.flex-box {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+
+.flex-box .flex-row {
+  /*border: 1px dotted grey;*/
+}
+
+// Fit to content
+.flex-box .flex-row.flex-header {
+  flex: 0 1 auto;
+  /* The above is shorthand for:
+  flex-grow: 0,
+  flex-shrink: 1,
+  flex-basis: auto
+  */
+  background: #5f5f5f;
+}
+
+// Fill content:
+.flex-box .flex-row.flex-content {
+  flex: 1 1 auto;
+  text-align: center;
+  background: #181918;
+  padding: 2px;
+}
+
+// Fixed height:
+.flex-box .flex-row.flex-footer {
+  //flex: 0 1 5rem; // todo min height?
+  flex: 0 1 auto; // fill to content
+  /*border: 1px solid #181918;*/
+}
+
+.game-button {
+  display: inline-block;
+  margin: 0;
+  font-family: inherit;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  -webkit-appearance: none;
+  transition: background-color 0.25s ease-out, color 0.25s ease-out;
+  font-size: 0.9rem;
+  line-height: 1;
+  text-align: center;
+  cursor: pointer;
+  color: white;
+
+  border-radius: 6px;
+  border: 1px solid #333;
+}
+.game-button.vibrating-shield:before {
+  content: url('icons/vibrating-shield.svg');
+}
+.game-button.blank:before {
+  content: url('icons/blank.svg');
+}
+
+
+.bottom-bar {
+  background: #5f5f5f;
+  color: white;
+  font-size: 0.75rem;
+  padding: 0.15rem;
+  border: 6px ridge rgba(50,50,50,0.5);
+
+  .bar-container {
+    font-size: 0; // remove horizontal space char between bars
+    position:relative; // for health-grid
+    overflow: hidden;
+    height: 1rem;
+    width: 100%;
+
+    .progress {
+      //border: 1px solid black;
+
+      position:absolute;
+      top:0;
+      left:0;
+      //width:100%;
+      //height:100%;
+      height: 1rem;
+
+      display: inline-block;
+      margin-bottom: 0;
+    }
+
+    .health-grid {
+      position:absolute;
+      top:0;
+      left:0;
+      width:100%;
+      height: 0.3rem;
+    }
+    .health-border {
+      position:absolute;
+      top:0;
+      left:0;
+      width:100%;
+      height: 1rem;
+      border: 1px solid rgba(0,0,0,0.5);
+    }
+  }
+  .progress.health-bar {
+    .progress-meter {
+      background: linear-gradient(#00ff55, #009933);
+      //background-color: #009933;
+    }
+  }
+  .progress.shield-bar {
+    .progress-meter {
+      background: linear-gradient(#0099ff, #005c99);
+      //background-color: #005c99;
+    }
+  }
+  .progress.energy-bar {
+    .progress-meter {
+      background: linear-gradient(#ffff00,#999900);
+      //background-color: #999900;
+    }
+  }
+  .progress.background-bar {
+    .progress-meter {
+      background: linear-gradient(#ffffff,#bbbbbb)
+    }
+  }
+  .health-icon {
+    color: #00ff55;
+  }
+  .energy-icon {
+    color: #ffff00;
+  }
+
+  .health-value {
+    display:block;
+    min-width: 1.5rem;
+  }
+}
+
+.tabs {
+  background: transparent;
+  border: none;
+}
+.tabs li a {
+  background: transparent;
+  color: #bfbfbf;
+}
+.tabs li.is-active a {
+  background: transparent;
+  color: white;
+  border-bottom: 2px solid white;
+  /*background: #6f6f6f;*/
+}
+.tabs li a:hover {
+  background: transparent;
+  color: white;
+  border-bottom: 2px solid white;
+  /*background: #6f6f6f;*/
+}
+
+
+td.nostretch, th.nostretch {
+  width: 1%;
+  white-space: nowrap;
+}
+table {
+  background: transparent;
+  tbody {
+    background: transparent;
+    border: none;
+  }
+}
+table.no-rows{
+  tbody tr.even,
+  tbody tr:nth-of-type(even),
+  tbody tr.odd,
+  tbody tr:nth-of-type(odd){
+    background: transparent;
+  }
+}
+table.tight-spacing {
+  tbody tr td {
+    padding: 0.25em 0.25em;
+  }
+}
+table.no-spacing {
+  tbody tr td {
+    padding: 0;
+  }
 }
 
 
@@ -31,8 +247,7 @@ canvas#main-canvas {
 
 
 
-
-
+/*
 
 body.nightmode {
   background: #3f3f3f;
@@ -83,3 +298,4 @@ body.nightmode .tabs-content {
   background: transparent;
   border: none;
 }
+*/

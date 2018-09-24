@@ -15,7 +15,9 @@
             this._dbRecord = Game.Database.Units[id];
 
             this._attackTimer = Math.random(); // remaining time until next attack. Initialize with random wait of <1s
-            this._health = this._dbRecord.health;
+            this._maxHealth = this._dbRecord.maxHealth;
+            this._health = this.maxHealth();
+            this._shield = this._dbRecord.initialShield || 0;
 
             this._isDead = false;
         },
@@ -41,8 +43,34 @@
             return this._dbRecord.name;
         },
 
+        maxHealth: function() {
+            return this._maxHealth;
+        },
+
         health: function() {
             return this._health;
+        },
+
+        shield: function() {
+            return this._shield;
+        },
+
+        addHealth: function(amount) {
+            if (Game.Util.round(amount) < 0) {
+                console.warn('Cannot add a negative health amount: use takeDamage function.');
+                return;
+            }
+            this._health += amount;
+            if (this._health >= this.maxHealth()) {
+                this._health = this.maxHealth();
+            }
+        },
+        addShield: function(amount) {
+            if (Game.Util.round(amount) < 0) {
+                console.warn('Cannot add a negative shield amount: use takeDamage function.');
+                return;
+            }
+            this._shield += amount;
         },
 
         x: function(newX) {
@@ -62,36 +90,57 @@
         },
 
         incrementAttack: function(seconds, onAttack) {
-            //var shouldAttack = false;
+            if (this.isDead()) {
+                return;
+            }
+
             if (Game.Util.round(this._attackTimer) <= 0) {
-                //shouldAttack = true;
                 onAttack();
                 this._attackTimer = this.attackSpeed();
             }
             this._attackTimer -= seconds;
-            //return shouldAttack;
         },
 
         attack: function(opponent) {
             if (opponent) {
-                console.log(this.name() + ' attacked ' + opponent.name());
+                //console.log(this.name() + ' attacked ' + opponent.name());
                 opponent.takeDamage(this.attackDamage());
             }
         },
 
         takeDamage: function(amount) {
-            this._health -= amount;
+            var shieldDamage = 0;
+            var healthDamage = 0;
+            if (this.isPlayer()) {
+                console.log('taking damage... effective health: '+(this.shield() + this.health()));
+            }
 
-            if (Game.Util.round(this._health) <= 0) {
+            if (Game.Util.round(this.shield()) > 0) {
+                shieldDamage = Math.min(this.shield(), amount);
+                this._shield -= shieldDamage;
+                amount -= shieldDamage;
+            }
+
+            if (Game.Util.round(this.health()) > 0) {
+                healthDamage = Math.min(this.health(), amount);
+                this._health -= healthDamage;
+                amount -= healthDamage;
+            }
+
+            //console.log('overkill: ' + amount);
+
+            if (Game.Util.round(this.health()) <= 0) {
                 this.kill();
             }
         },
 
         kill: function() {
-            this._isDead = true;
+            if (!this._isDead) {
+                this._isDead = true;
 
-            if (!this.isPlayer()) {
-                // todo increment enemies killed counter
+                if (!this.isPlayer()) {
+                    // todo increment enemies killed counter
+                }
             }
         },
 

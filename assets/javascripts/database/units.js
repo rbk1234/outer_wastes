@@ -23,7 +23,7 @@
                         ' |\\  ',
                         '/ |  '
                     ],
-                    duration: 0.25
+                    duration: 0.1
                 },
                 dead: {
                     image: [
@@ -35,10 +35,11 @@
                     ]
                 }
             },
-            health: 500,
+            maxHealth: 400,
+            initialShield: 0,
             height: 5,
-            attackSpeed: 0.3,
-            attackDamage: 10,
+            attackSpeed: 0.2,
+            attackDamage: 5,
         },
         2: {
             name: 'oozeling',
@@ -56,7 +57,7 @@
                         '.oOOoo.',
                         'oo000oOOoo'
                     ],
-                    duration: 0.25
+                    duration: 0.2
                 },
                 dead: {
                     image: [
@@ -66,10 +67,10 @@
                     ]
                 }
             },
-            health: 100,
+            maxHealth: 10000,
             height: 3,
-            attackSpeed: 2,
-            attackDamage: 10,
+            attackSpeed: 1,
+            attackDamage: 40,
             reward: 50
         },
         3: {
