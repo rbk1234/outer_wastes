@@ -36,10 +36,11 @@
                 }
             },
             maxHealth: 400,
-            initialShield: 0,
+            maxEnergy: 100,
+            energyRegen: 10,
             height: 5,
             attackSpeed: 0.2,
-            attackDamage: 5,
+            attackDamage: 5
         },
         2: {
             name: 'oozeling',
@@ -67,10 +68,10 @@
                     ]
                 }
             },
-            maxHealth: 10000,
+            maxHealth: 400,
             height: 3,
             attackSpeed: 1,
-            attackDamage: 40,
+            attackDamage: 15,
             reward: 50
         },
         3: {

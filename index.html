@@ -46,12 +46,21 @@
 
   <div class="flex-box">
     <div class="flex-row flex-header">
-      <ul class="tabs" data-tabs id="example-tabs">
-        <li class="tabs-title is-active"><a href="#panel1" aria-selected="true">Flight Deck</a></li>
-        <li class="tabs-title"><a data-tabs-target="panel2" href="#panel2">Armory</a></li>
-        <li class="tabs-title"><a data-tabs-target="panel3" href="#panel3">Technology</a></li>
-        <li class="tabs-title"><a data-tabs-target="panel4" href="#panel4">Trade Center</a></li>
-      </ul>
+      <div class="grid-x">
+        <div class="cell auto">
+          <ul class="tabs" data-tabs id="example-tabs">
+            <li class="tabs-title is-active"><a href="#panel1" aria-selected="true">World</a></li>
+            <li class="tabs-title"><a data-tabs-target="panel2" href="#panel2">Armory</a></li>
+            <!--<li class="tabs-title"><a data-tabs-target="panel3" href="#panel3">Technology</a></li>-->
+            <!--<li class="tabs-title"><a data-tabs-target="panel4" href="#panel4">Trade Center</a></li>-->
+          </ul>
+        </div>
+        <div class="cell shrink">
+          FPS: <span id="fps"></span>|
+          Time: <span id="total-time"></span>|
+          Memory: <span id="memory"></span>
+        </div>
+      </div>
     </div>
     <div class="flex-row flex-content">
       <!--<div style="background:red;">-->
@@ -66,12 +75,14 @@
     <div class="flex-row flex-footer bottom-bar">
 
       <div class="grid-x">
-        <div class="cell shrink" style="padding:0.1rem;">
-          <button class="game-button vibrating-shield"></button>
-          <button class="game-button blank"></button>
-          <button class="game-button blank"></button>
-          <button class="game-button blank"></button>
-          &emsp;
+        <div class="cell shrink">
+          <div class="ability-container" style="padding:0.1rem;">
+            <button class="game-button"></button>
+            <button class="game-button"></button>
+            <button class="game-button"></button>
+            <button class="game-button"></button>
+            &emsp;
+          </div>
         </div>
         <div class="cell small-5 player-bars">
 
@@ -94,7 +105,12 @@
                   <div class="health-border"></div>
                 </div>
               </td>
-              <td class="nostretch"><span class="health-value"></span></td>
+              <td class="nostretch">
+                <div class="bar-value-container">
+                  <span class="health-value"></span>
+                  <span class="shield-value"></span>
+                </div>
+              </td>
             </tr>
             <tr>
               <td class="nostretch text-center"><span class="fa fa-fw fa-bolt energy-icon"></span></td>
@@ -109,14 +125,18 @@
                   <div class="health-border"></div>
                 </div>
               </td>
-              <td class="nostretch"><span class="energy-value"></span></td>
+              <td class="nostretch">
+                <div class="bar-value-container">
+                  <span class="energy-value"></span>
+                </div>
+              </td>
             </tr>
             </tbody>
           </table>
 
         </div>
         <div class="cell auto">
-
+          <div class="effects-container"></div>
         </div>
       </div>
 
@@ -155,8 +175,11 @@
   <script src="assets/javascripts/namespace.js"></script>
 
   <!-- Rest of the javascript files here (main.js has to be last)-->
+  <script src="assets/javascripts/database/abilities.js"></script>
   <script src="assets/javascripts/database/levels.js"></script>
   <script src="assets/javascripts/database/units.js"></script>
+  <script src="assets/javascripts/world/ability.js"></script>
+  <script src="assets/javascripts/world/effect.js"></script>
   <script src="assets/javascripts/world/engine.js"></script>
   <script src="assets/javascripts/world/level.js"></script>
   <script src="assets/javascripts/world/unit.js"></script>

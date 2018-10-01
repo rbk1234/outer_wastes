@@ -53,21 +53,18 @@
                 // todo level complete!
                 console.log('level complete!');
                 Game.Clock.clearInterval(CLOCK_KEY);
+                // todo need to start another interval to keep updating Player in lobby
                 return;
             }
 
             // Update all projectiles
 
             // Update player
-            Game.World.Player.incrementAttack(seconds, function() {
-                Game.World.Player.attack(self._level.nearestEnemyUnit()); // todo can cleanup code at cost of performance
-            });
+            Game.World.Player.update(seconds, self._level.nearestEnemyUnit());
 
             // Update all units
             this._level.units().forEach(function(unit) {
-                unit.incrementAttack(seconds, function() {
-                    unit.attack(Game.World.Player);
-                });
+                unit.update(seconds, Game.World.Player);
             });
         },
 

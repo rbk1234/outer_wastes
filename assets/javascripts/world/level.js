@@ -14,7 +14,7 @@
         _init: function(id, config) {
             var self = this;
 
-            this._dbRecord = Game.Database.Levels[id];
+            this._dbRecord = $.extend(true, {}, Game.Database.Levels[id]);
 
             // load player
             Game.World.Player.x(this._dbRecord.playerX);

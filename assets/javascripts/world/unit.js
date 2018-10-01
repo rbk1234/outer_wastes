@@ -12,12 +12,17 @@
         _init: function(id, config) {
             this._config = $.extend({}, this._defaultConfig, config);
 
-            this._dbRecord = Game.Database.Units[id];
+            this._dbRecord = $.extend(true, {}, Game.Database.Units[id]);
 
             this._attackTimer = Math.random(); // remaining time until next attack. Initialize with random wait of <1s
             this._maxHealth = this._dbRecord.maxHealth;
             this._health = this.maxHealth();
-            this._shield = this._dbRecord.initialShield || 0;
+            this._maxEnergy = this._dbRecord.maxEnergy;
+            this._energy = this.maxEnergy();
+            this._energyRegen = this._dbRecord.energyRegen;
+
+            this._effects = [];
+
 
             this._isDead = false;
         },
@@ -46,13 +51,68 @@
         maxHealth: function() {
             return this._maxHealth;
         },
-
         health: function() {
             return this._health;
         },
+        maxEnergy: function() {
+            return this._maxEnergy;
+        },
+        energy: function() {
+            return this._energy;
+        },
+        energyRegen: function() {
+            return this._energyRegen; // regeneration is per second
+        },
 
         shield: function() {
-            return this._shield;
+            var amount = 0;
+            this._effects.forEach(function(effect) {
+                amount += effect.absorptionAmount();
+            });
+            return amount;
+        },
+
+        ability: function(index) {
+            return this._abilities[index];
+        },
+
+        // todo override this for player/unit
+        castAbility: function(index) {
+            var self = this;
+
+            var ability = this.ability(index);
+
+            if (ability) {
+                // check if caster has enough energy
+                if (ability.energyCost() && Game.Util.round(ability.energyCost()) > Game.Util.round(this.energy())) {
+                    console.log('not enough energy!');
+                    return;
+                }
+
+                // check if valid target
+
+                // reduce caster energy by x
+                this._energy -= ability.energyCost();
+
+                // apply effects to caster
+                if (ability.casterEffects()) {
+                    ability.casterEffects().forEach(function(effectId) {
+                        self.addEffect(new Game.World.Effect(effectId));
+                    });
+                }
+
+                // create projectile
+
+                // apply effects to target
+            }
+        },
+
+        effects: function() {
+            return this._effects;
+        },
+
+        addEffect: function(effect) {
+            this._effects.push(effect);
         },
 
         addHealth: function(amount) {
@@ -65,12 +125,15 @@
                 this._health = this.maxHealth();
             }
         },
-        addShield: function(amount) {
+        addEnergy: function(amount) {
             if (Game.Util.round(amount) < 0) {
-                console.warn('Cannot add a negative shield amount: use takeDamage function.');
+                console.warn('Cannot add a negative energy amount: use useEnergy function.');
                 return;
             }
-            this._shield += amount;
+            this._energy += amount;
+            if (this._energy >= this.maxEnergy()) {
+                this._energy = this.maxEnergy();
+            }
         },
 
         x: function(newX) {
@@ -89,13 +152,33 @@
             return this._dbRecord.attackDamage;
         },
 
-        incrementAttack: function(seconds, onAttack) {
+        update: function(seconds, nearestTarget) {
             if (this.isDead()) {
                 return;
             }
 
+            // Regenerate health/energy/cooldowns
+            this.addEnergy(this.energyRegen() * seconds);
+
+            // update effects
+            this._effects.forEach(function(effect) {
+                effect.update(seconds);
+            });
+
+            // remove expired effects
+            for (var i = this._effects.length - 1; i >= 0; i--) {
+                if (this._effects[i].isExpired()) {
+                    this._effects.splice(i, 1);
+                }
+            }
+
+            // auto attack
+            this._incrementAttack(seconds, nearestTarget)
+        },
+
+        _incrementAttack: function(seconds, nearestTarget) {
             if (Game.Util.round(this._attackTimer) <= 0) {
-                onAttack();
+                this.attack(nearestTarget);
                 this._attackTimer = this.attackSpeed();
             }
             this._attackTimer -= seconds;
@@ -109,34 +192,35 @@
         },
 
         takeDamage: function(amount) {
-            var shieldDamage = 0;
-            var healthDamage = 0;
             if (this.isPlayer()) {
-                console.log('taking damage... effective health: '+(this.shield() + this.health()));
+                //console.log('taking damage... effective health: '+(this.shield() + this.health()));
             }
 
+            // todo apply damage reductions (iterate thru effects, armor)
+
+            // todo remove from the shield with least duration remaining first
             if (Game.Util.round(this.shield()) > 0) {
-                shieldDamage = Math.min(this.shield(), amount);
-                this._shield -= shieldDamage;
-                amount -= shieldDamage;
+                this._effects.forEach(function(effect) {
+                    amount = effect.absorbDamage(amount);
+                });
             }
 
             if (Game.Util.round(this.health()) > 0) {
-                healthDamage = Math.min(this.health(), amount);
-                this._health -= healthDamage;
-                amount -= healthDamage;
+                this._health -= amount;
             }
-
-            //console.log('overkill: ' + amount);
 
             if (Game.Util.round(this.health()) <= 0) {
                 this.kill();
             }
         },
+        useEnergy: function(amount) {
+            this._energy -= amount;
+        },
 
         kill: function() {
             if (!this._isDead) {
                 this._isDead = true;
+                this._health = 0;
 
                 if (!this.isPlayer()) {
                     // todo increment enemies killed counter

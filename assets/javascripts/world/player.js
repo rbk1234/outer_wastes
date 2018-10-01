@@ -17,6 +17,9 @@
         _init: function(config) {
             Game.World.Unit.prototype._init.apply(this, arguments);
 
+            this._abilities = [];
+            var shield = new Game.World.Ability(1);
+            this._abilities.push(shield);
         },
 
         kill: function() {
