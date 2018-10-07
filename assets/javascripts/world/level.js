@@ -12,41 +12,37 @@
         },
 
         _init: function(id, config) {
-            var self = this;
-
             this._dbRecord = $.extend(true, {}, Game.Database.Levels[id]);
-
-            // load player
-            Game.World.Player.x(this._dbRecord.playerX);
-
-            // load units
-            this._units = [];
-            this._dbRecord.units.forEach(function(unitRecord) {
-                var unit = new Game.World.Unit(unitRecord.id);
-                unit.x(unitRecord.x);
-                self._units.push(unit);
-            });
         },
 
         background: function() {
             return this._dbRecord.background;
         },
 
-        units: function() {
-            return this._units;
+        height: function() {
+            return this._dbRecord.height;
         },
 
-        nearestEnemyUnit: function() {
-            var nearestUnit = null;
-            this.units().forEach(function(unit) {
-                if (unit.isDead()) {
-                    return; // skip
-                }
-                if (nearestUnit === null || unit.x() < nearestUnit.x()) {
-                    nearestUnit = unit;
+        loadEnemies: function() {
+            var enemies = [];
+
+            this._dbRecord.enemies.forEach(function(enemyInfo) {
+                var enemy = new Game.World.Unit(enemyInfo.id);
+                enemy.x(enemyInfo.x);
+                enemies.push(enemy);
+            });
+
+            return enemies;
+        },
+
+        // allies already exist, so pass as parameter
+        loadAllies: function(allies) {
+            this._dbRecord.allies.forEach(function(allyInfo, index) {
+                var ally = allies[index];
+                if (ally) {
+                    ally.x(allyInfo.x);
                 }
             });
-            return nearestUnit;
         }
 
     };

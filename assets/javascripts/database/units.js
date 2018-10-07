@@ -8,22 +8,22 @@
             animations: {
                 idle: {
                     image: [
-                        ' [)  ',
-                        '/ \\  ',
-                        '\\==;>',
-                        ' |\\  ',
-                        '/ |  '
+                        '~O',
+                        '/ \\',
+                        '\\+---',
+                        ' |\\',
+                        '/ |'
                     ]
                 },
                 attack: {
                     image: [
-                        ' [)  ',
-                        '/ \\  ',
-                        '\\==;>*',
-                        ' |\\  ',
-                        '/ |  '
+                        '~O',
+                        ' \\',
+                        '/|\\+---',
+                        ' |\\',
+                        '/ |'
                     ],
-                    duration: 0.1
+                    duration: 0.4
                 },
                 dead: {
                     image: [
@@ -31,16 +31,15 @@
                         '',
                         '',
                         '',
-                        ' [)'
+                        '~O'
                     ]
                 }
             },
-            maxHealth: 400,
+            maxHealth: 100,
             maxEnergy: 100,
             energyRegen: 10,
-            height: 5,
-            attackSpeed: 0.2,
-            attackDamage: 5
+            attackSpeed: 1,
+            attackDamage: 10
         },
         2: {
             name: 'oozeling',
@@ -68,10 +67,9 @@
                     ]
                 }
             },
-            maxHealth: 400,
-            height: 3,
+            maxHealth: 100,
             attackSpeed: 1,
-            attackDamage: 15,
+            attackDamage: 20,
             reward: 50
         },
         3: {

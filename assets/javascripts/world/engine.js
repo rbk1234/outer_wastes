@@ -4,7 +4,6 @@
     'use strict';
 
     var UPDATES_PER_SECOND = 15;
-    var LEVEL_HEIGHT = 20;
     var CLOCK_KEY = 'World.Engine';
 
     var Engine = function() {};
@@ -21,7 +20,17 @@
 
         loadLevel: function(levelId) {
             var self = this;
+
             this._level = new Game.World.Level(levelId, {});
+
+            this._enemies = this._level.loadEnemies();
+            this._allies = [];
+            this._allies.push(new Game.World.Ally(1));
+            this._allies.push(new Game.World.Ally(1));
+            this._allies.push(new Game.World.Ally(1));
+            this._level.loadAllies(this._allies);
+
+            Game.BottomBar.setupAllySlots(this._allies);
 
             this._backgroundCanvas.drawImage(this._level.background());
 
@@ -35,6 +44,7 @@
 
                 // Only draw once (no matter how many iterations)
                 self._drawLevel();
+                Game.BottomBar.updateAllySlots(self._allies);
             }, 1.0 / UPDATES_PER_SECOND);
         },
 
@@ -43,13 +53,20 @@
             var self = this;
 
             // check if complete
+            var allAlliesDead = true;
             var allEnemiesDead = true;
-            this._level.units().forEach(function(unit) {
-                if (!unit.isDead()) {
+            this._allies.forEach(function(ally) {
+                if (!ally.isDead()) {
+                    allAlliesDead = false;
+                }
+            });
+            this._enemies.forEach(function(enemy) {
+                if (!enemy.isDead()) {
                     allEnemiesDead = false;
                 }
             });
-            if (Game.World.Player.isDead() || allEnemiesDead) {
+
+            if (allAlliesDead || allEnemiesDead) {
                 // todo level complete!
                 console.log('level complete!');
                 Game.Clock.clearInterval(CLOCK_KEY);
@@ -57,15 +74,37 @@
                 return;
             }
 
-            // Update all projectiles
+            // TODO Update all projectiles
 
-            // Update player
-            Game.World.Player.update(seconds, self._level.nearestEnemyUnit());
-
-            // Update all units
-            this._level.units().forEach(function(unit) {
-                unit.update(seconds, Game.World.Player);
+            // Update allies
+            this._allies.forEach(function(ally) {
+                ally.update(seconds, self._nearestEnemyUnit());
             });
+
+            // Update enemies
+            this._enemies.forEach(function(unit) {
+                unit.update(seconds, self._nearestAllyUnit());
+            });
+        },
+
+        // TODO replace with getting a specific unit
+        _nearestAllyUnit: function() {
+            for (var i = 0; i < this._allies.length; i++) {
+                var ally = this._allies[i];
+                if (!ally.isDead()) {
+                    return ally;
+                }
+            }
+            return null;
+        },
+        _nearestEnemyUnit: function() {
+            for (var i = 0; i < this._enemies.length; i++) {
+                var enemy = this._enemies[i];
+                if (!enemy.isDead()) {
+                    return enemy;
+                }
+            }
+            return null;
         },
 
         _drawLevel: function() {
@@ -77,17 +116,19 @@
 
             // Redraw projectileCanvas
 
-            // If player animation change -> redraw player (just his area)
-            this._drawUnit(Game.World.Player);
+            // If ally animation change -> redraw player (just his area)
+            this._allies.forEach(function(unit) {
+                self._drawUnit(unit);
+            });
 
-            // If a unit animation change -> redraw unitCanvas (for that area)
-            this._level.units().forEach(function(unit) {
+            // If enemy animation change -> redraw unitCanvas (for that area)
+            this._enemies.forEach(function(unit) {
                 self._drawUnit(unit);
             });
         },
 
         _drawUnit: function(unit) {
-            this._unitCanvas.drawImage(unit.image(), unit.x(), LEVEL_HEIGHT - unit.height());
+            this._unitCanvas.drawImage(unit.image(), unit.x(), this._level.height() - unit.height());
         }
 
     };

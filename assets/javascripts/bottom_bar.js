@@ -7,20 +7,116 @@
     var UPDATES_PER_SECOND = 15;
     var CLOCK_KEY = 'BottomBar';
 
-    var ANIMATION_SPEED = 30;
-
-    var GRID_BACKGROUND = 'rgba(0,0,0,0)';
-    var GRID_LINES = 'rgba(0,0,0,0.5)';
-    var GRID_BUFFER_SIZE = 5.0; // shows ticks for bars up to x times normal health bar (i.e. shield can be x times bigger than hp)
-    var GRID_NUM_TICKS = 10;
-    var GRID_LINE_WIDTH_PX = 1;
-    var GRID_PARTITION_SIZE = (100.0 / GRID_NUM_TICKS) / GRID_BUFFER_SIZE;
+    var MAX_SLOTS = 4;
 
     var BottomBar = function() {};
 
     BottomBar.prototype = {
 
         init: function() {
+            var self = this;
+            this._$allySlots = $('#ally-slots').find('.ally-slot');
+
+            Game.Clock.setInterval(CLOCK_KEY, function(iterations, seconds) {
+                // Only draw once (no matter how many iterations)
+                //self._drawHealths();
+            }, 1.0 / UPDATES_PER_SECOND)
+        },
+
+        setupAllySlots: function(allies) {
+            var self = this;
+
+            this._$allySlots.each(function(index) {
+                var $slot = $(this);
+                var allyIndex = MAX_SLOTS - 1 - index;
+                var ally = allies[allyIndex];
+
+                self._createSlot($slot, ally);
+            });
+        },
+
+        updateAllySlots: function(allies) {
+            var self = this;
+
+            this._$allySlots.each(function(index) {
+                var $slot = $(this);
+                var allyIndex = MAX_SLOTS - 1 - index;
+                var ally = allies[allyIndex];
+
+                self._updateSlot($slot, ally);
+            });
+        },
+
+        _updateSlot: function($slot, unit) {
+            if (unit) {
+                $slot.find('.health').html(unit.health() + ' / ' + unit.maxHealth());
+            }
+        },
+
+        _createSlot: function($slot, unit) {
+            //<div class="text-center">
+            //    Swashbuckler
+            //</div>
+            //<span class="fa fa-fw fa-heart"></span> 200 / 200<br>
+            //<span class="fa fa-fw fa-bolt"></span> 100 / 100<br>
+            //<div class="text-center">
+            //    <button class="game-button blade-drag-black"></button>
+            //</div>
+            //<br>
+
+            if (unit) {
+                $('<div></div>', {
+                    class: 'text-center',
+                    text: unit.name()
+                }).appendTo($slot);
+
+                $('<span></span>', {
+                    class: 'fa fa-fw fa-heart'
+                }).appendTo($slot);
+                $('<span></span>', {
+                    class: 'health'
+                }).appendTo($slot);
+                $('<br>').appendTo($slot);
+
+                $('<span></span>', {
+                    class: 'fa fa-fw fa-bolt'
+                }).appendTo($slot);
+                $('<span></span>', {
+                    class: 'energy'
+                }).appendTo($slot);
+                $('<br>').appendTo($slot);
+
+                var $abilityDiv = $('<div></div>', {class: 'text-center'});
+                $abilityDiv.appendTo($slot);
+
+                $('<button></button>', {
+                    class: 'game-button blade-drag-black'
+                }).appendTo($abilityDiv);
+
+                $('<br>').appendTo($slot);
+            }
+            else {
+                $('<div></div>', {
+                    class: 'text-center',
+                    text: ''
+                }).appendTo($slot);
+            }
+        }
+
+
+        /*  How I did shielding and stuff:
+
+
+         var ANIMATION_SPEED = 30;
+         var GRID_BACKGROUND = 'rgba(0,0,0,0)';
+         var GRID_LINES = 'rgba(0,0,0,0.5)';
+         var GRID_BUFFER_SIZE = 5.0; // shows ticks for bars up to x times normal health bar (i.e. shield can be x times bigger than hp)
+         var GRID_NUM_TICKS = 10;
+         var GRID_LINE_WIDTH_PX = 1;
+         var GRID_PARTITION_SIZE = (100.0 / GRID_NUM_TICKS) / GRID_BUFFER_SIZE;
+
+
+         init: function() {
             var self = this;
 
             var $playerBars = $('.player-bars');
@@ -42,7 +138,8 @@
                 self._drawBar();
                 self._drawEffects();
             }, 1.0 / UPDATES_PER_SECOND);
-        },
+        }
+
 
         _setupAbilityHandlers: function() {
             $('.ability-container').find('.game-button').each(function(index) {
@@ -124,6 +221,8 @@
         _formatValue: function(value) {
             return Game.Util.roundToDecimal(value, 0); // todo handle larger numbers appropriately
         }
+
+        */
     };
 
     Game.BottomBar = new BottomBar();

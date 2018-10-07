@@ -16,8 +16,6 @@ canvas {
   margin: auto; }
 
 canvas#background-canvas {
-  /*background: #D4A190;*/
-  background: #b2cfff;
   /*z-index: 2;*/
   /*outline: 2px solid #3f3f3f; */ }
 
@@ -56,12 +54,13 @@ body {
   flex-shrink: 1,
   flex-basis: auto
   */
-  background: #5f5f5f; }
+  background: #644a35;
+  border: 6px ridge rgba(127, 62, 0, 0.7); }
 
 .flex-box .flex-row.flex-content {
   flex: 1 1 auto;
   text-align: center;
-  background: #181918;
+  background: #b2cfff;
   padding: 2px; }
 
 .flex-box .flex-row.flex-footer {
@@ -83,9 +82,22 @@ body {
   border: 1px solid #333; }
 
 .game-button {
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 0.375rem; }
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.375rem;
+  margin-top: 0.5rem;
+  border-color: black;
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#a90329+0,8f0222+44,6d0019+100;Brown+Red+3D */
+  background: #a90329;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #a90329 0%, #8f0222 44%, #6d0019 100%);
+  /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, #a90329 0%, #8f0222 44%, #6d0019 100%);
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #a90329 0%, #8f0222 44%, #6d0019 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a90329', endColorstr='#6d0019',GradientType=0 );
+  /* IE6-9 */ }
 
 .game-effect {
   width: 1.5rem;
@@ -102,57 +114,80 @@ body {
 .blank:before {
   content: url("icons/blank.svg"); }
 
+.blade-drag:before {
+  content: url("icons/blade-drag.svg"); }
+
+.blade-drag-black:before {
+  content: url("icons/blade-drag-black.svg"); }
+
 .bottom-bar {
+  background: #644a35;
+  border: 6px ridge rgba(127, 62, 0, 0.7); }
+  .bottom-bar .ally-slot {
+    margin: 0.25rem;
+    padding: 0.25rem;
+    color: black;
+    font-size: 0.75rem;
+    height: 9rem;
+    border: 1px solid black;
+    background: rgba(255, 198, 135, 0.4);
+    border-radius: 0.25rem;
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#a90329+0,8f0222+44,6d0019+100;Brown+Red+3D */ }
+    .bottom-bar .ally-slot .health, .bottom-bar .ally-slot .energy {
+      display: inline-block;
+      margin-left: 0.25rem; }
+
+.bottom-bar-OLD {
   background: #5f5f5f;
   color: white;
   font-size: 0.75rem;
   padding: 0.15rem;
   border: 6px ridge rgba(50, 50, 50, 0.5); }
-  .bottom-bar .bar-container {
+  .bottom-bar-OLD .bar-container {
     font-size: 0;
     position: relative;
     overflow: hidden;
     height: 1rem;
     width: 100%; }
-    .bottom-bar .bar-container .progress {
+    .bottom-bar-OLD .bar-container .progress {
       position: absolute;
       top: 0;
       left: 0;
       height: 1rem;
       display: inline-block;
       margin-bottom: 0; }
-    .bottom-bar .bar-container .health-grid {
+    .bottom-bar-OLD .bar-container .health-grid {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 0.3rem; }
-    .bottom-bar .bar-container .health-border {
+    .bottom-bar-OLD .bar-container .health-border {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 1rem;
       border: 1px solid rgba(0, 0, 0, 0.5); }
-  .bottom-bar .progress.health-bar .progress-meter {
+  .bottom-bar-OLD .progress.health-bar .progress-meter {
     background: linear-gradient(#00ff55, #009933); }
-  .bottom-bar .progress.shield-bar .progress-meter {
+  .bottom-bar-OLD .progress.shield-bar .progress-meter {
     background: linear-gradient(#ddd, #aaa); }
-  .bottom-bar .progress.energy-bar .progress-meter {
+  .bottom-bar-OLD .progress.energy-bar .progress-meter {
     background: linear-gradient(#ffff00, #999900); }
-  .bottom-bar .progress.background-bar .progress-meter {
+  .bottom-bar-OLD .progress.background-bar .progress-meter {
     background: linear-gradient(#666, #444); }
-  .bottom-bar .health-icon {
+  .bottom-bar-OLD .health-icon {
     color: #00ff55; }
-  .bottom-bar .energy-icon {
+  .bottom-bar-OLD .energy-icon {
     color: #ffff00; }
-  .bottom-bar .bar-value-container {
+  .bottom-bar-OLD .bar-value-container {
     min-width: 4rem; }
-    .bottom-bar .bar-value-container .health-value {
+    .bottom-bar-OLD .bar-value-container .health-value {
       color: #00ff55; }
-    .bottom-bar .bar-value-container .shield-value {
+    .bottom-bar-OLD .bar-value-container .shield-value {
       color: #ddd; }
-    .bottom-bar .bar-value-container .energy-value {
+    .bottom-bar-OLD .bar-value-container .energy-value {
       color: #ffff00; }
 
 .tabs {
@@ -161,7 +196,8 @@ body {
 
 .tabs li a {
   background: transparent;
-  color: #bfbfbf; }
+  color: #bfbfbf;
+  padding: 0.75rem 1.5rem; }
 
 .tabs li.is-active a {
   background: transparent;

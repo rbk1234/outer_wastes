@@ -28,11 +28,17 @@
                 '                                                                                ',
                 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
             ],
-            playerX: 15,
-            units: [
-                {id: 2, x: 30},
-                {id: 2, x: 50}
-            ]
+            allies: [
+                {x: 30},
+                {x: 20},
+                {x: 10},
+                {x: 0}
+            ],
+            enemies: [
+                {id: 2, x: 40},
+                {id: 2, x: 55}
+            ],
+            height: 20 // todo give each unit its own y
         }
 
     };

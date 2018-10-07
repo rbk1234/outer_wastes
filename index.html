@@ -50,7 +50,7 @@
         <div class="cell auto">
           <ul class="tabs" data-tabs id="example-tabs">
             <li class="tabs-title is-active"><a href="#panel1" aria-selected="true">World</a></li>
-            <li class="tabs-title"><a data-tabs-target="panel2" href="#panel2">Armory</a></li>
+            <li class="tabs-title"><a data-tabs-target="panel2" href="#panel2">Ship</a></li>
             <!--<li class="tabs-title"><a data-tabs-target="panel3" href="#panel3">Technology</a></li>-->
             <!--<li class="tabs-title"><a data-tabs-target="panel4" href="#panel4">Trade Center</a></li>-->
           </ul>
@@ -76,93 +76,35 @@
 
       <div class="grid-x">
         <div class="cell shrink">
-          <div class="ability-container" style="padding:0.1rem;">
-            <button class="game-button"></button>
-            <button class="game-button"></button>
-            <button class="game-button"></button>
-            <button class="game-button"></button>
-            &emsp;
+          <div style="border-radius: 50%; background: red; height: 25%; padding-top: 100%;"></div>
+        </div>
+        <div class="cell small-6" id="ally-slots">
+          <div class="grid-x">
+            <div class="cell small-3">
+              <div class="ally-slot">
+              </div>
+            </div>
+            <div class="cell small-3">
+              <div class="ally-slot">
+              </div>
+            </div>
+            <div class="cell small-3">
+              <div class="ally-slot">
+              </div>
+            </div>
+            <div class="cell small-3">
+              <div class="ally-slot">
+              </div>
+            </div>
           </div>
         </div>
-        <div class="cell small-5 player-bars">
+        <div class="cell small-4">
 
-          <table class="no-rows tight-spacing no-bottom-margin">
-            <tbody>
-            <tr>
-              <td class="nostretch text-center"><span class="fa fa-fw fa-plus-square health-icon"></span></td>
-              <td>
-                <div class="bar-container">
-                  <div class="progress background-bar" tabindex="0" style="width:100%;">
-                    <div class="progress-meter" style="width: 100%"></div>
-                  </div>
-                  <div class="progress shield-bar" tabindex="0">
-                    <div class="progress-meter" style="width: 100%"></div>
-                  </div>
-                  <div class="progress health-bar" tabindex="0" style="width:100%;">
-                    <div class="progress-meter" style="width: 100%"></div>
-                  </div>
-                  <div class="health-grid"></div>
-                  <div class="health-border"></div>
-                </div>
-              </td>
-              <td class="nostretch">
-                <div class="bar-value-container">
-                  <span class="health-value"></span>
-                  <span class="shield-value"></span>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td class="nostretch text-center"><span class="fa fa-fw fa-bolt energy-icon"></span></td>
-              <td>
-                <div class="bar-container">
-                  <div class="progress background-bar" tabindex="0" style="width:100%;">
-                    <div class="progress-meter" style="width: 100%"></div>
-                  </div>
-                  <div class="progress energy-bar" tabindex="0" style="width:100%;">
-                    <div class="progress-meter" style="width: 100%"></div>
-                  </div>
-                  <div class="health-border"></div>
-                </div>
-              </td>
-              <td class="nostretch">
-                <div class="bar-value-container">
-                  <span class="energy-value"></span>
-                </div>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-
-        </div>
-        <div class="cell auto">
-          <div class="effects-container"></div>
         </div>
       </div>
 
-
     </div>
   </div>
-
-  <!--<div class="grid-container fluid">-->
-    <!--<div class="grid-x grid-padding-x">-->
-      <!--<div class="small-9 cell">-->
-        <!--<h3>Game Title</h3>-->
-        <!--<div class="canvas-container">-->
-          <!--<canvas id="main-canvas">Your browser does not support HTML5 Canvas.</canvas>-->
-        <!--</div>-->
-      <!--</div>-->
-      <!--<div class="small-3 cell">-->
-        <!--<div>-->
-          <!--FPS: <span id="fps"></span><br>-->
-          <!--Time: <span id="total-time"></span><br>-->
-          <!--Memory: <span id="memory"></span>-->
-        <!--</div>-->
-        <!--<hr>-->
-        <!--<div id="log"></div>-->
-      <!--</div>-->
-    <!--</div>-->
-  <!--</div>-->
 
   <!-- Plugins -->
   <script src="vendor/javascripts/modernizr-3.6.0.min.js"></script>
@@ -183,7 +125,8 @@
   <script src="assets/javascripts/world/engine.js"></script>
   <script src="assets/javascripts/world/level.js"></script>
   <script src="assets/javascripts/world/unit.js"></script>
-  <script src="assets/javascripts/world/player.js"></script><!-- Subclass of unit.js; needs to come after -->
+  <script src="assets/javascripts/world/ally.js"></script><!-- Subclass of unit.js; needs to come after -->
+  <script src="assets/javascripts/world/enemy.js"></script><!-- Subclass of unit.js; needs to come after -->
   <script src="assets/javascripts/bottom_bar.js"></script>
   <script src="assets/javascripts/canvas.js"></script>
   <script src="assets/javascripts/clock.js"></script>

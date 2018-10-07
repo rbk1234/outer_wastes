@@ -41,7 +41,7 @@
         },
 
         height: function() {
-            return this._dbRecord.height;
+            return this._dbRecord.animations.idle.image.length;
         },
 
         name: function() {
@@ -192,10 +192,6 @@
         },
 
         takeDamage: function(amount) {
-            if (this.isPlayer()) {
-                //console.log('taking damage... effective health: '+(this.shield() + this.health()));
-            }
-
             // todo apply damage reductions (iterate thru effects, armor)
 
             // todo remove from the shield with least duration remaining first
@@ -221,10 +217,6 @@
             if (!this._isDead) {
                 this._isDead = true;
                 this._health = 0;
-
-                if (!this.isPlayer()) {
-                    // todo increment enemies killed counter
-                }
             }
         },
 
@@ -232,7 +224,10 @@
             return this._isDead;
         },
 
-        isPlayer: function() {
+        isAlly: function() {
+            return false;
+        },
+        isEnemy: function() {
             return false;
         }
 
