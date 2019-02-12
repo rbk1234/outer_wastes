@@ -7,101 +7,41 @@
     var UPDATES_PER_SECOND = 15;
     var CLOCK_KEY = 'BottomBar';
 
-    var MAX_SLOTS = 4;
-
     var BottomBar = function() {};
 
     BottomBar.prototype = {
 
         init: function() {
             var self = this;
-            this._$allySlots = $('#ally-slots').find('.ally-slot');
+            this._$castBar = $('#cast-bar');
+            this._$cast = this._$castBar.find('.cast');
+            this._castBarShown = false;
 
-            Game.Clock.setInterval(CLOCK_KEY, function(iterations, seconds) {
-                // Only draw once (no matter how many iterations)
-                //self._drawHealths();
-            }, 1.0 / UPDATES_PER_SECOND)
-        },
+            //Game.Clock.setInterval(CLOCK_KEY, function(iterations, seconds) {
+            //    // Only draw once (no matter how many iterations)
+            //    //self._drawHealths();
+            //
+            //    self._refreshCastBar();
+            //    // todo refresh cds
+            //
+            //}, 1.0 / UPDATES_PER_SECOND)
 
-        setupAllySlots: function(allies) {
-            var self = this;
-
-            this._$allySlots.each(function(index) {
-                var $slot = $(this);
-                var allyIndex = MAX_SLOTS - 1 - index;
-                var ally = allies[allyIndex];
-
-                self._createSlot($slot, ally);
+            $('#ability-bar').find('.game-button').each(function(index) {
+                if (index === 0) {
+                    $(this).off('click').on('click', function() {
+                        Game.UnitEngine.getPlayer().castAbility();
+                    });
+                }
+                if (index === 1) {
+                    $(this).off('click').on('click', function() {
+                        Game.UnitEngine.getPlayer().cancelCast();
+                    });
+                }
             });
         },
 
-        updateAllySlots: function(allies) {
-            var self = this;
 
-            this._$allySlots.each(function(index) {
-                var $slot = $(this);
-                var allyIndex = MAX_SLOTS - 1 - index;
-                var ally = allies[allyIndex];
 
-                self._updateSlot($slot, ally);
-            });
-        },
-
-        _updateSlot: function($slot, unit) {
-            if (unit) {
-                $slot.find('.health').html(unit.health() + ' / ' + unit.maxHealth());
-            }
-        },
-
-        _createSlot: function($slot, unit) {
-            //<div class="text-center">
-            //    Swashbuckler
-            //</div>
-            //<span class="fa fa-fw fa-heart"></span> 200 / 200<br>
-            //<span class="fa fa-fw fa-bolt"></span> 100 / 100<br>
-            //<div class="text-center">
-            //    <button class="game-button blade-drag-black"></button>
-            //</div>
-            //<br>
-
-            if (unit) {
-                $('<div></div>', {
-                    class: 'text-center',
-                    text: unit.name()
-                }).appendTo($slot);
-
-                $('<span></span>', {
-                    class: 'fa fa-fw fa-heart'
-                }).appendTo($slot);
-                $('<span></span>', {
-                    class: 'health'
-                }).appendTo($slot);
-                $('<br>').appendTo($slot);
-
-                $('<span></span>', {
-                    class: 'fa fa-fw fa-bolt'
-                }).appendTo($slot);
-                $('<span></span>', {
-                    class: 'energy'
-                }).appendTo($slot);
-                $('<br>').appendTo($slot);
-
-                var $abilityDiv = $('<div></div>', {class: 'text-center'});
-                $abilityDiv.appendTo($slot);
-
-                $('<button></button>', {
-                    class: 'game-button blade-drag-black'
-                }).appendTo($abilityDiv);
-
-                $('<br>').appendTo($slot);
-            }
-            else {
-                $('<div></div>', {
-                    class: 'text-center',
-                    text: ''
-                }).appendTo($slot);
-            }
-        }
 
 
         /*  How I did shielding and stuff:

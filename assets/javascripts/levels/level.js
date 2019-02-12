@@ -12,7 +12,7 @@
         },
 
         _init: function(id, config) {
-            this._dbRecord = $.extend(true, {}, Game.Database.Levels[id]);
+            this._dbRecord = $.extend(true, {}, Game.Levels.Database[id]);
         },
 
         background: function() {
@@ -27,8 +27,9 @@
             var enemies = [];
 
             this._dbRecord.enemies.forEach(function(enemyInfo) {
-                var enemy = new Game.World.Unit(enemyInfo.id);
+                var enemy = new Game.Units.Unit(enemyInfo.id);
                 enemy.x(enemyInfo.x);
+                enemy.y(enemyInfo.y);
                 enemies.push(enemy);
             });
 
@@ -41,12 +42,13 @@
                 var ally = allies[index];
                 if (ally) {
                     ally.x(allyInfo.x);
+                    ally.y(allyInfo.y);
                 }
             });
         }
 
     };
 
-    Game.namespace('World').Level = Level;
+    Game.namespace('Levels').Level = Level;
 
 }(jQuery));

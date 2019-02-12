@@ -10,7 +10,7 @@
         _init: function(id) {
             this.id = id;
 
-            this._dbRecord = $.extend(true, {}, Game.Database.Effects[id]);
+            this._dbRecord = $.extend(true, {}, Game.Effects.Database[id]);
 
             this._absorptionAmount = this.type() === 'absorption' ? this._dbRecord.amount : 0;
             this._durationLeft = this._dbRecord.duration;
@@ -68,6 +68,6 @@
 
     };
 
-    Game.namespace('World').Effect = Effect;
+    Game.namespace('Effects').Effect = Effect;
 
 }(jQuery));

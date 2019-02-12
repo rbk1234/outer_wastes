@@ -10,7 +10,7 @@
         _init: function(id) {
             this.id = id;
 
-            this._dbRecord = $.extend(true, {}, Game.Database.Abilities[id]);
+            this._dbRecord = $.extend(true, {}, Game.Abilities.Database[id]);
 
 
         },
@@ -23,8 +23,8 @@
             // todo reduce cooldown
         },
 
-        energyCost: function() {
-            return this._dbRecord.energyCost;
+        manaCost: function() {
+            return this._dbRecord.manaCost;
         },
 
         casterEffects: function() {
@@ -36,6 +36,6 @@
 
     };
 
-    Game.namespace('World').Ability = Ability;
+    Game.namespace('Abilities').Ability = Ability;
 
 }(jQuery));

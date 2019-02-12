@@ -4,21 +4,25 @@
     'use strict';
 
     var Ally = function(id, config) {
-        Game.World.Unit.call(this, id, config);
+        Game.Units.Unit.call(this, id, config);
     };
-    Ally.prototype = Object.create(Game.World.Unit.prototype);
+    Ally.prototype = Object.create(Game.Units.Unit.prototype);
     Ally.prototype.constructor = Ally;
 
     $.extend(Ally.prototype, {
 
         _init: function(config) {
-            Game.World.Unit.prototype._init.apply(this, arguments);
+            Game.Units.Unit.prototype._init.apply(this, arguments);
 
 
         },
 
+        highestThreatTarget: function() {
+            return Game.UnitEngine.highestThreatEnemy();
+        },
+
         kill: function() {
-            Game.World.Unit.prototype.kill.apply(this, arguments);
+            Game.Units.Unit.prototype.kill.apply(this, arguments);
 
             //Game.Global.statistics.countAllyDeath();
         },
@@ -29,6 +33,6 @@
 
     });
 
-    Game.namespace('World').Ally = Ally;
+    Game.namespace('Units').Ally = Ally;
 
 }(jQuery));
