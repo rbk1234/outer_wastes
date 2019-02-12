@@ -68,7 +68,9 @@
     Game.UnitEngine.init();
 
     Game.UnitEngine.addAlly(new Game.Units.Ally(3));
-    Game.UnitEngine.addAlly(new Game.Units.Ally(1));
+    Game.Player = new Game.Units.Ally(1);
+    Game.Player.addAbility('heal');
+    Game.UnitEngine.addAlly(Game.Player);
     Game.UnitEngine.initUnitFrames();
 
     var room1 = new Game.Rooms.EnemyRoom(1);

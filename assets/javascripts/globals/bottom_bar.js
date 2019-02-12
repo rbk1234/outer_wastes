@@ -29,12 +29,12 @@
             $('#ability-bar').find('.game-button').each(function(index) {
                 if (index === 0) {
                     $(this).off('click').on('click', function() {
-                        Game.UnitEngine.getPlayer().castAbility();
+                        Game.Player.castAbility('heal');
                     });
                 }
                 if (index === 1) {
                     $(this).off('click').on('click', function() {
-                        Game.UnitEngine.getPlayer().cancelCast();
+                        Game.Player.cancelCast('Interrupted');
                     });
                 }
             });

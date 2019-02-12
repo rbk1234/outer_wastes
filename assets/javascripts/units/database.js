@@ -72,7 +72,7 @@
             baseStats: {
                 maxHealth: 150,
                 attackSpeed: 0.75,
-                attackDamage: 5,
+                attackDamage: 20,
                 reward: 50
             }
         },

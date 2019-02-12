@@ -2,6 +2,17 @@
 (function($) {
     'use strict';
 
+    var DEFAULT_DATA_FIELDS = {
+        name: 'Unknown',
+        manaCost: 0,
+        cooldown: 0,
+        castTime: 1.5,
+        requiresTarget: false,
+        onCastComplete: function(caster, target) {
+            // do nothing
+        }
+    };
+
     var Ability = function(id) {
         this._init(id);
     };
@@ -9,28 +20,20 @@
 
         _init: function(id) {
             this.id = id;
-
-            this._dbRecord = $.extend(true, {}, Game.Abilities.Database[id]);
-
-
+            this.data = $.extend(true, {}, DEFAULT_DATA_FIELDS, Game.Abilities.Database[id]);
+        },
+        getData: function(field) {
+            return this.data[field];
         },
 
-        iconClass: function() {
-            return this._dbRecord.iconClass;
-        },
+
+
+
+
 
         update: function(seconds) {
             // todo reduce cooldown
         },
-
-        manaCost: function() {
-            return this._dbRecord.manaCost;
-        },
-
-        casterEffects: function() {
-            return this._dbRecord.casterEffects;
-        }
-
 
 
 

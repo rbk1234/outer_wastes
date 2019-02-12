@@ -28,9 +28,12 @@
             this._mana = this.getStat('maxMana');
             this._attackTimer = Math.random() * 0.25; // remaining time until next attack. Initialize with random wait
 
-            this._castProgress = null;
 
             this._effects = [];
+
+            this._castProgress = null;
+            this._abilities = {};
+
             this._isDead = false;
         },
 
@@ -160,47 +163,80 @@
             }
         },
 
-        // TODO --- this is built around the player right now
-        castAbility: function() {
-            // can only start cast if not casting (TODO might need a latency window)
-            if (this._castProgress === null) {
-                this._castTotal = 1.5;
-                this._castProgress = 0;
+        // ------------------------------------------------------------------ Abilities
+        // A Unit can have many Abilities
 
-                // show bar
-                Game.UnitEngine.startCast('Flash Heal');
+        addAbility: function(key) {
+            this._abilities[key] = new Game.Abilities.Ability(key);
+        },
+        removeAbility: function(key) {
+            delete this._abilities[key];
+        },
+
+        // TODO --- this is built around the player right now
+        castAbility: function(key) {
+            // If already casting something, return (TODO might need a latency window)
+            if (this.isCasting()) {
+                return;
             }
+
+            this._castAbility = this._abilities[key];
+            this._castTarget = Game.UnitEngine.targetedUnit();
+
+            // If issues with target, return
+            if (this._hasCastTargetErrors()) {
+                return;
+            }
+
+            this._castTotal = this._castAbility.getData('castTime'); // caching castTime at start of cast (in case haste changes)
+            this._castProgress = 0;
+
+            Game.UnitEngine.startCast(this._castAbility.getData('name'), this._castTotal);
+        },
+
+        cancelCast: function(message) {
+            if (!this.isCasting()) {
+                return;
+            }
+
+            this._castProgress = null;
+            Game.UnitEngine.cancelCast(message);
+        },
+
+        isCasting: function() {
+            return this._castProgress !== null;
+        },
+
+        _hasCastTargetErrors: function() {
+            if (this._castAbility.getData('requiresTarget')) {
+                if (this._castTarget === null) {
+                    console.warn('Target is required'); // TODO Show error to user
+                    return true;
+                }
+                if (this._castTarget.isDead()) {
+                    console.warn('Target is dead'); // TODO Show error to user
+                    return true;
+                }
+            }
+            return false;
         },
 
         _incrementCast: function(seconds) {
-            if (this._castProgress === null) {
+            if (!this.isCasting()) {
                 return;
             }
 
             this._castProgress += seconds;
             if (Game.Util.round(this._castProgress) >= this._castTotal) {
-                console.log('cast complete');
-                this._castProgress = null;
-
-                // start fade timer
-                Game.UnitEngine.castComplete();
-            }
-        },
-
-        castPercent: function() {
-            if (this._castProgress === null) {
-                return 100;
-            }
-            else {
-                return Math.round(this._castProgress / this._castTotal * 100.0)
-            }
-        },
-
-        cancelCast: function() {
-            // can only cancel if casting
-            if (this._castProgress !== null) {
-                this._castProgress = null;
-                Game.UnitEngine.cancelCast();
+                // Check target again in case state changed (e.g. target died during cast)
+                if (this._hasCastTargetErrors()) {
+                    this.cancelCast('Failed');
+                }
+                else {
+                    this._castAbility.getData('onCastComplete')(this, this._castTarget);
+                    this._castProgress = null;
+                    Game.UnitEngine.castComplete();
+                }
             }
         },
 

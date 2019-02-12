@@ -5,6 +5,7 @@
 
     var UPDATES_PER_SECOND = 15;
     var CLOCK_KEY = 'UnitEngine';
+    var CAST_BAR_UPDATE_SPEED = 10; // milliseconds between frame updates for progress bars
 
     var UnitEngine = function() {};
 
@@ -37,7 +38,6 @@
 
                 // Only draw once (no matter how many iterations)
                 self._refreshUnitFrames();
-                self._refreshCastBar();
             }, 1.0 / UPDATES_PER_SECOND);
         },
         
@@ -199,36 +199,41 @@
             });
         },
 
-        getPlayer: function() {
-            return this._allies[this._allies.length - 1];
-        },
+        // TODO MOVE THIS TO UI
         startCast: function(text, duration) {
-            this._$castProgress.removeClass('casting cast-complete cast-canceled');
-            this._$castProgress.addClass('casting');
-            this._$castText.html(text);
-            this._$castBar.stop(); // stop any fade outs
-            this._$castBar.fadeIn(0); // reverse any fade outs
-            this._$castBar.show();
+            var self = this;
 
-            //this._castInterval = setInterval(function() {
-            //
-            //}, duration * 1000);
+            // Smoothly increment cast bar (separate interval so not dependent on game framerate)
+            var numLoops = duration * 1000 / CAST_BAR_UPDATE_SPEED;
+            var currentLoop = 0;
+            this._castInterval = setInterval(function() {
+                currentLoop += 1;
+                self._$castProgress.css('width', (currentLoop / numLoops) * 100 + '%');
+            }, CAST_BAR_UPDATE_SPEED);
+
+            this._$castProgress.css('width', '0%')
+                .removeClass('casting cast-complete cast-canceled')
+                .addClass('casting');
+            this._$castText.html(text);
+            this._$castBar.stop(); // stop any fade out animations (from completes/cancels right before)
+            this._$castBar.fadeIn(0);
         },
         castComplete: function() {
-            this._$castProgress.removeClass('casting cast-complete cast-canceled');
-            this._$castProgress.addClass('cast-complete');
+            clearInterval(this._castInterval);
+
+            this._$castProgress.css('width', '100%')
+                .removeClass('casting cast-complete cast-canceled')
+                .addClass('cast-complete');
             this._$castBar.fadeOut(500);
         },
-        cancelCast: function() {
-            this._$castProgress.removeClass('casting cast-complete cast-canceled');
-            this._$castProgress.addClass('cast-canceled');
-            this._$castText.html('Interrupted');
+        cancelCast: function(message) {
+            clearInterval(this._castInterval);
+
+            this._$castProgress.css('width', '100%')
+                .removeClass('casting cast-complete cast-canceled')
+                .addClass('cast-canceled');
+            this._$castText.html(Game.Util.defaultFor(message, 'Failed'));
             this._$castBar.fadeOut(500);
-        },
-        _refreshCastBar: function() {
-            var player = this.getPlayer();
-            var widthPercent = player.castPercent() + '%';
-            this._$castProgress.css('width', widthPercent);
         }
 
 
