@@ -1,4 +1,15 @@
-/* The only global variable. Cannot conflict with any variables from plugins.  */
+/*
+* Namespace all of our variables under a single global `Game`.
+*
+* To create a sub-namespace called 'Abilities':
+*
+*   `Game.namespace('Abilities')`
+*
+* This will create a javascript object that can be accessed from anywhere in the code using:
+*
+*   `Game.Abilities`
+*
+* */
 
 var Game = { // jshint ignore:line
     namespace: function (namespace) {

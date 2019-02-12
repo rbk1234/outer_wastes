@@ -29,7 +29,7 @@
                 Game.UnitEngine.addEnemy(new Game.Units.Enemy(enemyId));
             });
 
-            Game.UnitEngine.initUnitFrames();
+            Game.UserInterface.loadUnits();
         }
 
     });

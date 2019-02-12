@@ -193,59 +193,6 @@ body {
 .blade-drag-black:before {
   content: url("icons/blade-drag-black.svg"); }
 
-.bottom-bar-OLD {
-  background: #5f5f5f;
-  color: white;
-  font-size: 0.75rem;
-  padding: 0.15rem;
-  border: 6px ridge rgba(50, 50, 50, 0.5); }
-  .bottom-bar-OLD .bar-container {
-    font-size: 0;
-    position: relative;
-    overflow: hidden;
-    height: 1rem;
-    width: 100%; }
-    .bottom-bar-OLD .bar-container .progress {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 1rem;
-      display: inline-block;
-      margin-bottom: 0; }
-    .bottom-bar-OLD .bar-container .health-grid {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 0.3rem; }
-    .bottom-bar-OLD .bar-container .health-border {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 1rem;
-      border: 1px solid rgba(0, 0, 0, 0.5); }
-  .bottom-bar-OLD .progress.health-bar .progress-meter {
-    background: linear-gradient(#00ff55, #009933); }
-  .bottom-bar-OLD .progress.shield-bar .progress-meter {
-    background: linear-gradient(#ddd, #aaa); }
-  .bottom-bar-OLD .progress.energy-bar .progress-meter {
-    background: linear-gradient(#ffff00, #999900); }
-  .bottom-bar-OLD .progress.background-bar .progress-meter {
-    background: linear-gradient(#666, #444); }
-  .bottom-bar-OLD .health-icon {
-    color: #00ff55; }
-  .bottom-bar-OLD .energy-icon {
-    color: #ffff00; }
-  .bottom-bar-OLD .bar-value-container {
-    min-width: 4rem; }
-    .bottom-bar-OLD .bar-value-container .health-value {
-      color: #00ff55; }
-    .bottom-bar-OLD .bar-value-container .shield-value {
-      color: #ddd; }
-    .bottom-bar-OLD .bar-value-container .energy-value {
-      color: #ffff00; }
-
 .tabs {
   background: transparent;
   border: none; }

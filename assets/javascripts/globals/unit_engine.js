@@ -5,7 +5,6 @@
 
     var UPDATES_PER_SECOND = 15;
     var CLOCK_KEY = 'UnitEngine';
-    var CAST_BAR_UPDATE_SPEED = 10; // milliseconds between frame updates for progress bars
 
     var UnitEngine = function() {};
 
@@ -15,11 +14,6 @@
 
             this._allies = [];
             this._enemies = [];
-            this._targetedUnit = null;
-
-            this._$castBar = $('#cast-bar');
-            this._$castProgress = this._$castBar.find('.cast-progress');
-            this._$castText = this._$castBar.find('.bar-text');
 
             // Start clock
             Game.Clock.setInterval(CLOCK_KEY, function(iterations, seconds) {
@@ -37,7 +31,9 @@
                 }
 
                 // Only draw once (no matter how many iterations)
-                self._refreshUnitFrames();
+                //self._refreshUnitFrames();
+                //Game.UserInterface.update();
+
             }, 1.0 / UPDATES_PER_SECOND);
         },
         
@@ -50,9 +46,11 @@
         clearEnemies: function() {
             this._enemies = [];
         },
-
-        targetedUnit: function() {
-            return this._targetedUnit;
+        allies: function() {
+            return this._allies;
+        },
+        enemies: function() {
+            return this._enemies;
         },
 
         // TODO Just returning first in array atm
@@ -97,7 +95,7 @@
 
             if (allAlliesDead || allEnemiesDead) {
                 // todo level complete!
-                //console.log('level complete!');
+                //console.log('stop');
                 //this.clearEnemies();
             }
 
@@ -110,156 +108,7 @@
             this._enemies.forEach(function(enemy) {
                 enemy.update(seconds);
             });
-        },
-
-
-        // todo should we just call this after every addAlly/addEnemy
-        initUnitFrames: function() {
-            // clear out old frames
-            $('#ally-frames').empty();
-            $('#enemy-frames').empty();
-
-            var self = this;
-            this._allies.forEach(function(unit) {
-                self._createAllyFrame(unit);
-            });
-            this._enemies.forEach(function(unit) {
-                self._createEnemyFrame(unit);
-            });
-        },
-        _createAllyFrame: function(unit) {
-            var $frame = $('<div></div>', {
-                class: 'ally-frame'
-            }).appendTo($('#ally-frames'));
-
-            this._addBars($frame, unit);
-
-            $('<div></div>', {
-                class: 'effects',
-                //text: 'buff1 buff2 buff3'
-            }).appendTo($frame);
-        },
-        _createEnemyFrame: function(unit) {
-            var $frame = $('<div></div>', {
-                class: 'enemy-frame'
-            }).appendTo($('#enemy-frames'));
-
-            $('<div></div>', {
-                class: 'effects',
-                //text: 'buff1 buff2 buff3'
-            }).appendTo($frame);
-
-            this._addBars($frame, unit);
-        },
-        _addBars: function($frame, unit) {
-            var self = this;
-
-            var $bars = $('<div></div>', {
-                class: 'bars',
-                text: unit.name()
-            }).appendTo($frame);
-
-            $bars.off('click').on('click', function() {
-                self._targetedUnit = unit;
-                $('.bars').removeClass('targeted');
-                $bars.addClass('targeted');
-            });
-
-            this._addBar($bars, 'health');
-            //this._addBar($bars, 'mana');
-        },
-        _addBar: function($bars, barClass) {
-            var $bar = $('<div></div>', {
-                class: 'bar'
-            }).appendTo($bars);
-            $('<div></div>', {
-                class: 'bar-layer background',
-                style: 'width: 100%;'
-            }).appendTo($bar);
-            $('<div></div>', {
-                class: 'bar-layer ' + barClass,
-                style: 'width: 50%;'
-            }).appendTo($bar);
-        },
-
-        _refreshUnitFrames: function() {
-            var self = this;
-
-            $('#ally-frames').find('.ally-frame').each(function(index) {
-                var $frame = $(this);
-                var unit = self._allies[index];
-                var widthPercent = Game.Util.round(unit._health / unit.getStat('maxHealth')) * 100 + '%';
-                $frame.find('.bar-layer.health').css('width', widthPercent);
-            });
-            $('#enemy-frames').find('.enemy-frame').each(function(index) {
-                var $frame = $(this);
-                var unit = self._enemies[index];
-                var widthPercent = Game.Util.round(unit._health / unit.getStat('maxHealth')) * 100 + '%';
-                $frame.find('.bar-layer.health').css('width', widthPercent);
-            });
-        },
-
-        // TODO MOVE THIS TO UI
-        startCast: function(text, duration) {
-            var self = this;
-
-            // Smoothly increment cast bar (separate interval so not dependent on game framerate)
-            var numLoops = duration * 1000 / CAST_BAR_UPDATE_SPEED;
-            var currentLoop = 0;
-            this._castInterval = setInterval(function() {
-                currentLoop += 1;
-                self._$castProgress.css('width', (currentLoop / numLoops) * 100 + '%');
-            }, CAST_BAR_UPDATE_SPEED);
-
-            this._$castProgress.css('width', '0%')
-                .removeClass('casting cast-complete cast-canceled')
-                .addClass('casting');
-            this._$castText.html(text);
-            this._$castBar.stop(); // stop any fade out animations (from completes/cancels right before)
-            this._$castBar.fadeIn(0);
-        },
-        castComplete: function() {
-            clearInterval(this._castInterval);
-
-            this._$castProgress.css('width', '100%')
-                .removeClass('casting cast-complete cast-canceled')
-                .addClass('cast-complete');
-            this._$castBar.fadeOut(500);
-        },
-        cancelCast: function(message) {
-            clearInterval(this._castInterval);
-
-            this._$castProgress.css('width', '100%')
-                .removeClass('casting cast-complete cast-canceled')
-                .addClass('cast-canceled');
-            this._$castText.html(Game.Util.defaultFor(message, 'Failed'));
-            this._$castBar.fadeOut(500);
         }
-
-
-        //_drawUnit: function(unit, index) {
-        //    var unitY = this._level.height() - unit.height() - unit.y();
-        //    this._unitCanvas.drawImage(unit.image(), unit.x(), unitY, true);
-        //
-        //    // draw health bar
-        //    var x = this._uiCanvas.scaleX(unit.x());
-        //    var y = this._uiCanvas.scaleY(unitY) - 5; // move up a bit
-        //    var healthPercent = unit.health() / unit.maxHealth();
-        //
-        //    // hsv
-        //    // h: 120 -> 0
-        //    // s: whiteness pick between 0.7 and 1.0
-        //    // v: darkness pick between 0.7 and 1.0
-        //    var hue = healthPercent * 120.0;
-        //    var saturation = '80%';
-        //    var lightness = '50%';
-        //
-        //    if (!unit.isDead()) {
-        //        this._uiCanvas.drawRect(x - 1, y - 1, 40 + 2, 2 + 2 , 'black');
-        //        this._uiCanvas.drawRect(x, y, 40 * (healthPercent), 2 , 'hsl('+hue+','+saturation+','+lightness+')');
-        //    }
-        //}
-
     };
 
     Game.UnitEngine = new UnitEngine();

@@ -180,8 +180,10 @@
                 return;
             }
 
+            // TODO Check if caster is dead
+
             this._castAbility = this._abilities[key];
-            this._castTarget = Game.UnitEngine.targetedUnit();
+            this._castTarget = Game.UserInterface.targetedUnit();
 
             // If issues with target, return
             if (this._hasCastTargetErrors()) {
@@ -191,7 +193,7 @@
             this._castTotal = this._castAbility.getData('castTime'); // caching castTime at start of cast (in case haste changes)
             this._castProgress = 0;
 
-            Game.UnitEngine.startCast(this._castAbility.getData('name'), this._castTotal);
+            Game.UserInterface.startCast(this._castAbility.getData('name'), this._castTotal);
         },
 
         cancelCast: function(message) {
@@ -200,7 +202,7 @@
             }
 
             this._castProgress = null;
-            Game.UnitEngine.cancelCast(message);
+            Game.UserInterface.cancelCast(message);
         },
 
         isCasting: function() {
@@ -235,7 +237,7 @@
                 else {
                     this._castAbility.getData('onCastComplete')(this, this._castTarget);
                     this._castProgress = null;
-                    Game.UnitEngine.castComplete();
+                    Game.UserInterface.castComplete();
                 }
             }
         },
@@ -258,6 +260,7 @@
             if (!this._isDead) {
                 this._isDead = true;
                 this._health = 0;
+                this.cancelCast();
             }
         },
 
