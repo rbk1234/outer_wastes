@@ -16,11 +16,11 @@
             this._enemies = [];
 
             // Start clock
-            Game.Clock.setInterval(CLOCK_KEY, function(iterations, seconds) {
+            Game.Clock.setInterval(CLOCK_KEY, function(iterations, period) {
                 while (iterations > 0) {
                     //if (self._enemies.length) {
                         // If there are enemies, iterate through updates one by one (cannot batch)
-                        self._update(seconds);
+                        self._update(period);
                         iterations--;
                     //}
                     //else {

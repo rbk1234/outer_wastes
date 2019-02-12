@@ -1,4 +1,5 @@
-/* Handles Game time. Register all periodic functions with the clock's setInterval */
+/* Handles Game time. Register all periodic functions with Clock.setInterval */
+/* Do not use window.setInterval, since that will be paused while browser tab is in the background */
 /* Singleton */
 
 (function ($) {
@@ -30,7 +31,9 @@
         },
 
         // Register a function to be called every x seconds.
-        // The fn will be called with parameters: (iterations, seconds)
+        // The fn will be called with parameters: (iterations, period)
+        //   iterations = number of iterations elapsed
+        //   period = length (in seconds) of each iteration
         setInterval: function(key, fn, seconds) {
             var period = seconds * 1000.0;
 
@@ -64,6 +67,13 @@
             var self = this;
 
             Game.Util.iterateObject(this.periodicFns, function(key, periodicFn) {
+                if (periodicFn === undefined) {
+                    // When clearInterval is called, its periodicFn will still be called for the current iteration (the
+                    // periodicFn will be undefined however). When this happens, ignore the fn. By next iteration
+                    // it won't be called anymore.
+                    return;
+                }
+
                 periodicFn.current += self.delta;
                 if (periodicFn.current >= periodicFn.period) {
                     // TODO Calculate this without a while loop

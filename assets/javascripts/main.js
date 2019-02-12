@@ -15,7 +15,7 @@
 
     Game.Clock.setInterval(
         'debug',
-        function(/* iterations, seconds */) {
+        function(/* iterations, period */) {
             var fps = (1000 / Game.Clock.delta).toFixed(1);
             var total = (Game.Clock.total / 1000).toFixed(0);
 

@@ -5,7 +5,9 @@
 
     var UPDATES_PER_SECOND = 15;
     var CLOCK_KEY = 'UserInterface';
-    var CAST_BAR_UPDATE_SPEED = 10; // milliseconds between frame updates for progress bars
+
+    var CAST_BAR_CLOCK_KEY = 'CastBar';
+    var CAST_BAR_UPDATES_PER_SECOND = 100; // Needs high frame rate to smoothly increment
 
     var UserInterface = function() {};
 
@@ -17,7 +19,7 @@
             this._initAbilityBar();
 
             // Start clock
-            Game.Clock.setInterval(CLOCK_KEY, function(iterations, seconds) {
+            Game.Clock.setInterval(CLOCK_KEY, function(iterations, period) {
                 // Only draw once (no matter how many iterations)
                 self._refreshUnitFrames();
             }, 1.0 / UPDATES_PER_SECOND);
@@ -145,16 +147,15 @@
 
 
 
-        startCast: function(text, duration) {
+        startCast: function(text, castLength) {
             var self = this;
 
-            // Smoothly increment cast bar (separate interval so not dependent on game framerate)
-            var numLoops = duration * 1000 / CAST_BAR_UPDATE_SPEED;
-            var currentLoop = 0;
-            this._castInterval = setInterval(function() {
-                currentLoop += 1;
-                self._$castProgress.css('width', (currentLoop / numLoops) * 100 + '%');
-            }, CAST_BAR_UPDATE_SPEED);
+            // Set up a temporary interval for the cast bar that updates at a very high framerate
+            var accumulatedSeconds = 0;
+            Game.Clock.setInterval(CAST_BAR_CLOCK_KEY, function(iterations, period) {
+                accumulatedSeconds += iterations * period;
+                self._$castProgress.css('width', (accumulatedSeconds / castLength) * 100 + '%');
+            }, 1.0 / CAST_BAR_UPDATES_PER_SECOND);
 
             this._$castProgress.css('width', '0%')
                 .removeClass('casting cast-complete cast-canceled')
@@ -164,7 +165,7 @@
             this._$castBar.fadeIn(0);
         },
         castComplete: function() {
-            clearInterval(this._castInterval);
+            Game.Clock.clearInterval(CAST_BAR_CLOCK_KEY);
 
             this._$castProgress.css('width', '100%')
                 .removeClass('casting cast-complete cast-canceled')
@@ -172,7 +173,7 @@
             this._$castBar.fadeOut(500);
         },
         cancelCast: function(message) {
-            clearInterval(this._castInterval);
+            Game.Clock.clearInterval(CAST_BAR_CLOCK_KEY);
 
             this._$castProgress.css('width', '100%')
                 .removeClass('casting cast-complete cast-canceled')
