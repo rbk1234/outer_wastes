@@ -4,34 +4,37 @@
 
     var DEFAULTS = {
         name: 'unknown',
-        period: false,
         onTick: function(unit) {
             // do nothing
-        }
+        },
+        baseStats: {
+            duration: 5,
+            period: false
+        },
+
+        target: null, // gets assigned with Unit.addEffect
+        caster: null
     };
 
     var currentId = 1;
 
-    var Effect = function(dbKey, caster, target) {
-        this._init(dbKey, caster, target);
+    var Effect = function(dbKey, config) {
+        this._init(dbKey, config);
     };
     Effect.prototype = {
 
-        _init: function(dbKey, caster, target) {
+        _init: function(dbKey, config) {
             this.dbKey = dbKey;
             this.id = currentId++;
+            $.extend(true, this, DEFAULTS, Game.Effects.Database[dbKey], config);
+            Game.Util.initStats(this);
 
-            //this._dbRecord = $.extend(true, {}, Game.Effects.Database[dbKey]);
-            $.extend(true, this, DEFAULTS, Game.Effects.Database[dbKey]);
+            // TODO Here is where haste calcs would go
+            //this.period.multiplier -= 0.75; // get from this.caster
 
             // init internals:
-            this._durationLeft = this.duration;
-            this._periodLeft = this.period;
-
-            this.caster = caster;
-            this.target = target;
-
-            //this._absorptionAmount = this.type() === 'absorption' ? this._dbRecord.amount : 0;
+            this._durationLeft = this.duration.value();
+            this._periodLeft = this.period.value();
         },
 
         update: function(seconds) {
@@ -53,7 +56,7 @@
                 this.onTick(this.target);
 
                 // Add current _periodLeft to catch rollover
-                this._periodLeft = this.period + this._periodLeft;
+                this._periodLeft = this.period.value() + this._periodLeft;
             }
         },
 
@@ -62,7 +65,7 @@
         },
 
         _hasPeriodicEffect: function() {
-            return !!this.period;
+            return !!this.period.value();
         },
 
         isExpired: function() {
@@ -76,12 +79,6 @@
             return false;
         },
 
-
-
-
-        type: function() {
-            return this._dbRecord.type;
-        },
 
 
         absorptionAmount: function() {

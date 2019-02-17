@@ -14,24 +14,27 @@
 
         heal: {
             name: 'Heal',
-            manaCost: 20,
-            cooldown: 0,
-            castTime: 2,
             requiresTarget: true,
             onCastComplete: function(caster, target) {
                 target.addHealth(50);
+            },
+            baseStats: {
+                manaCost: 20,
+                cooldown: 0,
+                castTime: 2
             }
         },
 
         renew: {
             name: 'Renew',
-            manaCost: 20,
-            cooldown: 0,
-            castTime: 1,
             requiresTarget: true,
-            onCastComplete: function(caster, target) {
-                var effect = new Game.Effects.Effect('renew', caster, target);
-                target.addEffect(effect);
+            onCastComplete: function (caster, target) {
+                caster.castEffectOnTarget('renew', target);
+            },
+            baseStats: {
+                manaCost: 20,
+                cooldown: 0,
+                castTime: 1
             }
         }
     };

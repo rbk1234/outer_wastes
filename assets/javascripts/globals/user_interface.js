@@ -85,7 +85,7 @@
 
             var $healthArea = $('<div></div>', {
                 class: 'health-area',
-                text: unit.name()
+                text: unit.name
             }).appendTo($frame);
 
             $healthArea.off('click').on('click', function() {
@@ -125,7 +125,7 @@
         _refreshUnitFrame: function(unit) {
             var self = this;
 
-            var widthPercent = Game.Util.round(unit._health / unit.getStat('maxHealth')) * 100 + '%';
+            var widthPercent = Game.Util.round(unit._health / unit.maxHealth.value()) * 100 + '%';
             this._$healthBars[unit.id].css('width', widthPercent);
 
             // refresh effects
@@ -175,7 +175,7 @@
             var ability = Game.Player.getAbility(abilityKey);
 
             var $button = $('#ability-bar').find('.action-bar-button:nth-child('+(index + 1)+')'); // nth-child is 1-based
-            $button.find('.spell-name').html(ability.getData('name'));
+            $button.find('.spell-name').html(ability.name);
             $button.off('click').on('click', function() {
                 Game.Player.castAbility(abilityKey);
             });

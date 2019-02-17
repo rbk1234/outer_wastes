@@ -35,6 +35,25 @@
 
     Game.namespace("Util");
 
+
+    Game.Util.initStats = function(obj) {
+        Game.Util.iterateObject(obj.baseStats, function(key, baseValue) {
+            var stat = {
+                base: baseValue,
+                multiplier: 1,
+                adder: 0,
+                value: function() {
+                    if (stat.base === false || stat.base === undefined || stat.base === null) {
+                        return null;
+                    }
+                    return (stat.base + stat.adder) * stat.multiplier;
+                }
+            };
+
+            obj[key] = stat;
+        });
+    };
+
     Game.Util.toast = function(text) {
         $.toast({
             text: text, // Text that is to be shown in the toast

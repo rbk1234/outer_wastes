@@ -2,12 +2,15 @@
 (function($) {
     'use strict';
 
-    var DEFAULT_STATS = {
-        maxHealth: 1,
-        maxMana: 1,
-        manaRegen: 1,
-        attackSpeed: 1,
-        attackDamage: 0
+    var DEFAULTS = {
+        baseStats: {
+            maxHealth: 1,
+            maxMana: 1,
+            manaRegen: 1,
+            attackSpeed: 1,
+            attackDamage: 0,
+            reward: 0
+        }
     };
 
     var currentId = 1;
@@ -17,22 +20,16 @@
     };
     Unit.prototype = {
 
-        _defaultConfig: {},
-
         _init: function(dbKey, config) {
             this.dbKey = dbKey;
             this.id = currentId++;
-
-            this._config = $.extend({}, this._defaultConfig, config);
-
-            this._dbRecord = $.extend(true, {}, Game.Units.Database[dbKey]);
-            this._recalculateStats();
+            $.extend(true, this, DEFAULTS, Game.Units.Database[dbKey], config);
+            Game.Util.initStats(this);
 
             // init internals
-            this._health = this.getStat('maxHealth');
-            this._mana = this.getStat('maxMana');
-            this._attackTimer = Math.random() * 0.25; // remaining time until next attack. Initialize with random wait
-
+            this._health = this.maxHealth.value();
+            this._mana = this.maxMana.value();
+            this._attackTimer = Math.random() * 0.2; // remaining time until next attack. Initialize with random wait
 
             this._effects = {};
 
@@ -50,7 +47,7 @@
             }
 
             // Regenerate health/energy/cooldowns
-            this.addMana(this.getStat('manaRegen') * seconds);
+            this.addMana(this.manaRegen.value() * seconds);
 
             // update effects, remove effect if expired
             Game.Util.iterateObject(this._effects, function(id, effect) {
@@ -66,28 +63,20 @@
         },
 
 
-        getStat: function(stat) {
-            if (this._stats[stat] === undefined) {
-                console.warn('Could not retrieve stat: ' + stat);
-            }
-            return this._stats[stat];
-        },
-        //setStat: function(stat, newValue) {
-        //    if (this._stats[stat] === undefined) {
-        //        console.warn('Could not retrieve stat: ' + stat);
-        //    }
-        //    this._stats[stat] = newValue;
-        //},
-
-        name: function() {
-            return this._dbRecord.name;
-        },
-
         effects: function() {
             return this._effects;
         },
 
+        castEffectOnTarget: function(effectDbKey, target) {
+            var effect = new Game.Effects.Effect(effectDbKey, {
+                caster: this
+            });
+            target.addEffect(effect);
+        },
+
         addEffect: function(effect) {
+            effect.target = this;
+
             var existingEffect = this.existingEffect(effect.dbKey, effect.caster);
             if (existingEffect) {
                 effect.isReplacingEffect(existingEffect);
@@ -116,23 +105,14 @@
         },
 
 
-
-        // should be called after applying / losing an effect
-        _recalculateStats: function() {
-            var baseStats = $.extend({}, DEFAULT_STATS, this._dbRecord.baseStats);
-
-            // TODO iterate thru effects, multiplying or modifying stats
-            this._stats = baseStats;
-        },
-
         addHealth: function(amount) {
             if (Game.Util.round(amount) < 0) {
                 console.warn('Cannot add a negative health amount: use takeDamage function.');
                 return;
             }
             this._health += amount;
-            if (this._health >= this.getStat('maxHealth')) {
-                this._health = this.getStat('maxHealth');
+            if (this._health >= this.maxHealth.value()) {
+                this._health = this.maxHealth.value();
             }
         },
         addMana: function(amount) {
@@ -141,8 +121,8 @@
                 return;
             }
             this._mana += amount;
-            if (this._mana >= this.getStat('maxMana')) {
-                this._mana = this.getStat('maxMana');
+            if (this._mana >= this.maxMana.value()) {
+                this._mana = this.maxMana.value();
             }
         },
         takeDamage: function(amount) {
@@ -181,7 +161,7 @@
                 this.attack();
 
                 // attackSpeed is attacks per second. Add current _attackTimer to catch rollover
-                this._attackTimer = 1.0 / this.getStat('attackSpeed') + this._attackTimer;
+                this._attackTimer = 1.0 / this.attackSpeed.value() + this._attackTimer;
             }
         },
 
@@ -189,8 +169,8 @@
             var target = this.highestThreatTarget();
 
             if (target) {
-                //console.log(this.name() + ' attacked ' + target.name() + ' for ' + this.getStat('attackDamage'));
-                target.takeDamage(this.getStat('attackDamage'));
+                //console.log(this.name + ' attacked ' + target.name + ' for ' + this.attackDamage.value());
+                target.takeDamage(this.attackDamage.value());
             }
         },
 
@@ -224,12 +204,14 @@
                 return;
             }
 
-            this._castTotal = this._castAbility.getData('castTime'); // caching castTime at start of cast (in case haste changes)
+            // TODO consumeMana
+
+            this._castTotal = this._castAbility.castTime.value();//('castTime'); // caching castTime at start of cast (in case haste changes)
             this._castProgress = 0;
 
             // Only show cast bar if has a cast time
             if (this._castTotal !== 0) {
-                Game.UserInterface.startCastBar(this._castAbility.getData('name'), this._castTotal);
+                Game.UserInterface.startCastBar(this._castAbility.name, this._castTotal);
             }
         },
 
@@ -247,7 +229,7 @@
         },
 
         _hasCastTargetErrors: function() {
-            if (this._castAbility.getData('requiresTarget')) {
+            if (this._castAbility.requiresTarget) {
                 if (this._castTarget === null) {
                     Game.Util.toast('Target is required');
                     return true;
@@ -272,7 +254,7 @@
                     this.cancelCast('Failed');
                 }
                 else {
-                    this._castAbility.getData('onCastComplete')(this, this._castTarget);
+                    this._castAbility.onCastComplete(this, this._castTarget);
                     this._castProgress = null;
                     Game.UserInterface.completeCastBar();
                 }
@@ -314,40 +296,6 @@
             return false;
         },
 
-        //ability: function(index) {
-        //    return this._abilities[index];
-        //},
-        //
-        //// todo override this for player/unit
-        //castAbility: function(index) {
-        //    var self = this;
-        //
-        //    var ability = this.ability(index);
-        //
-        //    if (ability) {
-        //        // check if caster has enough energy
-        //        if (ability.manaCost() && Game.Util.round(ability.manaCost()) > Game.Util.round(this.energy())) {
-        //            console.log('not enough energy!');
-        //            return;
-        //        }
-        //
-        //        // check if valid target
-        //
-        //        // reduce caster energy by x
-        //        this._mana -= ability.manaCost();
-        //
-        //        // apply effects to caster
-        //        if (ability.casterEffects()) {
-        //            ability.casterEffects().forEach(function(effectId) {
-        //                self.addEffect(new Game.Effects.Effect(effectId));
-        //            });
-        //        }
-        //
-        //        // create projectile
-        //
-        //        // apply effects to target
-        //    }
-        //},
 
         //image: function() {
         //    if (this.isDead()) {

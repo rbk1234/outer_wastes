@@ -2,6 +2,8 @@
 (function($) {
     'use strict';
 
+    var DEFAULTS = {};
+
     var currentId = 1;
 
     var Level = function(dbKey, config) {
@@ -16,9 +18,9 @@
         _init: function(dbKey, config) {
             this.dbKey = dbKey;
             this.id = currentId++;
-
-            this._dbRecord = $.extend(true, {}, Game.Levels.Database[dbKey]);
-        },
+            $.extend(true, this, DEFAULTS, Game.Levels.Database[dbKey], config);
+            Game.Util.initStats(this);
+        }
 
 
     };

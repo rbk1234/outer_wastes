@@ -25,7 +25,7 @@
         _loadEnemies: function() {
             var self = this;
 
-            this._dbRecord.enemies.forEach(function(enemyDbKey) {
+            this.enemies.forEach(function(enemyDbKey) {
                 Game.UnitEngine.addEnemy(new Game.Units.Enemy(enemyDbKey));
             });
 
