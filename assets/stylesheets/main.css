@@ -1,5 +1,9 @@
 /* This scss file is not included in index.html - it is used to generate main.css */
-/* Generate main.css by running `sass assets/stylesheets/main.scss assets/stylesheets/main.css` */
+/* Generate main.css by running
+
+    sass assets/stylesheets/main.scss assets/stylesheets/main.css
+
+*/
 .no-margin {
   margin: 0; }
 
@@ -164,6 +168,12 @@ body {
     top: 0.25rem;
     right: 0.25rem;
     color: #aaa; }
+  .game-button .spell-name {
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    top: 1.25rem;
+    color: white; }
 
 .game-effect {
   width: 1.5rem;

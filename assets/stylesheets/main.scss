@@ -1,5 +1,9 @@
 /* This scss file is not included in index.html - it is used to generate main.css */
-/* Generate main.css by running `sass assets/stylesheets/main.scss assets/stylesheets/main.css` */
+/* Generate main.css by running
+
+    sass assets/stylesheets/main.scss assets/stylesheets/main.css
+
+*/
 
 
 .no-margin {
@@ -219,6 +223,13 @@ body {
     top: 0.25rem;
     right: 0.25rem;
     color: #aaa;
+  }
+  .spell-name {
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    top: 1.25rem;
+    color: white;
   }
 
   /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#a90329+0,8f0222+44,6d0019+100;Brown+Red+3D */

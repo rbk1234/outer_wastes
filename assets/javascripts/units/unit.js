@@ -172,6 +172,9 @@
         removeAbility: function(key) {
             delete this._abilities[key];
         },
+        getAbility: function(key) {
+            return this._abilities[key];
+        },
 
         // TODO --- this is built around the player right now
         castAbility: function(key) {
@@ -182,7 +185,7 @@
 
             // TODO Check if caster is dead
 
-            this._castAbility = this._abilities[key];
+            this._castAbility = this.getAbility(key);
             this._castTarget = Game.UserInterface.targetedUnit();
 
             // If issues with target, return
@@ -193,7 +196,7 @@
             this._castTotal = this._castAbility.getData('castTime'); // caching castTime at start of cast (in case haste changes)
             this._castProgress = 0;
 
-            Game.UserInterface.startCast(this._castAbility.getData('name'), this._castTotal);
+            Game.UserInterface.startCastBar(this._castAbility.getData('name'), this._castTotal);
         },
 
         cancelCast: function(message) {
@@ -202,7 +205,7 @@
             }
 
             this._castProgress = null;
-            Game.UserInterface.cancelCast(message);
+            Game.UserInterface.cancelCastBar(message);
         },
 
         isCasting: function() {
@@ -212,11 +215,11 @@
         _hasCastTargetErrors: function() {
             if (this._castAbility.getData('requiresTarget')) {
                 if (this._castTarget === null) {
-                    console.warn('Target is required'); // TODO Show error to user
+                    Game.Util.toast('Target is required');
                     return true;
                 }
                 if (this._castTarget.isDead()) {
-                    console.warn('Target is dead'); // TODO Show error to user
+                    Game.Util.toast('Target is dead');
                     return true;
                 }
             }
@@ -237,7 +240,7 @@
                 else {
                     this._castAbility.getData('onCastComplete')(this, this._castTarget);
                     this._castProgress = null;
-                    Game.UserInterface.castComplete();
+                    Game.UserInterface.completeCastBar();
                 }
             }
         },

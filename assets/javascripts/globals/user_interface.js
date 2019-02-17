@@ -51,24 +51,23 @@
                 class: 'ally-frame'
             }).appendTo($('#ally-frames'));
 
+            this._addEffects($frame);
             this._addBars($frame, unit);
 
-            $('<div></div>', {
-                class: 'effects',
-                //text: 'buff1 buff2 buff3'
-            }).appendTo($frame);
         },
         _createEnemyFrame: function(unit) {
             var $frame = $('<div></div>', {
                 class: 'enemy-frame'
             }).appendTo($('#enemy-frames'));
 
+            this._addBars($frame, unit);
+            this._addEffects($frame);
+        },
+        _addEffects: function($frame) {
             $('<div></div>', {
                 class: 'effects',
                 //text: 'buff1 buff2 buff3'
             }).appendTo($frame);
-
-            this._addBars($frame, unit);
         },
         _addBars: function($frame, unit) {
             var self = this;
@@ -118,36 +117,54 @@
             });
         },
 
+        _initAbilityBar: function() {
+            // Esc
+            Game.Keyboard.registerKey(27, function() {
+                Game.Player.cancelCast('Interrupted');
+            });
+        },
+        assignAbilityToBar: function(abilityKey, index) {
+            var ability = Game.Player.getAbility(abilityKey);
+
+            var $button = $('#ability-bar').find('.game-button:nth-child('+(index + 1)+')'); // nth-child is 1-based
+            $button.find('.spell-name').html(ability.getData('name'));
+            $button.off('click').on('click', function() {
+                Game.Player.castAbility(abilityKey);
+            });
+
+            var keyCode = this._keyCodeForAbilityIndex(index);
+            if (keyCode !== null) {
+                Game.Keyboard.registerKey(keyCode, function() {
+                    Game.Player.castAbility(abilityKey);
+                });
+            }
+        },
+        _keyCodeForAbilityIndex: function(index) {
+            switch(index) {
+                case 0:
+                    return 49;
+                case 1:
+                    return 50;
+                case 2:
+                    return 51;
+                case 3:
+                    return 52;
+                case 4:
+                    return 53;
+                case 5:
+                    return 54;
+                default:
+                    return null;
+            }
+        },
+
         _initCastBar: function() {
             this._$castBar = $('#cast-bar');
             this._$castProgress = this._$castBar.find('.cast-progress');
             this._$castText = this._$castBar.find('.bar-text');
         },
-        _initAbilityBar: function() {
-            $('#ability-bar').find('.game-button').each(function(index) {
-                if (index === 0) {
-                    $(this).off('click').on('click', function() {
-                        Game.Player.castAbility('heal');
-                    });
-                }
-                if (index === 1) {
-                    $(this).off('click').on('click', function() {
-                        Game.Player.cancelCast('Interrupted');
-                    });
-                }
-            });
 
-            Game.Keyboard.registerKey(49, function() {
-                Game.Player.castAbility('heal');
-            });
-            Game.Keyboard.registerKey(50, function() {
-                Game.Player.cancelCast('Interrupted');
-            });
-        },
-
-
-
-        startCast: function(text, castLength) {
+        startCastBar: function(text, castLength) {
             var self = this;
 
             // Set up a temporary interval for the cast bar that updates at a very high framerate
@@ -164,7 +181,7 @@
             this._$castBar.stop(); // stop any fade out animations (from completes/cancels right before)
             this._$castBar.fadeIn(0);
         },
-        castComplete: function() {
+        completeCastBar: function() {
             Game.Clock.clearInterval(CAST_BAR_CLOCK_KEY);
 
             this._$castProgress.css('width', '100%')
@@ -172,7 +189,7 @@
                 .addClass('cast-complete');
             this._$castBar.fadeOut(500);
         },
-        cancelCast: function(message) {
+        cancelCastBar: function(message) {
             Game.Clock.clearInterval(CAST_BAR_CLOCK_KEY);
 
             this._$castProgress.css('width', '100%')

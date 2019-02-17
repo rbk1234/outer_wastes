@@ -35,6 +35,7 @@
     Game.UnitEngine.addAlly(new Game.Units.Ally(3));
     Game.Player = new Game.Units.Ally(1);
     Game.Player.addAbility('heal');
+    Game.UserInterface.assignAbilityToBar('heal', 0);
     Game.UnitEngine.addAlly(Game.Player);
     Game.UserInterface.loadUnits();
 
