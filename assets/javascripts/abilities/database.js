@@ -21,6 +21,18 @@
             onCastComplete: function(caster, target) {
                 target.addHealth(50);
             }
+        },
+
+        renew: {
+            name: 'Renew',
+            manaCost: 20,
+            cooldown: 0,
+            castTime: 1,
+            requiresTarget: true,
+            onCastComplete: function(caster, target) {
+                var effect = new Game.Effects.Effect('renew', caster, target);
+                target.addEffect(effect);
+            }
         }
     };
 

@@ -11,6 +11,16 @@
             animation: 'TODO',
             amount: 100,
             duration: 10
+        },
+
+        renew: {
+            name: 'Renew (buff)',
+            duration: 5,
+            period: 1,
+            onTick: function(unit) {
+                unit.addHealth(10)
+            }
+
         }
     };
 

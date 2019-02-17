@@ -13,14 +13,17 @@
         }
     };
 
-    var Ability = function(id) {
-        this._init(id);
+    var currentId = 1;
+
+    var Ability = function(dbKey) {
+        this._init(dbKey);
     };
     Ability.prototype = {
 
-        _init: function(id) {
-            this.id = id;
-            this.data = $.extend(true, {}, DEFAULT_DATA_FIELDS, Game.Abilities.Database[id]);
+        _init: function(dbKey) {
+            this.dbKey = dbKey;
+            this.id = currentId++;
+            this.data = $.extend(true, {}, DEFAULT_DATA_FIELDS, Game.Abilities.Database[dbKey]);
         },
         getData: function(field) {
             return this.data[field];

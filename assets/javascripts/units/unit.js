@@ -3,24 +3,29 @@
     'use strict';
 
     var DEFAULT_STATS = {
-        maxHealth: 100,
-        maxMana: 100,
-        manaRegen: 10,
+        maxHealth: 1,
+        maxMana: 1,
+        manaRegen: 1,
         attackSpeed: 1,
         attackDamage: 0
     };
 
-    var Unit = function(id, config) {
-        this._init(id, config);
+    var currentId = 1;
+
+    var Unit = function(dbKey, config) {
+        this._init(dbKey, config);
     };
     Unit.prototype = {
 
         _defaultConfig: {},
 
-        _init: function(id, config) {
+        _init: function(dbKey, config) {
+            this.dbKey = dbKey;
+            this.id = currentId++;
+
             this._config = $.extend({}, this._defaultConfig, config);
 
-            this._dbRecord = $.extend(true, {}, Game.Units.Database[id]);
+            this._dbRecord = $.extend(true, {}, Game.Units.Database[dbKey]);
             this._recalculateStats();
 
             // init internals
@@ -29,7 +34,7 @@
             this._attackTimer = Math.random() * 0.25; // remaining time until next attack. Initialize with random wait
 
 
-            this._effects = [];
+            this._effects = {};
 
             this._castProgress = null;
             this._abilities = {};
@@ -38,6 +43,8 @@
         },
 
         update: function(seconds) {
+            var self = this;
+
             if (this.isDead()) {
                 return;
             }
@@ -45,17 +52,13 @@
             // Regenerate health/energy/cooldowns
             this.addMana(this.getStat('manaRegen') * seconds);
 
-            // update effects
-            this._effects.forEach(function(effect) {
+            // update effects, remove effect if expired
+            Game.Util.iterateObject(this._effects, function(id, effect) {
                 effect.update(seconds);
-            });
-
-            // remove expired effects
-            for (var i = this._effects.length - 1; i >= 0; i--) {
-                if (this._effects[i].isExpired()) {
-                    this._effects.splice(i, 1);
+                if (effect.isExpired()) {
+                    self.removeEffect(effect);
                 }
-            }
+            });
 
             // auto attack
             this._incrementAttack(seconds);
@@ -85,8 +88,34 @@
         },
 
         addEffect: function(effect) {
-            this._effects.push(effect);
+            var existingEffect = this.existingEffect(effect.dbKey, effect.caster);
+            if (existingEffect) {
+                effect.isReplacingEffect(existingEffect);
+                this.removeEffect(existingEffect);
+            }
+
+            Game.UserInterface.addEffect(this, effect);
+            this._effects[effect.id] = effect;
         },
+
+        removeEffect: function(effect) {
+            Game.UserInterface.removeEffect(this, effect);
+            delete this._effects[effect.id];
+        },
+
+        // if a caster already has casted an effect on this unit, return that effect
+        // This is used to ensure you can't stack an effect multiple times on a unit
+        existingEffect: function(effectDbKey, caster) {
+            var matchingEffect = null;
+            Game.Util.iterateObject(this._effects, function(effectId, effect) {
+                if (effect.dbKey = effectDbKey && effect.caster && effect.caster.id === caster.id) {
+                    matchingEffect = effect;
+                }
+            });
+            return matchingEffect;
+        },
+
+
 
         // should be called after applying / losing an effect
         _recalculateStats: function() {
@@ -120,11 +149,11 @@
             // todo apply damage reductions (iterate thru effects, armor)
 
             // todo remove from the shield with least duration remaining first
-            if (Game.Util.round(this.shield()) > 0) {
-                this._effects.forEach(function(effect) {
-                    amount = effect.absorbDamage(amount);
-                });
-            }
+            //if (Game.Util.round(this.shield()) > 0) {
+            //    this._effects.forEach(function(effect) {
+            //        amount = effect.absorbDamage(amount);
+            //    });
+            //}
 
             if (Game.Util.round(this._health) > 0) {
                 this._health -= amount;
@@ -150,7 +179,9 @@
             this._attackTimer -= seconds;
             if (Game.Util.round(this._attackTimer) <= 0) {
                 this.attack();
-                this._attackTimer = 1.0 / this.getStat('attackSpeed'); // attackSpeed is attacks per second
+
+                // attackSpeed is attacks per second. Add current _attackTimer to catch rollover
+                this._attackTimer = 1.0 / this.getStat('attackSpeed') + this._attackTimer;
             }
         },
 
@@ -196,7 +227,10 @@
             this._castTotal = this._castAbility.getData('castTime'); // caching castTime at start of cast (in case haste changes)
             this._castProgress = 0;
 
-            Game.UserInterface.startCastBar(this._castAbility.getData('name'), this._castTotal);
+            // Only show cast bar if has a cast time
+            if (this._castTotal !== 0) {
+                Game.UserInterface.startCastBar(this._castAbility.getData('name'), this._castTotal);
+            }
         },
 
         cancelCast: function(message) {
@@ -249,13 +283,13 @@
 
 
 
-        shield: function() {
-            var amount = 0;
-            this._effects.forEach(function(effect) {
-                amount += effect.absorptionAmount();
-            });
-            return amount;
-        },
+        //shield: function() {
+        //    var amount = 0;
+        //    this._effects.forEach(function(effect) {
+        //        amount += effect.absorptionAmount();
+        //    });
+        //    return amount;
+        //},
 
 
 
@@ -264,6 +298,8 @@
                 this._isDead = true;
                 this._health = 0;
                 this.cancelCast();
+
+                // todo remove all effects
             }
         },
 

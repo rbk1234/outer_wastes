@@ -3,8 +3,8 @@
 (function ($) {
     'use strict';
 
-    var EnemyRoom = function(id, config) {
-        Game.Rooms.Room.call(this, id, config);
+    var EnemyRoom = function(dbKey, config) {
+        Game.Rooms.Room.call(this, dbKey, config);
     };
     EnemyRoom.prototype = Object.create(Game.Rooms.Room.prototype);
     EnemyRoom.prototype.constructor = EnemyRoom;
@@ -25,8 +25,8 @@
         _loadEnemies: function() {
             var self = this;
 
-            this._dbRecord.enemies.forEach(function(enemyId) {
-                Game.UnitEngine.addEnemy(new Game.Units.Enemy(enemyId));
+            this._dbRecord.enemies.forEach(function(enemyDbKey) {
+                Game.UnitEngine.addEnemy(new Game.Units.Enemy(enemyDbKey));
             });
 
             Game.UserInterface.loadUnits();

@@ -3,8 +3,8 @@
 (function ($) {
     'use strict';
     
-    var Enemy = function(id, config) {
-        Game.Units.Unit.call(this, id, config);
+    var Enemy = function(dbKey, config) {
+        Game.Units.Unit.call(this, dbKey, config);
     };
     Enemy.prototype = Object.create(Game.Units.Unit.prototype);
     Enemy.prototype.constructor = Enemy;

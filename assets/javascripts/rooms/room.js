@@ -2,8 +2,10 @@
 (function($) {
     'use strict';
 
-    var Room = function(id, config) {
-        this._init(id, config);
+    var currentId = 1;
+
+    var Room = function(dbKey, config) {
+        this._init(dbKey, config);
     };
     Room.prototype = {
 
@@ -11,8 +13,11 @@
 
         },
 
-        _init: function(id, config) {
-            this._dbRecord = $.extend(true, {}, Game.Rooms.Database[id]);
+        _init: function(dbKey, config) {
+            this.dbKey = dbKey;
+            this.id = currentId++;
+
+            this._dbRecord = $.extend(true, {}, Game.Rooms.Database[dbKey]);
 
         }
 

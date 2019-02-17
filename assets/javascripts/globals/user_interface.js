@@ -36,6 +36,12 @@
             $('#enemy-frames').empty();
             this._targetedUnit = null;
 
+            // cache jquery objects
+            this._$frames = {}; // unit id -> $frame
+            this._$healthBars = {}; // unit id -> health bar
+            this._$effects = {}; // effect id -> $effect
+            this._$effectDurations = {}; // effect id -> duration span
+
             var self = this;
             Game.UnitEngine.allies().forEach(function(unit) {
                 self._createAllyFrame(unit);
@@ -43,7 +49,6 @@
             Game.UnitEngine.enemies().forEach(function(unit) {
                 self._createEnemyFrame(unit);
             });
-
         },
 
         _createAllyFrame: function(unit) {
@@ -51,50 +56,57 @@
                 class: 'ally-frame'
             }).appendTo($('#ally-frames'));
 
-            this._addEffects($frame);
-            this._addBars($frame, unit);
+            this._addEffectsArea($frame);
+            this._addHealthArea($frame, unit);
 
+            this._$frames[unit.id] = $frame;
         },
         _createEnemyFrame: function(unit) {
             var $frame = $('<div></div>', {
                 class: 'enemy-frame'
             }).appendTo($('#enemy-frames'));
 
-            this._addBars($frame, unit);
-            this._addEffects($frame);
+            this._addHealthArea($frame, unit);
+            this._addEffectsArea($frame);
+
+            this._$frames[unit.id] = $frame;
         },
-        _addEffects: function($frame) {
-            $('<div></div>', {
-                class: 'effects',
-                //text: 'buff1 buff2 buff3'
+        _addEffectsArea: function($frame) {
+            var $temp = $('<div></div>', {
+                class: 'effects-area'
             }).appendTo($frame);
+
+            // todo remove
+            //$('<div class="effect blank"><span class="effect-name">'+'buff1'+'</span><span class="duration">3s</span></div>').appendTo($temp);
+            //$('<div class="effect blank"><span class="effect-name">'+'buff2'+'</span><span class="duration">2s</span></div>').appendTo($temp);
         },
-        _addBars: function($frame, unit) {
+        _addHealthArea: function($frame, unit) {
             var self = this;
 
-            var $bars = $('<div></div>', {
-                class: 'bars',
+            var $healthArea = $('<div></div>', {
+                class: 'health-area',
                 text: unit.name()
             }).appendTo($frame);
 
-            $bars.off('click').on('click', function() {
+            $healthArea.off('click').on('click', function() {
                 self._targetedUnit = unit;
-                $('.bars').removeClass('targeted');
-                $bars.addClass('targeted');
+                $('.health-area').removeClass('targeted');
+                $healthArea.addClass('targeted');
             });
 
-            this._addBar($bars, 'health');
-            //this._addBar($bars, 'mana');
+            this._$healthBars[unit.id] = this._addBar($healthArea, 'health');
+            //this._addBar($healthArea, 'mana');
         },
-        _addBar: function($bars, barClass) {
+        _addBar: function($healthArea, barClass) {
             var $bar = $('<div></div>', {
                 class: 'bar'
-            }).appendTo($bars);
+            }).appendTo($healthArea);
             $('<div></div>', {
                 class: 'bar-layer background',
                 style: 'width: 100%;'
             }).appendTo($bar);
-            $('<div></div>', {
+
+            return $('<div></div>', {
                 class: 'bar-layer ' + barClass,
                 style: 'width: 50%;'
             }).appendTo($bar);
@@ -103,18 +115,54 @@
         _refreshUnitFrames: function() {
             var self = this;
 
-            $('#ally-frames').find('.ally-frame').each(function(index) {
-                var $frame = $(this);
-                var unit = Game.UnitEngine.allies()[index];
-                var widthPercent = Game.Util.round(unit._health / unit.getStat('maxHealth')) * 100 + '%';
-                $frame.find('.bar-layer.health').css('width', widthPercent);
+            Game.UnitEngine.allies().forEach(function(ally) {
+                self._refreshUnitFrame(ally);
             });
-            $('#enemy-frames').find('.enemy-frame').each(function(index) {
-                var $frame = $(this);
-                var unit = Game.UnitEngine.enemies()[index];
-                var widthPercent = Game.Util.round(unit._health / unit.getStat('maxHealth')) * 100 + '%';
-                $frame.find('.bar-layer.health').css('width', widthPercent);
+            Game.UnitEngine.enemies().forEach(function(enemy) {
+                self._refreshUnitFrame(enemy);
             });
+        },
+        _refreshUnitFrame: function(unit) {
+            var self = this;
+
+            var widthPercent = Game.Util.round(unit._health / unit.getStat('maxHealth')) * 100 + '%';
+            this._$healthBars[unit.id].css('width', widthPercent);
+
+            // refresh effects
+            Game.Util.iterateObject(unit.effects(), function(effectId, effect) {
+                self._$effectDurations[effectId].html(Game.Util.formatDuration(effect.durationLeft()));
+            });
+        },
+        addEffect: function(unit, effect) {
+            var $effectsArea = this._$frames[unit.id].find('.effects-area');
+
+            var $effect = $('<div></div>', {
+                class: 'effect blank'
+            }).appendTo($effectsArea);
+
+            if (unit.isAlly()) {
+                $effect.prependTo($effectsArea);
+            }
+            else {
+                $effect.appendTo($effectsArea);
+            }
+
+            $('<span></span>', {
+                class: 'effect-name',
+                text: effect.name
+            }).appendTo($effect);
+
+            var $duration = $('<span></span>', {
+                class: 'duration'
+            }).appendTo($effect);
+
+            this._$effects[effect.id] = $effect;
+            this._$effectDurations[effect.id] = $duration;
+        },
+        removeEffect: function(unit, effect) {
+            this._$effects[effect.id].remove();
+            delete this._$effects[effect.id];
+            delete this._$effectDurations[effect.id];
         },
 
         _initAbilityBar: function() {
@@ -126,7 +174,7 @@
         assignAbilityToBar: function(abilityKey, index) {
             var ability = Game.Player.getAbility(abilityKey);
 
-            var $button = $('#ability-bar').find('.game-button:nth-child('+(index + 1)+')'); // nth-child is 1-based
+            var $button = $('#ability-bar').find('.action-bar-button:nth-child('+(index + 1)+')'); // nth-child is 1-based
             $button.find('.spell-name').html(ability.getData('name'));
             $button.off('click').on('click', function() {
                 Game.Player.castAbility(abilityKey);

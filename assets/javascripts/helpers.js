@@ -85,6 +85,10 @@
         }
     };
 
+    Game.Util.formatDuration = function(duration) {
+        return Game.Util.roundToDecimal(duration, 0) + 's';
+    };
+
 
     Game.Util.minScreenWidth = function() {
         return parseInt($('.main-content').css('min-width'));

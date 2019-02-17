@@ -84,11 +84,11 @@ body {
   width: 100%;
   justify-content: flex-start;
   padding: 0.35rem; }
-  .ally-frame.dead .bars, .enemy-frame.dead .bars {
+  .ally-frame.dead .health-area, .enemy-frame.dead .health-area {
     cursor: default; }
   .ally-frame .portrait, .enemy-frame .portrait {
     flex: 0 0 5rem; }
-  .ally-frame .bars, .enemy-frame .bars {
+  .ally-frame .health-area, .enemy-frame .health-area {
     flex: 0 0 10rem;
     background: #444;
     border-radius: 0.25rem;
@@ -96,10 +96,14 @@ body {
     color: white;
     cursor: pointer;
     border: 1px solid black; }
-    .ally-frame .bars.targeted, .enemy-frame .bars.targeted {
+    .ally-frame .health-area.targeted, .enemy-frame .health-area.targeted {
       border: 1px solid white; }
-  .ally-frame .effects, .enemy-frame .effects {
-    flex: 1 1 auto; }
+  .ally-frame .effects-area, .enemy-frame .effects-area {
+    flex: 1 1 auto;
+    padding: 0.25rem; }
+
+.ally-frame .effects-area {
+  text-align: right; }
 
 .bar {
   position: relative;
@@ -131,58 +135,58 @@ body {
 .bottom-bar {
   background: #2f2f2f; }
 
-.game-button, .game-effect {
+.action-bar-button, .effect {
   display: inline-block;
-  margin: 0;
-  font-family: inherit;
-  padding: 0;
+  position: relative;
   -webkit-appearance: none;
   transition: background-color 0.25s ease-out, color 0.25s ease-out;
-  font-size: 0.9rem;
   line-height: 1;
-  text-align: center;
-  cursor: pointer;
-  color: white;
-  border: 1px solid #333; }
+  text-align: center; }
 
-.game-button {
+.action-bar-button {
   width: 3.5rem;
   height: 3.5rem;
-  border-radius: 0.375rem;
   margin-top: 0.5rem;
-  border-color: black;
-  position: relative;
-  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#a90329+0,8f0222+44,6d0019+100;Brown+Red+3D */
-  background: #a90329;
-  /* Old browsers */
-  background: -moz-linear-gradient(top, #a90329 0%, #8f0222 44%, #6d0019 100%);
-  /* FF3.6-15 */
-  background: -webkit-linear-gradient(top, #a90329 0%, #8f0222 44%, #6d0019 100%);
-  /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(to bottom, #a90329 0%, #8f0222 44%, #6d0019 100%);
-  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a90329', endColorstr='#6d0019',GradientType=0 );
-  /* IE6-9 */ }
-  .game-button .hotkey {
+  border: 1px solid black;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#a90329+0,8f0222+44,6d0019+100;Brown+Red+3D */ }
+  .action-bar-button .hotkey {
     position: absolute;
     top: 0.25rem;
     right: 0.25rem;
-    color: #aaa; }
-  .game-button .spell-name {
+    color: #aaa;
+    font-size: 0.9rem; }
+  .action-bar-button .spell-name {
+    display: block;
     position: absolute;
     text-align: center;
     width: 100%;
     top: 1.25rem;
-    color: white; }
+    color: white;
+    font-size: 0.9rem; }
 
-.game-effect {
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 0.188rem;
-  font-size: 0.75rem;
-  margin-top: 0.25rem;
+.effect {
+  width: 2rem;
+  height: 2rem;
   margin-left: 0.25rem;
-  border: none; }
+  border-radius: 0.188rem; }
+  .effect .effect-name {
+    display: block;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    top: 0.5rem;
+    color: white;
+    font-size: 0.65rem; }
+  .effect .duration {
+    display: block;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    bottom: -0.8rem;
+    color: black;
+    font-size: 0.75rem; }
 
 .vibrating-shield:before {
   content: url("icons/vibrating-shield.svg"); }

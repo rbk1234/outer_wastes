@@ -3,7 +3,7 @@
     'use strict';
 
     Game.namespace('Units').Database = {
-        1: {
+        player: {
             name: 'Healer (You)',
             animations: {
                 idle: {
@@ -43,7 +43,7 @@
                 attackDamage: 5
             }
         },
-        2: {
+        oozeling: {
             name: 'Oozeling',
             animations: {
                 idle: {
@@ -76,7 +76,7 @@
                 reward: 50
             }
         },
-        3: {
+        native: {
             name: 'Native',
             animations: {
                 idle: {
