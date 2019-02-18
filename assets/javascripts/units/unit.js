@@ -63,7 +63,7 @@
 
             if (this._globalCooldown !== null) {
                 this._globalCooldown -= seconds;
-                if (Game.Util.round(this._globalCooldown) <= 0) {
+                if (Game.Util.roundForComparison(this._globalCooldown) <= 0) {
                     this._globalCooldown = null;
                 }
             }
@@ -122,7 +122,7 @@
 
 
         addHealth: function(amount) {
-            if (Game.Util.round(amount) < 0) {
+            if (Game.Util.roundForComparison(amount) < 0) {
                 console.warn('Cannot add a negative health amount: use takeDamage function.');
                 return;
             }
@@ -132,7 +132,7 @@
             }
         },
         addMana: function(amount) {
-            if (Game.Util.round(amount) < 0) {
+            if (Game.Util.roundForComparison(amount) < 0) {
                 console.warn('Cannot add a negative energy amount: use consumeMana function.');
                 return;
             }
@@ -145,27 +145,27 @@
             // todo apply damage reductions (iterate thru effects, armor)
 
             // todo remove from the shield with least duration remaining first
-            //if (Game.Util.round(this.shield()) > 0) {
+            //if (Game.Util.roundForComparison(this.shield()) > 0) {
             //    this._effects.forEach(function(effect) {
             //        amount = effect.absorbDamage(amount);
             //    });
             //}
 
-            if (Game.Util.round(this.health) > 0) {
+            if (Game.Util.roundForComparison(this.health) > 0) {
                 this.health -= amount;
             }
 
-            if (Game.Util.round(this.health) <= 0) {
+            if (Game.Util.roundForComparison(this.health) <= 0) {
                 this.kill();
             }
         },
         hasEnoughMana: function(amount) {
-            return Game.Util.round(this.mana) >= amount;
+            return Game.Util.roundForComparison(this.mana) >= amount;
         },
         consumeMana: function(amount) {
             this.mana -= amount;
 
-            if (Game.Util.round(this.mana) <= 0) {
+            if (Game.Util.roundForComparison(this.mana) <= 0) {
                 this.mana = 0;
             }
         },
@@ -176,7 +176,7 @@
 
         _incrementAttack: function(seconds) {
             this._attackTimer -= seconds;
-            if (Game.Util.round(this._attackTimer) <= 0) {
+            if (Game.Util.roundForComparison(this._attackTimer) <= 0) {
                 this.attack();
 
                 // attackSpeed is attacks per second. Add current _attackTimer to catch rollover
@@ -299,7 +299,7 @@
             }
 
             this._castProgress += seconds;
-            if (Game.Util.round(this._castProgress) >= this._castTotal) {
+            if (Game.Util.roundForComparison(this._castProgress) >= this._castTotal) {
                 // Check errors again in case state changed (e.g. target died during cast)
                 // Note: Not checking cooldown errors: short casts may be faster than GCD
                 if (this._hasCastTargetErrors() || this._hasManaError()) {
@@ -361,12 +361,17 @@
 
 
         kill: function() {
+            var self = this;
+
             if (!this._isDead) {
                 this._isDead = true;
                 this.health = 0;
                 this.cancelCast();
 
-                // todo remove all effects
+                // remove all effects
+                Game.Util.iterateObject(this._effects, function(id, effect) {
+                    self.removeEffect(effect);
+                });
             }
         },
 
@@ -387,7 +392,7 @@
         //        return this._dbRecord.animations.dead.image;
         //    }
         //
-        //    if (Game.Util.round(this._attackTimer) > (this.attackSpeed() - this._dbRecord.animations.attack.duration)) {
+        //    if (Game.Util.roundForComparison(this._attackTimer) > (this.attackSpeed() - this._dbRecord.animations.attack.duration)) {
         //        return this._dbRecord.animations.attack.image;
         //    }
         //    else {

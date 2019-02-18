@@ -54,7 +54,7 @@
 
         _incrementPeriod: function(seconds) {
             this._periodLeft -= seconds;
-            if (Game.Util.round(this._periodLeft) <= 0) {
+            if (Game.Util.roundForComparison(this._periodLeft) <= 0) {
                 this.events.onTick(this.target);
 
                 // Add current _periodLeft to catch rollover
@@ -72,7 +72,7 @@
 
         isExpired: function() {
             // return true if expired, false if not expired
-            if (Game.Util.round(this._durationLeft) <= 0) {
+            if (Game.Util.roundForComparison(this._durationLeft) <= 0) {
                 return true;
             }
             //if (this.type() === 'absorption' && this.absorptionAmount() === 0) {
@@ -91,7 +91,7 @@
         absorbDamage: function(amount) {
             if (this.type() === 'absorption') {
                 this._absorptionAmount -= amount;
-                if (Game.Util.round(this._absorptionAmount) <= 0) {
+                if (Game.Util.roundForComparison(this._absorptionAmount) <= 0) {
                     var overflow = Math.abs(this._absorptionAmount);
                     this._absorptionAmount = 0;
                     return overflow;

@@ -52,7 +52,7 @@
 
             // cache jquery objects
             this._$frames = {}; // unit id -> $frame
-            this._$healthBars = {}; // unit id -> health bar
+            this._$healthBars = {}; // unit id -> { $progress: (element), $text: (element) }
             this._$effects = {}; // effect id -> $effect
             //this._$effectDurations = {}; // effect id -> duration span
 
@@ -115,15 +115,26 @@
             var $bar = $('<div></div>', {
                 class: 'bar'
             }).appendTo($healthArea);
+
             $('<div></div>', {
                 class: 'bar-layer background',
                 style: 'width: 100%;'
             }).appendTo($bar);
 
-            return $('<div></div>', {
+            var $progress = $('<div></div>', {
                 class: 'bar-layer ' + barClass,
                 style: 'width: 50%;'
             }).appendTo($bar);
+
+            var $text = $('<div></div>', {
+                class: 'bar-layer bar-text',
+                style: 'width: 100%;'
+            }).appendTo($bar);
+
+            return {
+                $progress: $progress,
+                $text: $text
+            };
         },
 
         _refreshUnitFrames: function() {
@@ -139,8 +150,9 @@
         _refreshUnitFrame: function(unit) {
             var self = this;
 
-            var widthPercent = Game.Util.round(unit.health / unit.maxHealth.value()) * 100 + '%';
-            this._$healthBars[unit.id].css('width', widthPercent);
+            var widthPercent = Game.Util.roundForComparison(unit.health / unit.maxHealth.value()) * 100 + '%';
+            this._$healthBars[unit.id].$progress.css('width', widthPercent);
+            this._$healthBars[unit.id].$text.html(Game.Util.round(unit.health) + '/' + Game.Util.round(unit.maxHealth.value()));
 
             // refresh effects
             // TODO Not doing this anymore (not showing duration in seconds)
@@ -167,9 +179,9 @@
                 text: effect.name
             }).appendTo($effect);
 
-            var $duration = $('<span></span>', {
-                class: 'duration'
-            }).appendTo($effect);
+            //var $duration = $('<span></span>', {
+            //    class: 'duration'
+            //}).appendTo($effect);
 
             $('<canvas></canvas>', {
                 class: 'cooldown-status'
@@ -239,11 +251,15 @@
 
         _initManaBar: function() {
             this._$manaBar = $('#mana-bar');
-            this._$mana = this._$manaBar.find('.mana');
+            this._mana = {
+                $progress: this._$manaBar.find('.mana'),
+                $text: this._$manaBar.find('.bar-text')
+            }
         },
         _refreshManaBar: function() {
-            var widthPercent = Game.Util.round(Game.Player.mana / Game.Player.maxMana.value()) * 100 + '%';
-            this._$mana.css('width', widthPercent);
+            var widthPercent = Game.Util.roundForComparison(Game.Player.mana / Game.Player.maxMana.value()) * 100 + '%';
+            this._mana.$progress.css('width', widthPercent);
+            this._mana.$text.html(Game.Util.round(Game.Player.mana) + '/' + Game.Util.round(Game.Player.maxMana.value()));
         },
 
         _initCastBar: function() {
@@ -334,7 +350,7 @@
                 elapsed += iterations * period;
                 var percentComplete = elapsed / totalCooldown;
 
-                if (Game.Util.round(percentComplete) >= 1.0) {
+                if (Game.Util.roundForComparison(percentComplete) >= 1.0) {
                     self.endCooldown();
                 }
                 else {

@@ -88,10 +88,14 @@
 
     var EPSILON = 0.000001; // Adding an epsilon to handle floating point rounding errors
 
-    // Rounds to 5 decimals by default. Use roundToDecimal for more precision
-    // This should be used before any comparisons (e.g. < <= > >=) because of floating point rounding errors
-    Game.Util.round = function(num) {
+    // Rounds a float to 5 decimals. This should be used before any comparisons (e.g. < <= > >=) because of floating point rounding errors
+    Game.Util.roundForComparison = function(num) {
         return Game.Util.roundToDecimal(num, 5);
+    };
+
+    // Rounds to nearest int
+    Game.Util.round = function(num) {
+        return Game.Util.roundToDecimal(num, 0);
     };
 
     Game.Util.roundToDecimal = function(num, numDecimals) {
@@ -105,7 +109,7 @@
     };
 
     Game.Util.formatDuration = function(duration) {
-        return Game.Util.roundToDecimal(duration, 0) + 's';
+        return Game.Util.round(duration) + 's';
     };
 
 

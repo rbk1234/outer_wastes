@@ -72,6 +72,8 @@ body {
   width: 20rem; }
   #cast-bar .bar {
     height: 1.5rem; }
+    #cast-bar .bar .bar-text {
+      text-align: center; }
 
 #ally-frames, #enemy-frames {
   padding: 1rem; }
@@ -106,7 +108,7 @@ body {
 .bar {
   position: relative;
   overflow: hidden;
-  height: 1rem;
+  height: 1.5rem;
   width: 100%;
   border: 1px solid #333;
   border-radius: 0.1rem; }
@@ -127,8 +129,9 @@ body {
     .bar .bar-layer.cast-canceled {
       background: linear-gradient(#cc0000, #660000); }
     .bar .bar-layer.bar-text {
+      margin-left: 0.15rem;
       color: white;
-      text-align: center; }
+      text-shadow: 1px 1px 1px #000; }
 
 .action-bar-button, .effect {
   display: inline-block;

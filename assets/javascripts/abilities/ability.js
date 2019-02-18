@@ -44,7 +44,7 @@
         },
 
         isReady: function() {
-            return Game.Util.round(this._remainingCooldown) <= 0;
+            return Game.Util.roundForComparison(this._remainingCooldown) <= 0;
         },
 
         remainingCooldown: function() {
@@ -53,7 +53,7 @@
 
         reduceCooldown: function(seconds) {
             this._remainingCooldown -= seconds;
-            if (Game.Util.round(this._remainingCooldown) <= 0) {
+            if (Game.Util.roundForComparison(this._remainingCooldown) <= 0) {
                 this._remainingCooldown = 0;
             }
         }

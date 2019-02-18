@@ -118,6 +118,10 @@ body {
 
   .bar {
     height: 1.5rem;
+
+    .bar-text {
+      text-align: center;
+    }
   }
 }
 
@@ -171,7 +175,7 @@ body {
 .bar {
   position:relative;
   overflow: hidden;
-  height: 1rem;
+  height: 1.5rem;
   width: 100%;
 
   border: 1px solid #333;
@@ -203,8 +207,9 @@ body {
     }
 
     &.bar-text {
+      margin-left: 0.15rem;
       color: white;
-      text-align: center;
+      text-shadow: 1px 1px 1px #000;
     }
   }
 }
