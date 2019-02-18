@@ -59,11 +59,25 @@ body {
 
 .flex-box .flex-row.flex-content {
   flex: 1 1 auto;
-  background: #93756e;
+  background: #a7cbd5;
   padding: 2px; }
 
 .flex-box .flex-row.flex-footer {
   flex: 0 1 auto; }
+
+.bottom-bar {
+  background: #71777d;
+  display: flex;
+  flex-flow: row; }
+  .bottom-bar .bottom-section {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    padding: 0.5rem; }
+  .bottom-bar #mana-area {
+    align-items: center; }
+    .bottom-bar #mana-area #mana-bar {
+      height: 1.5rem; }
 
 #cast-bar {
   position: absolute;
@@ -132,9 +146,6 @@ body {
       color: white;
       text-align: center; }
 
-.bottom-bar {
-  background: #2f2f2f; }
-
 .action-bar-button, .effect {
   display: inline-block;
   position: relative;
@@ -146,7 +157,8 @@ body {
 .action-bar-button {
   width: 3.5rem;
   height: 3.5rem;
-  margin-top: 0.5rem;
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
   border: 1px solid black;
   border-radius: 0.375rem;
   cursor: pointer;

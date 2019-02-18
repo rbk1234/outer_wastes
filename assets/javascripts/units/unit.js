@@ -27,8 +27,8 @@
             Game.Util.initStats(this);
 
             // init internals
-            this._health = this.maxHealth.value();
-            this._mana = this.maxMana.value();
+            this.health = this.maxHealth.value();
+            this.mana = this.maxMana.value();
             this._attackTimer = Math.random() * 0.2; // remaining time until next attack. Initialize with random wait
 
             this._effects = {};
@@ -110,9 +110,9 @@
                 console.warn('Cannot add a negative health amount: use takeDamage function.');
                 return;
             }
-            this._health += amount;
-            if (this._health >= this.maxHealth.value()) {
-                this._health = this.maxHealth.value();
+            this.health += amount;
+            if (this.health >= this.maxHealth.value()) {
+                this.health = this.maxHealth.value();
             }
         },
         addMana: function(amount) {
@@ -120,9 +120,9 @@
                 console.warn('Cannot add a negative energy amount: use consumeMana function.');
                 return;
             }
-            this._mana += amount;
-            if (this._mana >= this.maxMana.value()) {
-                this._mana = this.maxMana.value();
+            this.mana += amount;
+            if (this.mana >= this.maxMana.value()) {
+                this.mana = this.maxMana.value();
             }
         },
         takeDamage: function(amount) {
@@ -135,19 +135,22 @@
             //    });
             //}
 
-            if (Game.Util.round(this._health) > 0) {
-                this._health -= amount;
+            if (Game.Util.round(this.health) > 0) {
+                this.health -= amount;
             }
 
-            if (Game.Util.round(this._health) <= 0) {
+            if (Game.Util.round(this.health) <= 0) {
                 this.kill();
             }
         },
+        hasEnoughMana: function(amount) {
+            return Game.Util.round(this.mana) >= amount;
+        },
         consumeMana: function(amount) {
-            this._mana -= amount;
+            this.mana -= amount;
 
-            if (Game.Util.round(this._mana) <= 0) {
-                this._mana = 0;
+            if (Game.Util.round(this.mana) <= 0) {
+                this.mana = 0;
             }
         },
 
@@ -204,7 +207,9 @@
                 return;
             }
 
-            // TODO consumeMana
+            if (this._hasManaError()) {
+                return;
+            }
 
             this._castTotal = this._castAbility.castTime.value();//('castTime'); // caching castTime at start of cast (in case haste changes)
             this._castProgress = 0;
@@ -241,6 +246,15 @@
             }
             return false;
         },
+        _hasManaError: function() {
+            if (this.hasEnoughMana(this._castAbility.manaCost.value())) {
+                return false;
+            }
+            else {
+                Game.Util.toast('Not enough mana');
+                return true;
+            }
+        },
 
         _incrementCast: function(seconds) {
             if (!this.isCasting()) {
@@ -252,12 +266,18 @@
                 // Check target again in case state changed (e.g. target died during cast)
                 if (this._hasCastTargetErrors()) {
                     this.cancelCast('Failed');
+                    return;
                 }
-                else {
-                    this._castAbility.onCastComplete(this, this._castTarget);
-                    this._castProgress = null;
-                    Game.UserInterface.completeCastBar();
+
+                if (this._hasManaError()) {
+                    this.cancelCast('Failed');
+                    return;
                 }
+
+                this.consumeMana(this._castAbility.manaCost.value());
+                this._castAbility.onCastComplete(this, this._castTarget);
+                this._castProgress = null;
+                Game.UserInterface.completeCastBar();
             }
         },
 
@@ -278,7 +298,7 @@
         kill: function() {
             if (!this._isDead) {
                 this._isDead = true;
-                this._health = 0;
+                this.health = 0;
                 this.cancelCast();
 
                 // todo remove all effects

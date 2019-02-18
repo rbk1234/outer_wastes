@@ -17,11 +17,13 @@
 
             this._initCastBar();
             this._initAbilityBar();
+            this._initManaBar();
 
             // Start clock
             Game.Clock.setInterval(CLOCK_KEY, function(iterations, period) {
                 // Only draw once (no matter how many iterations)
                 self._refreshUnitFrames();
+                self._refreshManaBar();
             }, 1.0 / UPDATES_PER_SECOND);
         },
 
@@ -125,7 +127,7 @@
         _refreshUnitFrame: function(unit) {
             var self = this;
 
-            var widthPercent = Game.Util.round(unit._health / unit.maxHealth.value()) * 100 + '%';
+            var widthPercent = Game.Util.round(unit.health / unit.maxHealth.value()) * 100 + '%';
             this._$healthBars[unit.id].css('width', widthPercent);
 
             // refresh effects
@@ -204,6 +206,15 @@
                 default:
                     return null;
             }
+        },
+
+        _initManaBar: function() {
+            this._$manaBar = $('#mana-bar');
+            this._$mana = this._$manaBar.find('.mana');
+        },
+        _refreshManaBar: function() {
+            var widthPercent = Game.Util.round(Game.Player.mana / Game.Player.maxMana.value()) * 100 + '%';
+            this._$mana.css('width', widthPercent);
         },
 
         _initCastBar: function() {
