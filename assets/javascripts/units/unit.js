@@ -57,6 +57,11 @@
                 }
             });
 
+            // update abilities
+            Game.Util.iterateObject(this._abilities, function(id, ability) {
+                ability.update(seconds);
+            });
+
             // auto attack
             this._incrementAttack(seconds);
             this._incrementCast(seconds);
@@ -202,12 +207,7 @@
             this._castAbility = this.getAbility(key);
             this._castTarget = Game.UserInterface.targetedUnit();
 
-            // If issues with target, return
-            if (this._hasCastTargetErrors()) {
-                return;
-            }
-
-            if (this._hasManaError()) {
+            if (this._hasCastTargetErrors() || this._hasManaError() || this._hasCooldownError()) {
                 return;
             }
 
@@ -236,11 +236,11 @@
         _hasCastTargetErrors: function() {
             if (this._castAbility.requiresTarget) {
                 if (this._castTarget === null) {
-                    Game.Util.toast('Target is required');
+                    Game.Util.toast('Target is required.');
                     return true;
                 }
                 if (this._castTarget.isDead()) {
-                    Game.Util.toast('Target is dead');
+                    Game.Util.toast('Target is dead.');
                     return true;
                 }
             }
@@ -251,7 +251,16 @@
                 return false;
             }
             else {
-                Game.Util.toast('Not enough mana');
+                Game.Util.toast('Not enough mana.');
+                return true;
+            }
+        },
+        _hasCooldownError: function() {
+            if (this._castAbility.isReady()) {
+                return false;
+            }
+            else {
+                Game.Util.toast('Ability not ready yet.');
                 return true;
             }
         },
@@ -264,12 +273,7 @@
             this._castProgress += seconds;
             if (Game.Util.round(this._castProgress) >= this._castTotal) {
                 // Check target again in case state changed (e.g. target died during cast)
-                if (this._hasCastTargetErrors()) {
-                    this.cancelCast('Failed');
-                    return;
-                }
-
-                if (this._hasManaError()) {
+                if (this._hasCastTargetErrors() || this._hasManaError() || this._hasCooldownError()) {
                     this.cancelCast('Failed');
                     return;
                 }
@@ -278,6 +282,7 @@
                 this._castAbility.onCastComplete(this, this._castTarget);
                 this._castProgress = null;
                 Game.UserInterface.completeCastBar();
+                Game.UserInterface.startCooldown(this._castAbility);
             }
         },
 

@@ -9,6 +9,111 @@
     var CAST_BAR_CLOCK_KEY = 'CastBar';
     var CAST_BAR_UPDATES_PER_SECOND = 100; // Needs high frame rate to smoothly increment
 
+    var COOLDOWN_UPDATES_PER_SECOND = 60; // Needs high frame rate to smoothly increment
+
+    /*
+        We start up separate Clock intervals for UI elements like cast bars incrementing, or cooldowns spinning.
+        They need high framerates or else they look clunky.
+
+        Note: These animations will not "finish" until the UnitEngine says they are finished (e.g. ability.isReady())
+
+        Note: Since the animation is just spun off (it's not tied to the actual ability), if we implement things like:
+                - getting hit slows down a cast by 0.5 seconds
+                - reducing ability cooldowns by 1s (e.g. Ezreal Q)
+              We will have to restart the animation (at a partially done state) when the events occur.
+     */
+
+    var AbilityButton = function($button, clockKey) {
+        this._init($button, clockKey);
+    };
+    AbilityButton.prototype = {
+        _init: function($button, clockKey) {
+            this.$button = $button;
+            this.button = this.$button.get(0);
+            this.$canvas = this.$button.find('canvas');
+            this.canvas = this.$canvas.get(0);
+            this.context = this.canvas.getContext('2d');
+
+            this.clockKey = clockKey;
+        },
+
+        startCooldown: function(ability) {
+            var self = this;
+
+            this.endCooldown();
+
+            var totalSeconds = ability.cooldown.value();
+            var elapsed = totalSeconds - ability._cooldownRemaining;
+
+            // Set up a temporary interval for the spinner that updates at a very high framerate
+            Game.Clock.setInterval(CAST_BAR_CLOCK_KEY, function(iterations, period) {
+                if (ability.isReady()) {
+                    self.endCooldown();
+                }
+                else {
+                    elapsed += iterations * period;
+                    var percentComplete = elapsed / totalSeconds;
+                    self._drawCooldown(percentComplete);
+                }
+            }, 1.0 / COOLDOWN_UPDATES_PER_SECOND);
+        },
+
+        endCooldown: function() {
+            Game.Clock.clearInterval(this.clockKey);
+            this._clearCanvas();
+        },
+
+        _clearCanvas: function() {
+            this.context.setTransform(1, 0, 0, 1, 0, 0);
+            this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        },
+
+        // Adapted from https://codepen.io/jeremywynn/pen/emLjyL
+        _drawCooldown: function(percentComplete) {
+            if (percentComplete > 1.0) {
+                percentComplete = 1.0;
+            }
+
+            var degrees = 360 * percentComplete;
+            var hypotenuse = Math.sqrt(Math.pow(this.button.clientWidth, 2) + Math.pow(this.button.clientHeight, 2));
+            this.context.setTransform(1, 0, 0, 1, 0, 0);
+            this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+            this.canvas.height = hypotenuse;
+            this.canvas.width = hypotenuse;
+
+            this.canvas.style.marginLeft = -hypotenuse/2 + "px";
+            this.canvas.style.marginTop = -hypotenuse/2 + "px";
+
+            this.context.fillStyle = 'rgba(0, 0, 0, 0.5)';
+
+            this.context.translate(this.canvas.width/2, this.canvas.height/2);
+            this.context.rotate(-Math.PI/2);
+
+            this.context.beginPath();
+            this.context.moveTo(0, 0);
+            this.context.lineTo( (hypotenuse/2) * Math.cos(0).toFixed(15), (hypotenuse/2) * Math.sin(0).toFixed(15));
+            this.context.lineWidth = 2;
+            this.context.strokeStyle = 'rgba(255, 255, 255, 0.9)';
+
+            this.context.shadowColor = 'rgba(255, 255, 255, 0.6)';
+            this.context.shadowBlur = 10;
+
+            this.context.stroke();
+            this.context.moveTo(0, 0);
+            this.context.lineTo((hypotenuse/2) * Math.cos(degrees * Math.PI/180).toFixed(15), (hypotenuse/2) * Math.sin(degrees * Math.PI/180).toFixed(15));
+            this.context.stroke();
+
+            this.context.shadowColor = null;
+            this.context.shadowBlur = null;
+
+            this.context.arc(0, 0, hypotenuse/2, degrees * Math.PI/180, Math.PI*2, false);
+            this.context.fill();
+            this.context.closePath();
+        }
+
+    };
+
     var UserInterface = function() {};
 
     UserInterface.prototype = {
@@ -172,7 +277,14 @@
             Game.Keyboard.registerKey(27, function() {
                 Game.Player.cancelCast('Interrupted');
             });
+
+            this._abilityButtons = {}; // abilityKey -> AbilityButton
         },
+
+        startCooldown: function(ability) {
+            this._abilityButtons[ability.dbKey].startCooldown(ability);
+        },
+
         assignAbilityToBar: function(abilityKey, index) {
             var ability = Game.Player.getAbility(abilityKey);
 
@@ -188,6 +300,8 @@
                     Game.Player.castAbility(abilityKey);
                 });
             }
+
+            this._abilityButtons[abilityKey] = new AbilityButton($button, 'Ability_'+abilityKey);
         },
         _keyCodeForAbilityIndex: function(index) {
             switch(index) {

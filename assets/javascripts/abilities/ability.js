@@ -5,8 +5,10 @@
     var DEFAULTS = {
         name: 'Unknown',
         requiresTarget: false,
-        onCastComplete: function(caster, target) {
-            // do nothing
+        events: {
+            onCastComplete: function(caster, target) {
+                // do nothing
+            }
         },
         baseStats: {
             manaCost: 20,
@@ -27,12 +29,28 @@
             this.id = currentId++;
             $.extend(true, this, DEFAULTS, Game.Abilities.Database[dbKey], config);
             Game.Util.initStats(this);
+
+            this._cooldownRemaining = 0;
         },
 
-
-
         update: function(seconds) {
-            // todo reduce cooldown
+            this.reduceCooldown(seconds);
+        },
+
+        onCastComplete: function(caster, target) {
+            this._cooldownRemaining = this.cooldown.value();
+            this.events.onCastComplete(caster, target);
+        },
+
+        isReady: function() {
+            return Game.Util.round(this._cooldownRemaining) <= 0;
+        },
+
+        reduceCooldown: function(seconds) {
+            this._cooldownRemaining -= seconds;
+            if (Game.Util.round(this._cooldownRemaining) <= 0) {
+                this._cooldownRemaining = 0;
+            }
         }
 
 

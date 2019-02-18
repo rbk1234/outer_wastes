@@ -4,6 +4,9 @@
     sass assets/stylesheets/main.scss assets/stylesheets/main.css
 
 */
+body {
+  font-family: "Roboto Condensed", sans-serif; }
+
 .no-margin {
   margin: 0; }
 
@@ -12,25 +15,6 @@
 
 .log-paragraph {
   margin-bottom: 0; }
-
-canvas {
-  position: absolute;
-  left: 0;
-  right: 0;
-  margin: auto; }
-
-canvas#background-canvas {
-  /*z-index: 2;*/
-  /*outline: 2px solid #3f3f3f; */ }
-
-canvas#unit-canvas {
-  /*background: red;*/
-  /*outline: 1px solid red;*/ }
-
-.canvas-container {
-  z-index: 2;
-  /* Keep above log-container so don't catch scroll events */
-  position: absolute; }
 
 .log-container {
   overflow-y: scroll; }
@@ -162,7 +146,13 @@ body {
   border: 1px solid black;
   border-radius: 0.375rem;
   cursor: pointer;
+  overflow: hidden;
   /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#a90329+0,8f0222+44,6d0019+100;Brown+Red+3D */ }
+  .action-bar-button canvas {
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    z-index: 2; }
   .action-bar-button .hotkey {
     position: absolute;
     top: 0.25rem;

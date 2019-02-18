@@ -4,12 +4,14 @@
 
     var DEFAULTS = {
         name: 'unknown',
-        onTick: function(unit) {
-            // do nothing
-        },
         baseStats: {
             duration: 5,
             period: false
+        },
+        events: {
+            onTick: function(unit) {
+                // do nothing
+            }
         },
 
         target: null, // gets assigned with Unit.addEffect
@@ -53,7 +55,7 @@
         _incrementPeriod: function(seconds) {
             this._periodLeft -= seconds;
             if (Game.Util.round(this._periodLeft) <= 0) {
-                this.onTick(this.target);
+                this.events.onTick(this.target);
 
                 // Add current _periodLeft to catch rollover
                 this._periodLeft = this.period.value() + this._periodLeft;

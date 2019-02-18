@@ -15,26 +15,30 @@
         heal: {
             name: 'Heal',
             requiresTarget: true,
-            onCastComplete: function(caster, target) {
-                target.addHealth(50);
-            },
             baseStats: {
                 manaCost: 20,
                 cooldown: 0,
                 castTime: 2
+            },
+            events: {
+                onCastComplete: function(caster, target) {
+                    target.addHealth(50);
+                }
             }
         },
 
         renew: {
             name: 'Renew',
             requiresTarget: true,
-            onCastComplete: function (caster, target) {
-                caster.castEffectOnTarget('renew', target);
-            },
             baseStats: {
                 manaCost: 20,
-                cooldown: 0,
-                castTime: 1
+                cooldown: 1.5,
+                castTime: 0
+            },
+            events: {
+                onCastComplete: function (caster, target) {
+                    caster.castEffectOnTarget('renew', target);
+                }
             }
         }
     };
