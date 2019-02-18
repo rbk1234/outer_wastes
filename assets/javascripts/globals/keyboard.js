@@ -11,18 +11,32 @@
         init: function() {
             var self = this;
 
-            this._handlers = {};
+            this._keydownHandlers = {};
+            this._keyupHandlers = {};
+            this._lockedKeys = {}; // keys become locked once you press them down
 
             $(document).off('keydown').on('keydown', function(evt) {
-                var handler = self._handlers[evt.keyCode];
+                if (!self._lockedKeys[evt.keyCode]) {
+                    var handler = self._keydownHandlers[evt.keyCode];
+                    if (handler) {
+                        handler(evt);
+                    }
+                    self._lockedKeys[evt.keyCode] = true;
+                }
+            });
+
+            $(document).off('keyup').on('keyup', function(evt) {
+                var handler = self._keyupHandlers[evt.keyCode];
                 if (handler) {
                     handler(evt);
                 }
+                self._lockedKeys[evt.keyCode] = false;
             });
         },
 
-        registerKey: function(keyCode, onKeyDown) {
-            this._handlers[keyCode] = onKeyDown;
+        registerKey: function(keyCode, onKeydown, onKeyup) {
+            this._keydownHandlers[keyCode] = onKeydown;
+            this._keyupHandlers[keyCode] = onKeyup;
         }
 
         // TODO Delete this: this is for games where holding down (multiple) keys is possible

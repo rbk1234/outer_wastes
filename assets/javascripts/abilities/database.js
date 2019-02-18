@@ -15,7 +15,7 @@
         heal: {
             name: 'Heal',
             icon: 'hand-bandage',
-            background: 'green',
+            background: 'pink',
             requiresTarget: true,
             baseStats: {
                 manaCost: 20,

@@ -35,6 +35,8 @@
 
     Game.namespace("Util");
 
+    var ENABLE_ERRORS = false;
+
 
     Game.Util.initStats = function(obj) {
         Game.Util.iterateObject(obj.baseStats, function(key, baseValue) {
@@ -55,6 +57,10 @@
     };
 
     Game.Util.toast = function(text) {
+        if (!ENABLE_ERRORS) {
+            return;
+        }
+
         $.toast({
             text: text, // Text that is to be shown in the toast
             heading: '', // Optional heading to be shown on the toast
@@ -62,8 +68,9 @@
             showHideTransition: 'fade', // fade, slide or plain
             allowToastClose: false, // Boolean value true or false
             hideAfter: 3000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
-            stack: 3, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
-            position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
+            stack: 1, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
+            //position: 'bottom-left',
+            position: { bottom: '5rem', left: '1rem' },
 
             bgColor: '#b01a00',  // Background color of the toast
             textColor: '#eeeeee',  // Text color of the toast

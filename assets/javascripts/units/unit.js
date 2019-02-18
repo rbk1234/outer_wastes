@@ -228,7 +228,7 @@
                 return;
             }
 
-            this._castTotal = this._castAbility.castTime.value(); // caching castTime at start of cast (in case haste changes)
+            this._castTotal = this._castAbility.castTime.value(); // caching length of cast at start of cast (in case haste changes)
 
             if (this._castTotal === 0) {
                 // Instant cast:
@@ -237,8 +237,9 @@
             else {
                 // Has cast time; start progress
                 this._castProgress = 0;
-                Game.UserInterface.startCastBar(this._castAbility.name, this._castTotal);
+                //Game.UserInterface.startCastBar(this._castAbility.name, this._castTotal);
             }
+            Game.UserInterface.startCast(this._castAbility);
 
             // start global cooldown
             if (this._castAbility.onGlobalCooldown) {
@@ -255,12 +256,14 @@
             this._castProgress = null;
             this._globalCooldown = null; // undo any global cooldown
 
-            Game.UserInterface.cancelCastBar(message);
+            //Game.UserInterface.cancelCastBar(message);
+            Game.UserInterface.cancelCast(this._castAbility, message);
 
             this._updateAllAbilityCooldowns(); // since global cd was undone, have to sync ability cooldowns
         },
 
-        isCasting: function() {
+        // ability param is optional: if undefined, will check if casting ANY ability. if defined, will check if casting specific ability
+        isCasting: function(ability) {
             return this._castProgress !== null;
         },
 
@@ -321,7 +324,8 @@
             this._castAbility.onCastComplete(this, this._castTarget);
             if (this._castProgress !== null) {
                 this._castProgress = null;
-                Game.UserInterface.completeCastBar();
+                //Game.UserInterface.completeCastBar();
+                Game.UserInterface.finishCast(this._castAbility);
             }
             this._updateAbilityCooldown(this._castAbility);
         },

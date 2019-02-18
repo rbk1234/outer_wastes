@@ -32,7 +32,8 @@
 
     // just init room 1
 
-    Game.UnitEngine.addAlly(new Game.Units.Ally('native'));
+    var native = new Game.Units.Ally('native');
+    Game.UnitEngine.addAlly(native);
 
     Game.Player = new Game.Units.Ally('player');
     var heal = new Game.Abilities.Ability('heal');
@@ -41,12 +42,20 @@
     var renew = new Game.Abilities.Ability('renew');
     Game.Player.addAbility(renew);
     Game.UserInterface.assignAbilityToBar(renew, 1);
+
+    Game.UserInterface.assignAbilityToBar(null, 2);
+    Game.UserInterface.assignAbilityToBar(null, 3);
+    Game.UserInterface.assignAbilityToBar(null, 4);
+    Game.UserInterface.assignAbilityToBar(null, 5);
+
     Game.UnitEngine.addAlly(Game.Player);
 
     Game.UserInterface.loadUnits();
 
     var room1 = new Game.Rooms.EnemyRoom(1);
     Game.Clock.run();
+
+    Game.UserInterface.targetUnit(native);
 
 
 

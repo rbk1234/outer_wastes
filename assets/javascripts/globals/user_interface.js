@@ -22,6 +22,8 @@
 
     var DRAW_COOLDOWN_LINES = false; // Whether to draw two white lines on cooldown timers (like clock hands)
 
+    var HIGHLIGHT_INSTANT_DURATION = 200; // How long to highlight ability buttons for instant cast abilities
+
     var COMBAT_TEXT_DURATION = 1500; // should match animation-duration in scss
     var COMBAT_TEXT_OFFSET_WINDOW = 1000; // if two texts are shown within this time, offset the second text
 
@@ -57,6 +59,7 @@
 
             // cache jquery objects
             this._$frames = {}; // unit id -> $frame
+            this._$healthAreas = {}; // unit id -> $healthArea
             this._$healthBars = {}; // unit id -> { $progress: (element), $text: (element) }
 
             this._$portraitAreas = {}; // unit id -> portrait area
@@ -135,13 +138,21 @@
             }).appendTo($frame);
 
             $healthArea.off('click').on('click', function() {
-                self._targetedUnit = unit;
-                $('.health-area').removeClass('targeted');
-                $healthArea.addClass('targeted');
+                self.targetUnit(unit);
             });
 
+            this._$healthAreas[unit.id] = $healthArea;
             this._$healthBars[unit.id] = this._addBar($healthArea, 'health');
             //this._addBar($healthArea, 'mana');
+        },
+        clearTarget: function() {
+            this._targetedUnit = null;
+            $('.health-area').removeClass('targeted');
+        },
+        targetUnit: function(unit) {
+            this.clearTarget(); // remove targeting circle from old target
+            this._targetedUnit = unit;
+            this._$healthAreas[unit.id].addClass('targeted');
         },
         _addBar: function($healthArea, barClass) {
             var $bar = $('<div></div>', {
@@ -239,6 +250,7 @@
                 Game.Player.cancelCast('Interrupted');
             });
 
+            this._$abilityButtons = {}; // ability id -> $button
             this._abilityCooldowns = {}; // ability id -> CooldownTimer
         },
 
@@ -246,30 +258,46 @@
             this._abilityCooldowns[ability.id].startCooldown(totalCooldown, elapsed);
         },
 
+        // todo removeAbilityFromBar... delete $abilityButton and abilityCooldown
+
         assignAbilityToBar: function(ability, index) {
             var self = this;
 
             var $button = $('#ability-bar').find('.action-bar-button:nth-child('+(index + 1)+')'); // nth-child is 1-based
 
-            //$button.find('.spell-name').html(ability.name);
-            $button.removeClass('blank');
-            $button.addClass(ability.icon);
-            $button.addClass(ability.background);
+            if (ability) {
+                this._$abilityButtons[ability.id] = $button;
+
+                //$button.find('.spell-name').html(ability.name);
+                $button.removeClass('blank');
+                $button.addClass(ability.icon);
+                $button.addClass(ability.background);
+            }
 
             $button.off('click').on('click', function(evt) {
-                var target = evt.altKey ? Game.Player : self.targetedUnit();
-                Game.Player.castAbility(ability.id, target);
+                if (ability) {
+                    var target = evt.altKey ? Game.Player : self.targetedUnit();
+                    Game.Player.castAbility(ability.id, target);
+                }
             });
 
             var keyCode = this._keyCodeForAbilityIndex(index);
             if (keyCode !== null) {
                 Game.Keyboard.registerKey(keyCode, function(evt) {
-                    var target = evt.altKey ? Game.Player : self.targetedUnit();
-                    Game.Player.castAbility(ability.id, target);
+                    if (ability) {
+                        var target = evt.altKey ? Game.Player : self.targetedUnit();
+                        Game.Player.castAbility(ability.id, target);
+                    }
+
+                    $button.addClass('pressed');
+                }, function(evt) {
+                    $button.removeClass('pressed');
                 });
             }
 
-            this._abilityCooldowns[ability.id] = new CooldownTimer($button, 'Ability_'+ability.id);
+            if (ability) {
+                this._abilityCooldowns[ability.id] = new CooldownTimer($button, 'Ability_'+ability.id);
+            }
         },
         _keyCodeForAbilityIndex: function(index) {
             switch(index) {
@@ -317,6 +345,32 @@
             this._$castBar = $('#cast-bar');
             this._$castProgress = this._$castBar.find('.cast-progress');
             this._$castText = this._$castBar.find('.bar-text');
+        },
+
+        // todo these will eventually need to pass unit (so we can show cast bar for appropriate unit, and only highlight abil if player)
+        startCast: function(ability) {
+            var $abilityButton = this._$abilityButtons[ability.id];
+
+            var castLength = ability.castTime.value();
+            if (castLength !== 0) {
+                this.startCastBar(ability.name, castLength);
+                $abilityButton.addClass('casting');
+            }
+            else {
+                // briefly highlight ability even though it was instant cast
+                $abilityButton.addClass('casting');
+                window.setTimeout(function() {
+                    $abilityButton.removeClass('casting');
+                }, HIGHLIGHT_INSTANT_DURATION);
+            }
+        },
+        cancelCast: function(ability, message) {
+            this.cancelCastBar(message);
+            this._$abilityButtons[ability.id].removeClass('casting');
+        },
+        finishCast: function(ability) {
+            this.completeCastBar();
+            this._$abilityButtons[ability.id].removeClass('casting');
         },
 
         startCastBar: function(text, castLength) {
