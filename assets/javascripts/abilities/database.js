@@ -14,6 +14,8 @@
 
         heal: {
             name: 'Heal',
+            icon: 'hand-bandage',
+            background: 'green',
             requiresTarget: true,
             baseStats: {
                 manaCost: 20,
@@ -29,6 +31,8 @@
 
         renew: {
             name: 'Renew',
+            icon: 'healing',
+            background: 'green',
             requiresTarget: true,
             baseStats: {
                 manaCost: 20,

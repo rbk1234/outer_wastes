@@ -93,10 +93,13 @@ body {
     padding: 0.5rem;
   }
 
-  #mana-area {
+  #player-bars {
     align-items: center;
-    #mana-bar {
-      height: 1.5rem;
+    #player-health {
+      margin-bottom: 0.25rem;
+    }
+    #player-mana {
+      //height: 1.5rem;
     }
   }
   #ability-bar {
@@ -357,7 +360,6 @@ body {
 
   cursor: pointer;
 
-
   .hotkey {
     position: absolute;
     top: 0.25rem;
@@ -374,13 +376,6 @@ body {
     color: white;
     font-size: 0.9rem;
   }
-
-  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#a90329+0,8f0222+44,6d0019+100;Brown+Red+3D */
-  //background: rgb(169,3,41); /* Old browsers */
-  //background: -moz-linear-gradient(top, rgba(169,3,41,1) 0%, rgba(143,2,34,1) 44%, rgba(109,0,25,1) 100%); /* FF3.6-15 */
-  //background: -webkit-linear-gradient(top, rgba(169,3,41,1) 0%,rgba(143,2,34,1) 44%,rgba(109,0,25,1) 100%); /* Chrome10-25,Safari5.1-6 */
-  //background: linear-gradient(to bottom, rgba(169,3,41,1) 0%,rgba(143,2,34,1) 44%,rgba(109,0,25,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  //filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a90329', endColorstr='#6d0019',GradientType=0 ); /* IE6-9 */
 }
 .effect {
   width: 2rem;
@@ -390,6 +385,8 @@ body {
   margin-right: 0.25rem;
 
   border-radius: 0.188rem;
+
+  line-height: inherit; // center text vertically
 
   .effect-name {
     display:block;
@@ -411,25 +408,39 @@ body {
   }
 
 }
-.vibrating-shield:before {
-  content: url('icons/vibrating-shield.svg');
-}
-.blank {
-  background: rgb(55,55,55); /* Old browsers */
-  background: -moz-linear-gradient(top, rgba(55,55,55,1) 0%, rgba(44,44,44,1) 44%, rgba(33,33,33,1) 100%); /* FF3.6-15 */
-  background: -webkit-linear-gradient(top, rgba(55,55,55,1) 0%,rgba(44,44,44,1) 44%,rgba(33,33,33,1) 100%); /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(to bottom, rgba(55,55,55,1) 0%,rgba(44,44,44,1) 44%,rgba(33,33,33,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-}
-//.blank:before {
-//  content: url('icons/blank.svg');
-//}
-.blade-drag:before {
-  content: url('icons/blade-drag.svg');
-}
-.blade-drag-black:before {
-  content: url('icons/blade-drag-black.svg');
-}
 
+.action-bar-button, .effect {
+
+  /*    icons:    */
+  // Icons from https://game-icons.net
+  // When exporting:
+  //    Background: gradient -> color -> transparent, shape -> rounded square, corner radius -> 64
+  //    Foreground: shrink twice
+  //    Size and preset: dimensions -> 128px
+
+  &.hand-bandage:before {
+    content: url('icons/hand-bandage.svg');
+  }
+  &.healing:before {
+    content: url('icons/healing.svg');
+  }
+
+  /*    backgrounds:    */
+  // Backgrounds from https://gradienthunt.com
+  // TODO Support old browsers (like in blank)
+
+  &.blank {
+    background: rgb(55,55,55); /* Old browsers */
+    background: -moz-linear-gradient(top, rgba(55,55,55,1) 0%, rgba(44,44,44,1) 44%, rgba(33,33,33,1) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba(55,55,55,1) 0%,rgba(44,44,44,1) 44%,rgba(33,33,33,1) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba(55,55,55,1) 0%,rgba(44,44,44,1) 44%,rgba(33,33,33,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  }
+
+  &.green {
+    background: radial-gradient( circle farthest-corner at 10% 20%,  rgba(30,240,95,1) 0%, rgba(20,40,225,1) 90% );
+  }
+
+}
 
 
 .tabs {

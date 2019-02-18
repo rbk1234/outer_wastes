@@ -58,10 +58,10 @@ body {
     justify-content: center;
     flex: 1;
     padding: 0.5rem; }
-  .bottom-bar #mana-area {
+  .bottom-bar #player-bars {
     align-items: center; }
-    .bottom-bar #mana-area #mana-bar {
-      height: 1.5rem; }
+    .bottom-bar #player-bars #player-health {
+      margin-bottom: 0.25rem; }
 
 #cast-bar {
   position: absolute;
@@ -202,8 +202,7 @@ body {
   margin-right: 0.25rem;
   border: 1px solid black;
   border-radius: 0.375rem;
-  cursor: pointer;
-  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#a90329+0,8f0222+44,6d0019+100;Brown+Red+3D */ }
+  cursor: pointer; }
   .action-bar-button .hotkey {
     position: absolute;
     top: 0.25rem;
@@ -224,7 +223,8 @@ body {
   height: 2rem;
   margin-left: 0.25rem;
   margin-right: 0.25rem;
-  border-radius: 0.188rem; }
+  border-radius: 0.188rem;
+  line-height: inherit; }
   .effect .effect-name {
     display: block;
     position: absolute;
@@ -242,24 +242,24 @@ body {
     color: black;
     font-size: 0.75rem; }
 
-.vibrating-shield:before {
-  content: url("icons/vibrating-shield.svg"); }
-
-.blank {
-  background: #373737;
-  /* Old browsers */
-  background: -moz-linear-gradient(top, #373737 0%, #2c2c2c 44%, #212121 100%);
-  /* FF3.6-15 */
-  background: -webkit-linear-gradient(top, #373737 0%, #2c2c2c 44%, #212121 100%);
-  /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(to bottom, #373737 0%, #2c2c2c 44%, #212121 100%);
-  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */ }
-
-.blade-drag:before {
-  content: url("icons/blade-drag.svg"); }
-
-.blade-drag-black:before {
-  content: url("icons/blade-drag-black.svg"); }
+.action-bar-button, .effect {
+  /*    icons:    */
+  /*    backgrounds:    */ }
+  .action-bar-button.hand-bandage:before, .effect.hand-bandage:before {
+    content: url("icons/hand-bandage.svg"); }
+  .action-bar-button.healing:before, .effect.healing:before {
+    content: url("icons/healing.svg"); }
+  .action-bar-button.blank, .effect.blank {
+    background: #373737;
+    /* Old browsers */
+    background: -moz-linear-gradient(top, #373737 0%, #2c2c2c 44%, #212121 100%);
+    /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #373737 0%, #2c2c2c 44%, #212121 100%);
+    /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #373737 0%, #2c2c2c 44%, #212121 100%);
+    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */ }
+  .action-bar-button.green, .effect.green {
+    background: radial-gradient(circle farthest-corner at 10% 20%, #1ef05f 0%, #1428e1 90%); }
 
 .tabs {
   background: transparent;

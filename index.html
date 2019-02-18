@@ -38,8 +38,8 @@
           Header
         </div>
         <div class="cell shrink">
-          FPS: <span id="fps"></span>|
-          Time: <span id="total-time"></span>|
+          FPS: <span id="fps"></span>&emsp;&mdash;&emsp;
+          Time: <span id="total-time"></span>&emsp;&mdash;&emsp;
           Memory: <span id="memory"></span>
         </div>
       </div>
@@ -64,16 +64,22 @@
       </div>
     </div>
     <div class="flex-row flex-footer bottom-bar">
-      <div id="mana-area" class="bottom-section">
-        <div class="bar" id="mana-bar">
-          <div class="bar-layer background" style="width:100%;"></div>
-          <div class="bar-layer mana" style="width:100%;"></div>
-          <div class="bar-layer bar-text" style="width:100%;"></div>
+      <div id="player-bars" class="bottom-section">
+        <div style="width:100%;">
+          <div class="bar" id="player-health" style="margin-bottom:0.25rem;">
+            <div class="bar-layer background" style="width:100%;"></div>
+            <div class="bar-layer health" style="width:100%;"></div>
+            <div class="bar-layer bar-text" style="width:100%;"></div>
+          </div>
+          <div class="bar" id="player-mana">
+            <div class="bar-layer background" style="width:100%;"></div>
+            <div class="bar-layer mana" style="width:100%;"></div>
+            <div class="bar-layer bar-text" style="width:100%;"></div>
+          </div>
         </div>
       </div>
 
       <div id="ability-bar" class="bottom-section" style="text-align:center;">
-        <!--<button class="action-bar-button blade-drag-black">-->
         <button class="action-bar-button blank">
           <span class="hotkey">1</span>
           <span class="spell-name"></span>

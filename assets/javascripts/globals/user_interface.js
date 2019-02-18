@@ -20,6 +20,8 @@
     var CAST_BAR_UPDATES_PER_SECOND = 100; // Needs high frame rate to smoothly increment
     var COOLDOWN_UPDATES_PER_SECOND = 60;  // Needs high frame rate to smoothly increment
 
+    var DRAW_COOLDOWN_LINES = false; // Whether to draw two white lines on cooldown timers (like clock hands)
+
     var COMBAT_TEXT_DURATION = 1500; // should match animation-duration in scss
     var COMBAT_TEXT_OFFSET_WINDOW = 1000; // if two texts are shown within this time, offset the second text
 
@@ -32,13 +34,13 @@
 
             this._initCastBar();
             this._initAbilityBar();
-            this._initManaBar();
+            this._initPlayerBars();
 
             // Start clock
             Game.Clock.setInterval(CLOCK_KEY, function(iterations, period) {
                 // Only draw once (no matter how many iterations)
                 self._refreshUnitFrames();
-                self._refreshManaBar();
+                self._refreshPlayerBars();
             }, 1.0 / UPDATES_PER_SECOND);
         },
 
@@ -194,7 +196,7 @@
             var $effectsArea = this._$frames[unit.id].find('.effects-area');
 
             var $effect = $('<div></div>', {
-                class: 'effect blank'
+                class: 'effect ' + effect.icon + ' ' + effect.background
             }).appendTo($effectsArea);
 
             if (unit.isAlly()) {
@@ -204,10 +206,10 @@
                 $effect.appendTo($effectsArea);
             }
 
-            $('<span></span>', {
-                class: 'effect-name',
-                text: effect.name
-            }).appendTo($effect);
+            //$('<span></span>', {
+            //    class: 'effect-name',
+            //    text: effect.name
+            //}).appendTo($effect);
 
             //var $duration = $('<span></span>', {
             //    class: 'duration'
@@ -248,7 +250,12 @@
             var self = this;
 
             var $button = $('#ability-bar').find('.action-bar-button:nth-child('+(index + 1)+')'); // nth-child is 1-based
-            $button.find('.spell-name').html(ability.name);
+
+            //$button.find('.spell-name').html(ability.name);
+            $button.removeClass('blank');
+            $button.addClass(ability.icon);
+            $button.addClass(ability.background);
+
             $button.off('click').on('click', function(evt) {
                 var target = evt.altKey ? Game.Player : self.targetedUnit();
                 Game.Player.castAbility(ability.id, target);
@@ -283,17 +290,27 @@
             }
         },
 
-        _initManaBar: function() {
-            this._$manaBar = $('#mana-bar');
-            this._mana = {
-                $progress: this._$manaBar.find('.mana'),
-                $text: this._$manaBar.find('.bar-text')
-            }
+        _initPlayerBars: function() {
+            var $health = $('#player-health');
+            this._playerHealth = {
+                $progress: $health.find('.health'),
+                $text: $health.find('.bar-text')
+            };
+
+            var $mana = $('#player-mana');
+            this._playerMana = {
+                $progress: $mana.find('.mana'),
+                $text: $mana.find('.bar-text')
+            };
         },
-        _refreshManaBar: function() {
+        _refreshPlayerBars: function() {
+            var healthWidth = Game.Util.roundForComparison(Game.Player.health / Game.Player.maxHealth.value()) * 100 + '%';
+            this._playerHealth.$progress.css('width', healthWidth);
+            this._playerHealth.$text.html(Game.Util.round(Game.Player.health) + '/' + Game.Util.round(Game.Player.maxHealth.value()));
+
             var widthPercent = Game.Util.roundForComparison(Game.Player.mana / Game.Player.maxMana.value()) * 100 + '%';
-            this._mana.$progress.css('width', widthPercent);
-            this._mana.$text.html(Game.Util.round(Game.Player.mana) + '/' + Game.Util.round(Game.Player.maxMana.value()));
+            this._playerMana.$progress.css('width', widthPercent);
+            this._playerMana.$text.html(Game.Util.round(Game.Player.mana) + '/' + Game.Util.round(Game.Player.maxMana.value()));
         },
 
         _initCastBar: function() {
@@ -432,20 +449,28 @@
             // Orient context so that 0 degrees is pointing North
             this.context.rotate(-Math.PI/2);
 
-            // Draw line towards origin (North)
-            this.context.beginPath();
-            this.context.moveTo(0, 0);
-            this.context.lineTo(radius * Math.cos(0).toFixed(15), radius * Math.sin(0).toFixed(15));
-            this.context.lineWidth = 2;
-            this.context.strokeStyle = 'rgba(255, 255, 255, 0.9)';
-            this.context.shadowColor = 'rgba(255, 255, 255, 0.6)';
-            this.context.shadowBlur = 10;
-            this.context.stroke();
+            if (DRAW_COOLDOWN_LINES) {
+                // Draw line towards origin (North)
+                this.context.beginPath();
+                this.context.moveTo(0, 0);
+                this.context.lineTo(radius * Math.cos(0).toFixed(15), radius * Math.sin(0).toFixed(15));
+                this.context.lineWidth = 2;
+                this.context.strokeStyle = 'rgba(255, 255, 255, 0.9)';
+                this.context.shadowColor = 'rgba(255, 255, 255, 0.6)';
+                this.context.shadowBlur = 10;
+                this.context.stroke();
 
-            // Draw line towards degree offset
-            this.context.moveTo(0, 0);
-            this.context.lineTo(radius * Math.cos(degrees * Math.PI/180).toFixed(15), radius * Math.sin(degrees * Math.PI/180).toFixed(15));
-            this.context.stroke();
+                // Draw line towards degree offset
+                this.context.moveTo(0, 0);
+                this.context.lineTo(radius * Math.cos(degrees * Math.PI/180).toFixed(15), radius * Math.sin(degrees * Math.PI/180).toFixed(15));
+                this.context.stroke();
+            }
+            else {
+                // Not drawing lines, just start at origin
+                this.context.beginPath();
+                this.context.moveTo(0, 0);
+                this.context.stroke();
+            }
 
             // Draw a filled arc
             this.context.shadowColor = null;

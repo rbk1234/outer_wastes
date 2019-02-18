@@ -6,6 +6,8 @@
     Game.namespace('Effects').Database = {
         renew: {
             name: 'Renew',
+            icon: 'healing',
+            background: 'green',
             baseStats: {
                 duration: 6,
                 period: 1
