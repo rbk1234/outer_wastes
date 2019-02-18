@@ -5,9 +5,9 @@
 
     Game.namespace('Effects').Database = {
         renew: {
-            name: 'Renew (buff)',
+            name: 'Renew',
             baseStats: {
-                duration: 5,
+                duration: 6,
                 period: 1
             },
             events: {

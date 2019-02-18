@@ -136,7 +136,13 @@ body {
   -webkit-appearance: none;
   transition: background-color 0.25s ease-out, color 0.25s ease-out;
   line-height: 1;
-  text-align: center; }
+  text-align: center;
+  overflow: hidden; }
+  .action-bar-button canvas, .effect canvas {
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    z-index: 2; }
 
 .action-bar-button {
   width: 3.5rem;
@@ -146,13 +152,7 @@ body {
   border: 1px solid black;
   border-radius: 0.375rem;
   cursor: pointer;
-  overflow: hidden;
   /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#a90329+0,8f0222+44,6d0019+100;Brown+Red+3D */ }
-  .action-bar-button canvas {
-    left: 50%;
-    position: absolute;
-    top: 50%;
-    z-index: 2; }
   .action-bar-button .hotkey {
     position: absolute;
     top: 0.25rem;
@@ -172,6 +172,7 @@ body {
   width: 2rem;
   height: 2rem;
   margin-left: 0.25rem;
+  margin-right: 0.25rem;
   border-radius: 0.188rem; }
   .effect .effect-name {
     display: block;
