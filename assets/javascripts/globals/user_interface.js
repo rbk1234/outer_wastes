@@ -43,12 +43,13 @@
                 // Only draw once (no matter how many iterations)
                 self._refreshUnitFrames();
                 self._refreshPlayerBars();
+                self._refreshAbilityBar();
             }, 1.0 / UPDATES_PER_SECOND);
         },
 
-        targetedUnit: function() {
-            return this._targetedUnit;
-        },
+
+
+        // ----------------------------------------------------- Unit frame setup and Targeting
 
         // todo should we just call this after every UnitEngine addAlly/addEnemy?
         loadUnits: function() {
@@ -77,35 +78,21 @@
             });
         },
 
-        _createAllyFrame: function(unit) {
-            var $frame = $('<div></div>', {
-                class: 'ally-frame'
-            }).appendTo($('#ally-frames'));
-
-            this._addEffectsArea($frame);
-            this._addHealthArea($frame, unit);
-            this._addPortraitArea($frame, unit);
-
-            this._$frames[unit.id] = $frame;
+        targetedUnit: function() {
+            return this._targetedUnit;
         },
-        _createEnemyFrame: function(unit) {
-            var $frame = $('<div></div>', {
-                class: 'enemy-frame'
-            }).appendTo($('#enemy-frames'));
 
-            this._addPortraitArea($frame, unit);
-            this._addHealthArea($frame, unit);
-            this._addEffectsArea($frame);
-
-            this._$frames[unit.id] = $frame;
+        clearTarget: function() {
+            this._targetedUnit = null;
+            $('.health-area').removeClass('targeted');
         },
-        _addPortraitArea: function($frame, unit) {
-            var $area = $('<div></div>', {
-                class: 'portrait-area'
-            }).appendTo($frame);
 
-            this._$portraitAreas[unit.id] = $area;
+        targetUnit: function(unit) {
+            this.clearTarget(); // remove targeting circle from old target
+            this._targetedUnit = unit;
+            this._$healthAreas[unit.id].addClass('targeted');
         },
+
         createFloatingText: function(unit, text, textClass) {
             var $area = this._$portraitAreas[unit.id];
 
@@ -124,11 +111,44 @@
             }, COMBAT_TEXT_DURATION);
         },
 
+        _createAllyFrame: function(unit) {
+            var $frame = $('<div></div>', {
+                class: 'ally-frame'
+            }).appendTo($('#ally-frames'));
+
+            this._addEffectsArea($frame);
+            this._addHealthArea($frame, unit);
+            this._addPortraitArea($frame, unit);
+
+            this._$frames[unit.id] = $frame;
+        },
+
+        _createEnemyFrame: function(unit) {
+            var $frame = $('<div></div>', {
+                class: 'enemy-frame'
+            }).appendTo($('#enemy-frames'));
+
+            this._addPortraitArea($frame, unit);
+            this._addHealthArea($frame, unit);
+            this._addEffectsArea($frame);
+
+            this._$frames[unit.id] = $frame;
+        },
+
+        _addPortraitArea: function($frame, unit) {
+            var $area = $('<div></div>', {
+                class: 'portrait-area'
+            }).appendTo($frame);
+
+            this._$portraitAreas[unit.id] = $area;
+        },
+
         _addEffectsArea: function($frame) {
             $('<div></div>', {
                 class: 'effects-area'
             }).appendTo($frame);
         },
+
         _addHealthArea: function($frame, unit) {
             var self = this;
 
@@ -145,15 +165,7 @@
             this._$healthBars[unit.id] = this._addBar($healthArea, 'health');
             //this._addBar($healthArea, 'mana');
         },
-        clearTarget: function() {
-            this._targetedUnit = null;
-            $('.health-area').removeClass('targeted');
-        },
-        targetUnit: function(unit) {
-            this.clearTarget(); // remove targeting circle from old target
-            this._targetedUnit = unit;
-            this._$healthAreas[unit.id].addClass('targeted');
-        },
+
         _addBar: function($healthArea, barClass) {
             var $bar = $('<div></div>', {
                 class: 'bar'
@@ -190,6 +202,7 @@
                 self._refreshUnitFrame(enemy);
             });
         },
+
         _refreshUnitFrame: function(unit) {
             var self = this;
 
@@ -203,6 +216,15 @@
             //    self._$effectDurations[effectId].html(Game.Util.formatDuration(effect.durationLeft()));
             //});
         },
+
+
+
+
+
+
+
+        // ----------------------------------------------------- Effects
+
         addEffect: function(unit, effect) {
             var $effectsArea = this._$frames[unit.id].find('.effects-area');
 
@@ -238,14 +260,24 @@
             this._$effects[effect.id] = $effect;
             //this._$effectDurations[effect.id] = $duration;
         },
+
         removeEffect: function(unit, effect) {
             this._$effects[effect.id].remove();
             delete this._$effects[effect.id];
             //delete this._$effectDurations[effect.id];
         },
 
+
+
+
+
+
+
+
+        // ----------------------------------------------------- Ability Bar
+
         _initAbilityBar: function() {
-            // Esc
+            // Esc key
             Game.Keyboard.registerKey(27, function() {
                 Game.Player.cancelCast('Interrupted');
             });
@@ -257,8 +289,6 @@
         startCooldown: function(ability, totalCooldown, elapsed) {
             this._abilityCooldowns[ability.id].startCooldown(totalCooldown, elapsed);
         },
-
-        // todo removeAbilityFromBar... delete $abilityButton and abilityCooldown
 
         assignAbilityToBar: function(ability, index) {
             var self = this;
@@ -288,10 +318,9 @@
                         var target = evt.altKey ? Game.Player : self.targetedUnit();
                         Game.Player.castAbility(ability.id, target);
                     }
-
-                    $button.addClass('pressed');
+                    self._toggleAbilityPressed(ability, true);
                 }, function(evt) {
-                    $button.removeClass('pressed');
+                    self._toggleAbilityPressed(ability, false);
                 });
             }
 
@@ -299,6 +328,20 @@
                 this._abilityCooldowns[ability.id] = new CooldownTimer($button, 'Ability_'+ability.id);
             }
         },
+
+        // todo removeAbilityFromBar... delete $abilityButton and abilityCooldown
+
+        // Note: ability cooldown timers are handled separately
+        _refreshAbilityBar: function() {
+            var self = this;
+
+            // refreshes if buttons are oom or not
+            Game.Util.iterateObject(this._$abilityButtons, function(abilityId, $button) {
+                var ability = Game.Player.getAbility(abilityId);
+                self._toggleAbilityOom(ability, !Game.Player.hasManaForAbility(ability));
+            });
+        },
+
         _keyCodeForAbilityIndex: function(index) {
             switch(index) {
                 case 0:
@@ -318,6 +361,25 @@
             }
         },
 
+        _toggleAbilityPressed: function(ability, isPressed) {
+            this._$abilityButtons[ability.id].toggleClass('pressed', isPressed);
+        },
+
+        _toggleAbilityCasting: function(ability, isCasting) {
+            this._$abilityButtons[ability.id].toggleClass('casting', isCasting);
+        },
+
+        _toggleAbilityOom: function(ability, isOom) {
+            this._$abilityButtons[ability.id].toggleClass('not-enough-mana', isOom);
+        },
+
+
+
+
+
+
+        // ----------------------------------------------------- Player Bars (health/mana in bottom left)
+
         _initPlayerBars: function() {
             var $health = $('#player-health');
             this._playerHealth = {
@@ -331,6 +393,7 @@
                 $text: $mana.find('.bar-text')
             };
         },
+
         _refreshPlayerBars: function() {
             var healthWidth = Game.Util.roundForComparison(Game.Player.health / Game.Player.maxHealth.value()) * 100 + '%';
             this._playerHealth.$progress.css('width', healthWidth);
@@ -341,6 +404,15 @@
             this._playerMana.$text.html(Game.Util.round(Game.Player.mana) + '/' + Game.Util.round(Game.Player.maxMana.value()));
         },
 
+
+
+
+
+
+
+
+        // ----------------------------------------------------- Cast bar
+
         _initCastBar: function() {
             this._$castBar = $('#cast-bar');
             this._$castProgress = this._$castBar.find('.cast-progress');
@@ -349,31 +421,34 @@
 
         // todo these will eventually need to pass unit (so we can show cast bar for appropriate unit, and only highlight abil if player)
         startCast: function(ability) {
-            var $abilityButton = this._$abilityButtons[ability.id];
-
+            var self = this;
+            
             var castLength = ability.castTime.value();
             if (castLength !== 0) {
-                this.startCastBar(ability.name, castLength);
-                $abilityButton.addClass('casting');
+                // Has cast time; show cast bar, highlight ability
+                this._startCastBar(ability.name, castLength);
+                this._toggleAbilityCasting(ability, true);
             }
             else {
-                // briefly highlight ability even though it was instant cast
-                $abilityButton.addClass('casting');
+                // Instant cast; briefly highlight ability even though it was instant cast
+                this._toggleAbilityCasting(ability, true);
                 window.setTimeout(function() {
-                    $abilityButton.removeClass('casting');
+                    self._toggleAbilityCasting(ability, false);
                 }, HIGHLIGHT_INSTANT_DURATION);
             }
         },
+
         cancelCast: function(ability, message) {
-            this.cancelCastBar(message);
-            this._$abilityButtons[ability.id].removeClass('casting');
-        },
-        finishCast: function(ability) {
-            this.completeCastBar();
-            this._$abilityButtons[ability.id].removeClass('casting');
+            this._cancelCastBar(message);
+            this._toggleAbilityCasting(ability, false);
         },
 
-        startCastBar: function(text, castLength) {
+        finishCast: function(ability) {
+            this._completeCastBar();
+            this._toggleAbilityCasting(ability, false);
+        },
+
+        _startCastBar: function(text, castLength) {
             var self = this;
 
             // Set up a temporary interval for the cast bar that updates at a very high framerate
@@ -390,7 +465,8 @@
             this._$castBar.stop(); // stop any fade out animations (from completes/cancels right before)
             this._$castBar.fadeIn(0);
         },
-        completeCastBar: function() {
+
+        _completeCastBar: function() {
             Game.Clock.clearInterval(CAST_BAR_CLOCK_KEY);
 
             this._$castProgress.css('width', '100%')
@@ -398,7 +474,8 @@
                 .addClass('cast-complete');
             this._$castBar.fadeOut(500);
         },
-        cancelCastBar: function(message) {
+
+        _cancelCastBar: function(message) {
             Game.Clock.clearInterval(CAST_BAR_CLOCK_KEY);
 
             this._$castProgress.css('width', '100%')

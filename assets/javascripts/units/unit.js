@@ -164,9 +164,6 @@
                 this.kill();
             }
         },
-        hasEnoughMana: function(amount) {
-            return Game.Util.roundForComparison(this.mana) >= amount;
-        },
         consumeMana: function(amount) {
             this.mana -= amount;
 
@@ -206,6 +203,9 @@
         },
         getAbility: function(abilityId) {
             return this._abilities[abilityId];
+        },
+        hasManaForAbility: function(ability) {
+            return Game.Util.roundForComparison(this.mana) >= Game.Util.roundForComparison(ability.manaCost.value());
         },
 
         // TODO --- this is built around the player right now
@@ -281,7 +281,7 @@
             return false;
         },
         _hasManaError: function() {
-            if (this.hasEnoughMana(this._castAbility.manaCost.value())) {
+            if (this.hasManaForAbility(this._castAbility)) {
                 return false;
             }
             else {

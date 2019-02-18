@@ -364,6 +364,9 @@ body {
   &.pressed {
     box-shadow: inset 0 0 4px 3px #438fff;
   }
+  &.not-enough-mana {
+    box-shadow: inset 0 0 0 3rem #001b4380;
+  }
   &.casting { // note: must come after .pressed so has priority
     box-shadow: inset 0 0 1px 1px #fff, inset 0 0 4px 3px #ffc200;
   }
