@@ -13,6 +13,8 @@
         }
     };
 
+    var GLOBAL_COOLDOWN = 1;
+
     var currentId = 1;
 
     var Unit = function(dbKey, config) {
@@ -36,6 +38,8 @@
             this._castProgress = null;
             this._abilities = {};
 
+            this._globalCooldown = null;
+
             this._isDead = false;
         },
 
@@ -56,6 +60,13 @@
                     self.removeEffect(effect);
                 }
             });
+
+            if (this._globalCooldown !== null) {
+                this._globalCooldown -= seconds;
+                if (Game.Util.round(this._globalCooldown) <= 0) {
+                    this._globalCooldown = null;
+                }
+            }
 
             // update abilities
             Game.Util.iterateObject(this._abilities, function(id, ability) {
@@ -185,38 +196,49 @@
         // ------------------------------------------------------------------ Abilities
         // A Unit can have many Abilities
 
-        addAbility: function(key) {
-            this._abilities[key] = new Game.Abilities.Ability(key);
+        addAbility: function(ability) {
+            this._abilities[ability.id] = ability;
         },
-        removeAbility: function(key) {
-            delete this._abilities[key];
-        },
-        getAbility: function(key) {
-            return this._abilities[key];
+        getAbility: function(abilityId) {
+            return this._abilities[abilityId];
         },
 
         // TODO --- this is built around the player right now
-        castAbility: function(key) {
+        castAbility: function(abilityId) {
             // If already casting something, return (TODO might need a latency window)
             if (this.isCasting()) {
                 return;
             }
 
-            // TODO Check if caster is dead
+            this._castAbility = this.getAbility(abilityId);
+            if (!this._castAbility) {
+                console.error('Unit ' + this.id + ' does not have ability ' + abilityId);
+                return;
+            }
 
-            this._castAbility = this.getAbility(key);
             this._castTarget = Game.UserInterface.targetedUnit();
 
+            // todo check caster errors (e.g. if caster is dead)
             if (this._hasCastTargetErrors() || this._hasManaError() || this._hasCooldownError()) {
                 return;
             }
 
-            this._castTotal = this._castAbility.castTime.value();//('castTime'); // caching castTime at start of cast (in case haste changes)
-            this._castProgress = 0;
+            this._castTotal = this._castAbility.castTime.value(); // caching castTime at start of cast (in case haste changes)
 
-            // Only show cast bar if has a cast time
-            if (this._castTotal !== 0) {
+            if (this._castTotal === 0) {
+                // Instant cast:
+                this._castFinished();
+            }
+            else {
+                // Has cast time; start progress
+                this._castProgress = 0;
                 Game.UserInterface.startCastBar(this._castAbility.name, this._castTotal);
+            }
+
+            // start global cooldown
+            if (this._castAbility.onGlobalCooldown) {
+                this._globalCooldown = GLOBAL_COOLDOWN;
+                this._updateAllAbilityCooldowns(); // propagate global cooldown to all abilities
             }
         },
 
@@ -226,7 +248,11 @@
             }
 
             this._castProgress = null;
+            this._globalCooldown = null; // undo any global cooldown
+
             Game.UserInterface.cancelCastBar(message);
+
+            this._updateAllAbilityCooldowns(); // since global cd was undone, have to sync ability cooldowns
         },
 
         isCasting: function() {
@@ -256,13 +282,15 @@
             }
         },
         _hasCooldownError: function() {
-            if (this._castAbility.isReady()) {
-                return false;
+            if (this._castAbility.onGlobalCooldown && this._globalCooldown !== null) {
+                Game.Util.toast('Ability not ready yet (GCD).');
+                return true;
             }
-            else {
+            if (!this._castAbility.isReady()) {
                 Game.Util.toast('Ability not ready yet.');
                 return true;
             }
+            return false;
         },
 
         _incrementCast: function(seconds) {
@@ -272,20 +300,52 @@
 
             this._castProgress += seconds;
             if (Game.Util.round(this._castProgress) >= this._castTotal) {
-                // Check target again in case state changed (e.g. target died during cast)
-                if (this._hasCastTargetErrors() || this._hasManaError() || this._hasCooldownError()) {
+                // Check errors again in case state changed (e.g. target died during cast)
+                // Note: Not checking cooldown errors: short casts may be faster than GCD
+                if (this._hasCastTargetErrors() || this._hasManaError()) {
                     this.cancelCast('Failed');
                     return;
                 }
 
-                this.consumeMana(this._castAbility.manaCost.value());
-                this._castAbility.onCastComplete(this, this._castTarget);
-                this._castProgress = null;
-                Game.UserInterface.completeCastBar();
-                Game.UserInterface.startCooldown(this._castAbility);
+                this._castFinished();
             }
         },
 
+        _castFinished: function() {
+            this.consumeMana(this._castAbility.manaCost.value());
+            this._castAbility.onCastComplete(this, this._castTarget);
+            if (this._castProgress !== null) {
+                this._castProgress = null;
+                Game.UserInterface.completeCastBar();
+            }
+            this._updateAbilityCooldown(this._castAbility);
+        },
+
+        _updateAllAbilityCooldowns: function() {
+            var self = this;
+
+            Game.Util.iterateObject(this._abilities, function(key, ability) {
+                self._updateAbilityCooldown(ability);
+            });
+        },
+
+        // shows the ability cooling down in the UI
+        _updateAbilityCooldown: function(ability) {
+            var totalCooldown, elapsed;
+
+            if (this._globalCooldown === null || ability.remainingCooldown() > this._globalCooldown) {
+                // show ability cooldown
+                totalCooldown = ability.cooldown.value();
+                elapsed = totalCooldown - ability.remainingCooldown();
+                Game.UserInterface.startCooldown(ability, totalCooldown, elapsed);
+            }
+            else {
+                // show global cooldown
+                totalCooldown = GLOBAL_COOLDOWN;
+                elapsed = totalCooldown - this._globalCooldown;
+                Game.UserInterface.startCooldown(ability, totalCooldown, elapsed);
+            }
+        },
 
 
 

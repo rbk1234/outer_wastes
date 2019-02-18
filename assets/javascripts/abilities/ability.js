@@ -5,6 +5,7 @@
     var DEFAULTS = {
         name: 'Unknown',
         requiresTarget: false,
+        onGlobalCooldown: true,
         events: {
             onCastComplete: function(caster, target) {
                 // do nothing
@@ -30,7 +31,7 @@
             $.extend(true, this, DEFAULTS, Game.Abilities.Database[dbKey], config);
             Game.Util.initStats(this);
 
-            this._cooldownRemaining = 0;
+            this._remainingCooldown = 0;
         },
 
         update: function(seconds) {
@@ -38,18 +39,22 @@
         },
 
         onCastComplete: function(caster, target) {
-            this._cooldownRemaining = this.cooldown.value();
+            this._remainingCooldown = this.cooldown.value();
             this.events.onCastComplete(caster, target);
         },
 
         isReady: function() {
-            return Game.Util.round(this._cooldownRemaining) <= 0;
+            return Game.Util.round(this._remainingCooldown) <= 0;
+        },
+
+        remainingCooldown: function() {
+            return this._remainingCooldown;
         },
 
         reduceCooldown: function(seconds) {
-            this._cooldownRemaining -= seconds;
-            if (Game.Util.round(this._cooldownRemaining) <= 0) {
-                this._cooldownRemaining = 0;
+            this._remainingCooldown -= seconds;
+            if (Game.Util.round(this._remainingCooldown) <= 0) {
+                this._remainingCooldown = 0;
             }
         }
 

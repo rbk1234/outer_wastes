@@ -37,22 +37,24 @@
             this.clockKey = clockKey;
         },
 
-        startCooldown: function(ability) {
+        startCooldown: function(totalCooldown, elapsed) {
             var self = this;
 
             this.endCooldown();
 
-            var totalSeconds = ability.cooldown.value();
-            var elapsed = totalSeconds - ability._cooldownRemaining;
+            if (totalCooldown === elapsed) {
+                return; // Don't need to start anything
+            }
 
             // Set up a temporary interval for the spinner that updates at a very high framerate
-            Game.Clock.setInterval(CAST_BAR_CLOCK_KEY, function(iterations, period) {
-                if (ability.isReady()) {
+            Game.Clock.setInterval(this.clockKey, function(iterations, period) {
+                elapsed += iterations * period;
+                var percentComplete = elapsed / totalCooldown;
+
+                if (Game.Util.round(percentComplete) >= 1.0) {
                     self.endCooldown();
                 }
                 else {
-                    elapsed += iterations * period;
-                    var percentComplete = elapsed / totalSeconds;
                     self._drawCooldown(percentComplete);
                 }
             }, 1.0 / COOLDOWN_UPDATES_PER_SECOND);
@@ -70,10 +72,6 @@
 
         // Adapted from https://codepen.io/jeremywynn/pen/emLjyL
         _drawCooldown: function(percentComplete) {
-            if (percentComplete > 1.0) {
-                percentComplete = 1.0;
-            }
-
             var degrees = 360 * percentComplete;
             var hypotenuse = Math.sqrt(Math.pow(this.button.clientWidth, 2) + Math.pow(this.button.clientHeight, 2));
             this.context.setTransform(1, 0, 0, 1, 0, 0);
@@ -278,30 +276,28 @@
                 Game.Player.cancelCast('Interrupted');
             });
 
-            this._abilityButtons = {}; // abilityKey -> AbilityButton
+            this._abilityButtons = {}; // ability id -> AbilityButton
         },
 
-        startCooldown: function(ability) {
-            this._abilityButtons[ability.dbKey].startCooldown(ability);
+        startCooldown: function(ability, totalCooldown, elapsed) {
+            this._abilityButtons[ability.id].startCooldown(totalCooldown, elapsed);
         },
 
-        assignAbilityToBar: function(abilityKey, index) {
-            var ability = Game.Player.getAbility(abilityKey);
-
+        assignAbilityToBar: function(ability, index) {
             var $button = $('#ability-bar').find('.action-bar-button:nth-child('+(index + 1)+')'); // nth-child is 1-based
             $button.find('.spell-name').html(ability.name);
             $button.off('click').on('click', function() {
-                Game.Player.castAbility(abilityKey);
+                Game.Player.castAbility(ability.id);
             });
 
             var keyCode = this._keyCodeForAbilityIndex(index);
             if (keyCode !== null) {
                 Game.Keyboard.registerKey(keyCode, function() {
-                    Game.Player.castAbility(abilityKey);
+                    Game.Player.castAbility(ability.id);
                 });
             }
 
-            this._abilityButtons[abilityKey] = new AbilityButton($button, 'Ability_'+abilityKey);
+            this._abilityButtons[ability.id] = new AbilityButton($button, 'Ability_'+ability.id);
         },
         _keyCodeForAbilityIndex: function(index) {
             switch(index) {

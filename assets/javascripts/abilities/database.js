@@ -32,7 +32,7 @@
             requiresTarget: true,
             baseStats: {
                 manaCost: 20,
-                cooldown: 1.5,
+                cooldown: 4,
                 castTime: 0
             },
             events: {
