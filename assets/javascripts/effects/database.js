@@ -11,8 +11,8 @@
                 period: 1
             },
             events: {
-                onTick: function(unit) {
-                    unit.addHealth(10)
+                onTick: function(target, caster) {
+                    target.addHealth(10, caster)
                 }
             }
         }

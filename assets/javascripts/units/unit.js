@@ -121,12 +121,17 @@
         },
 
 
-        addHealth: function(amount) {
+        addHealth: function(amount, unitSource) {
             if (Game.Util.roundForComparison(amount) < 0) {
                 console.warn('Cannot add a negative health amount: use takeDamage function.');
                 return;
             }
             this.health += amount;
+
+            if (unitSource.id === Game.Player.id) {
+                Game.UserInterface.createFloatingText(this, '+' + amount, 'heal');
+            }
+
             if (this.health >= this.maxHealth.value()) {
                 this.health = this.maxHealth.value();
             }
@@ -204,7 +209,7 @@
         },
 
         // TODO --- this is built around the player right now
-        castAbility: function(abilityId) {
+        castAbility: function(abilityId, target) {
             // If already casting something, return (TODO might need a latency window)
             if (this.isCasting()) {
                 return;
@@ -216,7 +221,7 @@
                 return;
             }
 
-            this._castTarget = Game.UserInterface.targetedUnit();
+            this._castTarget = target;
 
             // todo check caster errors (e.g. if caster is dead)
             if (this._hasCastTargetErrors() || this._hasManaError() || this._hasCooldownError()) {

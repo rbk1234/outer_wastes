@@ -20,6 +20,9 @@
     var CAST_BAR_UPDATES_PER_SECOND = 100; // Needs high frame rate to smoothly increment
     var COOLDOWN_UPDATES_PER_SECOND = 60;  // Needs high frame rate to smoothly increment
 
+    var COMBAT_TEXT_DURATION = 1500; // should match animation-duration in scss
+    var COMBAT_TEXT_OFFSET_WINDOW = 1000; // if two texts are shown within this time, offset the second text
+
 
     var UserInterface = function() {};
 
@@ -53,6 +56,10 @@
             // cache jquery objects
             this._$frames = {}; // unit id -> $frame
             this._$healthBars = {}; // unit id -> { $progress: (element), $text: (element) }
+
+            this._$portraitAreas = {}; // unit id -> portrait area
+            this._combatTextOffsets = {}; // unit id -> offset data
+
             this._$effects = {}; // effect id -> $effect
             //this._$effectDurations = {}; // effect id -> duration span
 
@@ -72,6 +79,7 @@
 
             this._addEffectsArea($frame);
             this._addHealthArea($frame, unit);
+            this._addPortraitArea($frame, unit);
 
             this._$frames[unit.id] = $frame;
         },
@@ -80,19 +88,41 @@
                 class: 'enemy-frame'
             }).appendTo($('#enemy-frames'));
 
+            this._addPortraitArea($frame, unit);
             this._addHealthArea($frame, unit);
             this._addEffectsArea($frame);
 
             this._$frames[unit.id] = $frame;
         },
-        _addEffectsArea: function($frame) {
-            var $temp = $('<div></div>', {
-                class: 'effects-area'
+        _addPortraitArea: function($frame, unit) {
+            var $area = $('<div></div>', {
+                class: 'portrait-area'
             }).appendTo($frame);
 
-            // todo remove
-            //$('<div class="effect blank"><span class="effect-name">'+'buff1'+'</span><span class="duration">3s</span></div>').appendTo($temp);
-            //$('<div class="effect blank"><span class="effect-name">'+'buff2'+'</span><span class="duration">2s</span></div>').appendTo($temp);
+            this._$portraitAreas[unit.id] = $area;
+        },
+        createFloatingText: function(unit, text, textClass) {
+            var $area = this._$portraitAreas[unit.id];
+
+            // If two combat texts are shown (for the same unit) within the COMBAT_TEXT_OFFSET_WINDOW, offset one to the side
+            var oldOffsetData = this._combatTextOffsets[unit.id];
+            var now = Date.now() || (new Date).getTime();
+            var isOffset = oldOffsetData && !oldOffsetData.isOffset && (now - oldOffsetData.time < COMBAT_TEXT_OFFSET_WINDOW);
+            this._combatTextOffsets[unit.id] = {
+                time: now,
+                isOffset: isOffset
+            };
+
+            var $text = $('<span class="combat-text ' + textClass + ' + ' + (isOffset ? 'offset' : '') + '">' + text + '</span>').appendTo($area);
+            window.setTimeout(function() {
+                $text.remove();
+            }, COMBAT_TEXT_DURATION);
+        },
+
+        _addEffectsArea: function($frame) {
+            $('<div></div>', {
+                class: 'effects-area'
+            }).appendTo($frame);
         },
         _addHealthArea: function($frame, unit) {
             var self = this;
@@ -215,16 +245,20 @@
         },
 
         assignAbilityToBar: function(ability, index) {
+            var self = this;
+
             var $button = $('#ability-bar').find('.action-bar-button:nth-child('+(index + 1)+')'); // nth-child is 1-based
             $button.find('.spell-name').html(ability.name);
-            $button.off('click').on('click', function() {
-                Game.Player.castAbility(ability.id);
+            $button.off('click').on('click', function(evt) {
+                var target = evt.altKey ? Game.Player : self.targetedUnit();
+                Game.Player.castAbility(ability.id, target);
             });
 
             var keyCode = this._keyCodeForAbilityIndex(index);
             if (keyCode !== null) {
-                Game.Keyboard.registerKey(keyCode, function() {
-                    Game.Player.castAbility(ability.id);
+                Game.Keyboard.registerKey(keyCode, function(evt) {
+                    var target = evt.altKey ? Game.Player : self.targetedUnit();
+                    Game.Player.castAbility(ability.id, target);
                 });
             }
 

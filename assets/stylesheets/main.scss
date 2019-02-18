@@ -141,11 +141,14 @@ body {
     }
   }
 
-  .portrait {
+  .portrait-area {
     flex: 0 0 5rem;
+
+    padding: 0.2rem;
+
+    position: relative;
   }
   .health-area {
-    //flex: 0 1 auto; // fit to content
     flex: 0 0 10rem; // fixed width
 
     background: #444;
@@ -171,6 +174,107 @@ body {
     text-align: right;
   }
 }
+.enemy-frame {
+  .portrait-area {
+    text-align: right;
+  }
+}
+
+
+
+
+.combat-text {
+  position: absolute;
+
+  /* Safari 4.0 - 8.0 */
+  -webkit-animation-name: example;
+  -webkit-animation-duration: 1.5s;
+  -webkit-animation-timing-function: linear;
+
+  /* Standard syntax */
+  animation-name: example;
+  animation-duration: 1.5s;
+  animation-timing-function: linear;
+
+  // Default state (hidden)
+  opacity: 0.0;
+  bottom: 0.25rem;
+
+  &.heal {
+    color: #009933;
+  }
+}
+
+// TODO how are we going to offset more with bigger numbers?
+// ally text is left aligned, offset to the right
+.ally-frame {
+  .combat-text {
+    left: 0.25rem;
+
+    &.offset {
+      left: 2.25rem;
+    }
+  }
+}
+// enemy text is inverted; right aligned, offset to the left
+.enemy-frame {
+  .combat-text {
+    right: 0.25rem;
+
+    &.offset {
+      right: 2.25rem;
+    }
+  }
+}
+
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes example {
+  10% {
+    opacity: 1.0;
+  }
+  80% {
+    opacity: 1.0;
+  }
+  100% {
+    opacity: 0.0;
+    bottom: 2.25rem;
+  }
+}
+
+/* Standard syntax */
+@keyframes example {
+  10% {
+    opacity: 1.0;
+  }
+  80% {
+    opacity: 1.0;
+  }
+  100% {
+    opacity: 0.0;
+    bottom: 2.25rem;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .bar {
   position:relative;
@@ -213,8 +317,6 @@ body {
     }
   }
 }
-
-
 
 
 

@@ -9,7 +9,7 @@
             period: false
         },
         events: {
-            onTick: function(unit) {
+            onTick: function(target, caster) {
                 // do nothing
             }
         },
@@ -55,7 +55,7 @@
         _incrementPeriod: function(seconds) {
             this._periodLeft -= seconds;
             if (Game.Util.roundForComparison(this._periodLeft) <= 0) {
-                this.events.onTick(this.target);
+                this.events.onTick(this.target, this.caster);
 
                 // Add current _periodLeft to catch rollover
                 this._periodLeft = this.period.value() + this._periodLeft;

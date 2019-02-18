@@ -22,7 +22,7 @@
             },
             events: {
                 onCastComplete: function(caster, target) {
-                    target.addHealth(50);
+                    target.addHealth(50, caster);
                 }
             }
         },
@@ -32,7 +32,7 @@
             requiresTarget: true,
             baseStats: {
                 manaCost: 20,
-                cooldown: 4,
+                cooldown: 0,
                 castTime: 0
             },
             events: {

@@ -86,8 +86,10 @@ body {
   padding: 0.35rem; }
   .ally-frame.dead .health-area, .enemy-frame.dead .health-area {
     cursor: default; }
-  .ally-frame .portrait, .enemy-frame .portrait {
-    flex: 0 0 5rem; }
+  .ally-frame .portrait-area, .enemy-frame .portrait-area {
+    flex: 0 0 5rem;
+    padding: 0.2rem;
+    position: relative; }
   .ally-frame .health-area, .enemy-frame .health-area {
     flex: 0 0 10rem;
     background: #444;
@@ -105,6 +107,52 @@ body {
 .ally-frame .effects-area {
   text-align: right; }
 
+.enemy-frame .portrait-area {
+  text-align: right; }
+
+.combat-text {
+  position: absolute;
+  /* Safari 4.0 - 8.0 */
+  -webkit-animation-name: example;
+  -webkit-animation-duration: 1.5s;
+  -webkit-animation-timing-function: linear;
+  /* Standard syntax */
+  animation-name: example;
+  animation-duration: 1.5s;
+  animation-timing-function: linear;
+  opacity: 0.0;
+  bottom: 0.25rem; }
+  .combat-text.heal {
+    color: #009933; }
+
+.ally-frame .combat-text {
+  left: 0.25rem; }
+  .ally-frame .combat-text.offset {
+    left: 2.25rem; }
+
+.enemy-frame .combat-text {
+  right: 0.25rem; }
+  .enemy-frame .combat-text.offset {
+    right: 2.25rem; }
+
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes example {
+  10% {
+    opacity: 1.0; }
+  80% {
+    opacity: 1.0; }
+  100% {
+    opacity: 0.0;
+    bottom: 2.25rem; } }
+/* Standard syntax */
+@keyframes example {
+  10% {
+    opacity: 1.0; }
+  80% {
+    opacity: 1.0; }
+  100% {
+    opacity: 0.0;
+    bottom: 2.25rem; } }
 .bar {
   position: relative;
   overflow: hidden;
