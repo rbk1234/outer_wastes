@@ -66,7 +66,7 @@
             this._$portraitAreas = {}; // unit id -> portrait area
             this._combatTextOffsets = {}; // unit id -> offset data
 
-            this._$effects = {}; // effect id -> $effect
+            this._effects = {}; // effect id -> { $effect: (element), timer: CooldownTimer }
             //this._$effectDurations = {}; // effect id -> duration span
 
             var self = this;
@@ -162,11 +162,13 @@
             });
 
             this._$healthAreas[unit.id] = $healthArea;
-            this._$healthBars[unit.id] = this._addBar($healthArea, 'health');
+            this._$healthBars[unit.id] = this._addBar($healthArea, 'health', 'shield');
             //this._addBar($healthArea, 'mana');
         },
 
-        _addBar: function($healthArea, barClass) {
+        _addBar: function($healthArea, barClass, secondaryBar) {
+            var barData = {};
+
             var $bar = $('<div></div>', {
                 class: 'bar'
             }).appendTo($healthArea);
@@ -176,20 +178,24 @@
                 style: 'width: 100%;'
             }).appendTo($bar);
 
-            var $progress = $('<div></div>', {
+            if (secondaryBar) {
+                barData.$secondaryProgress = $('<div></div>', {
+                    class: 'bar-layer ' + secondaryBar,
+                    style: 'width: 0%;'
+                }).appendTo($bar);
+            }
+
+            barData.$progress = $('<div></div>', {
                 class: 'bar-layer ' + barClass,
                 style: 'width: 50%;'
             }).appendTo($bar);
 
-            var $text = $('<div></div>', {
+            barData.$text = $('<div></div>', {
                 class: 'bar-layer bar-text',
                 style: 'width: 100%;'
             }).appendTo($bar);
 
-            return {
-                $progress: $progress,
-                $text: $text
-            };
+            return barData;
         },
 
         _refreshUnitFrames: function() {
@@ -206,9 +212,17 @@
         _refreshUnitFrame: function(unit) {
             var self = this;
 
-            var widthPercent = Game.Util.roundForComparison(unit.health / unit.maxHealth.value()) * 100 + '%';
-            this._$healthBars[unit.id].$progress.css('width', widthPercent);
+            var healthPercent = Game.Util.roundForComparison(unit.health / unit.maxHealth.value()) * 100 + '%';
+            this._$healthBars[unit.id].$progress.css('width', healthPercent);
             this._$healthBars[unit.id].$text.html(Game.Util.round(unit.health) + '/' + Game.Util.round(unit.maxHealth.value()));
+
+            if (unit.totalAbsorb() > 0) {
+                var shieldPercent = Game.Util.roundForComparison((unit.health + unit.totalAbsorb()) / unit.maxHealth.value()) * 100 + '%';
+                this._$healthBars[unit.id].$secondaryProgress.css('width', shieldPercent).addClass('active');
+            }
+            else {
+                this._$healthBars[unit.id].$secondaryProgress.css('width', 0).removeClass('active');
+            }
 
             // refresh effects
             // TODO Not doing this anymore (not showing duration in seconds)
@@ -257,16 +271,28 @@
             var elapsed = totalCooldown - effect.durationLeft();
             timer.startCooldown(totalCooldown, elapsed);
 
-            this._$effects[effect.id] = $effect;
+            this._effects[effect.id] = {
+                $effect: $effect,
+                timer: timer
+            };
             //this._$effectDurations[effect.id] = $duration;
         },
 
         removeEffect: function(unit, effect) {
-            this._$effects[effect.id].remove();
-            delete this._$effects[effect.id];
+            this._effects[effect.id].$effect.remove();
+            delete this._effects[effect.id];
             //delete this._$effectDurations[effect.id];
         },
 
+        // Refresh an existing effect so it stays in the same place (won't jump to end of $effectsArea)
+        refreshEffect: function(unit, oldEffect, newEffect) {
+            this._effects[newEffect.id] = this._effects[oldEffect.id];
+            delete this._effects[oldEffect.id];
+
+            var totalCooldown = newEffect.duration.value();
+            var elapsed = totalCooldown - newEffect.durationLeft();
+            this._effects[newEffect.id].timer.startCooldown(totalCooldown, elapsed);
+        },
 
 
 
@@ -290,6 +316,7 @@
             this._abilityCooldowns[ability.id].startCooldown(totalCooldown, elapsed);
         },
 
+        // TODO clean this code up... it's messy right now to handle empty slots
         assignAbilityToBar: function(ability, index) {
             var self = this;
 
@@ -318,9 +345,9 @@
                         var target = evt.altKey ? Game.Player : self.targetedUnit();
                         Game.Player.castAbility(ability.id, target);
                     }
-                    self._toggleAbilityPressed(ability, true);
+                    self._toggleButtonPressed($button, true);
                 }, function(evt) {
-                    self._toggleAbilityPressed(ability, false);
+                    self._toggleButtonPressed($button, false);
                 });
             }
 
@@ -361,8 +388,8 @@
             }
         },
 
-        _toggleAbilityPressed: function(ability, isPressed) {
-            this._$abilityButtons[ability.id].toggleClass('pressed', isPressed);
+        _toggleButtonPressed: function($button, isPressed) {
+            $button.toggleClass('pressed', isPressed);
         },
 
         _toggleAbilityCasting: function(ability, isCasting) {

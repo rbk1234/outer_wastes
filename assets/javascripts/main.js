@@ -36,14 +36,19 @@
     Game.UnitEngine.addAlly(native);
 
     Game.Player = new Game.Units.Ally('player');
+
     var heal = new Game.Abilities.Ability('heal');
     Game.Player.addAbility(heal);
     Game.UserInterface.assignAbilityToBar(heal, 0);
+
     var renew = new Game.Abilities.Ability('renew');
     Game.Player.addAbility(renew);
     Game.UserInterface.assignAbilityToBar(renew, 1);
 
-    Game.UserInterface.assignAbilityToBar(null, 2);
+    var shield = new Game.Abilities.Ability('shield');
+    Game.Player.addAbility(shield);
+    Game.UserInterface.assignAbilityToBar(shield, 2);
+
     Game.UserInterface.assignAbilityToBar(null, 3);
     Game.UserInterface.assignAbilityToBar(null, 4);
     Game.UserInterface.assignAbilityToBar(null, 5);

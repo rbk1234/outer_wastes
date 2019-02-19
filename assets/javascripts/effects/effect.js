@@ -6,16 +6,29 @@
         name: 'unknown',
         baseStats: {
             duration: 5,
-            period: false
+            period: false,
+            absorbAmount: 0
         },
         events: {
-            onTick: function(target, caster) {
+            onTick: function(target, effectSource) {
                 // do nothing
-            }
+            },
+
+            //onReceiveDamage: function(target, damageAmount, damageSource, effectSource) {
+            //    // do nothing
+            //},
+            //
+            //// TODO Use these for things like STR buffs
+            //onGainEffect: function(target, effectSource) {
+            //
+            //},
+            //onLoseEffect: function(target, effectSource) {
+            //
+            //}
         },
 
         target: null, // gets assigned with Unit.addEffect
-        caster: null
+        effectSource: null
     };
 
     var currentId = 1;
@@ -32,11 +45,12 @@
             Game.Util.initStats(this);
 
             // TODO Here is where haste calcs would go
-            //this.period.multiplier -= 0.75; // get from this.caster
+            //this.period.multiplier -= 0.75; // get from this.effectSource
 
             // init internals:
             this._durationLeft = this.duration.value();
             this._periodLeft = this.period.value();
+            this._absorbRemaining = this.absorbAmount.value();
         },
 
         update: function(seconds) {
@@ -48,18 +62,22 @@
         },
 
         // inherit the existing period when refreshing an effect
-        isReplacingEffect: function(effect) {
-            this._periodLeft = effect._periodLeft; // todo accessing private
+        isRefreshingEffect: function(effect) {
+            this._periodLeft = effect.periodLeft();
         },
 
         _incrementPeriod: function(seconds) {
             this._periodLeft -= seconds;
             if (Game.Util.roundForComparison(this._periodLeft) <= 0) {
-                this.events.onTick(this.target, this.caster);
+                this.events.onTick(this.target, this.effectSource);
 
                 // Add current _periodLeft to catch rollover
                 this._periodLeft = this.period.value() + this._periodLeft;
             }
+        },
+
+        periodLeft: function() {
+            return this._periodLeft;
         },
 
         durationLeft: function() {
@@ -75,30 +93,42 @@
             if (Game.Util.roundForComparison(this._durationLeft) <= 0) {
                 return true;
             }
-            //if (this.type() === 'absorption' && this.absorptionAmount() === 0) {
-            //    return true;
-            //}
+            if (this._absorbsDamage() && !this._hasRemainingAbsorb()) {
+                return true;
+            }
             return false;
         },
 
 
+        _absorbsDamage: function() {
+            return !!this.absorbAmount.value();
+        },
+        _hasRemainingAbsorb: function() {
+            return Game.Util.roundForComparison(this._absorbRemaining) > 0;
+        },
 
-        absorptionAmount: function() {
-            return this._absorptionAmount;
+        absorbRemaining: function() {
+            return this._absorbRemaining;
         },
 
         // returns amount of damage remaining
         absorbDamage: function(amount) {
-            if (this.type() === 'absorption') {
-                this._absorptionAmount -= amount;
-                if (Game.Util.roundForComparison(this._absorptionAmount) <= 0) {
-                    var overflow = Math.abs(this._absorptionAmount);
-                    this._absorptionAmount = 0;
-                    return overflow;
-                }
-                else {
+            if (this._absorbsDamage() && this._hasRemainingAbsorb()) {
+                this._absorbRemaining -= amount;
+                if (this._hasRemainingAbsorb()) {
+                    console.log('full absorb');
                     return 0;
                 }
+                else {
+                    var overflow = Math.abs(this._absorbRemaining);
+                    this._absorbRemaining = 0;
+                    console.log('overflow: '+overflow);
+                    return overflow;
+                }
+            }
+            else {
+                console.log('no absorb');
+                return amount; // absorb nothing
             }
         }
 

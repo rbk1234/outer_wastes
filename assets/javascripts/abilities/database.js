@@ -44,6 +44,23 @@
                     caster.castEffectOnTarget('renew', target);
                 }
             }
+        },
+
+        shield: {
+            name: 'Shield',
+            icon: 'shield',
+            background: 'sunny',
+            requiresTarget: true,
+            baseStats: {
+                manaCost: 30,
+                cooldown: 8,
+                castTime: 0
+            },
+            events: {
+                onCastComplete: function (caster, target) {
+                    caster.castEffectOnTarget('shield', target);
+                }
+            }
         }
     };
 

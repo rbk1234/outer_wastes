@@ -85,7 +85,7 @@
 
         castEffectOnTarget: function(effectDbKey, target) {
             var effect = new Game.Effects.Effect(effectDbKey, {
-                caster: this
+                effectSource: this
             });
             target.addEffect(effect);
         },
@@ -93,42 +93,56 @@
         addEffect: function(effect) {
             effect.target = this;
 
-            var existingEffect = this.existingEffect(effect.dbKey, effect.caster);
+            var existingEffect = this.existingEffect(effect);
             if (existingEffect) {
-                effect.isReplacingEffect(existingEffect);
-                this.removeEffect(existingEffect);
+                this.refreshEffect(existingEffect, effect);
             }
+            else {
+                // add new effect
+                Game.UserInterface.addEffect(this, effect);
+                this._effects[effect.id] = effect;
+            }
+        },
 
-            Game.UserInterface.addEffect(this, effect);
-            this._effects[effect.id] = effect;
+        refreshEffect: function(oldEffect, newEffect) {
+            newEffect.isRefreshingEffect(oldEffect); // inherit old tick rate
+
+            // delete old effect, update UI accordingly
+            delete this._effects[oldEffect.id];
+            Game.UserInterface.refreshEffect(this, oldEffect, newEffect);
+
+            // add new effect
+            this._effects[newEffect.id] = newEffect;
         },
 
         removeEffect: function(effect) {
-            Game.UserInterface.removeEffect(this, effect);
             delete this._effects[effect.id];
+            Game.UserInterface.removeEffect(this, effect);
         },
 
         // if a caster already has casted an effect on this unit, return that effect
         // This is used to ensure you can't stack an effect multiple times on a unit
-        existingEffect: function(effectDbKey, caster) {
-            var matchingEffect = null;
-            Game.Util.iterateObject(this._effects, function(effectId, effect) {
-                if (effect.dbKey = effectDbKey && effect.caster && effect.caster.id === caster.id) {
-                    matchingEffect = effect;
+        existingEffect: function(newEffect) {
+            var result = null;
+            Game.Util.iterateObject(this._effects, function(effectId, existingEffect) {
+                if (existingEffect.dbKey === newEffect.dbKey &&
+                    existingEffect.effectSource &&
+                    existingEffect.effectSource.id === newEffect.effectSource.id) {
+                    result = existingEffect;
                 }
             });
-            return matchingEffect;
+            return result;
         },
 
 
-        addHealth: function(amount, unitSource) {
+        addHealth: function(amount, healthSource) {
             if (Game.Util.roundForComparison(amount) < 0) {
                 console.warn('Cannot add a negative health amount: use takeDamage function.');
                 return;
             }
             this.health += amount;
 
-            if (unitSource.id === Game.Player.id) {
+            if (healthSource.id === Game.Player.id) {
                 Game.UserInterface.createFloatingText(this, '+' + amount, 'heal');
             }
 
@@ -146,15 +160,26 @@
                 this.mana = this.maxMana.value();
             }
         },
+
+        totalAbsorb: function() {
+            var amount = 0;
+            Object.values(this._effects).forEach(function(effect) {
+                amount += effect.absorbRemaining();
+            });
+            return amount;
+        },
+
         takeDamage: function(amount) {
             // todo apply damage reductions (iterate thru effects, armor)
 
-            // todo remove from the shield with least duration remaining first
-            //if (Game.Util.roundForComparison(this.shield()) > 0) {
-            //    this._effects.forEach(function(effect) {
-            //        amount = effect.absorbDamage(amount);
-            //    });
-            //}
+            // Sort effects by duration (take shield from shortest duration first)
+            // TODO Does this sorting actually work?
+            var sortedEffects = Object.values(this._effects).sort(function(a, b) {
+                return a.durationLeft() - b.durationLeft();
+            });
+            sortedEffects.forEach(function(effect) {
+                amount = effect.absorbDamage(amount);
+            });
 
             if (Game.Util.roundForComparison(this.health) > 0) {
                 this.health -= amount;
@@ -357,15 +382,6 @@
         },
 
 
-
-
-        //shield: function() {
-        //    var amount = 0;
-        //    this._effects.forEach(function(effect) {
-        //        amount += effect.absorptionAmount();
-        //    });
-        //    return amount;
-        //},
 
 
 

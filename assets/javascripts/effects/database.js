@@ -13,11 +13,25 @@
                 period: 1
             },
             events: {
-                onTick: function(target, caster) {
-                    target.addHealth(10, caster)
+                onTick: function(target, effectSource) {
+                    target.addHealth(10, effectSource)
                 }
             }
+        },
+
+        shield: {
+            name: 'Shield',
+            icon: 'shield',
+            background: 'sunny',
+            baseStats: {
+                duration: 6,
+                absorbAmount: 50
+            },
+            events: {
+
+            },
         }
+
     };
 
 }(jQuery));

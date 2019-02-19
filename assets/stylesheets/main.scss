@@ -302,6 +302,13 @@ body {
     &.mana {
       background: linear-gradient(#0000ff, #0000b3);
     }
+    &.shield {
+      background: linear-gradient(#ddd, #888);
+      &.active {
+        //box-shadow: 1px 0 2px white;
+      }
+    }
+
     &.casting {
       background: linear-gradient(#ff9900, #995c00);
       //border-right: 1px solid white;
@@ -436,6 +443,9 @@ body {
   &.healing:before {
     content: url('icons/healing.svg');
   }
+  &.shield:before {
+    content: url('icons/shield.svg');
+  }
 
   /*    backgrounds:    */
   // Backgrounds from https://gradienthunt.com
@@ -453,6 +463,9 @@ body {
   }
   &.pink {
     background: linear-gradient( 110.4deg,  rgba(251,203,159,1) 36%, rgba(244,137,233,1) 82.4% );
+  }
+  &.sunny {
+    background: radial-gradient( circle farthest-corner at 10% 20%,  rgba(253,221,0,1) 0%, rgba(240,107,5,1) 90% );
   }
 
 }

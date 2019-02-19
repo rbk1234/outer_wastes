@@ -170,6 +170,8 @@ body {
       background: linear-gradient(#00ff55, #009933); }
     .bar .bar-layer.mana {
       background: linear-gradient(#0000ff, #0000b3); }
+    .bar .bar-layer.shield {
+      background: linear-gradient(#ddd, #888); }
     .bar .bar-layer.casting {
       background: linear-gradient(#ff9900, #995c00);
       box-shadow: 2px 0 3px white; }
@@ -257,6 +259,8 @@ body {
     content: url("icons/hand-bandage.svg"); }
   .action-bar-button.healing:before, .effect.healing:before {
     content: url("icons/healing.svg"); }
+  .action-bar-button.shield:before, .effect.shield:before {
+    content: url("icons/shield.svg"); }
   .action-bar-button.blank, .effect.blank {
     background: #373737;
     /* Old browsers */
@@ -270,6 +274,8 @@ body {
     background: radial-gradient(circle farthest-corner at 10% 20%, #1ef05f 0%, #1428e1 90%); }
   .action-bar-button.pink, .effect.pink {
     background: linear-gradient(110.4deg, #fbcb9f 36%, #f489e9 82.4%); }
+  .action-bar-button.sunny, .effect.sunny {
+    background: radial-gradient(circle farthest-corner at 10% 20%, #fddd00 0%, #f06b05 90%); }
 
 .tabs {
   background: transparent;
