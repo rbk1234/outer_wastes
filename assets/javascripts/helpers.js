@@ -39,7 +39,7 @@
 
 
     Game.Util.initStats = function(obj) {
-        Game.Util.iterateObject(obj.baseStats, function(key, baseValue) {
+        Game.Util.iterateObject(obj.stats, function(key, baseValue) {
             var stat = {
                 base: baseValue,
                 multiplier: 1,
@@ -124,9 +124,10 @@
         return parseInt($('.main-content').css('min-width'));
     };
 
+    // Call a method such that, inside the method, 'this' refers to the target parameter
     Game.Util.makeCallback = function (target, method) {
         return function () {
-            method.apply(target, arguments);
+            return method.apply(target, arguments);
         };
     };
 

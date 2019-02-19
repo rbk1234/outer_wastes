@@ -35,7 +35,7 @@
                     ]
                 }
             },
-            baseStats: {
+            stats: {
                 maxHealth: 100,
                 maxMana: 150,
                 manaRegen: 3,
@@ -69,7 +69,7 @@
                     ]
                 }
             },
-            baseStats: {
+            stats: {
                 maxHealth: 150,
                 attackSpeed: 0.75,
                 attackDamage: 5,
@@ -111,7 +111,7 @@
                     ]
                 }
             },
-            baseStats: {
+            stats: {
                 maxHealth: 200,
                 attackSpeed: 0.5,
                 attackDamage: 20,

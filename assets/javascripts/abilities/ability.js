@@ -4,15 +4,15 @@
 
     var DEFAULTS = {
         name: 'Unknown',
-        description: 'No description available.',
+        description: function() { return 'No description available.' },
         requiresTarget: false,
         onGlobalCooldown: true,
         events: {
-            onCastComplete: function(caster, target) {
+            onCastComplete: function(target) {
                 // do nothing
             }
         },
-        baseStats: {
+        stats: {
             manaCost: 20,
             cooldown: 0,
             castTime: 1
@@ -39,9 +39,13 @@
             this.reduceCooldown(seconds);
         },
 
-        onCastComplete: function(caster, target) {
+        setCaster: function(caster) {
+            this.caster = caster;
+        },
+
+        onCastComplete: function(target) {
             this._remainingCooldown = this.cooldown.value();
-            this.events.onCastComplete(caster, target);
+            Game.Util.makeCallback(this, this.events.onCastComplete)(target);
         },
 
         isReady: function() {
@@ -57,6 +61,17 @@
             if (Game.Util.roundForComparison(this._remainingCooldown) <= 0) {
                 this._remainingCooldown = 0;
             }
+        },
+
+        // Creates an Effect with the same icon/background as this Ability. Also sets sourceAbility/sourceUnit.
+        createEffect: function(effectParams) {
+            return new Game.Effects.Effect($.extend(true, {
+                sourceAbility: this,
+                sourceUnit: this.caster,
+                icon: this.icon,
+                background: this.background
+            }, effectParams));
+
         }
 
 

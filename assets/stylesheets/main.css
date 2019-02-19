@@ -65,8 +65,10 @@ body {
     .main-content #ability-tooltip .name {
       font-size: 1rem; }
     .main-content #ability-tooltip .description {
-      color: #ffd12c;
+      color: #A6A8F5;
       width: 17.5rem; }
+      .main-content #ability-tooltip .description .spell-power {
+        color: #99F399; }
 
 .bottom-bar {
   background: #71777d;

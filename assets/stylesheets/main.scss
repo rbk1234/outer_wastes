@@ -101,8 +101,13 @@ body {
       font-size: 1rem;
     }
     .description {
-      color: #ffd12c;
+      //color: #ffd12c; // WoW color
+      color: #A6A8F5; // league of legends color
       width: 17.5rem;
+
+      .spell-power {
+        color: #99F399;
+      }
     }
   }
 }

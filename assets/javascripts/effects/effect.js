@@ -1,51 +1,48 @@
 
+/*
+
+    Note: Effects don't have a corresponding database. Their data comes from the Ability spawning it
+
+ */
+
+
 (function($) {
     'use strict';
 
     var DEFAULTS = {
         name: 'unknown',
-        baseStats: {
+        stats: {
             duration: 5,
             period: false,
             absorbAmount: 0
         },
         events: {
-            onTick: function(target, effectSource) {
-                // do nothing
-            },
+            //onTick: function(affectedUnit, sourceUnit) {},
 
-            //onReceiveDamage: function(target, damageAmount, damageSource, effectSource) {
+            //onReceiveDamage: function(affectedUnit, damageAmount, damageSource, sourceUnit) {
             //    // do nothing
             //},
             //
             //// TODO Use these for things like STR buffs
-            //onGainEffect: function(target, effectSource) {
-            //
-            //},
-            //onLoseEffect: function(target, effectSource) {
-            //
-            //}
+            //onGainEffect: function(affectedUnit, sourceUnit) {},
+            //onLoseEffect: function(affectedUnit, sourceUnit) {}
         },
 
-        target: null, // gets assigned with Unit.addEffect
-        effectSource: null
+        affectedUnit: null,
+        sourceUnit: null
     };
 
     var currentId = 1;
 
-    var Effect = function(dbKey, config) {
-        this._init(dbKey, config);
+    var Effect = function(config) {
+        this._init(config);
     };
     Effect.prototype = {
 
-        _init: function(dbKey, config) {
-            this.dbKey = dbKey;
+        _init: function(config) {
             this.id = currentId++;
-            $.extend(true, this, DEFAULTS, Game.Effects.Database[dbKey], config);
+            $.extend(true, this, DEFAULTS, config);
             Game.Util.initStats(this);
-
-            // TODO Here is where haste calcs would go
-            //this.period.multiplier -= 0.75; // get from this.effectSource
 
             // init internals:
             this._durationLeft = this.duration.value();
@@ -61,15 +58,19 @@
             }
         },
 
+        attachToUnit: function(unit) {
+            this.affectedUnit = unit;
+        },
+
         // inherit the existing period when refreshing an effect
-        isRefreshingEffect: function(effect) {
+        inheritPeriodFrom: function(effect) {
             this._periodLeft = effect.periodLeft();
         },
 
         _incrementPeriod: function(seconds) {
             this._periodLeft -= seconds;
             if (Game.Util.roundForComparison(this._periodLeft) <= 0) {
-                this.events.onTick(this.target, this.effectSource);
+                this.events.onTick(this.affectedUnit, this.sourceUnit);
 
                 // Add current _periodLeft to catch rollover
                 this._periodLeft = this.period.value() + this._periodLeft;
@@ -116,18 +117,15 @@
             if (this._absorbsDamage() && this._hasRemainingAbsorb()) {
                 this._absorbRemaining -= amount;
                 if (this._hasRemainingAbsorb()) {
-                    console.log('full absorb');
                     return 0;
                 }
                 else {
                     var overflow = Math.abs(this._absorbRemaining);
                     this._absorbRemaining = 0;
-                    console.log('overflow: '+overflow);
                     return overflow;
                 }
             }
             else {
-                console.log('no absorb');
                 return amount; // absorb nothing
             }
         }

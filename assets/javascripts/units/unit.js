@@ -3,13 +3,15 @@
     'use strict';
 
     var DEFAULTS = {
-        baseStats: {
+        stats: {
             maxHealth: 1,
             maxMana: 1,
             manaRegen: 1,
             attackSpeed: 1,
             attackDamage: 0,
-            reward: 0
+            reward: 0,
+
+            spellPower: 20
         }
     };
 
@@ -83,15 +85,8 @@
             return this._effects;
         },
 
-        castEffectOnTarget: function(effectDbKey, target) {
-            var effect = new Game.Effects.Effect(effectDbKey, {
-                effectSource: this
-            });
-            target.addEffect(effect);
-        },
-
         addEffect: function(effect) {
-            effect.target = this;
+            effect.attachToUnit(this);
 
             var existingEffect = this.existingEffect(effect);
             if (existingEffect) {
@@ -105,7 +100,7 @@
         },
 
         refreshEffect: function(oldEffect, newEffect) {
-            newEffect.isRefreshingEffect(oldEffect); // inherit old tick rate
+            newEffect.inheritPeriodFrom(oldEffect); // inherit old tick rate
 
             // delete old effect, update UI accordingly
             delete this._effects[oldEffect.id];
@@ -124,10 +119,9 @@
         // This is used to ensure you can't stack an effect multiple times on a unit
         existingEffect: function(newEffect) {
             var result = null;
+
             Game.Util.iterateObject(this._effects, function(effectId, existingEffect) {
-                if (existingEffect.dbKey === newEffect.dbKey &&
-                    existingEffect.effectSource &&
-                    existingEffect.effectSource.id === newEffect.effectSource.id) {
+                if (existingEffect.sourceAbility.id === newEffect.sourceAbility.id) {
                     result = existingEffect;
                 }
             });
@@ -143,7 +137,7 @@
             this.health += amount;
 
             if (healthSource.id === Game.Player.id) {
-                Game.UserInterface.createFloatingText(this, '+' + amount, 'heal');
+                Game.UserInterface.createFloatingText(this, '+' + Game.Util.round(amount), 'heal');
             }
 
             if (this.health >= this.maxHealth.value()) {
@@ -224,6 +218,7 @@
         // A Unit can have many Abilities
 
         addAbility: function(ability) {
+            ability.setCaster(this);
             this._abilities[ability.id] = ability;
         },
         getAbility: function(abilityId) {
@@ -346,7 +341,7 @@
 
         _castFinished: function() {
             this.consumeMana(this._castAbility.manaCost.value());
-            this._castAbility.onCastComplete(this, this._castTarget);
+            this._castAbility.onCastComplete(this._castTarget);
             if (this._castProgress !== null) {
                 this._castProgress = null;
                 //Game.UserInterface.completeCastBar();
