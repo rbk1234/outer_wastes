@@ -9,7 +9,7 @@
             icon: 'healing',
             background: 'green',
             baseStats: {
-                duration: 6,
+                duration: 10,
                 period: 1
             },
             events: {

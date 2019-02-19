@@ -4,6 +4,7 @@
 
     var DEFAULTS = {
         name: 'Unknown',
+        description: 'No description available.',
         requiresTarget: false,
         onGlobalCooldown: true,
         events: {

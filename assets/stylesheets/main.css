@@ -32,7 +32,7 @@ body {
   flex-flow: column;
   height: 100%; }
 
-.flex-box .flex-row.flex-header {
+.flex-box .flex-row.header-bar {
   flex: 0 1 auto;
   /* The above is shorthand for:
   flex-grow: 0,
@@ -41,13 +41,32 @@ body {
   */
   background: grey; }
 
-.flex-box .flex-row.flex-content {
+.flex-box .flex-row.main-content {
   flex: 1 1 auto;
   background: #a7cbd5;
   padding: 2px; }
 
-.flex-box .flex-row.flex-footer {
+.flex-box .flex-row.bottom-bar {
   flex: 0 1 auto; }
+
+.main-content {
+  position: relative; }
+  .main-content #ability-tooltip {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    background: rgba(22, 22, 22, 0.75);
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    color: white;
+    font-size: 0.875rem; }
+    .main-content #ability-tooltip table {
+      margin-bottom: 0; }
+    .main-content #ability-tooltip .name {
+      font-size: 1rem; }
+    .main-content #ability-tooltip .description {
+      color: #ffd12c;
+      width: 17.5rem; }
 
 .bottom-bar {
   background: #71777d;

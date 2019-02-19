@@ -44,6 +44,7 @@
                 self._refreshUnitFrames();
                 self._refreshPlayerBars();
                 self._refreshAbilityBar();
+                self._refreshAbilityTooltip();
             }, 1.0 / UPDATES_PER_SECOND);
         },
 
@@ -310,6 +311,18 @@
 
             this._$abilityButtons = {}; // ability id -> $button
             this._abilityCooldowns = {}; // ability id -> CooldownTimer
+
+            var $abilityTooltip = $('#ability-tooltip');
+            this._abilityTooltip = {
+                ability: null,
+                $tip: $abilityTooltip,
+                $name: $abilityTooltip.find('.name'),
+                $manaCost: $abilityTooltip.find('.mana-cost'),
+                $castTime: $abilityTooltip.find('.cast-time'),
+                $cooldown: $abilityTooltip.find('.cooldown'),
+                $cooldownRemaining: $abilityTooltip.find('.cooldown-remaining'),
+                $description: $abilityTooltip.find('.description')
+            };
         },
 
         startCooldown: function(ability, totalCooldown, elapsed) {
@@ -353,7 +366,15 @@
 
             if (ability) {
                 this._abilityCooldowns[ability.id] = new CooldownTimer($button, 'Ability_'+ability.id);
+
+                $button.off('mouseenter').on('mouseenter', function(evt) {
+                    self._showAbilityTooltip(ability);
+                });
+                $button.off('mouseleave').on('mouseleave', function(evt) {
+                    self._hideAbilityTooltip();
+                });
             }
+
         },
 
         // todo removeAbilityFromBar... delete $abilityButton and abilityCooldown
@@ -400,6 +421,39 @@
             this._$abilityButtons[ability.id].toggleClass('not-enough-mana', isOom);
         },
 
+        _showAbilityTooltip: function(ability) {
+            this._abilityTooltip.ability = ability;
+            this._refreshAbilityTooltip();
+            this._abilityTooltip.$tip.show();
+        },
+
+        _hideAbilityTooltip: function() {
+            this._abilityTooltip.ability = null; // null out ability so tooltip stops refreshing
+            this._abilityTooltip.$tip.hide();
+        },
+
+        _refreshAbilityTooltip: function() {
+            var ability = this._abilityTooltip.ability;
+            if (!ability) {
+                return;
+            }
+
+            this._abilityTooltip.$name.html(ability.name);
+
+            var manaCost = (ability.manaCost.value() === 0) ? '' : (ability.manaCost.value() + ' Mana');
+            this._abilityTooltip.$manaCost.html(manaCost);
+
+            var castTime = (ability.castTime.value() === 0) ? 'Instant' : (ability.castTime.value() + ' sec cast');
+            this._abilityTooltip.$castTime.html(castTime);
+
+            var cooldown = (ability.cooldown.value() === 0) ? '' : (ability.cooldown.value() + ' sec cooldown');
+            this._abilityTooltip.$cooldown.html(cooldown);
+
+            var cooldownRemaining = ability.isReady() ? '' : ('Cooldown remaining: ' + Game.Util.round(ability.remainingCooldown()) + 'sec');
+            this._abilityTooltip.$cooldownRemaining.html(cooldownRemaining);
+
+            this._abilityTooltip.$description.html(ability.description);
+        },
 
 
 

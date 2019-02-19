@@ -54,7 +54,7 @@ body {
 }
 
 // Fit to content
-.flex-box .flex-row.flex-header {
+.flex-box .flex-row.header-bar {
   flex: 0 1 auto;
   /* The above is shorthand for:
   flex-grow: 0,
@@ -65,7 +65,7 @@ body {
 }
 
 // Fill content:
-.flex-box .flex-row.flex-content {
+.flex-box .flex-row.main-content {
   flex: 1 1 auto;
   //text-align: center;
   //background: #b2cfff;
@@ -74,10 +74,39 @@ body {
 }
 
 // Fixed height:
-.flex-box .flex-row.flex-footer {
+.flex-box .flex-row.bottom-bar {
   //flex: 0 1 5rem; // todo min height?
   flex: 0 1 auto; // fill to content
 }
+
+
+.main-content {
+  position: relative;
+
+  #ability-tooltip {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+
+    background: rgba(22,22,22,0.75);
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    color: white;
+    font-size: 0.875rem;
+
+    table {
+      margin-bottom: 0;
+    }
+    .name {
+      font-size: 1rem;
+    }
+    .description {
+      color: #ffd12c;
+      width: 17.5rem;
+    }
+  }
+}
+
 
 .bottom-bar {
   background: #71777d;

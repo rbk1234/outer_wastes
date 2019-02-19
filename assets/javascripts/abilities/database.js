@@ -16,6 +16,8 @@
             name: 'Heal',
             icon: 'hand-bandage',
             background: 'pink',
+            description: 'Heals a friendly target for 50.',
+
             requiresTarget: true,
             baseStats: {
                 manaCost: 20,
@@ -33,6 +35,8 @@
             name: 'Renew',
             icon: 'healing',
             background: 'green',
+            description: 'Heals a friendly target for 100 over 10 seconds.',
+
             requiresTarget: true,
             baseStats: {
                 manaCost: 20,
@@ -50,6 +54,8 @@
             name: 'Shield',
             icon: 'shield',
             background: 'sunny',
+            description: 'Shields a friendly target for 6 seconds, absorbing up to 50 damage.',
+
             requiresTarget: true,
             baseStats: {
                 manaCost: 30,

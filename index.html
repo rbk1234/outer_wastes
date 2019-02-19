@@ -32,7 +32,7 @@
   <![endif]-->
 
   <div class="flex-box">
-    <div class="flex-row flex-header">
+    <div class="flex-row header-bar">
       <div class="grid-x">
         <div class="cell auto">
           Header
@@ -44,7 +44,7 @@
         </div>
       </div>
     </div>
-    <div class="flex-row flex-content" style="position:relative;">
+    <div class="flex-row main-content" style="position:relative;">
       <div class="grid-x">
         <div class="cell small-6">
           <div id="ally-frames"></div>
@@ -53,6 +53,31 @@
           <div id="enemy-frames"></div>
         </div>
       </div>
+
+      <div id="ability-tooltip" hidden>
+        <table class="no-rows no-spacing">
+          <tbody>
+          <tr>
+            <td colspan="2" class="name"></td>
+          </tr>
+          <tr>
+            <td colspan="2" class="mana-cost"></td>
+          </tr>
+          <tr>
+            <td class="cast-time"></td>
+            <td class="cooldown text-right"></td>
+          </tr>
+          <tr>
+            <td colspan="2" class="cooldown-remaining"></td>
+          </tr>
+          <tr>
+            <td colspan="2" class="description"></td>
+          </tr>
+
+          </tbody>
+        </table>
+      </div>
+
       <div id="cast-bar" hidden>
         <div class="bar">
           <div class="bar-layer background" style="width:100%;"></div>
@@ -63,7 +88,7 @@
         </div>
       </div>
     </div>
-    <div class="flex-row flex-footer bottom-bar">
+    <div class="flex-row bottom-bar">
       <div id="player-bars" class="bottom-section">
         <div style="width:100%;">
           <div class="bar" id="player-health" style="margin-bottom:0.25rem;">
