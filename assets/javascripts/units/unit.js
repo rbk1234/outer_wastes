@@ -130,6 +130,10 @@
 
 
         addHealth: function(amount, healthSource) {
+            if (this.isDead()) {
+                return;
+            }
+
             if (Game.Util.roundForComparison(amount) < 0) {
                 console.warn('Cannot add a negative health amount: use takeDamage function.');
                 return;
@@ -145,6 +149,10 @@
             }
         },
         addMana: function(amount) {
+            if (this.isDead()) {
+                return;
+            }
+
             if (Game.Util.roundForComparison(amount) < 0) {
                 console.warn('Cannot add a negative energy amount: use consumeMana function.');
                 return;
@@ -163,7 +171,11 @@
             return amount;
         },
 
-        takeDamage: function(amount) {
+        takeDamage: function(amount, damageSource) {
+            if (this.isDead()) {
+                return;
+            }
+
             // todo apply damage reductions (iterate thru effects, armor)
 
             // Sort effects by duration (take shield from shortest duration first)
@@ -175,6 +187,10 @@
                 amount = effect.absorbDamage(amount);
             });
 
+            if (damageSource.id === Game.Player.id) {
+                Game.UserInterface.createFloatingText(this, '' + Game.Util.round(amount), 'damage');
+            }
+
             if (Game.Util.roundForComparison(this.health) > 0) {
                 this.health -= amount;
             }
@@ -184,6 +200,10 @@
             }
         },
         consumeMana: function(amount) {
+            if (this.isDead()) {
+                return;
+            }
+
             this.mana -= amount;
 
             if (Game.Util.roundForComparison(this.mana) <= 0) {
@@ -210,7 +230,7 @@
 
             if (target) {
                 //console.log(this.name + ' attacked ' + target.name + ' for ' + this.attackDamage.value());
-                target.takeDamage(this.attackDamage.value());
+                target.takeDamage(this.attackDamage.value(), this);
             }
         },
 
@@ -244,7 +264,7 @@
             this._castTarget = target;
 
             // todo check caster errors (e.g. if caster is dead)
-            if (this._hasCastTargetErrors() || this._hasManaError() || this._hasCooldownError()) {
+            if (this._hasCasterErrors() || this._hasCastTargetErrors() || this._hasManaError() || this._hasCooldownError()) {
                 return;
             }
 
@@ -282,9 +302,16 @@
             this._updateAllAbilityCooldowns(); // since global cd was undone, have to sync ability cooldowns
         },
 
-        // ability param is optional: if undefined, will check if casting ANY ability. if defined, will check if casting specific ability
         isCasting: function(ability) {
             return this._castProgress !== null;
+        },
+
+        _hasCasterErrors: function() {
+            if (this.isDead()) {
+                Game.Util.toast('Cannot cast while dead.');
+                return true;
+            }
+            return false;
         },
 
         _hasCastTargetErrors: function() {
@@ -330,7 +357,7 @@
             if (Game.Util.roundForComparison(this._castProgress) >= this._castTotal) {
                 // Check errors again in case state changed (e.g. target died during cast)
                 // Note: Not checking cooldown errors: short casts may be faster than GCD
-                if (this._hasCastTargetErrors() || this._hasManaError()) {
+                if (this._hasCasterErrors() || this._hasCastTargetErrors() || this._hasManaError()) {
                     this.cancelCast('Failed');
                     return;
                 }
@@ -341,7 +368,9 @@
 
         _castFinished: function() {
             this.consumeMana(this._castAbility.manaCost.value());
+
             this._castAbility.onCastComplete(this._castTarget);
+
             if (this._castProgress !== null) {
                 this._castProgress = null;
                 //Game.UserInterface.completeCastBar();

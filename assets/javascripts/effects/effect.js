@@ -17,15 +17,11 @@
             absorbAmount: 0
         },
         events: {
-            //onTick: function(affectedUnit, sourceUnit) {},
+            //onTick: function() {},
 
-            //onReceiveDamage: function(affectedUnit, damageAmount, damageSource, sourceUnit) {
-            //    // do nothing
-            //},
-            //
-            //// TODO Use these for things like STR buffs
-            //onGainEffect: function(affectedUnit, sourceUnit) {},
-            //onLoseEffect: function(affectedUnit, sourceUnit) {}
+            // TODO Use these for things like STR buffs?
+            //onGainEffect: function() {},
+            //onLoseEffect: function() {}
         },
 
         affectedUnit: null,
@@ -70,7 +66,7 @@
         _incrementPeriod: function(seconds) {
             this._periodLeft -= seconds;
             if (Game.Util.roundForComparison(this._periodLeft) <= 0) {
-                this.events.onTick(this.affectedUnit, this.sourceUnit);
+                Game.Util.makeCallback(this, this.events.onTick)();
 
                 // Add current _periodLeft to catch rollover
                 this._periodLeft = this.period.value() + this._periodLeft;

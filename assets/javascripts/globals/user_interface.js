@@ -449,7 +449,7 @@
             var cooldown = (ability.cooldown.value() === 0) ? '' : (ability.cooldown.value() + ' sec cooldown');
             this._abilityTooltip.$cooldown.html(cooldown);
 
-            var cooldownRemaining = ability.isReady() ? '' : ('Cooldown remaining: ' + Game.Util.round(ability.remainingCooldown()) + 'sec');
+            var cooldownRemaining = ability.isReady() ? '' : ('Cooldown remaining: ' + Game.Util.round(ability.remainingCooldown()) + ' sec');
             this._abilityTooltip.$cooldownRemaining.html(cooldownRemaining);
 
             this._abilityTooltip.$description.html(ability.description());

@@ -4,8 +4,8 @@
 
     Game.namespace('Abilities').Database = {
 
-        heal: {
-            name: 'Heal',
+        holyLight: {
+            name: 'Holy Light',
             icon: 'hand-bandage',
             background: 'pink',
             description: function() {
@@ -68,8 +68,8 @@
                             period: this.period.value()
                         },
                         events: {
-                            onTick: function(affectedUnit, sourceUnit) {
-                                affectedUnit.addHealth(healPerTick, sourceUnit)
+                            onTick: function() {
+                                this.affectedUnit.addHealth(healPerTick, this.sourceUnit);
                             }
                         }
                     });
@@ -78,15 +78,15 @@
             }
         },
 
-        shield: {
-            name: 'Shield',
+        blessedShield: {
+            name: 'Blessed Shield',
             icon: 'shield',
             background: 'sunny',
             description: function() {
                 return 'Shields a friendly target for ' + this.duration.value() + ' seconds, absorbing up to ' +
                     this.shieldBase.value() +
                     ' <span class="spell-power">(+' + (this.caster.spellPower.value() * this.shieldSpellPowerScaling.value()) + ')</span>' +
-                    ' damage.';
+                    ' damage. Provides ' + this.armorBase.value() + ' Armor while the shield holds.';
             },
 
             requiresTarget: true,
@@ -98,6 +98,7 @@
 
                 shieldBase: 50,
                 shieldSpellPowerScaling: 1,
+                armorBase: 10,
                 duration: 6
             },
             events: {
@@ -107,8 +108,61 @@
                             duration: this.duration.value(),
                             absorbAmount: this.shieldBase.value() + this.caster.spellPower.value() * this.shieldSpellPowerScaling.value()
                         }
+                        // TODO on gain effect -> gain armor, on lose effect -> lose armor
                     });
                     target.addEffect(effect);
+
+                }
+            }
+        },
+
+        holyNova: {
+            name: 'Holy Nova',
+            icon: 'explosion-rays',
+            background: 'yellow',
+            description: function() {
+                return 'Heals all allies for ' +
+                    this.healBase.value() +
+                    ' <span class="spell-power">(+' + (this.caster.spellPower.value() * this.healSpellPowerScaling.value()) + ')</span>' +
+                    ' and damages all enemies for ' +
+                    this.damageBase.value() +
+                    ' <span class="spell-power">(+' + (this.caster.spellPower.value() * this.damageSpellPowerScaling.value()) + ')</span>' +
+                    '.';
+            },
+            requiresTarget: false,
+            stats: {
+                manaCost: 50,
+                cooldown: 5,
+                castTime: 1.5,
+
+                healBase: 30,
+                healSpellPowerScaling: 1,
+                damageBase: 30,
+                damageSpellPowerScaling: 0.5
+            },
+            events: {
+                onCastComplete: function() {
+                    var self = this;
+
+                    var health = this.healBase.value() + this.caster.spellPower.value() * this.healSpellPowerScaling.value();
+                    var damage = this.damageBase.value() + this.caster.spellPower.value() * this.damageSpellPowerScaling.value();
+
+                    Game.UnitEngine.allies().forEach(function(ally) {
+                        ally.addHealth(health, self.caster)
+                    });
+                    Game.UnitEngine.enemies().forEach(function(enemy) {
+                        enemy.takeDamage(damage, self.caster)
+                    });
+                }
+            }
+        },
+
+        divineSpirit: {
+            events: {
+                onLearnAbility: function() {
+
+                },
+                onUnlearnAbility: function() {
 
                 }
             }

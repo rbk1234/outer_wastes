@@ -37,19 +37,22 @@
 
     Game.Player = new Game.Units.Ally('player');
 
-    var heal = new Game.Abilities.Ability('heal');
-    Game.Player.addAbility(heal);
-    Game.UserInterface.assignAbilityToBar(heal, 0);
+    var holyLight = new Game.Abilities.Ability('holyLight');
+    Game.Player.addAbility(holyLight);
+    Game.UserInterface.assignAbilityToBar(holyLight, 0);
 
     var renew = new Game.Abilities.Ability('renew');
     Game.Player.addAbility(renew);
     Game.UserInterface.assignAbilityToBar(renew, 1);
 
-    var shield = new Game.Abilities.Ability('shield');
-    Game.Player.addAbility(shield);
-    Game.UserInterface.assignAbilityToBar(shield, 2);
+    var blessedShield = new Game.Abilities.Ability('blessedShield');
+    Game.Player.addAbility(blessedShield);
+    Game.UserInterface.assignAbilityToBar(blessedShield, 2);
 
-    Game.UserInterface.assignAbilityToBar(null, 3);
+    var holyNova = new Game.Abilities.Ability('holyNova');
+    Game.Player.addAbility(holyNova);
+    Game.UserInterface.assignAbilityToBar(holyNova, 3);
+
     Game.UserInterface.assignAbilityToBar(null, 4);
     Game.UserInterface.assignAbilityToBar(null, 5);
 
@@ -60,7 +63,7 @@
     var room1 = new Game.Rooms.EnemyRoom(1);
     Game.Clock.run();
 
-    Game.UserInterface.targetUnit(native);
+    //Game.UserInterface.targetUnit(native);
 
 
 

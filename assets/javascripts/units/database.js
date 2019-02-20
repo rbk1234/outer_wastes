@@ -37,8 +37,8 @@
             },
             stats: {
                 maxHealth: 100,
-                maxMana: 150,
-                manaRegen: 3,
+                maxMana: 250,
+                manaRegen: 5,
                 attackSpeed: 1,
                 attackDamage: 5
             }
@@ -70,9 +70,9 @@
                 }
             },
             stats: {
-                maxHealth: 150,
+                maxHealth: 350,
                 attackSpeed: 0.75,
-                attackDamage: 5,
+                attackDamage: 15,
                 reward: 50
             }
         },
