@@ -57,7 +57,9 @@
     Game.Player.addAbility(divineSpirit);
     Game.UserInterface.assignAbilityToBar(divineSpirit, 3);
 
-    Game.UserInterface.assignAbilityToBar(null, 4);
+    var guardianAngel = new Game.Abilities.Ability('guardianAngel');
+    Game.Player.addAbility(guardianAngel);
+    Game.UserInterface.assignAbilityToBar(guardianAngel, 4);
 
     Game.UnitEngine.addAlly(Game.Player);
 

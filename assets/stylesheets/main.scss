@@ -407,6 +407,9 @@ body {
   border: 1px solid black;
   //border-radius: 0.375rem; // TODO Removing border-radius because it makes icons that go up to the edge look weird
 
+  // TODO HACK: If you have a border and leave the box-sizing at its default, the CooldownTimer spinner won't reach bottom
+  //box-sizing: content-box;
+
   cursor: pointer;
 
   &.pressed {
@@ -449,7 +452,7 @@ body {
   border-radius: 0.188rem;
 
   // TODO HACK: If you have a border and leave the box-sizing at its default, the CooldownTimer spinner won't reach bottom
-  box-sizing: content-box;
+  //box-sizing: content-box;
 
   line-height: inherit; // center text vertically
 
@@ -498,6 +501,9 @@ body {
   &.splashy-stream:before {
     content: url('icons/splashy-stream.svg');
   }
+  &.angel-outfit:before {
+    content: url('icons/angel-outfit.svg');
+  }
   &.explosion-rays:before {
     content: url('icons/explosion-rays.svg');
 
@@ -544,7 +550,12 @@ body {
   &.purple-blue {
     background: radial-gradient( circle farthest-corner at 3.6% 26.5%,  rgba(106,19,253,1) 0.1%, rgba(18,134,242,1) 90% );
   }
-
+  &.opal {
+    background: radial-gradient( circle 253px at 12.6% 77.9%,  rgba(221,255,214,1) 0.3%, rgba(214,254,254,1) 90.5% );
+  }
+  &.grey {
+    background: radial-gradient( circle farthest-corner at 10% 20%,  rgba(94,123,143,1) 0%, rgba(172,192,205,1) 90% );
+  }
 }
 
 

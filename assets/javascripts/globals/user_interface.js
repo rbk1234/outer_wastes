@@ -613,6 +613,12 @@
                 elapsed += iterations * period;
                 var percentComplete = elapsed / totalCooldown;
 
+                // For debugging:
+                //if (percentComplete >= 0.5) {
+                //    Game.Clock.clearInterval(self.clockKey);
+                //    return;
+                //}
+
                 if (Game.Util.roundForComparison(percentComplete) >= 1.0) {
                     self.endCooldown();
                 }

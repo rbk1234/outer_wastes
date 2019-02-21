@@ -256,7 +256,6 @@ body {
   margin-right: 0.25rem;
   border: 1px solid black;
   border-radius: 0.188rem;
-  box-sizing: content-box;
   line-height: inherit; }
   .effect .effect-name {
     display: block;
@@ -288,6 +287,8 @@ body {
     content: url("icons/mighty-force.svg"); }
   .action-bar-button.splashy-stream:before, .effect.splashy-stream:before {
     content: url("icons/splashy-stream.svg"); }
+  .action-bar-button.angel-outfit:before, .effect.angel-outfit:before {
+    content: url("icons/angel-outfit.svg"); }
   .action-bar-button.explosion-rays:before, .effect.explosion-rays:before {
     content: url("icons/explosion-rays.svg"); }
   .action-bar-button.blank, .effect.blank {
@@ -311,6 +312,10 @@ body {
     background: radial-gradient(circle farthest-corner at 8.2% 19.3%, #d0b6b1 0%, #edc392 90.1%); }
   .action-bar-button.purple-blue, .effect.purple-blue {
     background: radial-gradient(circle farthest-corner at 3.6% 26.5%, #6a13fd 0.1%, #1286f2 90%); }
+  .action-bar-button.opal, .effect.opal {
+    background: radial-gradient(circle 253px at 12.6% 77.9%, #ddffd6 0.3%, #d6fefe 90.5%); }
+  .action-bar-button.grey, .effect.grey {
+    background: radial-gradient(circle farthest-corner at 10% 20%, #5e7b8f 0%, #acc0cd 90%); }
 
 .tabs {
   background: transparent;

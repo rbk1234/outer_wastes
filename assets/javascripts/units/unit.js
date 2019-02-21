@@ -415,14 +415,29 @@
             var self = this;
 
             if (!this._isDead) {
-                this._isDead = true;
                 this.health = 0;
+
+                $(this).trigger('unit:beforeDeath');
+
+                if (this._preventNextDeath) {
+                    this._preventNextDeath = false;
+                    return;
+                }
+
+                this._isDead = true;
                 this.cancelCast();
 
                 // remove all effects
                 Game.Util.iterateObject(this._effects, function(id, effect) {
                     self.removeEffect(effect);
                 });
+            }
+        },
+
+        // Note: If you preventNextDeath, health will still be 0, so have to immediately heal unit
+        preventNextDeath: function() {
+            if (!this._isDead) {
+                this._preventNextDeath = true;
             }
         },
 

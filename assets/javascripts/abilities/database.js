@@ -254,7 +254,60 @@
                     this.caster.addEffect(manaReductionEffect);
                 }
             }
-        }
+        },
+
+        guardianAngel: {
+            name: 'Guardian Angel',
+            icon: 'angel-outfit',
+            background: 'opal',
+            description: function() {
+                return 'An angel empowers the target, granting ' +
+                    this.statBonuses.value() + ' Strength, Intellect, and Haste' +
+                    ' for ' + this.duration.value() + ' seconds.' +
+                    ' If the target dies during the effect, the angel will restore them to ' +
+                    (this.resurrectAmount.value() * 100) + '% health and end the effect.';
+            },
+            requiresTarget: true,
+            stats: {
+                manaCost: 50,
+                cooldown: 90,
+                castTime: 0,
+
+                statBonuses: 12,
+                duration: 10,
+                resurrectAmount: 0.5
+            },
+            events: {
+                'ability:castComplete': function(evt, target) {
+                    var ability = this;
+                    var caster = this.caster;
+
+                    var effect = this.createEffect({
+                        stats: {
+                            duration: this.duration.value()
+                        },
+                        events: {
+                            'effect:begin': function() {
+                                // todo improve str, etc.
+
+                                $(this.affectedUnit).on('unit:beforeDeath.guardianAngel', function() {
+                                    this.preventNextDeath();
+                                    this.addHealth(this.maxHealth.value() * ability.resurrectAmount.value(), caster);
+                                    this.removeEffect(effect);
+                                });
+                            },
+                            'effect:end': function() {
+                                // todo reduce str, etc.
+
+                                $(this.affectedUnit).off('unit:beforeDeath.guardianAngel');
+                            }
+                        }
+                    });
+                    target.addEffect(effect);
+                }
+            }
+        },
+
     };
 
 
