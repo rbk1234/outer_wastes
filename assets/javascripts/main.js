@@ -41,20 +41,23 @@
     Game.Player.addAbility(holyLight);
     Game.UserInterface.assignAbilityToBar(holyLight, 0);
 
-    var renew = new Game.Abilities.Ability('renew');
-    Game.Player.addAbility(renew);
-    Game.UserInterface.assignAbilityToBar(renew, 1);
+    //var renew = new Game.Abilities.Ability('renew');
+    //Game.Player.addAbility(renew);
+    //Game.UserInterface.assignAbilityToBar(renew, 1);
 
     var blessedShield = new Game.Abilities.Ability('blessedShield');
     Game.Player.addAbility(blessedShield);
-    Game.UserInterface.assignAbilityToBar(blessedShield, 2);
+    Game.UserInterface.assignAbilityToBar(blessedShield, 1);
 
     var holyNova = new Game.Abilities.Ability('holyNova');
     Game.Player.addAbility(holyNova);
-    Game.UserInterface.assignAbilityToBar(holyNova, 3);
+    Game.UserInterface.assignAbilityToBar(holyNova, 2);
+
+    var divineSpirit = new Game.Abilities.Ability('divineSpirit');
+    Game.Player.addAbility(divineSpirit);
+    Game.UserInterface.assignAbilityToBar(divineSpirit, 3);
 
     Game.UserInterface.assignAbilityToBar(null, 4);
-    Game.UserInterface.assignAbilityToBar(null, 5);
 
     Game.UnitEngine.addAlly(Game.Player);
 

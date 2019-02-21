@@ -56,6 +56,15 @@
         });
     };
 
+    Game.Util.initEvents = function(obj) {
+        var $obj = $(obj);
+        Game.Util.iterateObject(obj.events, function(eventType, callback) {
+            $obj.on(eventType, callback);
+        });
+    };
+
+
+
     Game.Util.toast = function(text) {
         if (!ENABLE_ERRORS) {
             return;
@@ -110,7 +119,7 @@
             return Math.round(num + EPSILON)
         }
         else {
-            var factor = 10 * numDecimals;
+            var factor = Math.pow(10, numDecimals);
             return Math.round((num + EPSILON) * factor) / factor;
         }
     };

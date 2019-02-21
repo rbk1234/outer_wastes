@@ -1,7 +1,7 @@
 /* This scss file is not included in index.html - it is used to generate main.css */
-/* Generate main.css by running
+/* Generate main.css by running:
 
-    sass assets/stylesheets/main.scss assets/stylesheets/main.css
+sass assets/stylesheets/main.scss assets/stylesheets/main.css
 
 */
 body {
@@ -284,6 +284,10 @@ body {
     content: url("icons/healing.svg"); }
   .action-bar-button.shield:before, .effect.shield:before {
     content: url("icons/shield.svg"); }
+  .action-bar-button.mighty-force:before, .effect.mighty-force:before {
+    content: url("icons/mighty-force.svg"); }
+  .action-bar-button.splashy-stream:before, .effect.splashy-stream:before {
+    content: url("icons/splashy-stream.svg"); }
   .action-bar-button.explosion-rays:before, .effect.explosion-rays:before {
     content: url("icons/explosion-rays.svg"); }
   .action-bar-button.blank, .effect.blank {
@@ -303,6 +307,10 @@ body {
     background: radial-gradient(circle farthest-corner at 10% 20%, #fddd00 0%, #f06b05 90%); }
   .action-bar-button.yellow, .effect.yellow {
     background: radial-gradient(circle farthest-corner at 10% 20%, #ffc87c 0%, #fcfb79 90%); }
+  .action-bar-button.beige, .effect.beige {
+    background: radial-gradient(circle farthest-corner at 8.2% 19.3%, #d0b6b1 0%, #edc392 90.1%); }
+  .action-bar-button.purple-blue, .effect.purple-blue {
+    background: radial-gradient(circle farthest-corner at 3.6% 26.5%, #6a13fd 0.1%, #1286f2 90%); }
 
 .tabs {
   background: transparent;

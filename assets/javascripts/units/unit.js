@@ -111,6 +111,7 @@
         },
 
         removeEffect: function(effect) {
+            effect.removeFromUnit(this);
             delete this._effects[effect.id];
             Game.UserInterface.removeEffect(this, effect);
         },
@@ -121,7 +122,8 @@
             var result = null;
 
             Game.Util.iterateObject(this._effects, function(effectId, existingEffect) {
-                if (existingEffect.sourceAbility.id === newEffect.sourceAbility.id) {
+                if (existingEffect.sourceAbility.id === newEffect.sourceAbility.id &&
+                    existingEffect.effectKey === newEffect.effectKey) {
                     result = existingEffect;
                 }
             });
@@ -237,13 +239,14 @@
         // ------------------------------------------------------------------ Abilities
         // A Unit can have many Abilities
 
+        abilities: function() {
+            return this._abilities;
+        },
         addAbility: function(ability) {
             ability.setCaster(this);
             this._abilities[ability.id] = ability;
         },
-        getAbility: function(abilityId) {
-            return this._abilities[abilityId];
-        },
+
         hasManaForAbility: function(ability) {
             return Game.Util.roundForComparison(this.mana) >= Game.Util.roundForComparison(ability.manaCost.value());
         },
@@ -255,7 +258,7 @@
                 return;
             }
 
-            this._castAbility = this.getAbility(abilityId);
+            this._castAbility = this.abilities()[abilityId];
             if (!this._castAbility) {
                 console.error('Unit ' + this.id + ' does not have ability ' + abilityId);
                 return;
@@ -367,9 +370,8 @@
         },
 
         _castFinished: function() {
-            this.consumeMana(this._castAbility.manaCost.value());
-
-            this._castAbility.onCastComplete(this._castTarget);
+            $(this._castAbility).trigger('ability:castComplete', this._castTarget);
+            $(this).trigger('unit:castComplete', [this._castAbility, this._castTarget]);
 
             if (this._castProgress !== null) {
                 this._castProgress = null;

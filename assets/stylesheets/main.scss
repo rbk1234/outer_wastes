@@ -1,7 +1,7 @@
 /* This scss file is not included in index.html - it is used to generate main.css */
-/* Generate main.css by running
+/* Generate main.css by running:
 
-    sass assets/stylesheets/main.scss assets/stylesheets/main.css
+sass assets/stylesheets/main.scss assets/stylesheets/main.css
 
 */
 
@@ -492,6 +492,12 @@ body {
   &.shield:before {
     content: url('icons/shield.svg');
   }
+  &.mighty-force:before {
+    content: url('icons/mighty-force.svg');
+  }
+  &.splashy-stream:before {
+    content: url('icons/splashy-stream.svg');
+  }
   &.explosion-rays:before {
     content: url('icons/explosion-rays.svg');
 
@@ -531,6 +537,12 @@ body {
   }
   &.yellow {
     background: radial-gradient( circle farthest-corner at 10% 20%, rgba(255,200,124,1) 0%, rgba(252,251,121,1) 90% );
+  }
+  &.beige {
+    background: radial-gradient( circle farthest-corner at 8.2% 19.3%,  rgba(208,182,177,1) 0%, rgba(237,195,146,1) 90.1% );;
+  }
+  &.purple-blue {
+    background: radial-gradient( circle farthest-corner at 3.6% 26.5%,  rgba(106,19,253,1) 0.1%, rgba(18,134,242,1) 90% );
   }
 
 }

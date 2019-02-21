@@ -17,13 +17,15 @@
             absorbAmount: 0
         },
         events: {
-            //onTick: function() {},
+            //'effect:periodicTick': function(evt) {},
 
             // TODO Use these for things like STR buffs?
-            //onGainEffect: function() {},
-            //onLoseEffect: function() {}
+            //'effect:begin': function(evt) {},
+            //'effect:end': function(evt) {},
         },
 
+        effectKey: null, // normally the same as the Ability key, but sometimes has a custom value if Ability spawns multiple Effects
+        sourceAbility: null,
         affectedUnit: null,
         sourceUnit: null
     };
@@ -39,6 +41,7 @@
             this.id = currentId++;
             $.extend(true, this, DEFAULTS, config);
             Game.Util.initStats(this);
+            Game.Util.initEvents(this);
 
             // init internals:
             this._durationLeft = this.duration.value();
@@ -56,6 +59,10 @@
 
         attachToUnit: function(unit) {
             this.affectedUnit = unit;
+            $(this).trigger('effect:begin');
+        },
+        removeFromUnit: function(unit) {
+            $(this).trigger('effect:end');
         },
 
         // inherit the existing period when refreshing an effect
@@ -66,7 +73,7 @@
         _incrementPeriod: function(seconds) {
             this._periodLeft -= seconds;
             if (Game.Util.roundForComparison(this._periodLeft) <= 0) {
-                Game.Util.makeCallback(this, this.events.onTick)();
+                $(this).trigger('effect:periodicTick');
 
                 // Add current _periodLeft to catch rollover
                 this._periodLeft = this.period.value() + this._periodLeft;

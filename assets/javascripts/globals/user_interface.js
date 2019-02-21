@@ -385,7 +385,7 @@
 
             // refreshes if buttons are oom or not
             Game.Util.iterateObject(this._$abilityButtons, function(abilityId, $button) {
-                var ability = Game.Player.getAbility(abilityId);
+                var ability = Game.Player.abilities()[abilityId];
                 self._toggleAbilityOom(ability, !Game.Player.hasManaForAbility(ability));
             });
         },
@@ -440,13 +440,13 @@
 
             this._abilityTooltip.$name.html(ability.name);
 
-            var manaCost = (ability.manaCost.value() === 0) ? '' : (ability.manaCost.value() + ' Mana');
+            var manaCost = (ability.manaCost.value() === 0) ? '' : (Game.Util.round(ability.manaCost.value()) + ' Mana');
             this._abilityTooltip.$manaCost.html(manaCost);
 
-            var castTime = (ability.castTime.value() === 0) ? 'Instant' : (ability.castTime.value() + ' sec cast');
+            var castTime = (ability.castTime.value() === 0) ? 'Instant' : (Game.Util.roundToDecimal(ability.castTime.value(), 2) + ' sec cast');
             this._abilityTooltip.$castTime.html(castTime);
 
-            var cooldown = (ability.cooldown.value() === 0) ? '' : (ability.cooldown.value() + ' sec cooldown');
+            var cooldown = (ability.cooldown.value() === 0) ? '' : (Game.Util.roundToDecimal(ability.cooldown.value(), 2) + ' sec cooldown');
             this._abilityTooltip.$cooldown.html(cooldown);
 
             var cooldownRemaining = ability.isReady() ? '' : ('Cooldown remaining: ' + Game.Util.round(ability.remainingCooldown()) + ' sec');

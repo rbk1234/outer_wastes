@@ -8,9 +8,7 @@
         requiresTarget: false,
         onGlobalCooldown: true,
         events: {
-            onCastComplete: function(target) {
-                // do nothing
-            }
+            //'ability:castComplete': function(evt, target) {},
         },
         stats: {
             manaCost: 20,
@@ -29,8 +27,16 @@
         _init: function(dbKey, config) {
             this.dbKey = dbKey;
             this.id = currentId++;
+            this.$eventHandler = $(this);
             $.extend(true, this, DEFAULTS, Game.Abilities.Database[dbKey], config);
             Game.Util.initStats(this);
+            Game.Util.initEvents(this);
+
+            // Standard events
+            this.$eventHandler.on('ability:castComplete', /**@this {Ability}*/ function(evt, target) {
+                this.caster.consumeMana(this.manaCost.value());
+                this._remainingCooldown = this.cooldown.value();
+            });
 
             this._remainingCooldown = 0;
         },
@@ -41,11 +47,7 @@
 
         setCaster: function(caster) {
             this.caster = caster;
-        },
-
-        onCastComplete: function(target) {
-            this._remainingCooldown = this.cooldown.value();
-            Game.Util.makeCallback(this, this.events.onCastComplete)(target);
+            this.$eventHandler.trigger('ability:learn');
         },
 
         isReady: function() {
@@ -66,6 +68,7 @@
         // Creates an Effect with the same icon/background as this Ability. Also sets sourceAbility/sourceUnit.
         createEffect: function(effectParams) {
             return new Game.Effects.Effect($.extend(true, {
+                effectKey: this.dbKey,
                 sourceAbility: this,
                 sourceUnit: this.caster,
                 icon: this.icon,
