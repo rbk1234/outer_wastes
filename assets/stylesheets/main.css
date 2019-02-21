@@ -291,6 +291,16 @@ body {
     content: url("icons/angel-outfit.svg"); }
   .action-bar-button.explosion-rays:before, .effect.explosion-rays:before {
     content: url("icons/explosion-rays.svg"); }
+  .action-bar-button.acorn:before, .effect.acorn:before {
+    content: url("icons/acorn.svg"); }
+  .action-bar-button.lotus-flower:before, .effect.lotus-flower:before {
+    content: url("icons/lotus-flower.svg"); }
+  .action-bar-button.light-thorny-triskelion:before, .effect.light-thorny-triskelion:before {
+    content: url("icons/light-thorny-triskelion.svg"); }
+  .action-bar-button.fairy:before, .effect.fairy:before {
+    content: url("icons/fairy.svg"); }
+  .action-bar-button.flowers:before, .effect.flowers:before {
+    content: url("icons/flowers.svg"); }
   .action-bar-button.blank, .effect.blank {
     background: #373737;
     /* Old browsers */
@@ -300,7 +310,7 @@ body {
     /* Chrome10-25,Safari5.1-6 */
     background: linear-gradient(to bottom, #373737 0%, #2c2c2c 44%, #212121 100%);
     /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */ }
-  .action-bar-button.green, .effect.green {
+  .action-bar-button.green-blue, .effect.green-blue {
     background: radial-gradient(circle farthest-corner at 10% 20%, #1ef05f 0%, #1428e1 90%); }
   .action-bar-button.pink, .effect.pink {
     background: linear-gradient(110.4deg, #fbcb9f 36%, #f489e9 82.4%); }
@@ -316,6 +326,28 @@ body {
     background: radial-gradient(circle 253px at 12.6% 77.9%, #ddffd6 0.3%, #d6fefe 90.5%); }
   .action-bar-button.grey, .effect.grey {
     background: radial-gradient(circle farthest-corner at 10% 20%, #5e7b8f 0%, #acc0cd 90%); }
+  .action-bar-button.black-red-yellow, .effect.black-red-yellow {
+    background: linear-gradient(108.5deg, #1e3b5e 4%, #fd1d3e 49.3%, #ffe05e 96%); }
+  .action-bar-button.purple-opal, .effect.purple-opal {
+    background: radial-gradient(circle farthest-corner at 10.6% 23.3%, #baa2fc 0%, #b0f8f2 72.4%); }
+  .action-bar-button.green-white, .effect.green-white {
+    background-image: radial-gradient(circle farthest-corner at 73.4% 82.3%, #255e17, #f6fdd5 90%); }
+  .action-bar-button.rainbow, .effect.rainbow {
+    background: linear-gradient(111.1deg, #e93500 11.3%, #c813d3 37.6%, #328ea2 76.6%, #278aff 113%); }
+  .action-bar-button.green-red, .effect.green-red {
+    background-image: radial-gradient(circle farthest-corner at 15.4% 10.2%, #9ee49e 0%, #ff5050 90%); }
+  .action-bar-button.brown, .effect.brown {
+    background-image: radial-gradient(circle farthest-corner at 73.4% 82.3%, #996633 0%, #d9b38c 90%); }
+  .action-bar-button.forest, .effect.forest {
+    background: linear-gradient(to top, #6c493e, #58e585);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ }
+  .action-bar-button.dracula, .effect.dracula {
+    background: #DC2424;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to top, #4A569D, #DC2424);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to top, #4A569D, #DC2424);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ }
 
 .tabs {
   background: transparent;

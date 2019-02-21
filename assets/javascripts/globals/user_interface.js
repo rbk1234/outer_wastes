@@ -73,9 +73,14 @@
             var self = this;
             Game.UnitEngine.allies().forEach(function(unit) {
                 self._createAllyFrame(unit);
+
+                self._loadUnitIntoFrame(unit);
             });
             Game.UnitEngine.enemies().forEach(function(unit) {
                 self._createEnemyFrame(unit);
+
+                self._loadUnitIntoFrame(unit);
+
             });
         },
 
@@ -117,7 +122,7 @@
                 class: 'ally-frame'
             }).appendTo($('#ally-frames'));
 
-            this._addEffectsArea($frame);
+            this._addEffectsArea($frame, unit);
             this._addHealthArea($frame, unit);
             this._addPortraitArea($frame, unit);
 
@@ -131,7 +136,7 @@
 
             this._addPortraitArea($frame, unit);
             this._addHealthArea($frame, unit);
-            this._addEffectsArea($frame);
+            this._addEffectsArea($frame, unit);
 
             this._$frames[unit.id] = $frame;
         },
@@ -144,7 +149,7 @@
             this._$portraitAreas[unit.id] = $area;
         },
 
-        _addEffectsArea: function($frame) {
+        _addEffectsArea: function($frame, unit) {
             $('<div></div>', {
                 class: 'effects-area'
             }).appendTo($frame);
@@ -199,6 +204,18 @@
             return barData;
         },
 
+
+
+
+        _loadUnitIntoFrame: function(unit) {
+            var self = this;
+
+            // load existing effects:
+            Game.Util.iterateObject(unit.effects(), function(effectId, effect) {
+                self.addEffect(unit, effect);
+            })
+        },
+
         _refreshUnitFrames: function() {
             var self = this;
 
@@ -213,7 +230,7 @@
         _refreshUnitFrame: function(unit) {
             var self = this;
 
-            var healthPercent = Game.Util.roundForComparison(unit.health / unit.maxHealth.value()) * 100 + '%';
+            var healthPercent = unit.percentHealth() + '%';
             this._$healthBars[unit.id].$progress.css('width', healthPercent);
             this._$healthBars[unit.id].$text.html(Game.Util.round(unit.health) + '/' + Game.Util.round(unit.maxHealth.value()));
 
@@ -244,7 +261,7 @@
             var $effectsArea = this._$frames[unit.id].find('.effects-area');
 
             var $effect = $('<div></div>', {
-                class: 'effect ' + effect.icon + ' ' + effect.background
+                class: 'effect ' + effect.icon + ' ' + effect.background + ' ' + (effect.hidden ? 'hidden' : '')
             }).appendTo($effectsArea);
 
             if (unit.isAlly()) {
@@ -268,9 +285,12 @@
             }).appendTo($effect);
 
             var timer = new CooldownTimer($effect, 'Effect_'+effect.id, true);
-            var totalCooldown = effect.duration.value();
-            var elapsed = totalCooldown - effect.durationLeft();
-            timer.startCooldown(totalCooldown, elapsed);
+
+            if (effect.hasDuration) {
+                var totalCooldown = effect.duration.value();
+                var elapsed = totalCooldown - effect.durationLeft();
+                timer.startCooldown(totalCooldown, elapsed);
+            }
 
             this._effects[effect.id] = {
                 $effect: $effect,
@@ -290,9 +310,11 @@
             this._effects[newEffect.id] = this._effects[oldEffect.id];
             delete this._effects[oldEffect.id];
 
-            var totalCooldown = newEffect.duration.value();
-            var elapsed = totalCooldown - newEffect.durationLeft();
-            this._effects[newEffect.id].timer.startCooldown(totalCooldown, elapsed);
+            if (newEffect.hasDuration) {
+                var totalCooldown = newEffect.duration.value();
+                var elapsed = totalCooldown - newEffect.durationLeft();
+                this._effects[newEffect.id].timer.startCooldown(totalCooldown, elapsed);
+            }
         },
 
 

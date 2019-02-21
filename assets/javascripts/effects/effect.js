@@ -11,10 +11,16 @@
 
     var DEFAULTS = {
         name: 'unknown',
+
+        hasDuration: true,
+        hidden: false, // whether is shows up in the UI
+
         stats: {
-            duration: 5,
+            duration: 0,
             period: false,
-            absorbAmount: 0
+            absorbAmount: 0,
+
+            maxStacks: 1
         },
         events: {
             //'effect:periodicTick': function(evt) {},
@@ -27,7 +33,8 @@
         effectKey: null, // normally the same as the Ability key, but sometimes has a custom value if Ability spawns multiple Effects
         sourceAbility: null,
         affectedUnit: null,
-        sourceUnit: null
+        sourceUnit: null,
+
     };
 
     var currentId = 1;
@@ -50,7 +57,9 @@
         },
 
         update: function(seconds) {
-            this._durationLeft -= seconds;
+            if (this.hasDuration) {
+                this._durationLeft -= seconds;
+            }
 
             if (this._hasPeriodicEffect()) {
                 this._incrementPeriod(seconds);
@@ -93,6 +102,10 @@
         },
 
         isExpired: function() {
+            if (!this.hasDuration) {
+                return false;
+            }
+
             // return true if expired, false if not expired
             if (Game.Util.roundForComparison(this._durationLeft) <= 0) {
                 return true;

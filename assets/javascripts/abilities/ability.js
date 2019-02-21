@@ -67,14 +67,18 @@
 
         // Creates an Effect with the same icon/background as this Ability. Also sets sourceAbility/sourceUnit.
         createEffect: function(effectParams) {
-            return new Game.Effects.Effect($.extend(true, {
+            return new Game.Effects.Effect($.extend(true, this.defaultEffectParams(), effectParams));
+        },
+
+        // When this ability spawns an Effect, use these defaults
+        defaultEffectParams: function() {
+            return {
                 effectKey: this.dbKey,
                 sourceAbility: this,
                 sourceUnit: this.caster,
                 icon: this.icon,
                 background: this.background
-            }, effectParams));
-
+            };
         }
 
 

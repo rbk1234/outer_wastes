@@ -308,6 +308,302 @@
             }
         },
 
+
+        livingSeed: {
+            name: 'Living Seed',
+            icon: 'acorn',
+            background: 'forest',
+            description: function() {
+                return 'Heals a friendly target for ' +
+                    this.healBase.value() +
+                    ' <span class="spell-power">(+' + (this.caster.spellPower.value() * this.healSpellPowerScaling.value()) + ')</span>' +
+                    ' over ' + this.duration.value() + ' seconds,' +
+                    ' or damages an enemy for ' +
+                    this.damageBase.value() +
+                    ' <span class="spell-power">(+' + (this.caster.spellPower.value() * this.damageSpellPowerScaling.value()) + ')</span>' +
+                    ' over ' + this.duration.value() + ' seconds.';
+            },
+
+            requiresTarget: true,
+
+            stats: {
+                manaCost: 20,
+                cooldown: 0,
+                castTime: 0,
+
+                maxStacks: 1,
+                healBase: 100,
+                healSpellPowerScaling: 1,
+                damageBase: 60,
+                damageSpellPowerScaling: 0.6,
+                duration: 12,
+                period: 1
+            },
+            events: {
+                'ability:castComplete': function (evt, target) {
+                    Game.Util.makeCallback(this, this.applyLivingSeed)(target);
+                }
+            },
+
+            // Pull this part out into a separate function so we can call it independently (for overgrowth Ability)
+            applyLivingSeed: function(target) {
+                var totalAmount;
+                if (target.isAlly()) {
+                    totalAmount = this.healBase.value() + this.caster.spellPower.value() * this.healSpellPowerScaling.value();
+                }
+                else {
+                    totalAmount = this.damageBase.value() + this.caster.spellPower.value() * this.damageSpellPowerScaling.value();
+                }
+                var numTicks = this.duration.value() / this.period.value();
+                var amountPerTick = totalAmount / numTicks;
+
+                var effect = this.createEffect({
+                    stats: {
+                        maxStacks: this.maxStacks.value(),
+                        duration: this.duration.value(),
+                        period: this.period.value()
+                    },
+                    events: {
+                        'effect:periodicTick': function() {
+                            if (target.isAlly()) {
+                                this.affectedUnit.addHealth(amountPerTick, this.sourceUnit);
+                            }
+                            else {
+                                this.affectedUnit.takeDamage(amountPerTick, this.sourceUnit);
+                            }
+                        }
+                    }
+                });
+                target.addEffect(effect);
+            }
+        },
+
+
+        bloom: {
+            name: 'Bloom',
+            icon: 'lotus-flower',
+            background: 'green-blue',
+            description: function() {
+                return 'Heals a friendly target for ' +
+                    this.healBase.value() +
+                    ' <span class="spell-power">(+' + (this.caster.spellPower.value() * this.healSpellPowerScaling.value()) + ')</span>' +
+                    '. Heal is increased by ' + (this.livingSeedBonus.value() * 100) +
+                    '% for each Living Seed on the target.';
+            },
+
+            requiresTarget: true,
+
+            stats: {
+                manaCost: 20,
+                cooldown: 3,
+                castTime: 1.5,
+
+                healBase: 60,
+                healSpellPowerScaling: 1,
+
+                livingSeedBonus: 0.3
+            },
+            events: {
+                'ability:castComplete': function(evt, target) {
+                    var heal = this.healBase.value() + this.caster.spellPower.value() * this.healSpellPowerScaling.value();
+
+                    var livingSeedAbility = this.caster.abilityForDbKey('livingSeed');
+                    var numLivingSeeds = target.existingEffects(livingSeedAbility.defaultEffectParams()).length;
+
+                    heal += heal * (this.livingSeedBonus.value() * numLivingSeeds);
+
+                    target.addHealth(heal, this.caster);
+                }
+            }
+        },
+
+        naturesGrasp: {
+            name: "Nature's Grasp",
+            icon: 'light-thorny-triskelion',
+            background: 'dracula',
+            description: function() {
+                return 'Roots latch on to the enemy, reducing their Attack Speed by ' +
+                    (this.attackSpeedReduction.value() * 100) +
+                    '% for ' + this.duration.value() + ' seconds.' +
+                    '. If a Living Seed is on the target it will burst, instantly dealing ' +
+                    this.burstBase.value() +
+                    ' <span class="spell-power">(+' + (this.caster.spellPower.value() * this.burstSpellPowerScaling.value()) + ')</span>' +
+                    ' damage.';
+            },
+
+            requiresTarget: true,
+
+            stats: {
+                manaCost: 20,
+                cooldown: 3,
+                castTime: 1.5,
+
+                attackSpeedReduction: 0.2,
+                duration: 12,
+
+                burstBase: 40,
+                burstSpellPowerScaling: 0.8
+            },
+            events: {
+                'ability:castComplete': function(evt, target) {
+                    var effect = this.createEffect({
+                        stats: {
+                            duration: this.duration.value()
+                        },
+                        events: {
+                            'effect:begin': function() {
+                            },
+                            'effect:end': function() {
+                            }
+                        }
+                    });
+                    target.addEffect(effect);
+
+                    var livingSeedAbility = this.caster.abilityForDbKey('livingSeed');
+                    var numLivingSeeds = target.existingEffects(livingSeedAbility.defaultEffectParams()).length;
+                    if (numLivingSeeds) {
+                        var damage = (numLivingSeeds * (this.burstBase.value() + this.caster.spellPower.value() * this.burstSpellPowerScaling.value()));
+                        target.takeDamage(damage, this.caster);
+                    }
+
+                }
+            }
+        },
+
+        friendOfTheForest: {
+            name: 'Friend of the Forest',
+            icon: 'fairy',
+            background: 'purple-opal',
+            description: function() {
+                return 'Passive: The faerie periodically heals allies for ' +
+                    this.healBase.value() +
+                    ' <span class="spell-power">(+' + (this.caster.spellPower.value() * this.healSpellPowerScaling.value()) + ')</span>' +
+                    '.<br><br>' +
+                    'Active: The faerie casts Gift of the Forest on the target, increasing their Armor by ' +
+                    this.armorBonus.value() + ' and Attack Damage by ' + this.attackDamageBonus.value() +
+                    ' for ' + this.giftOfTheWildDuration.value() + ' seconds.';
+            },
+            requiresTarget: true,
+            onGlobalCooldown: false,
+            stats: {
+                manaCost: 0,
+                cooldown: 60,
+                castTime: 0,
+
+                // periodic heal:
+                period: 3,
+                healBase: 30,
+                healSpellPowerScaling: 0.5,
+
+                // gift of the wild:
+                armorBonus: 5,
+                attackDamageBonus: 20,
+                giftOfTheWildDuration: 10
+            },
+            events: {
+                'ability:learn': function() {
+                    var friendOfTheForest = this;
+
+                    var friendOfTheForestEffect = this.createEffect({
+                        hasDuration: false,
+                        hidden: true,
+                        stats: {
+                            period: this.period.value()
+                        },
+                        events: {
+                            'effect:periodicTick': function() {
+                                var lowestHealthUnit = null;
+                                Game.UnitEngine.allies().forEach(function(unit) {
+                                    if (unit.percentHealth() < 100 &&
+                                        (!lowestHealthUnit || unit.percentHealth() < lowestHealthUnit.percentHealth())) {
+                                        lowestHealthUnit = unit;
+                                    }
+                                });
+                                if (lowestHealthUnit) {
+                                    var heal = friendOfTheForest.healBase.value() +
+                                        friendOfTheForest.caster.spellPower.value() * friendOfTheForest.healSpellPowerScaling.value();
+                                    lowestHealthUnit.addHealth(heal, this.sourceUnit);
+                                }
+                            }
+                        }
+                    });
+                    this.caster.addEffect(friendOfTheForestEffect);
+                },
+                // TODO: will this ever happen?
+                'ability:unlearn': function() {
+                    //$(this.caster).off('unit:castComplete.divineSpirit');
+                },
+                'ability:castComplete': function(evt, target) {
+                    var friendOfTheForest = this;
+
+                    var giftOfTheWildEffect = this.createEffect({
+                        stats: {
+                            armorBonus: this.armorBonus.value(),
+                            attackDamageBonus: this.attackDamageBonus.value(),
+                            duration: this.giftOfTheWildDuration.value()
+                        },
+                        effectKey: 'friendOfTheForest_gotw', // differentiate this Effect from normal Effect
+                        events: {
+                            'effect:begin': function() {
+                                target.attackDamage.adder += friendOfTheForest.attackDamageBonus.value();
+                                // todo armor
+                            },
+                            'effect:end': function() {
+                                target.attackDamage.adder -= friendOfTheForest.attackDamageBonus.value();
+                                // todo armor
+                            }
+                        }
+                    });
+                    target.addEffect(giftOfTheWildEffect);
+                }
+            }
+        },
+
+        overgrowth: {
+            name: 'Overgrowth',
+            icon: 'flowers',
+            background: 'green-red',
+            description: function() {
+                return 'Passive: You can stack up to ' + (this.extraLivingSeeds.value() + 1) + ' Living Seeds on a target.<br><br>' +
+                    'Active: Apply Living Seeds to all allies and enemies';
+            },
+            requiresTarget: false,
+            stats: {
+                manaCost: 80,
+                cooldown: 55,
+                castTime: 3,
+
+                extraLivingSeeds: 1
+            },
+            events: {
+                'ability:learn': function() {
+                    var livingSeedAbility = this.caster.abilityForDbKey('livingSeed');
+                    livingSeedAbility.maxStacks.adder += this.extraLivingSeeds.value();
+                },
+                'ability:unlearn': function() {
+                    var livingSeedAbility = this.caster.abilityForDbKey('livingSeed');
+                    livingSeedAbility.maxStacks.adder -= this.extraLivingSeeds.value();
+                },
+                'ability:castComplete': function(evt, target) {
+                    var livingSeedAbility = this.caster.abilityForDbKey('livingSeed');
+
+                    Game.UnitEngine.allies().forEach(function(ally) {
+                        if (!ally.isDead()) {
+                            Game.Util.makeCallback(livingSeedAbility, livingSeedAbility.applyLivingSeed)(ally);
+                        }
+                    });
+                    Game.UnitEngine.enemies().forEach(function(enemy) {
+                        if (!enemy.isDead()) {
+                            Game.Util.makeCallback(livingSeedAbility, livingSeedAbility.applyLivingSeed)(enemy);
+                        }
+                    });
+                }
+            }
+        },
+
+
+
+
     };
 
 

@@ -57,6 +57,10 @@
 
             // update effects, remove effect if expired
             Game.Util.iterateObject(this._effects, function(id, effect) {
+                if (!effect) {
+                    return; // The effect may have been deleted while iterating (e.g. unit died from previous effect)
+                }
+
                 effect.update(seconds);
                 if (effect.isExpired()) {
                     self.removeEffect(effect);
@@ -119,15 +123,38 @@
         // if a caster already has casted an effect on this unit, return that effect
         // This is used to ensure you can't stack an effect multiple times on a unit
         existingEffect: function(newEffect) {
-            var result = null;
+            var matchingEffects = this.existingEffects(newEffect);
 
-            Game.Util.iterateObject(this._effects, function(effectId, existingEffect) {
-                if (existingEffect.sourceAbility.id === newEffect.sourceAbility.id &&
-                    existingEffect.effectKey === newEffect.effectKey) {
-                    result = existingEffect;
+            if (newEffect.maxStacks.value() > 1) {
+                if (matchingEffects.length < newEffect.maxStacks.value()) {
+                    return false; // still have room
+                }
+                else {
+                    // find one with shortest duration
+                    var shortestDurationEffect = null;
+                    matchingEffects.forEach(function(effect) {
+                        if (!shortestDurationEffect || effect.durationLeft() < shortestDurationEffect.durationLeft()) {
+                            shortestDurationEffect = effect;
+                        }
+                    });
+                    return shortestDurationEffect;
+                }
+            }
+            else {
+                return matchingEffects[0];
+            }
+        },
+        existingEffects: function(effect) {
+            var matchingEffects = [];
+
+            Game.Util.iterateObject(this._effects, function(existingEffectId, existingEffect) {
+                if (existingEffect.sourceAbility.id === effect.sourceAbility.id &&
+                    existingEffect.effectKey === effect.effectKey) {
+                    matchingEffects.push(existingEffect);
                 }
             });
-            return result;
+
+            return matchingEffects;
         },
 
 
@@ -236,6 +263,10 @@
             }
         },
 
+        percentHealth: function() {
+            return Game.Util.roundForComparison(this.health / this.maxHealth.value()) * 100
+        },
+
         // ------------------------------------------------------------------ Abilities
         // A Unit can have many Abilities
 
@@ -245,6 +276,15 @@
         addAbility: function(ability) {
             ability.setCaster(this);
             this._abilities[ability.id] = ability;
+        },
+        abilityForDbKey: function(abilityDbKey) {
+            var matchingAbility = null;
+            Game.Util.iterateObject(this._abilities, function(abilityId, ability) {
+                if (ability.dbKey === abilityDbKey) {
+                    matchingAbility = ability;
+                }
+            });
+            return matchingAbility;
         },
 
         hasManaForAbility: function(ability) {
