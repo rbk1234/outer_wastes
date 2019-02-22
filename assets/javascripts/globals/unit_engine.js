@@ -12,8 +12,7 @@
         init: function() {
             var self = this;
 
-            this._allies = [];
-            this._enemies = [];
+            this._teams = {}; // team id -> [Units on that team]
 
             // Start clock
             Game.Clock.setInterval(CLOCK_KEY, function(iterations, period) {
@@ -29,84 +28,63 @@
                     //    iterations -= iterations;
                     //}
                 }
-
-                // Only draw once (no matter how many iterations)
-                //self._refreshUnitFrames();
-                //Game.UserInterface.update();
-
             }, 1.0 / UPDATES_PER_SECOND);
         },
-        
-        addAlly: function(ally) {
-            this._allies.push(ally);
+
+        addUnit: function(unit) {
+            if (!this._teams[unit.teamId]) {
+                this._teams[unit.teamId] = [];
+            }
+            this._teams[unit.teamId].push(unit);
         },
-        addEnemy: function(enemy) {
-            this._enemies.push(enemy);
+
+        clearTeam: function(teamId) {
+            delete this._teams[teamId];
         },
-        clearEnemies: function() {
-            this._enemies = [];
+
+        unitsForTeam: function(teamId) {
+            return this._teams[teamId] || [];
         },
-        allies: function() {
-            return this._allies;
-        },
-        enemies: function() {
-            return this._enemies;
+
+        highestThreatEnemy: function(unit) {
+            return this.highestThreatOnTeam(this.opposingTeamId(unit.teamId));
         },
 
         // TODO Just returning first in array atm
-        highestThreatAlly: function() {
-            for (var i = 0; i < this._allies.length; i++) {
-                var ally = this._allies[i];
-                if (!ally.isDead()) {
-                    return ally;
+        highestThreatOnTeam: function(teamId) {
+            var units = this.unitsForTeam(teamId);
+
+            for (var i = 0; i < units.length; i++) {
+                var unit = units[i];
+                if (!unit.isDead()) {
+                    return unit;
                 }
             }
             return null;
         },
 
-        // TODO Just returning first in array atm
-        highestThreatEnemy: function() {
-            for (var i = 0; i < this._enemies.length; i++) {
-                var enemy = this._enemies[i];
-                if (!enemy.isDead()) {
-                    return enemy;
-                }
-            }
-            return null;
+        opposingTeamId: function(teamId) {
+            return teamId === Game.Constants.teamIds.player ? Game.Constants.teamIds.computer : Game.Constants.teamIds.player;
         },
 
-        // should handle regenning health, mana, cooldowns, attacking dealing damage, etc.
+
         _update: function(seconds) {
-            var self = this;
-
-            // check if complete
-            var allAlliesDead = true;
-            var allEnemiesDead = true;
-            this._allies.forEach(function(ally) {
-                if (!ally.isDead()) {
-                    allAlliesDead = false;
-                }
+            var playerTeamAlive = this.unitsForTeam(Game.Constants.teamIds.player).some(function(unit) {
+                return !unit.isDead();
             });
-            this._enemies.forEach(function(enemy) {
-                if (!enemy.isDead()) {
-                    allEnemiesDead = false;
-                }
+            var computerTeamAlive = this.unitsForTeam(Game.Constants.teamIds.computer).some(function(unit) {
+                return !unit.isDead();
             });
-
-            if (allAlliesDead || allEnemiesDead) {
+            if (!playerTeamAlive || !computerTeamAlive) {
                 // todo level complete!
                 //console.log('stop');
                 //this.clearEnemies();
             }
 
-            // Update allies
-            this._allies.forEach(function(ally) {
-                ally.update(seconds);
-            });
-
-            // Update enemies
-            this._enemies.forEach(function(enemy) {
-                enemy.update(seconds);
+            Game.Util.iterateObject(this._teams, function(teamId, units) {
+                units.forEach(function(unit) {
+                    unit.update(seconds);
+                });
             });
         }
     };

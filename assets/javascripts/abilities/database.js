@@ -22,7 +22,7 @@
                 cooldown: 0,
                 castTime: 2,
 
-                healBase: 60,
+                healBase: 75,
                 healSpellPowerScaling: 1
             },
             events: {
@@ -96,10 +96,10 @@
                 cooldown: 8,
                 castTime: 0,
 
-                shieldBase: 50,
+                shieldBase: 70,
                 shieldSpellPowerScaling: 1,
                 armorBase: 10,
-                duration: 6
+                duration: 7
             },
             events: {
                 'ability:castComplete': function (evt, target) {
@@ -135,10 +135,10 @@
                 cooldown: 5,
                 castTime: 1.5,
 
-                healBase: 30,
+                healBase: 40,
                 healSpellPowerScaling: 1,
-                damageBase: 30,
-                damageSpellPowerScaling: 0.5
+                damageBase: 40,
+                damageSpellPowerScaling: 0.75
             },
             events: {
                 'ability:castComplete': function(evt, target) {
@@ -147,10 +147,10 @@
                     var health = this.healBase.value() + this.caster.spellPower.value() * this.healSpellPowerScaling.value();
                     var damage = this.damageBase.value() + this.caster.spellPower.value() * this.damageSpellPowerScaling.value();
 
-                    Game.UnitEngine.allies().forEach(function(ally) {
+                    this.caster.allies().forEach(function(ally) {
                         ally.addHealth(health, self.caster)
                     });
-                    Game.UnitEngine.enemies().forEach(function(enemy) {
+                    this.caster.enemies().forEach(function(enemy) {
                         enemy.takeDamage(damage, self.caster)
                     });
                 }
@@ -176,9 +176,9 @@
                 cooldown: 60,
                 castTime: 0,
 
-                healBase: 30,
+                healBase: 40,
                 healSpellPowerScaling: 0.5,
-                duration: 10,
+                duration: 8,
                 period: 1,
 
                 haste: 5,
@@ -215,7 +215,7 @@
                                 createDivineSpiritEffect(target);
                                 break;
                             case 'holyNova':
-                                Game.UnitEngine.allies().forEach(function(ally) {
+                                divineSpirit.caster.allies().forEach(function(ally) {
                                     createDivineSpiritEffect(ally);
                                 });
                                 break;
@@ -348,7 +348,7 @@
             // Pull this part out into a separate function so we can call it independently (for overgrowth Ability)
             applyLivingSeed: function(target) {
                 var totalAmount;
-                if (target.isAlly()) {
+                if (this.caster.isAlliesWith(target)) {
                     totalAmount = this.healBase.value() + this.caster.spellPower.value() * this.healSpellPowerScaling.value();
                 }
                 else {
@@ -365,7 +365,7 @@
                     },
                     events: {
                         'effect:periodicTick': function() {
-                            if (target.isAlly()) {
+                            if (this.sourceUnit.isAlliesWith(target)) {
                                 this.affectedUnit.addHealth(amountPerTick, this.sourceUnit);
                             }
                             else {
@@ -395,7 +395,7 @@
 
             stats: {
                 manaCost: 20,
-                cooldown: 3,
+                cooldown: 0,
                 castTime: 1.5,
 
                 healBase: 60,
@@ -435,7 +435,7 @@
 
             stats: {
                 manaCost: 20,
-                cooldown: 3,
+                cooldown: 0,
                 castTime: 1.5,
 
                 attackSpeedReduction: 0.2,
@@ -513,7 +513,7 @@
                         events: {
                             'effect:periodicTick': function() {
                                 var lowestHealthUnit = null;
-                                Game.UnitEngine.allies().forEach(function(unit) {
+                                friendOfTheForest.caster.allies().forEach(function(unit) {
                                     if (unit.percentHealth() < 100 &&
                                         (!lowestHealthUnit || unit.percentHealth() < lowestHealthUnit.percentHealth())) {
                                         lowestHealthUnit = unit;
@@ -587,12 +587,12 @@
                 'ability:castComplete': function(evt, target) {
                     var livingSeedAbility = this.caster.abilityForDbKey('livingSeed');
 
-                    Game.UnitEngine.allies().forEach(function(ally) {
+                    this.caster.allies().forEach(function(ally) {
                         if (!ally.isDead()) {
                             Game.Util.makeCallback(livingSeedAbility, livingSeedAbility.applyLivingSeed)(ally);
                         }
                     });
-                    Game.UnitEngine.enemies().forEach(function(enemy) {
+                    this.caster.enemies().forEach(function(enemy) {
                         if (!enemy.isDead()) {
                             Game.Util.makeCallback(livingSeedAbility, livingSeedAbility.applyLivingSeed)(enemy);
                         }

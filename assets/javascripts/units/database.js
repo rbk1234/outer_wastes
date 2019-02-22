@@ -70,9 +70,9 @@
                 }
             },
             stats: {
-                maxHealth: 350,
-                attackSpeed: 0.75,
-                attackDamage: 15,
+                maxHealth: 500,
+                attackSpeed: 0.6,
+                attackDamage: 20,
                 reward: 50
             }
         },
@@ -112,7 +112,7 @@
                 }
             },
             stats: {
-                maxHealth: 200,
+                maxHealth: 400,
                 attackSpeed: 0.5,
                 attackDamage: 20,
                 reward: 50

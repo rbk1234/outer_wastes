@@ -52,7 +52,7 @@
 
         // ----------------------------------------------------- Unit frame setup and Targeting
 
-        // todo should we just call this after every UnitEngine addAlly/addEnemy?
+        // todo should we just call this after every UnitEngine addUnit?
         loadUnits: function() {
             // clear out old frames
             $('#ally-frames').empty();
@@ -71,12 +71,12 @@
             //this._$effectDurations = {}; // effect id -> duration span
 
             var self = this;
-            Game.UnitEngine.allies().forEach(function(unit) {
+            Game.UnitEngine.unitsForTeam(Game.Constants.teamIds.player).forEach(function(unit) {
                 self._createAllyFrame(unit);
 
                 self._loadUnitIntoFrame(unit);
             });
-            Game.UnitEngine.enemies().forEach(function(unit) {
+            Game.UnitEngine.unitsForTeam(Game.Constants.teamIds.computer).forEach(function(unit) {
                 self._createEnemyFrame(unit);
 
                 self._loadUnitIntoFrame(unit);
@@ -219,10 +219,10 @@
         _refreshUnitFrames: function() {
             var self = this;
 
-            Game.UnitEngine.allies().forEach(function(ally) {
+            Game.UnitEngine.unitsForTeam(Game.Constants.teamIds.player).forEach(function(ally) {
                 self._refreshUnitFrame(ally);
             });
-            Game.UnitEngine.enemies().forEach(function(enemy) {
+            Game.UnitEngine.unitsForTeam(Game.Constants.teamIds.computer).forEach(function(enemy) {
                 self._refreshUnitFrame(enemy);
             });
         },
@@ -264,7 +264,7 @@
                 class: 'effect ' + effect.icon + ' ' + effect.background + ' ' + (effect.hidden ? 'hidden' : '')
             }).appendTo($effectsArea);
 
-            if (unit.isAlly()) {
+            if (unit.teamId === Game.Constants.teamIds.player) {
                 $effect.prependTo($effectsArea);
             }
             else {

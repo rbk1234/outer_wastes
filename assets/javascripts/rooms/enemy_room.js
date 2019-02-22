@@ -26,7 +26,8 @@
             var self = this;
 
             this.enemies.forEach(function(enemyDbKey) {
-                Game.UnitEngine.addEnemy(new Game.Units.Enemy(enemyDbKey));
+                Game.UnitEngine.addUnit(new Game.Units.Unit(enemyDbKey, {teamId: Game.Constants.teamIds.computer}));
+
             });
 
             Game.UserInterface.loadUnits();

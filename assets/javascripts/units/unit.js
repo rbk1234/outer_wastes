@@ -3,6 +3,7 @@
     'use strict';
 
     var DEFAULTS = {
+        teamId: null,
         stats: {
             maxHealth: 1,
             maxMana: 1,
@@ -33,7 +34,7 @@
             // init internals
             this.health = this.maxHealth.value();
             this.mana = this.maxMana.value();
-            this._attackTimer = Math.random() * 0.2; // remaining time until next attack. Initialize with random wait
+            this._attackTimer = Math.random() * 0.5; // remaining time until next attack. Initialize with random wait
 
             this._effects = {};
 
@@ -115,9 +116,13 @@
         },
 
         removeEffect: function(effect) {
-            effect.removeFromUnit(this);
-            delete this._effects[effect.id];
-            Game.UserInterface.removeEffect(this, effect);
+            // Only remove Effect if it still exists on the Unit. In rare cases an Effect might be removed
+            // by two different actions in a single loop (e.g. target dies & effect expires same time).
+            if (this._effects[effect.id]) {
+                effect.removeFromUnit(this);
+                delete this._effects[effect.id];
+                Game.UserInterface.removeEffect(this, effect);
+            }
         },
 
         // if a caster already has casted an effect on this unit, return that effect
@@ -241,7 +246,24 @@
         },
 
         highestThreatTarget: function() {
-            console.error('Must be overridden');
+            return Game.UnitEngine.highestThreatEnemy(this);
+        },
+
+        // Note: Includes self
+        allies: function() {
+            return Game.UnitEngine.unitsForTeam(this.teamId);
+        },
+
+        enemies: function() {
+            return Game.UnitEngine.unitsForTeam(Game.UnitEngine.opposingTeamId(this.teamId));
+        },
+
+        isAlliesWith: function(unit) {
+            return unit.teamId === this.teamId;
+        },
+
+        isEnemiesWith: function(unit) {
+            return unit.teamId === Game.UnitEngine.opposingTeamId(this.teamId);
         },
 
         _incrementAttack: function(seconds) {
@@ -433,7 +455,9 @@
         _updateAbilityCooldown: function(ability) {
             var totalCooldown, elapsed;
 
-            if (this._globalCooldown === null || ability.remainingCooldown() > this._globalCooldown) {
+            if (!ability.onGlobalCooldown ||
+                this._globalCooldown === null ||
+                ability.remainingCooldown() > this._globalCooldown) {
                 // show ability cooldown
                 totalCooldown = ability.cooldown.value();
                 elapsed = totalCooldown - ability.remainingCooldown();
@@ -485,12 +509,6 @@
             return this._isDead;
         },
 
-        isAlly: function() {
-            return false;
-        },
-        isEnemy: function() {
-            return false;
-        },
 
 
         //image: function() {
