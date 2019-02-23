@@ -40,7 +40,7 @@
 
     Game.UserInterface.loadUnits();
 
-    if (true) {
+    if (false) {
         var holyLight = new Game.Abilities.Ability('holyLight');
         Game.Player.addAbility(holyLight);
         Game.UserInterface.assignAbilityToBar(holyLight, 0);

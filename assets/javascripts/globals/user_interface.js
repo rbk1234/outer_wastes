@@ -34,6 +34,7 @@
         init: function() {
             var self = this;
 
+            this._initFrames();
             this._initCastBar();
             this._initAbilityBar();
             this._initPlayerBars();
@@ -51,6 +52,77 @@
 
 
         // ----------------------------------------------------- Unit frame setup and Targeting
+
+        _initFrames: function() {
+            var self = this;
+
+            // -------- Can use keyboard arrow keys to target units:
+
+            function targetFirstAlly() {
+                self.targetUnit(Game.UnitEngine.unitsForTeam(Game.Constants.teamIds.player)[0]);
+            }
+
+            // UP arrow
+            Game.Keyboard.registerKey(38, function() {
+                var index = Game.UnitEngine.indexOfUnit(self._targetedUnit);
+                if (index === null) {
+                    targetFirstAlly();
+                }
+                else {
+                    // target previous unit in same team
+                    if (index > 0) {
+                        self.targetUnit(Game.UnitEngine.unitsForTeam(self._targetedUnit.teamId)[index - 1]);
+                    }
+                }
+            });
+
+            // DOWN arrow
+            Game.Keyboard.registerKey(40, function() {
+                var index = Game.UnitEngine.indexOfUnit(self._targetedUnit);
+                if (index === null) {
+                    targetFirstAlly();
+                }
+                else {
+                    // target next unit in same team
+                    var units = Game.UnitEngine.unitsForTeam(self._targetedUnit.teamId);
+                    if (index < (units.length - 1)) {
+                        self.targetUnit(units[index + 1]);
+                    }
+                }
+            });
+
+            // LEFT arrow
+            Game.Keyboard.registerKey(37, function() {
+                var index = Game.UnitEngine.indexOfUnit(self._targetedUnit);
+                if (index === null) {
+                    targetFirstAlly();
+                }
+                else {
+                    // target player unit of same index
+                    var units = Game.UnitEngine.unitsForTeam(Game.Constants.teamIds.player);
+                    if (index >= units.length) {
+                        index = units.length - 1; // In case computer had more units than player
+                    }
+                    self.targetUnit(units[index]);
+                }
+            });
+
+            // RIGHT arrow
+            Game.Keyboard.registerKey(39, function() {
+                var index = Game.UnitEngine.indexOfUnit(self._targetedUnit);
+                if (index === null) {
+                    targetFirstAlly();
+                }
+                else {
+                    // target computer unit of same index
+                    var units = Game.UnitEngine.unitsForTeam(Game.Constants.teamIds.computer);
+                    if (index >= units.length) {
+                        index = units.length - 1; // In case player had more units than computer
+                    }
+                    self.targetUnit(units[index]);
+                }
+            });
+        },
 
         // todo should we just call this after every UnitEngine addUnit?
         loadUnits: function() {

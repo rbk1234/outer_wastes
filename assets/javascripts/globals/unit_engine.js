@@ -67,6 +67,20 @@
             return teamId === Game.Constants.teamIds.player ? Game.Constants.teamIds.computer : Game.Constants.teamIds.player;
         },
 
+        indexOfUnit: function(searchUnit) {
+            if (!searchUnit) {
+                return null;
+            }
+
+            var units = Game.UnitEngine.unitsForTeam(searchUnit.teamId);
+
+            for (var i = 0; i < units.length; i++) {
+                if (units[i].id === searchUnit.id) {
+                    return i;
+                }
+            }
+            return null;
+        },
 
         _update: function(seconds) {
             var playerTeamAlive = this.unitsForTeam(Game.Constants.teamIds.player).some(function(unit) {
