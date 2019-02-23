@@ -206,6 +206,57 @@ body {
       color: white;
       text-shadow: 1px 1px 1px #000; }
 
+#mana-globe {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  border-radius: 50%;
+  border: 1px solid #555;
+  background: radial-gradient(circle at 50% 10%, #062745, #055194 50%, #34909f 100%);
+  overflow: hidden;
+  position: relative; }
+  #mana-globe .shadow {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.1) 40%, rgba(0, 0, 0, 0) 50%);
+    transform: rotateX(90deg) translateZ(-50px);
+    z-index: -1;
+    bottom: 0; }
+  #mana-globe .empty {
+    width: 100%;
+    height: 40%;
+    background: #71777d; }
+  #mana-globe .surface {
+    width: 100%;
+    position: absolute;
+    top: 37%;
+    height: 3%;
+    background: #4b7599; }
+
+#mana-globe:before {
+  content: "";
+  position: absolute;
+  top: 6%;
+  left: 5%;
+  width: 90%;
+  height: 90%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 0px, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0) 58%);
+  filter: blur(5px);
+  z-index: 2; }
+
+.stage {
+  width: 100px;
+  height: 100px;
+  display: inline-block;
+  perspective: 400px;
+  perspective-origin: 50% 50%;
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem; }
+
 .action-bar-button, .effect {
   display: inline-block;
   position: relative;
