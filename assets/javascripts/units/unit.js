@@ -328,7 +328,6 @@
 
             this._castTarget = target;
 
-            // todo check caster errors (e.g. if caster is dead)
             if (this._hasCasterErrors() || this._hasCastTargetErrors() || this._hasManaError() || this._hasCooldownError()) {
                 return;
             }
@@ -380,17 +379,13 @@
         },
 
         _hasCastTargetErrors: function() {
-            if (this._castAbility.requiresTarget) {
-                if (this._castTarget === null) {
-                    Game.Util.toast('Target is required.');
-                    return true;
-                }
-                if (this._castTarget.isDead()) {
-                    Game.Util.toast('Target is dead.');
-                    return true;
-                }
+            if (this._castAbility.canTargetUnit(this._castTarget)) {
+                return false;
             }
-            return false;
+            else {
+                Game.Util.toast('Invalid target.');
+                return true;
+            }
         },
         _hasManaError: function() {
             if (this.hasManaForAbility(this._castAbility)) {
@@ -495,6 +490,8 @@
                 Game.Util.iterateObject(this._effects, function(id, effect) {
                     self.removeEffect(effect);
                 });
+
+                Game.UserInterface.unitDied(this);
             }
         },
 

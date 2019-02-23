@@ -16,7 +16,9 @@
             },
 
             requiresTarget: true,
-
+            allowedTargets: {
+                ally: true
+            },
             stats: {
                 manaCost: 20,
                 cooldown: 0,
@@ -45,7 +47,9 @@
             },
 
             requiresTarget: true,
-
+            allowedTargets: {
+                ally: true
+            },
             stats: {
                 manaCost: 20,
                 cooldown: 0,
@@ -90,7 +94,9 @@
             },
 
             requiresTarget: true,
-
+            allowedTargets: {
+                ally: true
+            },
             stats: {
                 manaCost: 30,
                 cooldown: 8,
@@ -268,6 +274,9 @@
                     (this.resurrectAmount.value() * 100) + '% health and end the effect.';
             },
             requiresTarget: true,
+            allowedTargets: {
+                ally: true
+            },
             stats: {
                 manaCost: 50,
                 cooldown: 90,
@@ -325,7 +334,10 @@
             },
 
             requiresTarget: true,
-
+            allowedTargets: {
+                ally: true,
+                enemy: true
+            },
             stats: {
                 manaCost: 20,
                 cooldown: 0,
@@ -392,7 +404,9 @@
             },
 
             requiresTarget: true,
-
+            allowedTargets: {
+                ally: true
+            },
             stats: {
                 manaCost: 20,
                 cooldown: 0,
@@ -432,7 +446,9 @@
             },
 
             requiresTarget: true,
-
+            allowedTargets: {
+                enemy: true
+            },
             stats: {
                 manaCost: 20,
                 cooldown: 0,
@@ -484,6 +500,9 @@
                     ' for ' + this.giftOfTheWildDuration.value() + ' seconds.';
             },
             requiresTarget: true,
+            allowedTargets: {
+                ally: true
+            },
             onGlobalCooldown: false,
             stats: {
                 manaCost: 0,

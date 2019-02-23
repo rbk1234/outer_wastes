@@ -85,18 +85,41 @@
         },
 
         targetedUnit: function() {
-            return this._targetedUnit;
+            return this._targetedUnitOverride ? this._targetedUnitOverride : this._targetedUnit;
         },
 
         clearTarget: function() {
             this._targetedUnit = null;
             $('.health-area').removeClass('targeted');
+
+            this._refreshAbilityTargets();
         },
 
         targetUnit: function(unit) {
-            this.clearTarget(); // remove targeting circle from old target
+            // Remove targeting circle from any old target. Note: Not calling clearTarget for small performance gain
             this._targetedUnit = unit;
+            $('.health-area').removeClass('targeted');
+
+            // Add targeting circle to new target
             this._$healthAreas[unit.id].addClass('targeted');
+            
+            this._refreshAbilityTargets();
+        },
+
+        // Targets a unit but doesn't show the white targeting circle around the unit in the UI
+        // Used for things like alt-self-casting
+        overrideTargetUnit: function(unit) {
+            this._targetedUnitOverride = unit;
+            this._refreshAbilityTargets();
+        },
+
+        clearTargetOverride: function() {
+            this._targetedUnitOverride = null;
+            this._refreshAbilityTargets();
+        },
+
+        unitDied: function(unit) {
+            this._refreshAbilityTargets();
         },
 
         createFloatingText: function(unit, text, textClass) {
@@ -326,9 +349,21 @@
         // ----------------------------------------------------- Ability Bar
 
         _initAbilityBar: function() {
-            // Esc key
+            var self = this;
+
+            // Esc key (cancel cast)
             Game.Keyboard.registerKey(27, function() {
                 Game.Player.cancelCast('Interrupted');
+            });
+
+            // alt key (self cast modifier)
+            Game.Keyboard.registerKey(18, function() {
+                // With this here we can immediately update ability target requirements as soon as alt is pressed
+                self.overrideTargetUnit(Game.Player);
+            }, function() {
+                // Note: Can't depend on catching this (e.g. hold alt then switch to another window)
+                //       So we also clear override if altKey is not pressed during actual ability click
+                self.clearTargetOverride();
             });
 
             this._$abilityButtons = {}; // ability id -> $button
@@ -366,20 +401,25 @@
                 $button.addClass(ability.background);
             }
 
-            $button.off('click').on('click', function(evt) {
+            // Cast the ability, taking the mouse/button evt into account
+            function castAbilityWithEvt(evt) {
                 if (ability) {
-                    var target = evt.altKey ? Game.Player : self.targetedUnit();
-                    Game.Player.castAbility(ability.id, target);
+                    if (self._targetedUnitOverride && !evt.altKey) {
+                        self.clearTargetOverride(); // Backup catch - in case alt key was released in other window
+                    }
+                    Game.Player.castAbility(ability.id, self.targetedUnit());
                 }
+            }
+
+            $button.off('click').on('click', function(evt) {
+                castAbilityWithEvt(evt);
             });
+            // TODO _toggleButtonPressed on mousedown/mouseup (like keyboard)... but mouseup isn't called if you drag off the button
 
             var keyCode = this._keyCodeForAbilityIndex(index);
             if (keyCode !== null) {
                 Game.Keyboard.registerKey(keyCode, function(evt) {
-                    if (ability) {
-                        var target = evt.altKey ? Game.Player : self.targetedUnit();
-                        Game.Player.castAbility(ability.id, target);
-                    }
+                    castAbilityWithEvt(evt);
                     self._toggleButtonPressed($button, true);
                 }, function(evt) {
                     self._toggleButtonPressed($button, false);
@@ -405,10 +445,20 @@
         _refreshAbilityBar: function() {
             var self = this;
 
-            // refreshes if buttons are oom or not
+            // refreshes if buttons disabled or not based on mana
             Game.Util.iterateObject(this._$abilityButtons, function(abilityId, $button) {
                 var ability = Game.Player.abilities()[abilityId];
-                self._toggleAbilityOom(ability, !Game.Player.hasManaForAbility(ability));
+                self._toggleAbilityManaReq(ability, !Game.Player.hasManaForAbility(ability));
+            });
+        },
+        
+        _refreshAbilityTargets: function() {
+            var self = this;
+
+            // refreshes if buttons are disabled or not based on target
+            Game.Util.iterateObject(this._$abilityButtons, function(abilityId, $button) {
+                var ability = Game.Player.abilities()[abilityId];
+                self._toggleAbilityTargetReq(ability, !ability.canTargetUnit(self.targetedUnit()));
             });
         },
 
@@ -439,8 +489,12 @@
             this._$abilityButtons[ability.id].toggleClass('casting', isCasting);
         },
 
-        _toggleAbilityOom: function(ability, isOom) {
-            this._$abilityButtons[ability.id].toggleClass('not-enough-mana', isOom);
+        _toggleAbilityManaReq: function(ability, notEnoughMana) {
+            this._$abilityButtons[ability.id].toggleClass('not-enough-mana', notEnoughMana);
+        },
+
+        _toggleAbilityTargetReq: function(ability, invalidTarget) {
+            this._$abilityButtons[ability.id].toggleClass('invalid-target', invalidTarget);
         },
 
         _showAbilityTooltip: function(ability) {
