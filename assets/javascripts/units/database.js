@@ -76,6 +76,15 @@
                 reward: 50
             }
         },
+        wolf: {
+            name: 'Wolf',
+            stats: {
+                maxHealth: 300,
+                attackSpeed: 0.8,
+                attackDamage: 10,
+                reward: 10
+            }
+        },
         native: {
             name: 'Native',
             animations: {

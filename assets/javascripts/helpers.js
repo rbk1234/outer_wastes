@@ -210,6 +210,10 @@
         return true;
     };
 
+    Game.Util.randomFromArray = function(array) {
+        return array[Math.floor(Math.random() * array.length)];
+    };
+
     // Adds commas to break up large numbers: 12345.6789 => 12,345.6789
     Game.Util.numberWithCommas = function(number) {
         var parts = number.toString().split(".");

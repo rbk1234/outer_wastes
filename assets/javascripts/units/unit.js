@@ -102,6 +102,8 @@
                 Game.UserInterface.addEffect(this, effect);
                 this._effects[effect.id] = effect;
             }
+
+            this._checkForCombat(effect.sourceUnit);
         },
 
         refreshEffect: function(oldEffect, newEffect) {
@@ -209,6 +211,8 @@
             if (this.isDead()) {
                 return;
             }
+
+            this._checkForCombat(damageSource);
 
             // todo apply damage reductions (iterate thru effects, armor)
 
@@ -466,6 +470,18 @@
             }
         },
 
+
+
+
+
+        // Check for start of combat
+        _checkForCombat: function(source) {
+            if (!Game.UnitEngine.inCombat()) {
+                if (this.teamId === Game.Constants.teamIds.computer && this.isEnemiesWith(source)) {
+                    Game.UnitEngine.enterCombat();
+                }
+            }
+        },
 
 
 

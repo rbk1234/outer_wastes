@@ -5,6 +5,15 @@ sass assets/stylesheets/main.scss assets/stylesheets/main.css
 
 */
 
+// mother earth palette https://lospec.com/palette-list/mother-earth
+$top-bar-bg: #384d52;
+$main-content-bg: #4a806b;
+$main-frames-bg: #96c083;
+$bottom-bar-bg: #bfa17a;
+$bottom-bar-border: #3e2d2e;
+$navigation-menu: #3e2d2e;
+
+
 body {
   font-family: "Roboto Condensed", sans-serif;
 }
@@ -61,7 +70,17 @@ body {
   flex-shrink: 1,
   flex-basis: auto
   */
-  background: grey;
+  background: $top-bar-bg;
+  color: white;
+}
+
+.flex-box .flex-row.subheader-bar {
+  flex: 0 1 auto;
+  background: $main-content-bg;
+  color: white;
+
+  padding: 0.25rem;
+  padding-bottom: 0;
 }
 
 // Fill content:
@@ -69,14 +88,19 @@ body {
   flex: 1 1 auto;
   //text-align: center;
   //background: #b2cfff;
-  background: #a7cbd5; // http://colorpalettes.net/color-palette-3750/
   padding: 2px;
+
+  background: $main-content-bg;
+  color: white;
 }
 
 // Fixed height:
 .flex-box .flex-row.bottom-bar {
   //flex: 0 1 5rem; // todo min height?
   flex: 0 1 auto; // fill to content
+
+  background: $bottom-bar-bg;
+  border: 2px solid $bottom-bar-border;
 }
 
 
@@ -88,15 +112,12 @@ body {
     bottom: 1rem;
     right: 1rem;
 
-    background: rgba(22,22,22,0.75);
+    background: rgba(22,22,22,1);
     padding: 0.5rem;
     border-radius: 0.25rem;
     color: white;
     font-size: 0.875rem;
 
-    table {
-      margin-bottom: 0;
-    }
     .name {
       font-size: 1rem;
     }
@@ -114,7 +135,6 @@ body {
 
 
 .bottom-bar {
-  background: #71777d;
 
   display: flex;
   flex-flow: row;
@@ -162,9 +182,50 @@ body {
   }
 }
 
-#ally-frames, #enemy-frames {
-  padding: 1rem;
+
+.side-container {
+  // handles spacing between the left and right side without using margins (margins mess with 100% height). Uses padding instead.
+
+  height: 100%;
+  padding: 0.5rem;
+  padding-top: 0;
+
+  .side-background {
+    display: flex;
+    flex-flow: column;
+
+    height: 100%;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    background: $main-frames-bg;
+
+    #ally-frames, #enemy-frames {
+      //height: 100%;
+
+      flex: 1 1 auto; // fill content
+
+    }
+
+    #navigation-panel {
+      flex: 0 1 auto; // fill to content
+    }
+
+  }
 }
+.game-over {
+  border-radius: 0.313rem;
+  background: $navigation-menu;
+
+  .skull {
+    height: 3rem;
+    width: 3rem;
+  }
+  .skull:before {
+    content: url('icons/skull-crack.svg');
+  }
+}
+
+
 .ally-frame, .enemy-frame {
   display: flex;
   flex-flow: row;
@@ -639,6 +700,7 @@ td.nostretch, th.nostretch {
 }
 table {
   background: transparent;
+  margin-bottom: 0;
   tbody {
     background: transparent;
     border: none;
@@ -663,6 +725,10 @@ table.no-spacing {
   }
 }
 
+.button {
+  border-radius: 0.313rem;
+  margin-bottom: 0;
+}
 
 
 

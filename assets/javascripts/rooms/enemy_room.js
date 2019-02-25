@@ -15,12 +15,9 @@
             Game.Rooms.Room.prototype._init.apply(this, arguments);
 
             this._loadEnemies();
-        },
 
-        //kill: function() {
-        //    Game.Rooms.Room.prototype.kill.apply(this, arguments);
-        //
-        //},
+            this._initComplete();
+        },
 
         _loadEnemies: function() {
             var self = this;
@@ -30,7 +27,7 @@
 
             });
 
-            Game.UserInterface.loadUnits();
+            Game.UserInterface.loadUnitFrames();
         }
 
     });

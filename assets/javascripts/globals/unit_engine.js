@@ -13,6 +13,8 @@
             var self = this;
 
             this._teams = {}; // team id -> [Units on that team]
+            
+            this._inCombat = false; 
 
             // Start clock
             Game.Clock.setInterval(CLOCK_KEY, function(iterations, period) {
@@ -47,6 +49,10 @@
         },
 
         highestThreatEnemy: function(unit) {
+            if (!this.inCombat()) {
+                return null;
+            }
+
             return this.highestThreatOnTeam(this.opposingTeamId(unit.teamId));
         },
 
@@ -82,16 +88,32 @@
             return null;
         },
 
+        inCombat: function() {
+            return this._inCombat;
+        },
+        enterCombat: function() {
+            this._inCombat = true;
+            Game.UserInterface.updateCombatStatus();
+        },
+        leaveCombat: function() {
+            this._inCombat = false;
+            Game.UserInterface.updateCombatStatus();
+        },
+        isPlayerTeamAlive: function() {
+            return this._isTeamAlive(Game.Constants.teamIds.player);
+        },
+        isComputerTeamAlive: function() {
+            return this._isTeamAlive(Game.Constants.teamIds.computer);
+        },
+        _isTeamAlive: function(teamId) {
+            return this.unitsForTeam(teamId).some(function(unit) {
+                return !unit.isDead();
+            });
+        },
+
         _update: function(seconds) {
-            var playerTeamAlive = this.unitsForTeam(Game.Constants.teamIds.player).some(function(unit) {
-                return !unit.isDead();
-            });
-            var computerTeamAlive = this.unitsForTeam(Game.Constants.teamIds.computer).some(function(unit) {
-                return !unit.isDead();
-            });
-            if (!playerTeamAlive || !computerTeamAlive) {
-                // todo level complete!
-                //console.log('stop');
+            if (!this.isPlayerTeamAlive() || !this.isComputerTeamAlive()) {
+                this.leaveCombat();
                 //this.clearEnemies();
             }
 

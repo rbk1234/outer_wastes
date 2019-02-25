@@ -30,15 +30,12 @@
     Game.Log.logMessage('Initializing 2...');
     Game.Log.logMessage('Initializing 3...');
 
-    // just init room 1
 
     var native = new Game.Units.Unit('native', {teamId: Game.Constants.teamIds.player});
     Game.UnitEngine.addUnit(native);
 
     Game.Player = new Game.Units.Unit('player', {teamId: Game.Constants.teamIds.player});
     Game.UnitEngine.addUnit(Game.Player);
-
-    Game.UserInterface.loadUnits();
 
     if (true) {
         var holyLight = new Game.Abilities.Ability('holyLight');
@@ -83,12 +80,12 @@
         Game.UserInterface.assignAbilityToBar(overgrowth, 4);
     }
 
-
-
-
-    var room1 = new Game.Rooms.EnemyRoom(1);
-
+    Game.UserInterface.loadUnitFrames();
     Game.Clock.run();
+
+
+    var forest = new Game.Levels.Level('forest');
+    forest.loadRandomEnemyRoom();
 
     Game.UserInterface.targetUnit(native);
 

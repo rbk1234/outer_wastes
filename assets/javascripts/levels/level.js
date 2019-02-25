@@ -20,8 +20,27 @@
             this.id = currentId++;
             $.extend(true, this, DEFAULTS, Game.Levels.Database[dbKey], config);
             Game.Util.initStats(this);
-        }
 
+            this._currentRoomIndex = 0; // Note: 1-based
+
+            Game.Levels.currentLevel = this; // todo where to store this?
+        },
+
+        loadRandomEnemyRoom: function() {
+            this._loadRoom(Game.Util.randomFromArray(this.enemyRooms))
+        },
+
+        currentRoomIndex: function() {
+            return this._currentRoomIndex;
+        },
+
+        _loadRoom: function(roomDbKey) {
+            Game.UnitEngine.clearTeam(Game.Constants.teamIds.computer);
+
+            this._currentRoomIndex += 1;
+
+            new Game.Rooms.EnemyRoom(roomDbKey);
+        }
 
     };
 

@@ -122,10 +122,43 @@
                     self.targetUnit(units[index]);
                 }
             });
+
+            this._$navigationPanel = $('#navigation-panel');
+            this._$engageCombat = this._$navigationPanel.find('#engage-combat');
+            this._$nextRoom = this._$navigationPanel.find('#next-room');
+            this._$engageCombat.off('click').on('click', function(evt) {
+                evt.preventDefault();
+                Game.UnitEngine.enterCombat();
+            });
+
+            this._$navigationPanel.find('.restart').off('click').on('click', function(evt) {
+                location.reload();
+            });
+
+            this._$nextRoom.off('click').on('click', function(evt) {
+                evt.preventDefault();
+                Game.Levels.currentLevel.loadRandomEnemyRoom();
+            })
+
+        },
+
+        updateCombatStatus: function() {
+            this._$engageCombat.prop('disabled', Game.UnitEngine.inCombat() || !Game.UnitEngine.isComputerTeamAlive());
+            this._$nextRoom.toggleClass('invisible', Game.UnitEngine.isComputerTeamAlive());
+
+            if (!Game.UnitEngine.isPlayerTeamAlive()) {
+                this._$navigationPanel.find('.normal-navigation').hide();
+                $('.game-over').show();
+            }
+        },
+
+        newRoomLoaded: function(room) {
+            var level = Game.Levels.currentLevel;
+            $('#level-info').html(level.name + '&emsp;&mdash;&emsp; Room ' + level.currentRoomIndex() + ' / ' + level.numRooms);
         },
 
         // todo should we just call this after every UnitEngine addUnit?
-        loadUnits: function() {
+        loadUnitFrames: function() {
             // clear out old frames
             $('#ally-frames').empty();
             $('#enemy-frames').empty();
@@ -154,6 +187,8 @@
                 self._loadUnitIntoFrame(unit);
 
             });
+
+            this.updateCombatStatus();
         },
 
         targetedUnit: function() {
