@@ -46,6 +46,7 @@ body {
   flex: 0 1 auto;
   background: #4a806b;
   color: white;
+  font-weight: bold;
   padding: 0.25rem;
   padding-bottom: 0; }
 
@@ -93,10 +94,8 @@ body {
     .bottom-bar #player-bars #player-health {
       margin-bottom: 0.25rem; }
 
-#cast-bar .bar {
-  height: 1.5rem; }
-  #cast-bar .bar .bar-text {
-    text-align: center; }
+.border-bottom-white {
+  border-bottom: 1px solid white; }
 
 .side-container {
   height: 100%;
@@ -107,13 +106,10 @@ body {
     flex-flow: column;
     height: 100%;
     padding: 0.5rem;
+    padding-top: 0;
     border-radius: 0.5rem;
-    background: #384d52;
+    background: transparent;
     color: white; }
-    .side-container .side-background #room-info {
-      padding: 0.5rem;
-      border-radius: 0.313rem;
-      flex: 0 1 auto; }
     .side-container .side-background .spacer {
       flex: 1 1 auto; }
     .side-container .side-background #ally-frames, .side-container .side-background #enemy-frames {
@@ -122,6 +118,10 @@ body {
       margin: 0.5rem;
       border-color: white; }
     .side-container .side-background #navigation-panel {
+      padding: 0.5rem;
+      border-radius: 0.313rem;
+      background: #3e2d2e;
+      color: white;
       flex: 0 1 auto; }
 
 .game-over {
@@ -149,22 +149,29 @@ body {
     padding: 0.2rem;
     position: relative; }
   .ally-frame .health-area, .enemy-frame .health-area {
-    flex: 0 0 10rem;
+    flex: 0 0 12rem;
     background: #444;
     border-radius: 0.25rem;
     padding: 0.2rem;
     color: white;
     cursor: pointer;
-    border: 1.5px solid #acacac; }
+    border: 1.5px solid transparent; }
     .ally-frame .health-area.targeted, .enemy-frame .health-area.targeted {
-      border: 1.5px solid #ffac24;
+      border: 1.5px solid white;
       box-shadow: 0 0 3px 1px #555; }
-  .ally-frame .effects-area, .enemy-frame .effects-area {
+  .ally-frame .effects-and-cast-area, .enemy-frame .effects-and-cast-area {
     flex: 1 1 auto;
     padding: 0.25rem; }
+    .ally-frame .effects-and-cast-area .effects-area, .enemy-frame .effects-and-cast-area .effects-area {
+      height: 1.5rem; }
+    .ally-frame .effects-and-cast-area .cast-area, .enemy-frame .effects-and-cast-area .cast-area {
+      width: 12rem;
+      margin-top: 0.1rem; }
 
-.ally-frame .effects-area {
+.ally-frame .effects-and-cast-area {
   text-align: right; }
+  .ally-frame .effects-and-cast-area .cast-area {
+    float: right; }
 
 .enemy-frame .portrait-area {
   text-align: right; }
@@ -182,7 +189,9 @@ body {
   opacity: 0.0;
   bottom: 0.25rem; }
   .combat-text.heal {
-    color: #009933; }
+    color: #00ff55; }
+  .combat-text.ally-damage {
+    color: #ff9900; }
 
 .ally-frame .combat-text {
   left: 0.25rem; }
@@ -242,6 +251,8 @@ body {
       margin-left: 0.15rem;
       color: white;
       text-shadow: 1px 1px 1px #000; }
+  .bar.cast-bar .bar-layer.bar-text {
+    text-align: center; }
 
 .action-bar-button, .effect {
   display: inline-block;
@@ -289,8 +300,8 @@ body {
     font-size: 0.9rem; }
 
 .effect {
-  width: 2rem;
-  height: 2rem;
+  width: 1.5rem;
+  height: 1.5rem;
   margin-left: 0.25rem;
   margin-right: 0.25rem;
   border: 1px solid black;

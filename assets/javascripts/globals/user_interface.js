@@ -66,6 +66,9 @@
             this._allyFrames = [];
             this._enemyFrames = [];
 
+            this._allyIndices = {}; // Mapping of unit id -> array index of unit
+            this._enemyIndices = {}; // Mapping of unit id -> array index of unit
+
             for (var i = 0; i < MAX_UNIT_FRAMES; i++) {
                 this._allyFrames.push(this._createFrame($allyFramesContainer, $allyTemplate, Game.Constants.teamIds.player, i));
                 this._enemyFrames.push(this._createFrame($enemyFramesContainer, $enemyTemplate, Game.Constants.teamIds.computer, i));
@@ -85,6 +88,10 @@
                 self.targetIndex(teamId, index);
             });
 
+            var $healthBar = $frame.find('.health-bar');
+            var $manaBar = $frame.find('.mana-bar');
+            var $castBar = $frame.find('.cast-bar');
+
             // Cache jquery references to elements that will need constant updating
             return {
                 $frame: $frame,
@@ -92,9 +99,19 @@
                 $portraitArea: $frame.find('.portrait-area'),
                 $effectsArea: $frame.find('.effects-area'),
                 $healthArea: $frame.find('.health-area'),
-                $healthBarProgress: $frame.find('.bar-layer.health'),
-                $healthBarShield: $frame.find('.bar-layer.shield'),
-                $healthBarText: $frame.find('.bar-layer.bar-text'),
+
+                $healthBarProgress: $healthBar.find('.bar-layer.health'),
+                $healthBarShield: $healthBar.find('.bar-layer.shield'),
+                $healthBarText: $healthBar.find('.bar-layer.bar-text'),
+
+                $manaBar: $manaBar,
+                $manaBarProgress: $manaBar.find('.bar-layer.mana'),
+                $manaBarText: $manaBar.find('.bar-layer.bar-text'),
+
+                $castBar: $castBar,
+                $castBarProgress: $castBar.find('.bar-layer.cast-progress'),
+                $castBarText: $castBar.find('.bar-layer.bar-text'),
+
                 combatTextOffsets: {}
             };
         },
@@ -186,7 +203,7 @@
 
             if (teamId === Game.Constants.teamIds.player) {
                 this._allyFrames.forEach(function(frame) {
-                    frame.$frame.hide();
+                    frame.$frame.invisible();
                 });
                 this._allyIndices = {}; // Mapping of unit id -> array index of unit
                 Game.UnitEngine.unitsForTeam(teamId).forEach(function(unit, index) {
@@ -196,7 +213,7 @@
             }
             else {
                 this._enemyFrames.forEach(function(frame) {
-                    frame.$frame.hide();
+                    frame.$frame.invisible();
                 });
                 this._enemyIndices = {}; // Mapping of unit id -> array index of unit
                 Game.UnitEngine.unitsForTeam(teamId).forEach(function(unit, index) {
@@ -214,12 +231,15 @@
             var frame = this._frameForUnit(unit);
             frame.$name.html(unit.name);
 
+            frame.$manaBar.toggle(unit.maxMana.value() !== null);
+            //frame.$manaBar.toggle(false);
+
             // load existing effects:
             Game.Util.iterateObject(unit.effects(), function(effectId, effect) {
                 self.addEffect(unit, effect);
             });
 
-            frame.$frame.show();
+            frame.$frame.visible();
         },
 
         _refreshUnitFrames: function() {
@@ -246,6 +266,12 @@
             }
             else {
                 frame.$healthBarShield.css('width', 0).removeClass('active');
+            }
+
+            if (unit.maxMana.value() !== null) {
+                var manaPercent = unit.percentMana() + '%';
+                frame.$manaBarProgress.css('width', manaPercent);
+                frame.$manaBarText.html(Game.Util.round(unit.mana) + '/' + Game.Util.round(unit.maxMana.value()));
             }
         },
 
@@ -371,7 +397,14 @@
         },
 
         addEffect: function(unit, effect) {
-            var $effectsArea = this._frameForUnit(unit).$effectsArea;
+            var frame = this._frameForUnit(unit);
+
+            // Unit may not have been loaded into UI yet. That's okay, when it is its effects will be loaded
+            if (!frame) {
+                return;
+            }
+
+            var $effectsArea = frame.$effectsArea;
 
             var $effect = $('<div></div>', {
                 class: 'effect ' + effect.icon + ' ' + effect.background + ' ' + (effect.hidden ? 'hidden' : '')
@@ -650,78 +683,87 @@
         // ----------------------------------------------------- Cast bar
 
         _initCastBar: function() {
-            this._$castBar = $('#cast-bar');
-            this._$castProgress = this._$castBar.find('.cast-progress');
-            this._$castText = this._$castBar.find('.bar-text');
+
         },
 
-        // todo these will eventually need to pass unit (so we can show cast bar for appropriate unit, and only highlight abil if player)
-        startCast: function(ability) {
+        startCast: function(unit, ability) {
             var self = this;
             
             var castLength = ability.castTime.value();
             if (castLength !== 0) {
-                // Has cast time; show cast bar, highlight ability
-                this._startCastBar(ability.name, castLength);
-                this._toggleAbilityCasting(ability, true);
+                // Has cast time; show cast bar, highlight ability if player
+                this._startCastBar(unit, ability.name, castLength);
+                if (unit.id === Game.Player.id) {
+                    this._toggleAbilityCasting(ability, true);
+                }
             }
             else {
-                // Instant cast; briefly highlight ability even though it was instant cast
-                this._toggleAbilityCasting(ability, true);
-                window.setTimeout(function() {
-                    self._toggleAbilityCasting(ability, false);
-                }, HIGHLIGHT_INSTANT_DURATION);
+                // Instant cast; briefly highlight ability if player even though it was instant cast
+                if (unit.id === Game.Player.id) {
+                    this._toggleAbilityCasting(ability, true);
+                    window.setTimeout(function() {
+                        self._toggleAbilityCasting(ability, false);
+                    }, HIGHLIGHT_INSTANT_DURATION);
+                }
             }
         },
 
-        cancelCast: function(ability, message) {
-            this._cancelCastBar(message);
-            this._toggleAbilityCasting(ability, false);
+        cancelCast: function(unit, ability, message) {
+            this._cancelCastBar(unit, message);
+            if (unit.id === Game.Player.id) {
+                this._toggleAbilityCasting(ability, false);
+            }
         },
 
-        finishCast: function(ability) {
-            this._completeCastBar();
-            this._toggleAbilityCasting(ability, false);
+        finishCast: function(unit, ability) {
+            this._completeCastBar(unit);
+            if (unit.id === Game.Player.id) {
+                this._toggleAbilityCasting(ability, false);
+            }
         },
 
-        _startCastBar: function(text, castLength) {
-            var self = this;
+        _startCastBar: function(unit, text, castLength) {
+            var frame = this._frameForUnit(unit);
 
             // Set up a temporary interval for the cast bar that updates at a very high framerate
             var accumulatedSeconds = 0;
-            Game.Clock.setInterval(CAST_BAR_CLOCK_KEY, function(iterations, period) {
+            Game.Clock.setInterval(CAST_BAR_CLOCK_KEY + '_' + unit.id, function(iterations, period) {
                 accumulatedSeconds += iterations * period;
-                self._$castProgress.css('width', (accumulatedSeconds / castLength) * 100 + '%');
+                frame.$castBarProgress.css('width', (accumulatedSeconds / castLength) * 100 + '%');
             }, 1.0 / CAST_BAR_UPDATES_PER_SECOND);
 
-            this._$castProgress.css('width', '0%')
+            frame.$castBarProgress.css('width', '0%')
                 .removeClass('casting cast-complete cast-canceled')
                 .addClass('casting');
-            this._$castText.html(text);
-            this._$castBar.stop(); // stop any fade out animations (from completes/cancels right before)
-            //this._$castBar.fadeIn(0);
-            this._$castBar.animate({ opacity: 1 }, 0);
+            frame.$castBarText.html(text);
+            frame.$castBar.stop(); // stop any fade out animations (from completes/cancels right before)
+            //frame.$castBar.fadeIn(0);
+            frame.$castBar.animate({ opacity: 1 }, 0);
         },
 
-        _completeCastBar: function() {
-            Game.Clock.clearInterval(CAST_BAR_CLOCK_KEY);
+        _completeCastBar: function(unit) {
+            var frame = this._frameForUnit(unit);
 
-            this._$castProgress.css('width', '100%')
+            Game.Clock.clearInterval(CAST_BAR_CLOCK_KEY + '_' + unit.id);
+
+            frame.$castBarProgress.css('width', '100%')
                 .removeClass('casting cast-complete cast-canceled')
                 .addClass('cast-complete');
-            //this._$castBar.fadeOut(500);
-            this._$castBar.animate({ opacity: 0 }, 500);
+            //frame.$castBar.fadeOut(500);
+            frame.$castBar.animate({ opacity: 0 }, 500);
         },
 
-        _cancelCastBar: function(message) {
-            Game.Clock.clearInterval(CAST_BAR_CLOCK_KEY);
+        _cancelCastBar: function(unit, message) {
+            var frame = this._frameForUnit(unit);
 
-            this._$castProgress.css('width', '100%')
+            Game.Clock.clearInterval(CAST_BAR_CLOCK_KEY + '_' + unit.id);
+
+            frame.$castBarProgress.css('width', '100%')
                 .removeClass('casting cast-complete cast-canceled')
                 .addClass('cast-canceled');
-            this._$castText.html(Game.Util.defaultFor(message, 'Failed'));
-            //this._$castBar.fadeOut(500);
-            this._$castBar.animate({ opacity: 0 }, 500);
+            frame.$castBarText.html(Game.Util.defaultFor(message, 'Failed'));
+            //frame.$castBar.fadeOut(500);
+            frame.$castBar.animate({ opacity: 0 }, 500);
         }
 
     };

@@ -33,11 +33,17 @@
 
     var native = new Game.Units.Unit('native', {teamId: Game.Constants.teamIds.player});
     Game.UnitEngine.addUnit(native);
+    var native = new Game.Units.Unit('native', {teamId: Game.Constants.teamIds.player});
+    Game.UnitEngine.addUnit(native);
+    var native = new Game.Units.Unit('native', {teamId: Game.Constants.teamIds.player});
+    Game.UnitEngine.addUnit(native);
+    var native = new Game.Units.Unit('native', {teamId: Game.Constants.teamIds.player});
+    Game.UnitEngine.addUnit(native);
 
     Game.Player = new Game.Units.Unit('player', {teamId: Game.Constants.teamIds.player});
     Game.UnitEngine.addUnit(Game.Player);
 
-    if (true) {
+    if (false) {
         var holyLight = new Game.Abilities.Ability('holyLight');
         Game.Player.addAbility(holyLight);
         Game.UserInterface.assignAbilityToBar(holyLight, 0);

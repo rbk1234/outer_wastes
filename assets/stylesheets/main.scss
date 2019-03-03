@@ -12,18 +12,28 @@ sass assets/stylesheets/main.scss assets/stylesheets/main.css
 //$bottom-bar-bg: #bfa17a;
 //$bottom-bar-border: #3e2d2e;
 //$navigation-menu: #3e2d2e;
-//$health-border: black;
+//$health-border: transparent;
 //$health-border-targeted: white;
 //$main-frames-color: black;
 
+//$top-bar-bg: #384d52;
+//$main-content-bg: #4a806b;
+//$main-frames-bg: #384d52;
+//$bottom-bar-bg: #bfa17a;
+//$bottom-bar-border: #3e2d2e;
+//$navigation-menu: #3e2d2e;
+//$health-border: #acacac;
+//$health-border-targeted: #ffac24;
+//$main-frames-color: white;
+
 $top-bar-bg: #384d52;
 $main-content-bg: #4a806b;
-$main-frames-bg: #384d52;
+$main-frames-bg: transparent;
 $bottom-bar-bg: #bfa17a;
 $bottom-bar-border: #3e2d2e;
 $navigation-menu: #3e2d2e;
-$health-border: #acacac;
-$health-border-targeted: #ffac24;
+$health-border: transparent;
+$health-border-targeted: white;
 $main-frames-color: white;
 
 
@@ -92,6 +102,7 @@ body {
   flex: 0 1 auto;
   background: $main-content-bg;
   color: white;
+  font-weight: bold;
 
   padding: 0.25rem;
   padding-bottom: 0;
@@ -180,7 +191,7 @@ body {
 }
 
 
-#cast-bar {
+//.cast-bar {
   // TODO Remove this? This is for absolutely-positioned cast bar
   //position:absolute;
   //bottom:1rem;
@@ -189,15 +200,17 @@ body {
   //height:1rem;
   //width:20rem;
 
-  .bar {
-    height: 1.5rem;
-
-    .bar-text {
-      text-align: center;
-    }
-  }
+//  .bar {
+//    height: 1.5rem;
+//
+//    .bar-text {
+//      text-align: center;
+//    }
+//  }
+//}
+.border-bottom-white {
+  border-bottom: 1px solid white;
 }
-
 
 .side-container {
   // handles spacing between the left and right side without using margins (margins mess with 100% height). Uses padding instead.
@@ -212,17 +225,12 @@ body {
 
     height: 100%;
     padding: 0.5rem;
+    padding-top: 0;
     border-radius: 0.5rem;
     background: $main-frames-bg;
 
     color: $main-frames-color;
 
-    #room-info {
-      //background: $top-bar-bg;
-      padding: 0.5rem;
-      border-radius: 0.313rem;
-      flex: 0 1 auto;
-    }
     .spacer {
       flex: 1 1 auto;
     }
@@ -230,7 +238,6 @@ body {
       //height: 100%;
 
       flex: 0 1 auto; // fill content
-
     }
     hr {
       margin: 0.5rem;
@@ -238,7 +245,16 @@ body {
     }
 
     #navigation-panel {
+      padding: 0.5rem;
+      border-radius: 0.313rem;
+      background: $navigation-menu;
+      color: white;
+
       flex: 0 1 auto; // fill to content
+
+      #room-info {
+        //background: $top-bar-bg;
+      }
     }
 
   }
@@ -280,7 +296,7 @@ body {
     position: relative;
   }
   .health-area {
-    flex: 0 0 10rem; // fixed width
+    flex: 0 0 12rem; // fixed width
 
     background: #444;
     border-radius: 0.25rem;
@@ -295,15 +311,27 @@ body {
       box-shadow: 0 0 3px 1px #555;
     }
   }
-  .effects-area {
+  .effects-and-cast-area {
     flex: 1 1 auto; // fill content
 
     padding: 0.25rem;
+
+    .effects-area {
+      height: 1.5rem; // note: should match .effect dimensions
+    }
+    .cast-area {
+      width: 12rem;
+      margin-top: 0.1rem;
+    }
   }
 }
 .ally-frame {
-  .effects-area {
+  .effects-and-cast-area {
     text-align: right;
+
+    .cast-area {
+      float: right;
+    }
   }
 }
 .enemy-frame {
@@ -333,7 +361,12 @@ body {
   bottom: 0.25rem;
 
   &.heal {
-    color: #009933;
+    //color: #009933;
+    color: #00ff55;
+  }
+
+  &.ally-damage {
+    color: #ff9900;
   }
 }
 
@@ -463,6 +496,12 @@ body {
       text-shadow: 1px 1px 1px #000;
     }
   }
+
+  &.cast-bar {
+    .bar-layer.bar-text {
+      text-align: center;
+    }
+  }
 }
 
 
@@ -538,8 +577,8 @@ body {
   }
 }
 .effect {
-  width: 2rem;
-  height: 2rem;
+  width: 1.5rem;
+  height: 1.5rem;
   //margin-top: 0.25rem;
   margin-left: 0.25rem;
   margin-right: 0.25rem;

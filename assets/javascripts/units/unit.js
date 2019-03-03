@@ -6,8 +6,8 @@
         teamId: null,
         stats: {
             maxHealth: 1,
-            maxMana: 1,
-            manaRegen: 1,
+            maxMana: null,
+            manaRegen: null,
             attackSpeed: 1,
             attackDamage: 0,
             reward: 0,
@@ -228,6 +228,9 @@
             if (damageSource.id === Game.Player.id) {
                 Game.UserInterface.createFloatingText(this, '' + Game.Util.round(amount), 'damage');
             }
+            else if (damageSource.teamId === Game.Constants.teamIds.player) {
+                Game.UserInterface.createFloatingText(this, '' + Game.Util.round(amount), 'ally-damage');
+            }
 
             if (Game.Util.roundForComparison(this.health) > 0) {
                 this.health -= amount;
@@ -290,7 +293,10 @@
         },
 
         percentHealth: function() {
-            return Game.Util.roundForComparison(this.health / this.maxHealth.value()) * 100
+            return Game.Util.roundForComparison(this.health / this.maxHealth.value()) * 100;
+        },
+        percentMana: function() {
+            return Game.Util.roundForComparison(this.mana / this.maxMana.value()) * 100;
         },
 
         // ------------------------------------------------------------------ Abilities
@@ -347,7 +353,7 @@
                 this._castProgress = 0;
                 //Game.UserInterface.startCastBar(this._castAbility.name, this._castTotal);
             }
-            Game.UserInterface.startCast(this._castAbility);
+            Game.UserInterface.startCast(this, this._castAbility);
 
             // start global cooldown
             if (this._castAbility.onGlobalCooldown) {
@@ -365,7 +371,7 @@
             this._globalCooldown = null; // undo any global cooldown
 
             //Game.UserInterface.cancelCastBar(message);
-            Game.UserInterface.cancelCast(this._castAbility, message);
+            Game.UserInterface.cancelCast(this, this._castAbility, message);
 
             this._updateAllAbilityCooldowns(); // since global cd was undone, have to sync ability cooldowns
         },
@@ -437,7 +443,7 @@
             if (this._castProgress !== null) {
                 this._castProgress = null;
                 //Game.UserInterface.completeCastBar();
-                Game.UserInterface.finishCast(this._castAbility);
+                Game.UserInterface.finishCast(this, this._castAbility);
             }
             this._updateAbilityCooldown(this._castAbility);
         },
