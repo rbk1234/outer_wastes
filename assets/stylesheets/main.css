@@ -133,6 +133,9 @@ body {
   .game-over .skull:before {
     content: url("icons/skull-crack.svg"); }
 
+#ally-frame-template, #enemy-frame-template {
+  display: none; }
+
 .ally-frame, .enemy-frame {
   display: flex;
   flex-flow: row;

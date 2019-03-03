@@ -256,7 +256,9 @@ body {
   }
 }
 
-
+#ally-frame-template, #enemy-frame-template {
+  display: none;
+}
 .ally-frame, .enemy-frame {
   display: flex;
   flex-flow: row;

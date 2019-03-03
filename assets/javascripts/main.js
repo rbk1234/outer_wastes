@@ -80,7 +80,7 @@
         Game.UserInterface.assignAbilityToBar(overgrowth, 4);
     }
 
-    Game.UserInterface.loadUnitFrames();
+    Game.UserInterface.loadTeam(Game.Constants.teamIds.player);
     Game.Clock.run();
 
 

@@ -6,7 +6,7 @@
     var UPDATES_PER_SECOND = 15;
     var CLOCK_KEY = 'UserInterface';
 
-    var CAST_BAR_CLOCK_KEY = 'CastBar';
+    var MAX_UNIT_FRAMES = 5;
 
     /*
         Cast bar / cooldown spinners need high framerates so they can increment smoothly (don't want to tie it to
@@ -17,6 +17,7 @@
         - reducing ability cooldowns by 1s (e.g. Ezreal Q)
         We will have to restart the animation (at a partially done state) when the events occur.
      */
+    var CAST_BAR_CLOCK_KEY = 'CastBar';
     var CAST_BAR_UPDATES_PER_SECOND = 100; // Needs high frame rate to smoothly increment
     var COOLDOWN_UPDATES_PER_SECOND = 60;  // Needs high frame rate to smoothly increment
 
@@ -38,6 +39,8 @@
             this._initCastBar();
             this._initAbilityBar();
             this._initPlayerBars();
+            this._initEffects();
+            this._initLevelUI();
 
             // Start clock
             Game.Clock.setInterval(CLOCK_KEY, function(iterations, period) {
@@ -51,15 +54,68 @@
 
 
 
-        // ----------------------------------------------------- Unit frame setup and Targeting
+
+        // ----------------------------------------------------- Unit frames
 
         _initFrames: function() {
+            var $allyFramesContainer = $('#ally-frames');
+            var $enemyFramesContainer = $('#enemy-frames');
+            var $allyTemplate = $('#ally-frame-template');
+            var $enemyTemplate = $('#enemy-frame-template');
+
+            this._allyFrames = [];
+            this._enemyFrames = [];
+
+            for (var i = 0; i < MAX_UNIT_FRAMES; i++) {
+                this._allyFrames.push(this._createFrame($allyFramesContainer, $allyTemplate, Game.Constants.teamIds.player, i));
+                this._enemyFrames.push(this._createFrame($enemyFramesContainer, $enemyTemplate, Game.Constants.teamIds.computer, i));
+            }
+
+            this._setupFrameKeybinds();
+        },
+
+        _createFrame: function($container, $template, teamId, index) {
+            var self = this;
+
+            var $frame = $template.clone();
+            $frame.removeAttr('id');
+            $frame.appendTo($container);
+
+            $frame.find('.health-area').off('click').on('click', function() {
+                self.targetIndex(teamId, index);
+            });
+
+            // Cache jquery references to elements that will need constant updating
+            return {
+                $frame: $frame,
+                $name: $frame.find('.unit-name'),
+                $portraitArea: $frame.find('.portrait-area'),
+                $effectsArea: $frame.find('.effects-area'),
+                $healthArea: $frame.find('.health-area'),
+                $healthBarProgress: $frame.find('.bar-layer.health'),
+                $healthBarShield: $frame.find('.bar-layer.shield'),
+                $healthBarText: $frame.find('.bar-layer.bar-text'),
+                combatTextOffsets: {}
+            };
+        },
+
+        // Returns the frame object (object with jquery references) for a unit
+        _frameForUnit: function(unit) {
+            if (unit.teamId === Game.Constants.teamIds.player) {
+                return this._allyFrames[this._allyIndices[unit.id]];
+            }
+            else {
+                return this._enemyFrames[this._enemyIndices[unit.id]];
+            }
+        },
+
+        _setupFrameKeybinds: function() {
             var self = this;
 
             // -------- Can use keyboard arrow keys to target units:
 
             function targetFirstAlly() {
-                self.targetUnit(Game.UnitEngine.unitsForTeam(Game.Constants.teamIds.player)[0]);
+                self.targetIndex(Game.Constants.teamIds.player, 0);
             }
 
             // UP arrow
@@ -71,7 +127,7 @@
                 else {
                     // target previous unit in same team
                     if (index > 0) {
-                        self.targetUnit(Game.UnitEngine.unitsForTeam(self._targetedUnit.teamId)[index - 1]);
+                        self.targetIndex(self._targetedUnit.teamId, index - 1);
                     }
                 }
             });
@@ -86,7 +142,7 @@
                     // target next unit in same team
                     var units = Game.UnitEngine.unitsForTeam(self._targetedUnit.teamId);
                     if (index < (units.length - 1)) {
-                        self.targetUnit(units[index + 1]);
+                        self.targetIndex(self._targetedUnit.teamId, index + 1);
                     }
                 }
             });
@@ -103,7 +159,7 @@
                     if (index >= units.length) {
                         index = units.length - 1; // In case computer had more units than player
                     }
-                    self.targetUnit(units[index]);
+                    self.targetIndex(Game.Constants.teamIds.player, index);
                 }
             });
 
@@ -119,10 +175,156 @@
                     if (index >= units.length) {
                         index = units.length - 1; // In case player had more units than computer
                     }
-                    self.targetUnit(units[index]);
+                    self.targetIndex(Game.Constants.teamIds.computer, index);
                 }
             });
+        },
 
+
+        loadTeam: function(teamId) {
+            var self = this;
+
+            if (teamId === Game.Constants.teamIds.player) {
+                this._allyFrames.forEach(function(frame) {
+                    frame.$frame.hide();
+                });
+                this._allyIndices = {}; // Mapping of unit id -> array index of unit
+                Game.UnitEngine.unitsForTeam(teamId).forEach(function(unit, index) {
+                    self._allyIndices[unit.id] = index;
+                    self._loadUnitIntoFrame(unit);
+                });
+            }
+            else {
+                this._enemyFrames.forEach(function(frame) {
+                    frame.$frame.hide();
+                });
+                this._enemyIndices = {}; // Mapping of unit id -> array index of unit
+                Game.UnitEngine.unitsForTeam(teamId).forEach(function(unit, index) {
+                    self._enemyIndices[unit.id] = index;
+                    self._loadUnitIntoFrame(unit);
+                });
+            }
+
+            this.updateCombatStatus();
+        },
+
+        _loadUnitIntoFrame: function(unit) {
+            var self = this;
+
+            var frame = this._frameForUnit(unit);
+            frame.$name.html(unit.name);
+
+            // load existing effects:
+            Game.Util.iterateObject(unit.effects(), function(effectId, effect) {
+                self.addEffect(unit, effect);
+            });
+
+            frame.$frame.show();
+        },
+
+        _refreshUnitFrames: function() {
+            var self = this;
+
+            Game.UnitEngine.unitsForTeam(Game.Constants.teamIds.player).forEach(function(ally) {
+                self._refreshUnitFrame(ally);
+            });
+            Game.UnitEngine.unitsForTeam(Game.Constants.teamIds.computer).forEach(function(enemy) {
+                self._refreshUnitFrame(enemy);
+            });
+        },
+
+        _refreshUnitFrame: function(unit) {
+            var frame = this._frameForUnit(unit);
+
+            var healthPercent = unit.percentHealth() + '%';
+            frame.$healthBarProgress.css('width', healthPercent);
+            frame.$healthBarText.html(Game.Util.round(unit.health) + '/' + Game.Util.round(unit.maxHealth.value()));
+
+            if (unit.totalAbsorb() > 0) {
+                var shieldPercent = Game.Util.roundForComparison((unit.health + unit.totalAbsorb()) / unit.maxHealth.value()) * 100 + '%';
+                frame.$healthBarShield.css('width', shieldPercent).addClass('active');
+            }
+            else {
+                frame.$healthBarShield.css('width', 0).removeClass('active');
+            }
+        },
+
+        unitDied: function(unit) {
+            this._refreshAbilityTargets();
+        },
+
+        createFloatingText: function(unit, text, textClass) {
+            var frame = this._frameForUnit(unit);
+            var $portraitArea = frame.$portraitArea;
+
+            // If two combat texts are shown (for the same unit) within the COMBAT_TEXT_OFFSET_WINDOW, offset one to the side
+            var oldOffsetData = frame.combatTextOffsets;
+            var now = Date.now() || (new Date).getTime();
+            var isOffset = oldOffsetData && !oldOffsetData.isOffset && (now - oldOffsetData.time < COMBAT_TEXT_OFFSET_WINDOW);
+            frame.combatTextOffsets = {
+                time: now,
+                isOffset: isOffset
+            };
+
+            var $text = $('<span class="combat-text ' + textClass + ' + ' + (isOffset ? 'offset' : '') + '">' + text + '</span>').appendTo($portraitArea);
+            window.setTimeout(function() {
+                $text.remove();
+            }, COMBAT_TEXT_DURATION);
+        },
+
+
+
+
+
+        // ----------------------------------------------------- Targeting
+
+
+        targetedUnit: function() {
+            return this._targetedUnitOverride ? this._targetedUnitOverride : this._targetedUnit;
+        },
+
+        clearTarget: function() {
+            this._targetedUnit = null;
+            $('.health-area').removeClass('targeted');
+
+            this._refreshAbilityTargets();
+        },
+
+        targetUnit: function(unit) {
+            // Remove targeting circle from any old target. Note: Not calling clearTarget for small performance gain
+            this._targetedUnit = unit;
+            $('.health-area').removeClass('targeted');
+
+            // Add targeting circle to new target
+            this._frameForUnit(unit).$healthArea.addClass('targeted');
+
+            this._refreshAbilityTargets();
+        },
+
+        targetIndex: function(teamId, index) {
+            this.targetUnit(Game.UnitEngine.unitsForTeam(teamId)[index]);
+        },
+
+        // Targets a unit but doesn't show the white targeting circle around the unit in the UI. Used for things like alt-self-casting.
+        overrideTargetUnit: function(unit) {
+            this._targetedUnitOverride = unit;
+            this._refreshAbilityTargets();
+        },
+
+        clearTargetOverride: function() {
+            this._targetedUnitOverride = null;
+            this._refreshAbilityTargets();
+        },
+
+
+
+
+
+
+
+        // ----------------------------------------------------- Level UI
+
+        _initLevelUI: function() {
             this._$navigationPanel = $('#navigation-panel');
             this._$engageCombat = this._$navigationPanel.find('#engage-combat');
             this._$nextRoom = this._$navigationPanel.find('#next-room');
@@ -157,229 +359,6 @@
             $('#level-info').html(level.name + '&emsp;&mdash;&emsp; Room ' + level.currentRoomIndex() + ' / ' + level.numRooms);
         },
 
-        // todo should we just call this after every UnitEngine addUnit?
-        loadUnitFrames: function() {
-            // clear out old frames
-            $('#ally-frames').empty();
-            $('#enemy-frames').empty();
-            this._targetedUnit = null;
-
-            // cache jquery objects
-            this._$frames = {}; // unit id -> $frame
-            this._$healthAreas = {}; // unit id -> $healthArea
-            this._$healthBars = {}; // unit id -> { $progress: (element), $text: (element) }
-
-            this._$portraitAreas = {}; // unit id -> portrait area
-            this._combatTextOffsets = {}; // unit id -> offset data
-
-            this._effects = {}; // effect id -> { $effect: (element), timer: CooldownTimer }
-            //this._$effectDurations = {}; // effect id -> duration span
-
-            var self = this;
-            Game.UnitEngine.unitsForTeam(Game.Constants.teamIds.player).forEach(function(unit) {
-                self._createAllyFrame(unit);
-
-                self._loadUnitIntoFrame(unit);
-            });
-            Game.UnitEngine.unitsForTeam(Game.Constants.teamIds.computer).forEach(function(unit) {
-                self._createEnemyFrame(unit);
-
-                self._loadUnitIntoFrame(unit);
-
-            });
-
-            this.updateCombatStatus();
-        },
-
-        targetedUnit: function() {
-            return this._targetedUnitOverride ? this._targetedUnitOverride : this._targetedUnit;
-        },
-
-        clearTarget: function() {
-            this._targetedUnit = null;
-            $('.health-area').removeClass('targeted');
-
-            this._refreshAbilityTargets();
-        },
-
-        targetUnit: function(unit) {
-            // Remove targeting circle from any old target. Note: Not calling clearTarget for small performance gain
-            this._targetedUnit = unit;
-            $('.health-area').removeClass('targeted');
-
-            // Add targeting circle to new target
-            this._$healthAreas[unit.id].addClass('targeted');
-            
-            this._refreshAbilityTargets();
-        },
-
-        // Targets a unit but doesn't show the white targeting circle around the unit in the UI
-        // Used for things like alt-self-casting
-        overrideTargetUnit: function(unit) {
-            this._targetedUnitOverride = unit;
-            this._refreshAbilityTargets();
-        },
-
-        clearTargetOverride: function() {
-            this._targetedUnitOverride = null;
-            this._refreshAbilityTargets();
-        },
-
-        unitDied: function(unit) {
-            this._refreshAbilityTargets();
-        },
-
-        createFloatingText: function(unit, text, textClass) {
-            var $area = this._$portraitAreas[unit.id];
-
-            // If two combat texts are shown (for the same unit) within the COMBAT_TEXT_OFFSET_WINDOW, offset one to the side
-            var oldOffsetData = this._combatTextOffsets[unit.id];
-            var now = Date.now() || (new Date).getTime();
-            var isOffset = oldOffsetData && !oldOffsetData.isOffset && (now - oldOffsetData.time < COMBAT_TEXT_OFFSET_WINDOW);
-            this._combatTextOffsets[unit.id] = {
-                time: now,
-                isOffset: isOffset
-            };
-
-            var $text = $('<span class="combat-text ' + textClass + ' + ' + (isOffset ? 'offset' : '') + '">' + text + '</span>').appendTo($area);
-            window.setTimeout(function() {
-                $text.remove();
-            }, COMBAT_TEXT_DURATION);
-        },
-
-        _createAllyFrame: function(unit) {
-            var $frame = $('<div></div>', {
-                class: 'ally-frame'
-            }).appendTo($('#ally-frames'));
-
-            this._addEffectsArea($frame, unit);
-            this._addHealthArea($frame, unit);
-            this._addPortraitArea($frame, unit);
-
-            this._$frames[unit.id] = $frame;
-        },
-
-        _createEnemyFrame: function(unit) {
-            var $frame = $('<div></div>', {
-                class: 'enemy-frame'
-            }).appendTo($('#enemy-frames'));
-
-            this._addPortraitArea($frame, unit);
-            this._addHealthArea($frame, unit);
-            this._addEffectsArea($frame, unit);
-
-            this._$frames[unit.id] = $frame;
-        },
-
-        _addPortraitArea: function($frame, unit) {
-            var $area = $('<div></div>', {
-                class: 'portrait-area'
-            }).appendTo($frame);
-
-            this._$portraitAreas[unit.id] = $area;
-        },
-
-        _addEffectsArea: function($frame, unit) {
-            $('<div></div>', {
-                class: 'effects-area'
-            }).appendTo($frame);
-        },
-
-        _addHealthArea: function($frame, unit) {
-            var self = this;
-
-            var $healthArea = $('<div></div>', {
-                class: 'health-area',
-                text: unit.name
-            }).appendTo($frame);
-
-            $healthArea.off('click').on('click', function() {
-                self.targetUnit(unit);
-            });
-
-            this._$healthAreas[unit.id] = $healthArea;
-            this._$healthBars[unit.id] = this._addBar($healthArea, 'health', 'shield');
-            //this._addBar($healthArea, 'mana');
-        },
-
-        _addBar: function($healthArea, barClass, secondaryBar) {
-            var barData = {};
-
-            var $bar = $('<div></div>', {
-                class: 'bar'
-            }).appendTo($healthArea);
-
-            $('<div></div>', {
-                class: 'bar-layer background',
-                style: 'width: 100%;'
-            }).appendTo($bar);
-
-            if (secondaryBar) {
-                barData.$secondaryProgress = $('<div></div>', {
-                    class: 'bar-layer ' + secondaryBar,
-                    style: 'width: 0%;'
-                }).appendTo($bar);
-            }
-
-            barData.$progress = $('<div></div>', {
-                class: 'bar-layer ' + barClass,
-                style: 'width: 50%;'
-            }).appendTo($bar);
-
-            barData.$text = $('<div></div>', {
-                class: 'bar-layer bar-text',
-                style: 'width: 100%;'
-            }).appendTo($bar);
-
-            return barData;
-        },
-
-
-
-
-        _loadUnitIntoFrame: function(unit) {
-            var self = this;
-
-            // load existing effects:
-            Game.Util.iterateObject(unit.effects(), function(effectId, effect) {
-                self.addEffect(unit, effect);
-            })
-        },
-
-        _refreshUnitFrames: function() {
-            var self = this;
-
-            Game.UnitEngine.unitsForTeam(Game.Constants.teamIds.player).forEach(function(ally) {
-                self._refreshUnitFrame(ally);
-            });
-            Game.UnitEngine.unitsForTeam(Game.Constants.teamIds.computer).forEach(function(enemy) {
-                self._refreshUnitFrame(enemy);
-            });
-        },
-
-        _refreshUnitFrame: function(unit) {
-            var self = this;
-
-            var healthPercent = unit.percentHealth() + '%';
-            this._$healthBars[unit.id].$progress.css('width', healthPercent);
-            this._$healthBars[unit.id].$text.html(Game.Util.round(unit.health) + '/' + Game.Util.round(unit.maxHealth.value()));
-
-            if (unit.totalAbsorb() > 0) {
-                var shieldPercent = Game.Util.roundForComparison((unit.health + unit.totalAbsorb()) / unit.maxHealth.value()) * 100 + '%';
-                this._$healthBars[unit.id].$secondaryProgress.css('width', shieldPercent).addClass('active');
-            }
-            else {
-                this._$healthBars[unit.id].$secondaryProgress.css('width', 0).removeClass('active');
-            }
-
-            // refresh effects
-            // TODO Not doing this anymore (not showing duration in seconds)
-            //Game.Util.iterateObject(unit.effects(), function(effectId, effect) {
-            //    self._$effectDurations[effectId].html(Game.Util.formatDuration(effect.durationLeft()));
-            //});
-        },
-
-
 
 
 
@@ -387,8 +366,12 @@
 
         // ----------------------------------------------------- Effects
 
+        _initEffects: function() {
+            this._effects = {}; // Effect id -> effect object containing jquery / CooldownTimer references
+        },
+
         addEffect: function(unit, effect) {
-            var $effectsArea = this._$frames[unit.id].find('.effects-area');
+            var $effectsArea = this._frameForUnit(unit).$effectsArea;
 
             var $effect = $('<div></div>', {
                 class: 'effect ' + effect.icon + ' ' + effect.background + ' ' + (effect.hidden ? 'hidden' : '')
@@ -400,15 +383,6 @@
             else {
                 $effect.appendTo($effectsArea);
             }
-
-            //$('<span></span>', {
-            //    class: 'effect-name',
-            //    text: effect.name
-            //}).appendTo($effect);
-
-            //var $duration = $('<span></span>', {
-            //    class: 'duration'
-            //}).appendTo($effect);
 
             $('<canvas></canvas>', {
                 class: 'cooldown-status'
@@ -426,13 +400,11 @@
                 $effect: $effect,
                 timer: timer
             };
-            //this._$effectDurations[effect.id] = $duration;
         },
 
         removeEffect: function(unit, effect) {
             this._effects[effect.id].$effect.remove();
             delete this._effects[effect.id];
-            //delete this._$effectDurations[effect.id];
         },
 
         // Refresh an existing effect so it stays in the same place (won't jump to end of $effectsArea)
@@ -645,11 +617,11 @@
         // ----------------------------------------------------- Player Bars (health/mana in bottom left)
 
         _initPlayerBars: function() {
-            var $health = $('#player-health');
-            this._playerHealth = {
-                $progress: $health.find('.health'),
-                $text: $health.find('.bar-text')
-            };
+            //var $health = $('#player-health');
+            //this._playerHealth = {
+            //    $progress: $health.find('.health'),
+            //    $text: $health.find('.bar-text')
+            //};
 
             var $mana = $('#player-mana');
             this._playerMana = {
@@ -659,9 +631,9 @@
         },
 
         _refreshPlayerBars: function() {
-            var healthWidth = Game.Util.roundForComparison(Game.Player.health / Game.Player.maxHealth.value()) * 100 + '%';
-            this._playerHealth.$progress.css('width', healthWidth);
-            this._playerHealth.$text.html(Game.Util.round(Game.Player.health) + '/' + Game.Util.round(Game.Player.maxHealth.value()));
+            //var healthWidth = Game.Util.roundForComparison(Game.Player.health / Game.Player.maxHealth.value()) * 100 + '%';
+            //this._playerHealth.$progress.css('width', healthWidth);
+            //this._playerHealth.$text.html(Game.Util.round(Game.Player.health) + '/' + Game.Util.round(Game.Player.maxHealth.value()));
 
             var widthPercent = Game.Util.roundForComparison(Game.Player.mana / Game.Player.maxMana.value()) * 100 + '%';
             this._playerMana.$progress.css('width', widthPercent);
@@ -758,8 +730,9 @@
 
 
 
+
     /*
-     CooldownTimer:
+     CooldownTimer class:
 
      Handles radial shading of buttons/effects (to display cooldowns)
      Radial shading code has been adapted from https://codepen.io/jeremywynn/pen/emLjyL

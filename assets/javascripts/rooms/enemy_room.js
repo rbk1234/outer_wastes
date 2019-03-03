@@ -27,7 +27,7 @@
 
             });
 
-            Game.UserInterface.loadUnitFrames();
+            Game.UserInterface.loadTeam(Game.Constants.teamIds.computer);
         }
 
     });
