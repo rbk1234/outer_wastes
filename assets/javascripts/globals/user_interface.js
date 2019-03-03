@@ -727,7 +727,8 @@
                 .addClass('casting');
             this._$castText.html(text);
             this._$castBar.stop(); // stop any fade out animations (from completes/cancels right before)
-            this._$castBar.fadeIn(0);
+            //this._$castBar.fadeIn(0);
+            this._$castBar.animate({ opacity: 1 }, 0);
         },
 
         _completeCastBar: function() {
@@ -736,7 +737,8 @@
             this._$castProgress.css('width', '100%')
                 .removeClass('casting cast-complete cast-canceled')
                 .addClass('cast-complete');
-            this._$castBar.fadeOut(500);
+            //this._$castBar.fadeOut(500);
+            this._$castBar.animate({ opacity: 0 }, 500);
         },
 
         _cancelCastBar: function(message) {
@@ -746,7 +748,8 @@
                 .removeClass('casting cast-complete cast-canceled')
                 .addClass('cast-canceled');
             this._$castText.html(Game.Util.defaultFor(message, 'Failed'));
-            this._$castBar.fadeOut(500);
+            //this._$castBar.fadeOut(500);
+            this._$castBar.animate({ opacity: 0 }, 500);
         }
 
     };

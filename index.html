@@ -64,7 +64,11 @@
         <div class="cell small-6">
           <div class="side-container">
             <div class="side-background">
+
               <div id="ally-frames"></div>
+
+              <div class="spacer"></div>
+
             </div>
           </div>
 
@@ -72,7 +76,16 @@
         <div class="cell small-6">
           <div class="side-container">
             <div class="side-background">
+
               <div id="enemy-frames"></div>
+
+              <div class="spacer"></div>
+              <hr>
+
+              <div id="room-info">
+                A pack of wolves is inhabiting the area.
+              </div>
+
               <div id="navigation-panel" class="text-center">
                 <div class="normal-navigation">
                   <table>
@@ -91,6 +104,7 @@
                     </tbody>
                   </table>
                 </div>
+
                 <div class="game-over" hidden>
                   <table>
                     <tbody>
@@ -107,8 +121,10 @@
                   </table>
                 </div>
               </div>
-            </div>
 
+
+
+            </div>
           </div>
         </div>
       </div>
@@ -136,28 +152,36 @@
         </table>
       </div>
 
-      <div id="cast-bar" hidden>
-        <div class="bar">
-          <div class="bar-layer background" style="width:100%;"></div>
-          <div class="bar-layer cast-progress" style="width:50%;"></div>
-          <div class="bar-layer bar-text" style="width: 100%;">
-            Dummy Spell
-          </div>
-        </div>
-      </div>
+      <!-- TODO Remove this? This is for absolutely-positioned cast bar -->
+      <!--<div id="cast-bar" hidden>-->
+        <!--<div class="bar">-->
+          <!--<div class="bar-layer background" style="width:100%;"></div>-->
+          <!--<div class="bar-layer cast-progress" style="width:50%;"></div>-->
+          <!--<div class="bar-layer bar-text" style="width: 100%;">-->
+            <!--Dummy Spell-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
     </div>
     <div class="flex-row bottom-bar">
       <div id="player-bars" class="bottom-section">
         <div style="width:100%;">
-          <div class="bar" id="player-health" style="margin-bottom:0.25rem;">
-            <div class="bar-layer background" style="width:100%;"></div>
-            <div class="bar-layer health" style="width:100%;"></div>
-            <div class="bar-layer bar-text" style="width:100%;"></div>
-          </div>
-          <div class="bar" id="player-mana">
+          <!--<div class="bar" id="player-health" style="margin-bottom:0.25rem;">-->
+            <!--<div class="bar-layer background" style="width:100%;"></div>-->
+            <!--<div class="bar-layer health" style="width:100%;"></div>-->
+            <!--<div class="bar-layer bar-text" style="width:100%;"></div>-->
+          <!--</div>-->
+          <div class="bar" id="player-mana" style="margin-bottom: 0.25rem;">
             <div class="bar-layer background" style="width:100%;"></div>
             <div class="bar-layer mana" style="width:100%;"></div>
             <div class="bar-layer bar-text" style="width:100%;"></div>
+          </div>
+          <div class="bar" id="cast-bar" style="opacity: 0;">
+              <div class="bar-layer background" style="width:100%;"></div>
+              <div class="bar-layer cast-progress" style="width:50%;"></div>
+              <div class="bar-layer bar-text" style="width: 100%;">
+                Dummy Spell
+              </div>
           </div>
         </div>
       </div>

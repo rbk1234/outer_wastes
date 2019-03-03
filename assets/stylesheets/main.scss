@@ -6,12 +6,26 @@ sass assets/stylesheets/main.scss assets/stylesheets/main.css
 */
 
 // mother earth palette https://lospec.com/palette-list/mother-earth
+//$top-bar-bg: #384d52;
+//$main-content-bg: #4a806b; // #b8c083 // grassy
+//$main-frames-bg: #96c083;
+//$bottom-bar-bg: #bfa17a;
+//$bottom-bar-border: #3e2d2e;
+//$navigation-menu: #3e2d2e;
+//$health-border: black;
+//$health-border-targeted: white;
+//$main-frames-color: black;
+
 $top-bar-bg: #384d52;
 $main-content-bg: #4a806b;
-$main-frames-bg: #96c083;
+$main-frames-bg: #384d52;
 $bottom-bar-bg: #bfa17a;
 $bottom-bar-border: #3e2d2e;
 $navigation-menu: #3e2d2e;
+$health-border: #acacac;
+$health-border-targeted: #ffac24;
+$main-frames-color: white;
+
 
 
 body {
@@ -98,6 +112,7 @@ body {
 .flex-box .flex-row.bottom-bar {
   //flex: 0 1 5rem; // todo min height?
   flex: 0 1 auto; // fill to content
+  min-height: 5rem;
 
   background: $bottom-bar-bg;
   border: 2px solid $bottom-bar-border;
@@ -166,12 +181,13 @@ body {
 
 
 #cast-bar {
-  position:absolute;
-  bottom:1rem;
-  left:50%;
-  margin-left:-10rem;
-  height:1rem;
-  width:20rem;
+  // TODO Remove this? This is for absolutely-positioned cast bar
+  //position:absolute;
+  //bottom:1rem;
+  //left:50%;
+  //margin-left:-10rem;
+  //height:1rem;
+  //width:20rem;
 
   .bar {
     height: 1.5rem;
@@ -199,11 +215,26 @@ body {
     border-radius: 0.5rem;
     background: $main-frames-bg;
 
+    color: $main-frames-color;
+
+    #room-info {
+      //background: $top-bar-bg;
+      padding: 0.5rem;
+      border-radius: 0.313rem;
+      flex: 0 1 auto;
+    }
+    .spacer {
+      flex: 1 1 auto;
+    }
     #ally-frames, #enemy-frames {
       //height: 100%;
 
-      flex: 1 1 auto; // fill content
+      flex: 0 1 auto; // fill content
 
+    }
+    hr {
+      margin: 0.5rem;
+      border-color: $main-frames-color;
     }
 
     #navigation-panel {
@@ -256,9 +287,9 @@ body {
 
     cursor: pointer;
 
-    border: 1.5px solid black;
+    border: 1.5px solid $health-border;
     &.targeted {
-      border: 1.5px solid white;
+      border: 1.5px solid $health-border-targeted;
       box-shadow: 0 0 3px 1px #555;
     }
   }
@@ -401,7 +432,8 @@ body {
       background: linear-gradient(#00ff55, #009933);
     }
     &.mana {
-      background: linear-gradient(#0000ff, #0000b3);
+      //background: linear-gradient(#0000ff, #0000b3);
+      background: linear-gradient(#1a1aff, #0000cc);
     }
     &.shield {
       background: linear-gradient(#ddd, #888);

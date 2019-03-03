@@ -9,7 +9,7 @@
         },
         forest_enemy_2: {
             description: 'A pack of wolves',
-            enemies: ['wolf', 'wolf']
+            enemies: ['wolf', 'wolf', 'wolf', 'wolf', 'wolf']
         }
 
     };

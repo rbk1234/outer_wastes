@@ -57,6 +57,7 @@ body {
 
 .flex-box .flex-row.bottom-bar {
   flex: 0 1 auto;
+  min-height: 5rem;
   background: #bfa17a;
   border: 2px solid #3e2d2e; }
 
@@ -92,17 +93,10 @@ body {
     .bottom-bar #player-bars #player-health {
       margin-bottom: 0.25rem; }
 
-#cast-bar {
-  position: absolute;
-  bottom: 1rem;
-  left: 50%;
-  margin-left: -10rem;
-  height: 1rem;
-  width: 20rem; }
-  #cast-bar .bar {
-    height: 1.5rem; }
-    #cast-bar .bar .bar-text {
-      text-align: center; }
+#cast-bar .bar {
+  height: 1.5rem; }
+  #cast-bar .bar .bar-text {
+    text-align: center; }
 
 .side-container {
   height: 100%;
@@ -114,9 +108,19 @@ body {
     height: 100%;
     padding: 0.5rem;
     border-radius: 0.5rem;
-    background: #96c083; }
-    .side-container .side-background #ally-frames, .side-container .side-background #enemy-frames {
+    background: #384d52;
+    color: white; }
+    .side-container .side-background #room-info {
+      padding: 0.5rem;
+      border-radius: 0.313rem;
+      flex: 0 1 auto; }
+    .side-container .side-background .spacer {
       flex: 1 1 auto; }
+    .side-container .side-background #ally-frames, .side-container .side-background #enemy-frames {
+      flex: 0 1 auto; }
+    .side-container .side-background hr {
+      margin: 0.5rem;
+      border-color: white; }
     .side-container .side-background #navigation-panel {
       flex: 0 1 auto; }
 
@@ -148,9 +152,9 @@ body {
     padding: 0.2rem;
     color: white;
     cursor: pointer;
-    border: 1.5px solid black; }
+    border: 1.5px solid #acacac; }
     .ally-frame .health-area.targeted, .enemy-frame .health-area.targeted {
-      border: 1.5px solid white;
+      border: 1.5px solid #ffac24;
       box-shadow: 0 0 3px 1px #555; }
   .ally-frame .effects-area, .enemy-frame .effects-area {
     flex: 1 1 auto;
@@ -221,7 +225,7 @@ body {
     .bar .bar-layer.health {
       background: linear-gradient(#00ff55, #009933); }
     .bar .bar-layer.mana {
-      background: linear-gradient(#0000ff, #0000b3); }
+      background: linear-gradient(#1a1aff, #0000cc); }
     .bar .bar-layer.shield {
       background: linear-gradient(#ddd, #888); }
     .bar .bar-layer.casting {
