@@ -26,6 +26,16 @@ sass assets/stylesheets/main.scss assets/stylesheets/main.css
 //$health-border-targeted: #ffac24;
 //$main-frames-color: white;
 
+//$top-bar-bg: #384d52;
+//$main-content-bg: #96c083; // #b8c083 // grassy
+//$main-frames-bg: transparent;
+//$bottom-bar-bg: #bfa17a;
+//$bottom-bar-border: #3e2d2e;
+//$navigation-menu: #3e2d2e;
+//$health-border: transparent;
+//$health-border-targeted: white;
+//$main-frames-color: black;
+
 $top-bar-bg: #384d52;
 $main-content-bg: #4a806b;
 $main-frames-bg: transparent;
@@ -325,7 +335,7 @@ body {
     }
   }
 }
-.ally-frame {
+.enemy-frame {
   .effects-and-cast-area {
     text-align: right;
 
@@ -418,6 +428,20 @@ body {
     opacity: 0.0;
     bottom: 2.25rem;
   }
+}
+
+
+
+
+
+
+
+
+
+#map-modal {
+  height: 80vh;
+
+  background: $bottom-bar-bg;
 }
 
 

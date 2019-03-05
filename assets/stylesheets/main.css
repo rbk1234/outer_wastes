@@ -168,9 +168,9 @@ body {
       width: 12rem;
       margin-top: 0.1rem; }
 
-.ally-frame .effects-and-cast-area {
+.enemy-frame .effects-and-cast-area {
   text-align: right; }
-  .ally-frame .effects-and-cast-area .cast-area {
+  .enemy-frame .effects-and-cast-area .cast-area {
     float: right; }
 
 .enemy-frame .portrait-area {
@@ -221,6 +221,10 @@ body {
   100% {
     opacity: 0.0;
     bottom: 2.25rem; } }
+#map-modal {
+  height: 80vh;
+  background: #bfa17a; }
+
 .bar {
   position: relative;
   overflow: hidden;

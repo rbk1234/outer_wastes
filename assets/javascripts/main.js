@@ -43,7 +43,7 @@
     Game.Player = new Game.Units.Unit('player', {teamId: Game.Constants.teamIds.player});
     Game.UnitEngine.addUnit(Game.Player);
 
-    if (false) {
+    if (true) {
         var holyLight = new Game.Abilities.Ability('holyLight');
         Game.Player.addAbility(holyLight);
         Game.UserInterface.assignAbilityToBar(holyLight, 0);
