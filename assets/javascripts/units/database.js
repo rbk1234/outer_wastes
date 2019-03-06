@@ -6,6 +6,54 @@
         player: {
             name: 'Healer (You)',
             animations: {
+                portrait: [
+                    '_O_',
+                    '/ \\'
+                ],
+                idle: {
+                    image: [
+                        ' _O_',
+                        ' /  $',
+                        ' \\ \\|',
+                        ' | )|',
+                        '/__||'
+                    ]
+                },
+                attack: {
+                    image: [
+                        ' _O_ $',
+                        ' / \\_|',
+                        ' \\   |',
+                        ' | ) |',
+                        '/__|'
+                    ],
+                    duration: 0.4
+                },
+                dead: {
+                    image: [
+                        '',
+                        '',
+                        '',
+                        '',
+                        ' _O_'
+                    ]
+                }
+            },
+            stats: {
+                maxHealth: 100,
+                maxMana: 250,
+                manaRegen: 5,
+                attackSpeed: 0.3,
+                attackDamage: 5
+            }
+        },
+        swashbuckler: {
+            name: 'Swashbuckler',
+            animations: {
+                portrait: [
+                    '~O',
+                    '/ \\'
+                ],
                 idle: {
                     image: [
                         '~O',
@@ -23,7 +71,7 @@
                         ' |\\',
                         '/ |'
                     ],
-                    duration: 0.4
+                    duration: 0.3
                 },
                 dead: {
                     image: [
@@ -36,11 +84,9 @@
                 }
             },
             stats: {
-                maxHealth: 100,
-                maxMana: 250,
-                manaRegen: 5,
-                attackSpeed: 1,
-                attackDamage: 5
+                maxHealth: 200,
+                attackSpeed: 1.25,
+                attackDamage: 10
             }
         },
         oozeling: {
@@ -78,6 +124,34 @@
         },
         wolf: {
             name: 'Wolf',
+            animations: {
+                portrait: [
+                    ' _',
+                    "''("
+                ],
+                idle: {
+                    image: [
+                        '  _',
+                        " ''(__",
+                        '  \\\\ \\\\`'
+                    ]
+                },
+                attack: {
+                    image: [
+                        ' _',
+                        "''(__",
+                        ' \\\\ \\\\`'
+                    ],
+                    duration: 0.2
+                },
+                dead: {
+                    image: [
+                        '',
+                        '',
+                        '.......'
+                    ]
+                }
+            },
             stats: {
                 maxHealth: 300,
                 attackSpeed: 0.8,
@@ -88,6 +162,10 @@
         native: {
             name: 'Native',
             animations: {
+                portrait: [
+                    '\\|/',
+                    '(oo'
+                ],
                 idle: {
                     image: [
                         ' \\|/ /',

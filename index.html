@@ -31,8 +31,9 @@
     <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
   <![endif]-->
 
-  <div class="flex-box">
-    <div class="flex-row header-bar">
+  <div id="body-content">
+
+    <div id="header-bar">
       <div class="grid-x">
         <div class="cell auto">
 
@@ -44,156 +45,118 @@
         </div>
       </div>
     </div>
-    <div class="flex-row subheader-bar">
-      <!--<div class="grid-x">-->
-        <!--<div class="cell small-6 text-right border-bottom-white">-->
-          <!--<div style="margin-right:6.5rem;">-->
-            <!--Your Party-->
-          <!--</div>-->
-        <!--</div>-->
-        <!--<div class="cell small-6 text-left border-bottom-white">-->
-          <!--<div style="margin-left:6.5em;">-->
-            <!--<span id="level-info"></span>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</div>-->
-      <div class="border-bottom-white text-center">
+    <div id="subheader-bar">
+      <div class="text-center">
         <span id="level-info"></span>
       </div>
     </div>
 
-    <div class="flex-row main-content" style="position:relative;">
-      <div class="grid-x" style="height:100%;">
-        <div class="cell small-6">
-          <div class="side-container">
-            <div class="side-background">
 
 
-              <div id="ally-frames">
 
-                <div id="ally-frame-template" class="ally-frame">
-                  <!--<div class="portrait-area"></div>-->
-
-                  <div class="health-area">
-                    <span class="unit-name">Name</span>
-                    <div class="bar health-bar">
-                      <div class="bar-layer background" style="width: 100%;"></div>
-                      <div class="bar-layer shield" style="width: 0;"></div>
-                      <div class="bar-layer health" style="width: 100%;"></div>
-                      <div class="bar-layer bar-text" style="width: 100%;"></div>
-                    </div>
-                    <div class="bar mana-bar" hidden style="margin-top: 0.1rem;">
-                      <div class="bar-layer background" style="width: 100%;"></div>
-                      <div class="bar-layer mana" style="width: 100%;"></div>
-                      <div class="bar-layer bar-text" style="width: 100%;"></div>
-                    </div>
-                  </div>
-                  <div class="effects-and-cast-area">
-                    <div class="effects-area"></div>
-                    <div class="cast-area">
-                      <div class="bar cast-bar" style="opacity: 0;">
-                        <div class="bar-layer background" style="width:100%;"></div>
-                        <div class="bar-layer cast-progress" style="width:50%;"></div>
-                        <div class="bar-layer bar-text" style="width: 100%;">
-                          Dummy Spell
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+    <div id="player-and-target-area">
+      <table class="no-rows no-spacing">
+        <tbody>
+        <tr>
+          <td width="25%"></td>
+          <td width="25%">
+            <div id="player-frame">
+              <div class="portrait"></div>
+              <div class="non-portrait">
+                <div class="name"></div>
+                <div class="bar health-bar">
+                  <div class="bar-layer background" style="width: 100%;"></div>
+                  <div class="bar-layer shield" style="width: 0;"></div>
+                  <div class="bar-layer health" style="width: 100%;"></div>
+                  <div class="bar-layer bar-text" style="width: 100%;"></div>
                 </div>
-
+                <div class="bar mana-bar">
+                  <div class="bar-layer background" style="width: 100%;"></div>
+                  <div class="bar-layer mana" style="width: 100%;"></div>
+                  <div class="bar-layer bar-text" style="width: 100%;"></div>
+                </div>
+                <div class="effects-area"></div>
+                <!--<div class="bar cast-bar" style="opacity: 0;">-->
+                  <!--<div class="bar-layer background" style="width: 100%;"></div>-->
+                  <!--<div class="bar-layer cast-progress" style="width: 100%;"></div>-->
+                  <!--<div class="bar-layer bar-text" style="width: 100%;"></div>-->
+                <!--</div>-->
               </div>
-
-              <!--<hr>-->
-              <div class="spacer"></div>
-
-
+            </div>
+          </td>
+          <td width="25%">
+            <div id="target-frame">
+              <div class="non-portrait">
+                <div class="name"></div>
+                <div class="bar health-bar">
+                  <div class="bar-layer background" style="width: 100%;"></div>
+                  <div class="bar-layer shield" style="width: 0;"></div>
+                  <div class="bar-layer health" style="width: 100%;"></div>
+                  <div class="bar-layer bar-text" style="width: 100%;"></div>
+                </div>
+                <div class="bar mana-bar">
+                  <div class="bar-layer background" style="width: 100%;"></div>
+                  <div class="bar-layer mana" style="width: 100%;"></div>
+                  <div class="bar-layer bar-text" style="width: 100%;"></div>
+                </div>
+                <div class="effects-area"></div>
+                <!--<div class="bar cast-bar" style="opacity: 0;">-->
+                  <!--<div class="bar-layer background" style="width: 100%;"></div>-->
+                  <!--<div class="bar-layer cast-progress" style="width: 100%;"></div>-->
+                  <!--<div class="bar-layer bar-text" style="width: 100%;"></div>-->
+                <!--</div>-->
+              </div>
+              <div class="portrait"></div>
 
             </div>
-          </div>
+          </td>
+          <td width="25%"></td>
+        </tr>
+        </tbody>
+      </table>
 
-        </div>
-        <div class="cell small-6">
-          <div class="side-container">
-            <div class="side-background">
-
-              <div id="enemy-frames">
-
-                <div id="enemy-frame-template" class="enemy-frame">
-                  <div class="effects-and-cast-area">
-                    <div class="effects-area"></div>
-                    <div class="cast-area"></div>
-                  </div>
-                  <div class="health-area">
-                    <span class="unit-name">Name</span>
-                    <div class="bar health-bar">
-                      <div class="bar-layer background" style="width: 100%;"></div>
-                      <div class="bar-layer shield" style="width: 0;"></div>
-                      <div class="bar-layer health" style="width: 100%;"></div>
-                      <div class="bar-layer bar-text" style="width: 100%;"></div>
-                    </div>
-                    <div class="bar mana-bar" hidden style="margin-top: 0.1rem;">
-                      <div class="bar-layer background" style="width: 100%;"></div>
-                      <div class="bar-layer mana" style="width: 100%;"></div>
-                      <div class="bar-layer bar-text" style="width: 100%;"></div>
-                    </div>
-                  </div>
-                  <!--<div class="portrait-area"></div>-->
-
-                </div>
-
-              </div>
-
-              <!--<hr>-->
-              <div class="spacer"></div>
-
-              <div id="navigation-panel" class="">
-                <div id="room-info">
-                  <!--<span class="fa fa-fw fa-shield-alt"></span>-->
-                  A pack of wolves is inhabiting the area.
-                </div>
-
-                <div class="normal-navigation">
-                  <table>
-                    <tbody>
-                    <tr>
-                      <td class="nostretch">
-                        <button id="" class="button invisible">Next</button>
-                      </td>
-                      <td class="text-center">
-                        <button id="engage-combat" class="button">Engage</button>
-                      </td>
-                      <td class="nostretch">
-                        <button id="next-room" class="button invisble">Next</button>
-                      </td>
-                    </tr>
-                    </tbody>
-                  </table>
-                </div>
-
-                <div class="game-over" hidden>
-                  <table>
-                    <tbody>
-                    <tr>
-                      <td class="nostretch">
-                        <div class="skull"></div>
-                      </td>
-                      <td>Your party has been killed.</td>
-                      <td class="nostretch">
-                        <button class="restart alert button">Restart</button>
-                      </td>
-                    </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+    </div>
 
 
+    <div id="units-area">
 
+      <div id="unit-frame-template" class="unit-frame">
+        <div class="flex-col">
+          <div class="combat-text-area"></div>
+          <div class="clickable-area">
+            <div class="click-target"></div>
+            <div class="image"></div>
+            <div class="bar health-bar">
+              <div class="bar-layer background" style="width: 100%;"></div>
+              <div class="bar-layer shield" style="width: 0;"></div>
+              <div class="bar-layer health" style="width: 100%;"></div>
+              <!--<div class="bar-layer bar-text" style="width: 100%;"></div>-->
             </div>
           </div>
+          <div class="effects-area"></div>
         </div>
       </div>
+
+      <table class="no-rows no-spacing">
+        <tbody>
+        <tr>
+          <td width="45%"><div id="ally-frames"></div></td>
+          <td width="10%"></td>
+          <td width="45%"><div id="enemy-frames"></div></td>
+        </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+
+    <div id="cast-bar-area">
+      <div id="player-cast-bar" class="bar cast-bar" style="opacity: 0;">
+        <div class="bar-layer background" style="width: 100%;"></div>
+        <div class="bar-layer cast-progress" style="width: 100%;"></div>
+        <div class="bar-layer bar-text" style="width: 100%;"></div>
+      </div>
+
 
       <div id="ability-tooltip" hidden>
         <table class="no-rows no-spacing">
@@ -218,38 +181,13 @@
         </table>
       </div>
 
-      <!-- TODO Remove this? This is for absolutely-positioned cast bar -->
-      <!--<div id="cast-bar" hidden>-->
-        <!--<div class="bar">-->
-          <!--<div class="bar-layer background" style="width:100%;"></div>-->
-          <!--<div class="bar-layer cast-progress" style="width:50%;"></div>-->
-          <!--<div class="bar-layer bar-text" style="width: 100%;">-->
-            <!--Dummy Spell-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</div>-->
     </div>
-    <div class="flex-row bottom-bar">
+
+
+
+
+    <div id="bottom-bar">
       <div id="player-bars" class="bottom-section">
-        <div style="width:100%;">
-          <!--<div class="bar" id="player-health" style="margin-bottom:0.25rem;">-->
-            <!--<div class="bar-layer background" style="width:100%;"></div>-->
-            <!--<div class="bar-layer health" style="width:100%;"></div>-->
-            <!--<div class="bar-layer bar-text" style="width:100%;"></div>-->
-          <!--</div>-->
-          <!--<div class="bar" id="player-mana" style="margin-bottom: 0.25rem;">-->
-            <!--<div class="bar-layer background" style="width:100%;"></div>-->
-            <!--<div class="bar-layer mana" style="width:100%;"></div>-->
-            <!--<div class="bar-layer bar-text" style="width:100%;"></div>-->
-          <!--</div>-->
-          <!--<div class="bar" id="cast-bar" style="opacity: 0;">-->
-              <!--<div class="bar-layer background" style="width:100%;"></div>-->
-              <!--<div class="bar-layer cast-progress" style="width:50%;"></div>-->
-              <!--<div class="bar-layer bar-text" style="width: 100%;">-->
-                <!--Dummy Spell-->
-              <!--</div>-->
-          <!--</div>-->
-        </div>
       </div>
 
       <div id="ability-bar" class="bottom-section" style="text-align:center;">
@@ -281,11 +219,17 @@
       </div>
 
       <div id="item-area" class="bottom-section">
-        <div>
-          <p><button class="button" data-toggle="map-modal">Map</button></p>
-        </div>
+        <!--<div>-->
+          <!--<p><button class="button" data-toggle="map-modal">Map</button></p>-->
+        <!--</div>-->
       </div>
     </div>
+
+
+
+
+
+
   </div>
 
 

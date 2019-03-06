@@ -90,185 +90,275 @@ body {
   margin: 0
 }
 
-.flex-box {
+
+
+
+
+
+
+
+
+// -------------------------------------------------------- Main body layout
+
+#body-content {
   display: flex;
   flex-flow: column;
   height: 100%;
-}
 
-// Fit to content
-.flex-box .flex-row.header-bar {
-  flex: 0 1 auto;
-  /* The above is shorthand for:
-  flex-grow: 0,
-  flex-shrink: 1,
-  flex-basis: auto
-  */
-  background: $top-bar-bg;
-  color: white;
-}
-
-.flex-box .flex-row.subheader-bar {
-  flex: 0 1 auto;
-  background: $main-content-bg;
-  color: white;
-  font-weight: bold;
-
-  padding: 0.25rem;
-  padding-bottom: 0;
-}
-
-// Fill content:
-.flex-box .flex-row.main-content {
-  flex: 1 1 auto;
-  //text-align: center;
-  //background: #b2cfff;
-  padding: 2px;
-
-  background: $main-content-bg;
-  color: white;
-}
-
-// Fixed height:
-.flex-box .flex-row.bottom-bar {
-  //flex: 0 1 5rem; // todo min height?
-  flex: 0 1 auto; // fill to content
-  min-height: 5rem;
-
-  background: $bottom-bar-bg;
-  border: 2px solid $bottom-bar-border;
-}
-
-
-.main-content {
-  position: relative;
-
-  #ability-tooltip {
-    position: absolute;
-    bottom: 1rem;
-    right: 1rem;
-
-    background: rgba(22,22,22,1);
-    padding: 0.5rem;
-    border-radius: 0.25rem;
+  #header-bar {
+    flex: 0 1 auto; // fit to content
+    background: $top-bar-bg;
     color: white;
-    font-size: 0.875rem;
+  }
+  #subheader-bar {
+    flex: 0 1 auto; // fit to content
+    background: $main-content-bg;
+    color: white;
+    font-weight: bold;
 
-    .name {
-      font-size: 1rem;
+    padding: 0.25rem;
+    padding-bottom: 0;
+
+    border-bottom: 1px solid white;
+  }
+  #units-area {
+    flex: 1 1 auto; // fill remaining space
+    padding: 0.25rem;
+
+    background: $main-content-bg;
+    color: white;
+
+    table {
+      height: 100%;
     }
-    .description {
-      //color: #ffd12c; // WoW color
-      color: #A6A8F5; // league of legends color
-      width: 17.5rem;
 
-      .spell-power {
-        color: #99F399;
+    #ally-frames, #enemy-frames {
+      height: 100%;
+    }
+  }
+  #player-and-target-area {
+    flex: 0 1 auto; // fit to content
+
+    background: $main-content-bg;
+
+    table {
+      tr td {
+        vertical-align: top;
       }
+    }
+  }
+  #cast-bar-area {
+    flex: 0 1 auto; // fit to content
+
+    background: $main-content-bg;
+    
+    position: relative;
+    height: 2rem;
+    
+    #player-cast-bar {
+      position:absolute;
+      bottom:0.5rem;
+      left:50%;
+      margin-left:-10rem;
+      height:1.5rem;
+
+      width: 20rem;
+    }
+  }
+  #bottom-bar {
+    display: flex;
+    flex-flow: row;
+
+    flex: 0 1 auto; // fill to content
+    min-height: 5rem;
+
+    background: $bottom-bar-bg;
+    border: 2px solid $bottom-bar-border;
+
+    // Centering bottom bar according to https://stackoverflow.com/a/32546033/4904996
+    .bottom-section {
+      display: flex;
+      justify-content: center;
+      flex: 1;
+      padding: 0.5rem;
     }
   }
 }
 
 
-.bottom-bar {
 
+
+// -------------------------------------------------------- Detailed frames (one for player, one for target)
+
+
+#player-frame, #target-frame {
   display: flex;
   flex-flow: row;
-
-  // Centering bottom bar according to https://stackoverflow.com/a/32546033/4904996
-  .bottom-section {
-    display: flex;
-    justify-content: center;
-    flex: 1;
-    padding: 0.5rem;
+  
+  padding: 0.75rem;
+  
+  .portrait {
+    margin-top: 0.5rem;
+    height: 5rem;
+    width: 5rem;
+    flex: 0 1 auto; // fit to content
+    
+    background: #153c4a;
+    border-radius: 30%;
+    border: 1px solid black;
+    
+    color: white;
+    font-size: 1.5rem;
+    padding-left: 1rem;
+    
+    //&:before {
+    //  content: url('icons/wizard-face.svg');
+    //}
   }
-
-  #player-bars {
-    align-items: center;
-    #player-health {
+  .non-portrait {
+    flex: 1 1 auto; // fill remaining space
+    
+    padding: 0.5rem;
+    
+    .name {
+      color: white;
+      text-align: center;
+    }
+    .health-bar, .mana-bar {
       margin-bottom: 0.25rem;
     }
-    #player-mana {
-      //height: 1.5rem;
+    .effects-area {
+      height: 2rem;
     }
   }
-  #ability-bar {
-
-  }
-  #item-area {
-
-  }
 }
 
 
-//.cast-bar {
-  // TODO Remove this? This is for absolutely-positioned cast bar
-  //position:absolute;
-  //bottom:1rem;
-  //left:50%;
-  //margin-left:-10rem;
-  //height:1rem;
-  //width:20rem;
 
-//  .bar {
-//    height: 1.5rem;
-//
-//    .bar-text {
-//      text-align: center;
-//    }
-//  }
-//}
-.border-bottom-white {
-  border-bottom: 1px solid white;
+
+// -------------------------------------------------------- Unit frames
+
+#unit-frame-template {
+  display: none;
 }
-
-.side-container {
-  // handles spacing between the left and right side without using margins (margins mess with 100% height). Uses padding instead.
-
+.unit-frame {
+  display: inline-block;
+  width: 20%;
+  padding: 0.1rem;
   height: 100%;
-  padding: 0.5rem;
-  padding-top: 0;
 
-  .side-background {
+  .flex-col {
     display: flex;
     flex-flow: column;
-
     height: 100%;
-    padding: 0.5rem;
-    padding-top: 0;
-    border-radius: 0.5rem;
-    background: $main-frames-bg;
+    
+    justify-content: flex-end;
 
-    color: $main-frames-color;
+    .combat-text-area {
+      position: relative;
+      height: 5rem;
 
-    .spacer {
-      flex: 1 1 auto;
-    }
-    #ally-frames, #enemy-frames {
-      //height: 100%;
+      .combat-text {
+        left: 0.25rem;
 
-      flex: 0 1 auto; // fill content
-    }
-    hr {
-      margin: 0.5rem;
-      border-color: $main-frames-color;
-    }
-
-    #navigation-panel {
-      padding: 0.5rem;
-      border-radius: 0.313rem;
-      background: $navigation-menu;
-      color: white;
-
-      flex: 0 1 auto; // fill to content
-
-      #room-info {
-        //background: $top-bar-bg;
+        &.offset-1 {
+          left: 2.25rem;
+        }
+        &.offset-2 {
+          left: 4.25rem;
+        }
       }
     }
 
+    .clickable-area {
+      .click-target {
+        position: absolute;
+        z-index: 5;
+        height: 100%;
+        width: 100%;
+        cursor: pointer;
+
+      }
+      position: relative;
+      padding: 0.1rem;
+      border: 1.5px solid $health-border;
+      
+      height: 11rem;
+      display: flex;
+      flex-flow: column;
+      justify-content: flex-end;
+      
+      
+      &.targeted {
+        border: 1.5px solid $health-border-targeted;
+        box-shadow: 0 0 3px 1px #555;
+      }
+      .image {
+        // When displaying name:
+        //white-space: nowrap;
+        //overflow: hidden;
+        //-ms-text-overflow: ellipsis;
+        //text-overflow: ellipsis;
+        
+        font-family: monospace;
+        pre {
+          display: block;
+          overflow: hidden;
+        }
+      }
+      .bar {
+        height: 0.75rem;
+      }
+    }
+
+    .effects-area {
+      padding-top: 0.25rem;
+      height: 2rem;
+    }
   }
 }
+
+
+
+
+
+
+// -------------------------------------------------------- Ability tooltip
+
+
+#ability-tooltip {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+
+  background: rgba(22,22,22,1);
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  color: white;
+  font-size: 0.875rem;
+
+  .name {
+    font-size: 1rem;
+  }
+  .description {
+    //color: #ffd12c; // WoW color
+    color: #A6A8F5; // league of legends color
+    width: 17.5rem;
+
+    .spell-power {
+      color: #99F399;
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
 .game-over {
   border-radius: 0.313rem;
   background: $navigation-menu;
@@ -282,87 +372,36 @@ body {
   }
 }
 
-#ally-frame-template, #enemy-frame-template {
-  display: none;
-}
-.ally-frame, .enemy-frame {
-  display: flex;
-  flex-flow: row;
-  width: 100%;
-  justify-content: flex-start;
-  padding: 0.35rem;
-
-  &.dead {
-    .health-area {
-      cursor: default;
-    }
-  }
-
-  .portrait-area {
-    flex: 0 0 5rem;
-
-    padding: 0.2rem;
-
-    position: relative;
-  }
-  .health-area {
-    flex: 0 0 12rem; // fixed width
-
-    background: #444;
-    border-radius: 0.25rem;
-    padding: 0.2rem;
-    color: white;
-
-    cursor: pointer;
-
-    border: 1.5px solid $health-border;
-    &.targeted {
-      border: 1.5px solid $health-border-targeted;
-      box-shadow: 0 0 3px 1px #555;
-    }
-  }
-  .effects-and-cast-area {
-    flex: 1 1 auto; // fill content
-
-    padding: 0.25rem;
-
-    .effects-area {
-      height: 1.5rem; // note: should match .effect dimensions
-    }
-    .cast-area {
-      width: 12rem;
-      margin-top: 0.1rem;
-    }
-  }
-}
-.enemy-frame {
-  .effects-and-cast-area {
-    text-align: right;
-
-    .cast-area {
-      float: right;
-    }
-  }
-}
-.enemy-frame {
-  .portrait-area {
-    text-align: right;
-  }
-}
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// -------------------------------------------------------- Combat text
 
 .combat-text {
   position: absolute;
 
   /* Safari 4.0 - 8.0 */
-  -webkit-animation-name: example;
+  -webkit-animation-name: combat-text-fade;
   -webkit-animation-duration: 1.5s;
   -webkit-animation-timing-function: linear;
 
   /* Standard syntax */
-  animation-name: example;
+  animation-name: combat-text-fade;
   animation-duration: 1.5s;
   animation-timing-function: linear;
 
@@ -378,32 +417,13 @@ body {
   &.ally-damage {
     color: #ff9900;
   }
-}
-
-// TODO how are we going to offset more with bigger numbers?
-// ally text is left aligned, offset to the right
-.ally-frame {
-  .combat-text {
-    left: 0.25rem;
-
-    &.offset {
-      left: 2.25rem;
-    }
-  }
-}
-// enemy text is inverted; right aligned, offset to the left
-.enemy-frame {
-  .combat-text {
-    right: 0.25rem;
-
-    &.offset {
-      right: 2.25rem;
-    }
+  &.take-damage {
+    color: #ff0000;
   }
 }
 
 /* Safari 4.0 - 8.0 */
-@-webkit-keyframes example {
+@-webkit-keyframes combat-text-fade {
   10% {
     opacity: 1.0;
   }
@@ -417,7 +437,7 @@ body {
 }
 
 /* Standard syntax */
-@keyframes example {
+@keyframes combat-text-fade {
   10% {
     opacity: 1.0;
   }
@@ -463,7 +483,7 @@ body {
 
 
 
-
+// -------------------------------------------------------- Bars
 
 .bar {
   position:relative;
@@ -476,9 +496,9 @@ body {
   // TODO HACK: The inside of the bar is sometimes not reaching the very end (stuck at 99%)
   //            So setting box-sizing to content-box so it reaches full width. This makes the overall
   //            bar longer though, so reducing width
-  box-sizing: content-box;
+  //box-sizing: content-box;
   //width: 100%;
-  width: 99%;
+  //width: 99%;
 
   .bar-layer {
     position:absolute;
@@ -536,6 +556,7 @@ body {
 
 
 
+// -------------------------------------------------------- Abilities/effects
 
 .action-bar-button, .effect {
   display: inline-block;
@@ -768,6 +789,15 @@ body {
 }
 
 
+
+
+
+
+
+
+
+// -------------------------------------------------------- Standard elements
+
 .tabs {
   background: transparent;
   border: none;
@@ -827,84 +857,5 @@ table.no-spacing {
   margin-bottom: 0;
 }
 
-
-
-
-// TODO Can remove this...
-// Failed mana globe idea
-
-//<div class="stage">
-//<div id="mana-globe">
-//<div class="empty"></div>
-//<div class="surface"></div>
-//<span class="shadow"></span>
-//</div>
-//</div>
-
-
-//#mana-globe {
-//  display: inline-block;
-//  width: 100%;
-//  height: 100%;
-//  margin: 0;
-//  border-radius: 50%;
-//  border: 1px solid #555;
-//  //background: radial-gradient(circle at 50% 120%, #81e8f6, #76deef 10%, #055194 80%, #062745 100%);
-//  background: radial-gradient(circle at 50% 10%, #062745, #055194 50%, #34909f 100%);
-//
-//  overflow: hidden;
-//  position: relative;
-//
-//  .shadow {
-//    position: absolute;
-//    width: 100%;
-//    height: 100%;
-//    background: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.1) 40%, rgba(0, 0, 0, 0) 50%);
-//    transform: rotateX(90deg) translateZ(-50px);
-//    z-index: -1;
-//    bottom: 0;
-//  }
-//
-//  .empty {
-//    width:100%;
-//    height: 40%;
-//    background: #71777d;
-//  }
-//
-//  .surface {
-//    width: 100%;
-//    position: absolute;
-//    top: 37%;
-//    height: 3%;
-//    //background: #055194;
-//    background: #4b7599;
-//  }
-//}
-//#mana-globe:before {
-//  content: "";
-//  position: absolute;
-//  //top: 1%;
-//  top: 6%;
-//  left: 5%;
-//  width: 90%;
-//  height: 90%;
-//  border-radius: 50%;
-//  background: radial-gradient(circle at 50% 0px, rgba(255,255,255,0.6), rgba(255, 255, 255, 0) 58%);
-//  filter: blur(5px);
-//  z-index: 2;
-//}
-//
-//.stage {
-//  width: 100px;
-//  height: 100px;
-//  display: inline-block;
-//  perspective: 400px;
-//  perspective-origin: 50% 50%;
-//
-//  position: absolute;
-//  bottom: 1rem;
-//  left: 1rem;
-//
-//}
 
 

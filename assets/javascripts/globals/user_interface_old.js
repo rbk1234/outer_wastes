@@ -9,13 +9,13 @@
     var MAX_UNIT_FRAMES = 5;
 
     /*
-        Cast bar / cooldown spinners need high framerates so they can increment smoothly (don't want to tie it to
-        normal UPDATES_PER_SECOND because they need at least 60fps). So we start up new Clock intervals when needed.
+     Cast bar / cooldown spinners need high framerates so they can increment smoothly (don't want to tie it to
+     normal UPDATES_PER_SECOND because they need at least 60fps). So we start up new Clock intervals when needed.
 
-        Note: Since the animation is just spun off (it's not tied to the actual ability), if we implement things like:
-        - getting hit slows down a cast by 0.5 seconds
-        - reducing ability cooldowns by 1s (e.g. Ezreal Q)
-        We will have to restart the animation (at a partially done state) when the events occur.
+     Note: Since the animation is just spun off (it's not tied to the actual ability), if we implement things like:
+     - getting hit slows down a cast by 0.5 seconds
+     - reducing ability cooldowns by 1s (e.g. Ezreal Q)
+     We will have to restart the animation (at a partially done state) when the events occur.
      */
     var CAST_BAR_CLOCK_KEY = 'CastBar';
     var CAST_BAR_UPDATES_PER_SECOND = 100; // Needs high frame rate to smoothly increment
@@ -27,7 +27,6 @@
 
     var COMBAT_TEXT_DURATION = 1500; // should match animation-duration in scss
     var COMBAT_TEXT_OFFSET_WINDOW = 1000; // if two texts are shown within this time, offset the second text
-    var COMBAT_TEXT_COLUMNS = 3;
 
 
     var UserInterface = function() {};
@@ -36,8 +35,7 @@
         init: function() {
             var self = this;
 
-            this._initDetailedFrames();
-            this._initUnitFrames();
+            this._initFrames();
             this._initCastBar();
             this._initAbilityBar();
             this._initPlayerBars();
@@ -47,7 +45,6 @@
             // Start clock
             Game.Clock.setInterval(CLOCK_KEY, function(iterations, period) {
                 // Only draw once (no matter how many iterations)
-                self._refreshDetailedFrames();
                 self._refreshUnitFrames();
                 self._refreshPlayerBars();
                 self._refreshAbilityBar();
@@ -58,131 +55,13 @@
 
 
 
-
-
-
-
-        // ----------------------------------------------------- Detailed frames (one for the player, one for the target)
-
-
-        _initDetailedFrames: function() {
-            this._playerFrame = this._createDetailedFrame($('#player-frame'), 'player');
-            this._targetFrame = this._createDetailedFrame($('#target-frame'), 'target');
-        },
-        _createDetailedFrame: function($frame, frameType) {
-            var $healthBar = $frame.find('.health-bar');
-            var $manaBar = $frame.find('.mana-bar');
-            var $castBar = $frame.find('.cast-bar');
-
-            // Cache jquery references to elements that will need constant updating
-            return {
-                frameType: frameType,
-                $frame: $frame,
-                $name: $frame.find('.name'),
-
-                $portrait: $frame.find('.portrait'),
-
-                $effectsArea: $frame.find('.effects-area'),
-
-                $healthBarProgress: $healthBar.find('.bar-layer.health'),
-                $healthBarShield: $healthBar.find('.bar-layer.shield'),
-                $healthBarText: $healthBar.find('.bar-layer.bar-text'),
-
-                $manaBarProgress: $manaBar.find('.bar-layer.mana'),
-                $manaBarText: $manaBar.find('.bar-layer.bar-text'),
-
-                $castBar: $castBar,
-                $castBarProgress: $castBar.find('.bar-layer.cast-progress'),
-                $castBarText: $castBar.find('.bar-layer.bar-text')
-            };
-        },
-
-        _loadDetailedFrame: function(frame, unit) {
-            var self = this;
-
-            this._clearDetailedFrame(frame);
-
-            if (!unit) {
-                return;
-            }
-
-            frame.$name.html(unit.name);
-
-            // portrait
-            var $div = $('<div></div>');
-            unit.portrait().forEach(function(imageRow) {
-                $('<pre>'+imageRow+'</pre>').appendTo($div);
-            });
-            frame.$portrait.empty();
-            $div.appendTo(frame.$portrait);
-
-            // load existing effects:
-            this._removeAllEffectsInFrame(this._targetFrame);
-            Game.Util.iterateObject(unit.effects(), function(effectId, effect) {
-                self._addEffectToFrame(self._targetFrame, effect);
-            });
-
-            // TODO Load current cast
-
-            // do a normal refresh to get other stuff
-            this._refreshDetailedFrame(frame, unit);
-
-            frame.$frame.visible();
-        },
-        _clearDetailedFrame: function(frame) {
-            frame.$frame.invisible();
-
-            this._removeAllEffectsInFrame(frame);
-
-            // todo stop updates
-        },
-        _refreshDetailedFrames: function() {
-            this._refreshDetailedFrame(this._playerFrame, Game.Player);
-            this._refreshDetailedFrame(this._targetFrame, this.selectedUnit());
-        },
-        _refreshDetailedFrame: function(frame, unit) {
-            if (!unit) {
-                return;
-            }
-
-            var healthPercent = unit.percentHealth() + '%';
-            frame.$healthBarProgress.css('width', healthPercent);
-            frame.$healthBarText.html(Game.Util.round(unit.health) + '/' + Game.Util.round(unit.maxHealth.value()));
-
-            if (unit.totalAbsorb() > 0) {
-                var shieldPercent = Game.Util.roundForComparison((unit.health + unit.totalAbsorb()) / unit.maxHealth.value()) * 100 + '%';
-                frame.$healthBarShield.css('width', shieldPercent).addClass('active');
-            }
-            else {
-                frame.$healthBarShield.css('width', 0).removeClass('active');
-            }
-
-            if (unit.maxMana.value() === null) {
-                frame.$manaBarProgress.css('width', '0%');
-                frame.$manaBarText.html('');
-            }
-            else {
-                var manaPercent = unit.percentMana() + '%';
-                frame.$manaBarProgress.css('width', manaPercent);
-                frame.$manaBarText.html(Game.Util.round(unit.mana) + '/' + Game.Util.round(unit.maxMana.value()));
-            }
-        },
-
-
-
-
-
-
-
-
-
-
-
         // ----------------------------------------------------- Unit frames
 
-        _initUnitFrames: function() {
+        _initFrames: function() {
             var $allyFramesContainer = $('#ally-frames');
             var $enemyFramesContainer = $('#enemy-frames');
+            var $allyTemplate = $('#ally-frame-template');
+            var $enemyTemplate = $('#enemy-frame-template');
 
             this._allyFrames = [];
             this._enemyFrames = [];
@@ -191,55 +70,54 @@
             this._enemyIndices = {}; // Mapping of unit id -> array index of unit
 
             for (var i = 0; i < MAX_UNIT_FRAMES; i++) {
-                this._allyFrames.push(this._createUnitFrame($allyFramesContainer, Game.Constants.teamIds.player, i));
-                this._enemyFrames.push(this._createUnitFrame($enemyFramesContainer, Game.Constants.teamIds.computer, i));
+                this._allyFrames.push(this._createFrame($allyFramesContainer, $allyTemplate, Game.Constants.teamIds.player, i));
+                this._enemyFrames.push(this._createFrame($enemyFramesContainer, $enemyTemplate, Game.Constants.teamIds.computer, i));
             }
 
             this._setupFrameKeybinds();
         },
 
-        _createUnitFrame: function($container, teamId, index) {
+        _createFrame: function($container, $template, teamId, index) {
             var self = this;
 
-            var $template = $('#unit-frame-template');
             var $frame = $template.clone();
             $frame.removeAttr('id');
+            $frame.appendTo($container);
 
-            if (teamId === Game.Constants.teamIds.player) {
-                $frame.prependTo($container);
-            }
-            else {
-                $frame.appendTo($container);
-            }
-
-            $frame.find('.click-target').off('click').on('click', function() {
+            $frame.find('.health-area').off('click').on('click', function() {
                 self.targetIndex(teamId, index);
             });
 
             var $healthBar = $frame.find('.health-bar');
+            var $manaBar = $frame.find('.mana-bar');
+            var $castBar = $frame.find('.cast-bar');
 
             // Cache jquery references to elements that will need constant updating
             return {
-                frameType: 'unit',
                 $frame: $frame,
-                $name: $frame.find('.name'),
-
-                $combatTextArea: $frame.find('.combat-text-area'),
-                $clickableArea: $frame.find('.clickable-area'),
-                $image: $frame.find('.image'),
-
+                $name: $frame.find('.unit-name'),
+                $portraitArea: $frame.find('.portrait-area'),
                 $effectsArea: $frame.find('.effects-area'),
+                $healthArea: $frame.find('.health-area'),
 
                 $healthBarProgress: $healthBar.find('.bar-layer.health'),
                 $healthBarShield: $healthBar.find('.bar-layer.shield'),
                 $healthBarText: $healthBar.find('.bar-layer.bar-text'),
+
+                $manaBar: $manaBar,
+                $manaBarProgress: $manaBar.find('.bar-layer.mana'),
+                $manaBarText: $manaBar.find('.bar-layer.bar-text'),
+
+                $castBar: $castBar,
+                $castBarProgress: $castBar.find('.bar-layer.cast-progress'),
+                $castBarText: $castBar.find('.bar-layer.bar-text'),
 
                 combatTextOffsets: {}
             };
         },
 
         // Returns the frame object (object with jquery references) for a unit
-        _getUnitFrame: function(unit) {
+        _frameForUnit: function(unit) {
             if (unit.teamId === Game.Constants.teamIds.player) {
                 return this._allyFrames[this._allyIndices[unit.id]];
             }
@@ -330,10 +208,8 @@
                 this._allyIndices = {}; // Mapping of unit id -> array index of unit
                 Game.UnitEngine.unitsForTeam(teamId).forEach(function(unit, index) {
                     self._allyIndices[unit.id] = index;
-                    self._loadUnitFrame(unit);
+                    self._loadUnitIntoFrame(unit);
                 });
-
-                this._loadDetailedFrame(this._playerFrame, Game.Player);
             }
             else {
                 this._enemyFrames.forEach(function(frame) {
@@ -342,41 +218,28 @@
                 this._enemyIndices = {}; // Mapping of unit id -> array index of unit
                 Game.UnitEngine.unitsForTeam(teamId).forEach(function(unit, index) {
                     self._enemyIndices[unit.id] = index;
-                    self._loadUnitFrame(unit);
+                    self._loadUnitIntoFrame(unit);
                 });
-
-                this._loadDetailedFrame(this._targetFrame, this.selectedUnit());
             }
 
             this.updateCombatStatus();
         },
 
-        _loadUnitFrame: function(unit) {
+        _loadUnitIntoFrame: function(unit) {
             var self = this;
 
-            var frame = this._getUnitFrame(unit);
+            var frame = this._frameForUnit(unit);
+            frame.$name.html(unit.name);
 
-            this._clearUnitFrame(frame);
-
-            // TODO name?
-            //frame.$portrait.html(unit.name);
+            frame.$manaBar.toggle(unit.maxMana.value() !== null);
+            //frame.$manaBar.toggle(false);
 
             // load existing effects:
-            this._removeAllEffectsInFrame(frame);
             Game.Util.iterateObject(unit.effects(), function(effectId, effect) {
-                self._addEffectToFrame(frame, effect);
+                self.addEffect(unit, effect);
             });
 
-            this._refreshUnitFrame(unit);
-
             frame.$frame.visible();
-        },
-        _clearUnitFrame: function(frame) {
-            frame.$frame.invisible();
-
-            this._removeAllEffectsInFrame(frame);
-
-            // todo stop updates
         },
 
         _refreshUnitFrames: function() {
@@ -391,19 +254,7 @@
         },
 
         _refreshUnitFrame: function(unit) {
-            var frame = this._getUnitFrame(unit);
-
-            // image (only draw if it has changed)
-            var newImage = unit.image();
-            if (newImage !== frame.lastImage) {
-                var $div = $('<div></div>');
-                unit.image().forEach(function(imageRow) {
-                    $('<pre>'+imageRow+'</pre>').appendTo($div);
-                });
-                frame.$image.empty();
-                $div.appendTo(frame.$image);
-                frame.lastImage = newImage;
-            }
+            var frame = this._frameForUnit(unit);
 
             var healthPercent = unit.percentHealth() + '%';
             frame.$healthBarProgress.css('width', healthPercent);
@@ -416,25 +267,32 @@
             else {
                 frame.$healthBarShield.css('width', 0).removeClass('active');
             }
+
+            if (unit.maxMana.value() !== null) {
+                var manaPercent = unit.percentMana() + '%';
+                frame.$manaBarProgress.css('width', manaPercent);
+                frame.$manaBarText.html(Game.Util.round(unit.mana) + '/' + Game.Util.round(unit.maxMana.value()));
+            }
+        },
+
+        unitDied: function(unit) {
+            this._refreshAbilityTargets();
         },
 
         createFloatingText: function(unit, text, textClass) {
-            var frame = this._getUnitFrame(unit);
+            var frame = this._frameForUnit(unit);
+            var $portraitArea = frame.$portraitArea;
 
             // If two combat texts are shown (for the same unit) within the COMBAT_TEXT_OFFSET_WINDOW, offset one to the side
             var oldOffsetData = frame.combatTextOffsets;
             var now = Date.now() || (new Date).getTime();
-            var offsetLevel = 1;
-            if (oldOffsetData && oldOffsetData.offsetLevel < COMBAT_TEXT_COLUMNS && (now - oldOffsetData.time < COMBAT_TEXT_OFFSET_WINDOW)) {
-                offsetLevel = oldOffsetData.offsetLevel + 1;
-            }
-
+            var isOffset = oldOffsetData && !oldOffsetData.isOffset && (now - oldOffsetData.time < COMBAT_TEXT_OFFSET_WINDOW);
             frame.combatTextOffsets = {
                 time: now,
-                offsetLevel: offsetLevel
+                isOffset: isOffset
             };
 
-            var $text = $('<span class="combat-text ' + textClass + ' ' + ('offset-'+offsetLevel) + '">' + text + '</span>').appendTo(frame.$combatTextArea);
+            var $text = $('<span class="combat-text ' + textClass + ' + ' + (isOffset ? 'offset' : '') + '">' + text + '</span>').appendTo($portraitArea);
             window.setTimeout(function() {
                 $text.remove();
             }, COMBAT_TEXT_DURATION);
@@ -446,9 +304,6 @@
 
         // ----------------------------------------------------- Targeting
 
-        selectedUnit: function() {
-            return this._targetedUnit;
-        },
 
         targetedUnit: function() {
             return this._targetedUnitOverride ? this._targetedUnitOverride : this._targetedUnit;
@@ -456,7 +311,7 @@
 
         clearTarget: function() {
             this._targetedUnit = null;
-            $('.clickable-area').removeClass('targeted');
+            $('.health-area').removeClass('targeted');
 
             this._refreshAbilityTargets();
         },
@@ -464,12 +319,10 @@
         targetUnit: function(unit) {
             // Remove targeting circle from any old target. Note: Not calling clearTarget for small performance gain
             this._targetedUnit = unit;
-            $('.clickable-area').removeClass('targeted');
+            $('.health-area').removeClass('targeted');
 
             // Add targeting circle to new target
-            this._getUnitFrame(unit).$clickableArea.addClass('targeted');
-
-            this._loadDetailedFrame(this._targetFrame, unit);
+            this._frameForUnit(unit).$healthArea.addClass('targeted');
 
             this._refreshAbilityTargets();
         },
@@ -486,10 +339,6 @@
 
         clearTargetOverride: function() {
             this._targetedUnitOverride = null;
-            this._refreshAbilityTargets();
-        },
-
-        unitDied: function(unit) {
             this._refreshAbilityTargets();
         },
 
@@ -544,60 +393,12 @@
         // ----------------------------------------------------- Effects
 
         _initEffects: function() {
-            // Effect id -> effectUi object containing jquery / CooldownTimer references
-            this._playerEffects = {};
-            this._targetEffects = {};
-            this._unitEffects = {};
+            this._effects = {}; // Effect id -> effect object containing jquery / CooldownTimer references
         },
 
         addEffect: function(unit, effect) {
-            this._addEffectToFrame(this._getUnitFrame(unit), effect);
+            var frame = this._frameForUnit(unit);
 
-            if (this.selectedUnit() && unit.id === this.selectedUnit().id) {
-                this._addEffectToFrame(this._targetFrame, effect);
-            }
-            if (unit.id === Game.Player.id) {
-                this._addEffectToFrame(this._playerFrame, effect);
-            }
-        },
-
-        removeEffect: function(unit, effect) {
-            this._removeEffectFromFrame(this._getUnitFrame(unit), effect);
-
-            if (this.selectedUnit() && unit.id === this.selectedUnit().id) {
-                this._removeEffectFromFrame(this._targetFrame, effect);
-            }
-            if (unit.id === Game.Player.id) {
-                this._removeEffectFromFrame(this._playerFrame, effect);
-            }
-        },
-
-        // Refresh an existing effect so it stays in the same place (won't jump to end of $effectsArea)
-        refreshEffect: function(unit, oldEffect, newEffect) {
-            this._refreshEffectInFrame(this._getUnitFrame(unit), oldEffect, newEffect);
-
-            if (this.selectedUnit() && unit.id === this.selectedUnit().id) {
-                this._refreshEffectInFrame(this._targetFrame, oldEffect, newEffect);
-            }
-            if (unit.id === Game.Player.id) {
-                this._refreshEffectInFrame(this._playerFrame, oldEffect, newEffect);
-            }
-        },
-
-        _effectsForFrame: function(frame) {
-            switch(frame.frameType) {
-                case 'unit':
-                    return this._unitEffects;
-                case 'player':
-                    return this._playerEffects;
-                case 'target':
-                    return this._targetEffects;
-                default:
-                    console.error('Invalid frameType: '+frame.frameType);
-            }
-        },
-
-        _addEffectToFrame: function(frame, effect) {
             // Unit may not have been loaded into UI yet. That's okay, when it is its effects will be loaded
             if (!frame) {
                 return;
@@ -609,13 +410,18 @@
                 class: 'effect ' + effect.icon + ' ' + effect.background + ' ' + (effect.hidden ? 'hidden' : '')
             }).appendTo($effectsArea);
 
-            $effect.appendTo($effectsArea);
+            if (unit.teamId === Game.Constants.teamIds.player) {
+                $effect.prependTo($effectsArea);
+            }
+            else {
+                $effect.appendTo($effectsArea);
+            }
 
             $('<canvas></canvas>', {
                 class: 'cooldown-status'
             }).appendTo($effect);
 
-            var timer = new CooldownTimer($effect, frame.frameType + '_effect_'+effect.id, true);
+            var timer = new CooldownTimer($effect, 'Effect_'+effect.id, true);
 
             if (effect.hasDuration) {
                 var totalCooldown = effect.duration.value();
@@ -623,43 +429,29 @@
                 timer.startCooldown(totalCooldown, elapsed);
             }
 
-            var effects = this._effectsForFrame(frame);
-            effects[effect.id] = {
+            this._effects[effect.id] = {
                 $effect: $effect,
                 timer: timer
             };
         },
 
-        _removeEffectFromFrame: function(frame, effect) {
-            var effects = this._effectsForFrame(frame);
-
-            effects[effect.id].timer.destroy();
-            effects[effect.id].$effect.remove();
-            delete effects[effect.id];
+        removeEffect: function(unit, effect) {
+            this._effects[effect.id].$effect.remove();
+            delete this._effects[effect.id];
         },
 
-        _removeAllEffectsInFrame: function(frame) {
-            var effects = this._effectsForFrame(frame);
-
-            Game.Util.iterateObject(effects, function(effectId, effectUi) {
-                effectUi.timer.destroy();
-                effectUi.$effect.remove();
-                delete effects[effectId];
-            });
-        },
-
-        _refreshEffectInFrame: function(frame, oldEffect, newEffect) {
-            var effects = this._effectsForFrame(frame);
-
-            effects[newEffect.id] = effects[oldEffect.id];
-            delete effects[oldEffect.id];
+        // Refresh an existing effect so it stays in the same place (won't jump to end of $effectsArea)
+        refreshEffect: function(unit, oldEffect, newEffect) {
+            this._effects[newEffect.id] = this._effects[oldEffect.id];
+            delete this._effects[oldEffect.id];
 
             if (newEffect.hasDuration) {
                 var totalCooldown = newEffect.duration.value();
                 var elapsed = totalCooldown - newEffect.durationLeft();
-                effects[newEffect.id].timer.startCooldown(totalCooldown, elapsed);
+                this._effects[newEffect.id].timer.startCooldown(totalCooldown, elapsed);
             }
         },
+
 
 
 
@@ -771,7 +563,7 @@
                 self._toggleAbilityManaReq(ability, !Game.Player.hasManaForAbility(ability));
             });
         },
-        
+
         _refreshAbilityTargets: function() {
             var self = this;
 
@@ -891,18 +683,12 @@
         // ----------------------------------------------------- Cast bar
 
         _initCastBar: function() {
-            var $castBar = $('#player-cast-bar');
 
-            this._castBarFrame = {
-                $castBar: $castBar,
-                $castBarProgress: $castBar.find('.bar-layer.cast-progress'),
-                $castBarText: $castBar.find('.bar-layer.bar-text')
-            }
         },
 
         startCast: function(unit, ability) {
             var self = this;
-            
+
             var castLength = ability.castTime.value();
             if (castLength !== 0) {
                 // Has cast time; show cast bar, highlight ability if player
@@ -937,10 +723,7 @@
         },
 
         _startCastBar: function(unit, text, castLength) {
-            if (unit.id !== Game.Player.id) {
-                return;
-            }
-            var frame = this._castBarFrame;
+            var frame = this._frameForUnit(unit);
 
             // Set up a temporary interval for the cast bar that updates at a very high framerate
             var accumulatedSeconds = 0;
@@ -959,10 +742,7 @@
         },
 
         _completeCastBar: function(unit) {
-            if (unit.id !== Game.Player.id) {
-                return;
-            }
-            var frame = this._castBarFrame;
+            var frame = this._frameForUnit(unit);
 
             Game.Clock.clearInterval(CAST_BAR_CLOCK_KEY + '_' + unit.id);
 
@@ -974,10 +754,7 @@
         },
 
         _cancelCastBar: function(unit, message) {
-            if (unit.id !== Game.Player.id) {
-                return;
-            }
-            var frame = this._castBarFrame;
+            var frame = this._frameForUnit(unit);
 
             Game.Clock.clearInterval(CAST_BAR_CLOCK_KEY + '_' + unit.id);
 
@@ -1003,10 +780,10 @@
      Radial shading code has been adapted from https://codepen.io/jeremywynn/pen/emLjyL
 
      param clockKey:
-         Make sure to give each CooldownTimer a unique clockKey
+     Make sure to give each CooldownTimer a unique clockKey
      param invertShades:
-         If true, when cooldown starts the entire canvas will be blank and will slowly become shaded
-         If false, when cooldown starts the entire canvas will be shaded and will slowly become unshaded (default)
+     If true, when cooldown starts the entire canvas will be blank and will slowly become shaded
+     If false, when cooldown starts the entire canvas will be shaded and will slowly become unshaded (default)
      */
     var CooldownTimer = function($container, clockKey, invertShades) {
         this._init($container, clockKey, invertShades);
@@ -1052,10 +829,6 @@
             }, 1.0 / COOLDOWN_UPDATES_PER_SECOND);
         },
 
-        destroy: function() {
-            Game.Clock.clearInterval(this.clockKey);
-            // todo this.$container.remove() ?
-        },
         endCooldown: function() {
             Game.Clock.clearInterval(this.clockKey);
             this._clearCanvas();

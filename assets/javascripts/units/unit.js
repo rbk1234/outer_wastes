@@ -231,6 +231,9 @@
             else if (damageSource.teamId === Game.Constants.teamIds.player) {
                 Game.UserInterface.createFloatingText(this, '' + Game.Util.round(amount), 'ally-damage');
             }
+            if (this.teamId === Game.Constants.teamIds.player) {
+                Game.UserInterface.createFloatingText(this, '-' + Game.Util.round(amount), 'take-damage');
+            }
 
             if (Game.Util.roundForComparison(this.health) > 0) {
                 this.health -= amount;
@@ -530,18 +533,24 @@
 
 
 
-        //image: function() {
-        //    if (this.isDead()) {
-        //        return this._dbRecord.animations.dead.image;
-        //    }
-        //
-        //    if (Game.Util.roundForComparison(this._attackTimer) > (this.attackSpeed() - this._dbRecord.animations.attack.duration)) {
-        //        return this._dbRecord.animations.attack.image;
-        //    }
-        //    else {
-        //        return this._dbRecord.animations.idle.image;
-        //    }
-        //},
+        portrait: function() {
+            return this.animations.portrait;
+        },
+        image: function() {
+            if (this.isDead()) {
+                return this.animations.dead.image;
+            }
+            if (!Game.UnitEngine.inCombat()) {
+                return this.animations.idle.image;
+            }
+
+            if (Game.Util.roundForComparison(this._attackTimer) > (1.0 / this.attackSpeed.value() - this.animations.attack.duration)) {
+                return this.animations.attack.image;
+            }
+            else {
+                return this.animations.idle.image;
+            }
+        },
 
 
 

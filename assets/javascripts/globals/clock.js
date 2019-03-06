@@ -48,6 +48,10 @@
             delete this.periodicFns[key];
         },
 
+        clearAll: function() {
+            this.periodicFns = {};
+        },
+
         /*. Main clock function .*/
         run: function() {
             /*. Calculate time since last tick .*/

@@ -129,9 +129,6 @@
     };
 
 
-    Game.Util.minScreenWidth = function() {
-        return parseInt($('.main-content').css('min-width'));
-    };
 
     // Call a method such that, inside the method, 'this' refers to the target parameter
     Game.Util.makeCallback = function (target, method) {
@@ -202,7 +199,8 @@
             return false;
         }
 
-        for (var i = 0; i < array1.length; ++i) {
+        var len = array1.length;
+        for (var i = 0; i < len; ++i) {
             if (array1[i] !== array2[i]) {
                 return false;
             }

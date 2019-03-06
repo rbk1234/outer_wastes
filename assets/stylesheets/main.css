@@ -27,102 +27,153 @@ body {
   height: 100%;
   margin: 0; }
 
-.flex-box {
+#body-content {
   display: flex;
   flex-flow: column;
   height: 100%; }
-
-.flex-box .flex-row.header-bar {
-  flex: 0 1 auto;
-  /* The above is shorthand for:
-  flex-grow: 0,
-  flex-shrink: 1,
-  flex-basis: auto
-  */
-  background: #384d52;
-  color: white; }
-
-.flex-box .flex-row.subheader-bar {
-  flex: 0 1 auto;
-  background: #4a806b;
-  color: white;
-  font-weight: bold;
-  padding: 0.25rem;
-  padding-bottom: 0; }
-
-.flex-box .flex-row.main-content {
-  flex: 1 1 auto;
-  padding: 2px;
-  background: #4a806b;
-  color: white; }
-
-.flex-box .flex-row.bottom-bar {
-  flex: 0 1 auto;
-  min-height: 5rem;
-  background: #bfa17a;
-  border: 2px solid #3e2d2e; }
-
-.main-content {
-  position: relative; }
-  .main-content #ability-tooltip {
-    position: absolute;
-    bottom: 1rem;
-    right: 1rem;
-    background: #161616;
-    padding: 0.5rem;
-    border-radius: 0.25rem;
+  #body-content #header-bar {
+    flex: 0 1 auto;
+    background: #384d52;
+    color: white; }
+  #body-content #subheader-bar {
+    flex: 0 1 auto;
+    background: #4a806b;
     color: white;
-    font-size: 0.875rem; }
-    .main-content #ability-tooltip .name {
-      font-size: 1rem; }
-    .main-content #ability-tooltip .description {
-      color: #A6A8F5;
-      width: 17.5rem; }
-      .main-content #ability-tooltip .description .spell-power {
-        color: #99F399; }
-
-.bottom-bar {
-  display: flex;
-  flex-flow: row; }
-  .bottom-bar .bottom-section {
+    font-weight: bold;
+    padding: 0.25rem;
+    padding-bottom: 0;
+    border-bottom: 1px solid white; }
+  #body-content #units-area {
+    flex: 1 1 auto;
+    padding: 0.25rem;
+    background: #4a806b;
+    color: white; }
+    #body-content #units-area table {
+      height: 100%; }
+    #body-content #units-area #ally-frames, #body-content #units-area #enemy-frames {
+      height: 100%; }
+  #body-content #player-and-target-area {
+    flex: 0 1 auto;
+    background: #4a806b; }
+    #body-content #player-and-target-area table tr td {
+      vertical-align: top; }
+  #body-content #cast-bar-area {
+    flex: 0 1 auto;
+    background: #4a806b;
+    position: relative;
+    height: 2rem; }
+    #body-content #cast-bar-area #player-cast-bar {
+      position: absolute;
+      bottom: 0.5rem;
+      left: 50%;
+      margin-left: -10rem;
+      height: 1.5rem;
+      width: 20rem; }
+  #body-content #bottom-bar {
     display: flex;
-    justify-content: center;
-    flex: 1;
+    flex-flow: row;
+    flex: 0 1 auto;
+    min-height: 5rem;
+    background: #bfa17a;
+    border: 2px solid #3e2d2e; }
+    #body-content #bottom-bar .bottom-section {
+      display: flex;
+      justify-content: center;
+      flex: 1;
+      padding: 0.5rem; }
+
+#player-frame, #target-frame {
+  display: flex;
+  flex-flow: row;
+  padding: 0.75rem; }
+  #player-frame .portrait, #target-frame .portrait {
+    margin-top: 0.5rem;
+    height: 5rem;
+    width: 5rem;
+    flex: 0 1 auto;
+    background: #153c4a;
+    border-radius: 30%;
+    border: 1px solid black;
+    color: white;
+    font-size: 1.5rem;
+    padding-left: 1rem; }
+  #player-frame .non-portrait, #target-frame .non-portrait {
+    flex: 1 1 auto;
     padding: 0.5rem; }
-  .bottom-bar #player-bars {
-    align-items: center; }
-    .bottom-bar #player-bars #player-health {
+    #player-frame .non-portrait .name, #target-frame .non-portrait .name {
+      color: white;
+      text-align: center; }
+    #player-frame .non-portrait .health-bar, #player-frame .non-portrait .mana-bar, #target-frame .non-portrait .health-bar, #target-frame .non-portrait .mana-bar {
       margin-bottom: 0.25rem; }
+    #player-frame .non-portrait .effects-area, #target-frame .non-portrait .effects-area {
+      height: 2rem; }
 
-.border-bottom-white {
-  border-bottom: 1px solid white; }
+#unit-frame-template {
+  display: none; }
 
-.side-container {
-  height: 100%;
-  padding: 0.5rem;
-  padding-top: 0; }
-  .side-container .side-background {
+.unit-frame {
+  display: inline-block;
+  width: 20%;
+  padding: 0.1rem;
+  height: 100%; }
+  .unit-frame .flex-col {
     display: flex;
     flex-flow: column;
     height: 100%;
-    padding: 0.5rem;
-    padding-top: 0;
-    border-radius: 0.5rem;
-    background: transparent;
-    color: white; }
-    .side-container .side-background .spacer {
-      flex: 1 1 auto; }
-    .side-container .side-background #ally-frames, .side-container .side-background #enemy-frames {
-      flex: 0 1 auto; }
-    .side-container .side-background hr {
-      margin: 0.5rem;
-      border-color: white; }
-    .side-container .side-background #navigation-panel {
-      padding: 0.5rem;
-      border-radius: 0.313rem;
-      background: #3e2d2e;
-      color: white;
-      flex: 0 1 auto; }
+    justify-content: flex-end; }
+    .unit-frame .flex-col .combat-text-area {
+      position: relative;
+      height: 5rem; }
+      .unit-frame .flex-col .combat-text-area .combat-text {
+        left: 0.25rem; }
+        .unit-frame .flex-col .combat-text-area .combat-text.offset-1 {
+          left: 2.25rem; }
+        .unit-frame .flex-col .combat-text-area .combat-text.offset-2 {
+          left: 4.25rem; }
+    .unit-frame .flex-col .clickable-area {
+      position: relative;
+      padding: 0.1rem;
+      border: 1.5px solid transparent;
+      height: 11rem;
+      display: flex;
+      flex-flow: column;
+      justify-content: flex-end; }
+      .unit-frame .flex-col .clickable-area .click-target {
+        position: absolute;
+        z-index: 5;
+        height: 100%;
+        width: 100%;
+        cursor: pointer; }
+      .unit-frame .flex-col .clickable-area.targeted {
+        border: 1.5px solid white;
+        box-shadow: 0 0 3px 1px #555; }
+      .unit-frame .flex-col .clickable-area .image {
+        font-family: monospace; }
+        .unit-frame .flex-col .clickable-area .image pre {
+          display: block;
+          overflow: hidden; }
+      .unit-frame .flex-col .clickable-area .bar {
+        height: 0.75rem; }
+    .unit-frame .flex-col .effects-area {
+      padding-top: 0.25rem;
+      height: 2rem; }
+
+#ability-tooltip {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  background: #161616;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  color: white;
+  font-size: 0.875rem; }
+  #ability-tooltip .name {
+    font-size: 1rem; }
+  #ability-tooltip .description {
+    color: #A6A8F5;
+    width: 17.5rem; }
+    #ability-tooltip .description .spell-power {
+      color: #99F399; }
 
 .game-over {
   border-radius: 0.313rem;
@@ -133,57 +184,14 @@ body {
   .game-over .skull:before {
     content: url("icons/skull-crack.svg"); }
 
-#ally-frame-template, #enemy-frame-template {
-  display: none; }
-
-.ally-frame, .enemy-frame {
-  display: flex;
-  flex-flow: row;
-  width: 100%;
-  justify-content: flex-start;
-  padding: 0.35rem; }
-  .ally-frame.dead .health-area, .enemy-frame.dead .health-area {
-    cursor: default; }
-  .ally-frame .portrait-area, .enemy-frame .portrait-area {
-    flex: 0 0 5rem;
-    padding: 0.2rem;
-    position: relative; }
-  .ally-frame .health-area, .enemy-frame .health-area {
-    flex: 0 0 12rem;
-    background: #444;
-    border-radius: 0.25rem;
-    padding: 0.2rem;
-    color: white;
-    cursor: pointer;
-    border: 1.5px solid transparent; }
-    .ally-frame .health-area.targeted, .enemy-frame .health-area.targeted {
-      border: 1.5px solid white;
-      box-shadow: 0 0 3px 1px #555; }
-  .ally-frame .effects-and-cast-area, .enemy-frame .effects-and-cast-area {
-    flex: 1 1 auto;
-    padding: 0.25rem; }
-    .ally-frame .effects-and-cast-area .effects-area, .enemy-frame .effects-and-cast-area .effects-area {
-      height: 1.5rem; }
-    .ally-frame .effects-and-cast-area .cast-area, .enemy-frame .effects-and-cast-area .cast-area {
-      width: 12rem;
-      margin-top: 0.1rem; }
-
-.enemy-frame .effects-and-cast-area {
-  text-align: right; }
-  .enemy-frame .effects-and-cast-area .cast-area {
-    float: right; }
-
-.enemy-frame .portrait-area {
-  text-align: right; }
-
 .combat-text {
   position: absolute;
   /* Safari 4.0 - 8.0 */
-  -webkit-animation-name: example;
+  -webkit-animation-name: combat-text-fade;
   -webkit-animation-duration: 1.5s;
   -webkit-animation-timing-function: linear;
   /* Standard syntax */
-  animation-name: example;
+  animation-name: combat-text-fade;
   animation-duration: 1.5s;
   animation-timing-function: linear;
   opacity: 0.0;
@@ -192,19 +200,11 @@ body {
     color: #00ff55; }
   .combat-text.ally-damage {
     color: #ff9900; }
-
-.ally-frame .combat-text {
-  left: 0.25rem; }
-  .ally-frame .combat-text.offset {
-    left: 2.25rem; }
-
-.enemy-frame .combat-text {
-  right: 0.25rem; }
-  .enemy-frame .combat-text.offset {
-    right: 2.25rem; }
+  .combat-text.take-damage {
+    color: #ff0000; }
 
 /* Safari 4.0 - 8.0 */
-@-webkit-keyframes example {
+@-webkit-keyframes combat-text-fade {
   10% {
     opacity: 1.0; }
   80% {
@@ -213,7 +213,7 @@ body {
     opacity: 0.0;
     bottom: 2.25rem; } }
 /* Standard syntax */
-@keyframes example {
+@keyframes combat-text-fade {
   10% {
     opacity: 1.0; }
   80% {
@@ -230,9 +230,7 @@ body {
   overflow: hidden;
   height: 1.5rem;
   border: 1px solid #333;
-  border-radius: 0.1rem;
-  box-sizing: content-box;
-  width: 99%; }
+  border-radius: 0.1rem; }
   .bar .bar-layer {
     position: absolute;
     height: 100%; }
