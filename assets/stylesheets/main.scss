@@ -209,7 +209,9 @@ body {
     
     color: white;
     font-size: 1.5rem;
+    line-height: 1.25;
     padding-left: 1rem;
+    padding-top: 0.5rem;
     
     //&:before {
     //  content: url('icons/wizard-face.svg');
@@ -300,10 +302,14 @@ body {
         //-ms-text-overflow: ellipsis;
         //text-overflow: ellipsis;
         
+        padding-left: 1rem;
         font-family: monospace;
+        line-height: 1.25;
+
         pre {
           display: block;
-          overflow: hidden;
+          //overflow: hidden;
+          overflow: visible;
         }
       }
       .bar {
@@ -357,6 +363,20 @@ body {
 
 
 
+#navigation-panel {
+  margin: 1rem;
+  padding: 0.5rem;
+  border-radius: 0.313rem;
+  background: $navigation-menu;
+  color: white;
+
+  flex: 0 1 auto; // fill to content
+
+  #room-info {
+    //background: $top-bar-bg;
+    margin-bottom: 1rem;
+  }
+}
 
 
 .game-over {
@@ -557,6 +577,10 @@ body {
 
 
 // -------------------------------------------------------- Abilities/effects
+
+#ability-button-template {
+  display: none;
+}
 
 .action-bar-button, .effect {
   display: inline-block;

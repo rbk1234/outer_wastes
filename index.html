@@ -58,7 +58,7 @@
       <table class="no-rows no-spacing">
         <tbody>
         <tr>
-          <td width="25%"></td>
+          <td width="0%"></td>
           <td width="25%">
             <div id="player-frame">
               <div class="portrait"></div>
@@ -110,7 +110,52 @@
 
             </div>
           </td>
-          <td width="25%"></td>
+          <td width="50%">
+            <div id="navigation-panel" class="">
+
+              <div class="normal-navigation">
+                <table>
+                  <tbody>
+                  <tr>
+                    <td colspan="3">
+                      <div id="room-info">
+                        <!--<span class="fa fa-fw fa-shield-alt"></span>-->
+                        A pack of wolves is inhabiting the area.
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="nostretch">
+                      <button id="" class="button invisible">Next</button>
+                    </td>
+                    <td class="text-center">
+                      <button id="engage-combat" class="button">Engage</button>
+                    </td>
+                    <td class="nostretch">
+                      <button id="next-room" class="button invisible">Next</button>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="game-over" hidden>
+                <table>
+                  <tbody>
+                  <tr>
+                    <td class="nostretch">
+                      <div class="skull"></div>
+                    </td>
+                    <td>Your party has been killed.</td>
+                    <td class="nostretch">
+                      <button class="restart alert button">Restart</button>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </td>
         </tr>
         </tbody>
       </table>
@@ -188,31 +233,13 @@
 
     <div id="bottom-bar">
       <div id="player-bars" class="bottom-section">
+
       </div>
 
+
       <div id="ability-bar" class="bottom-section" style="text-align:center;">
-        <button class="action-bar-button blank">
-          <span class="hotkey">1</span>
-          <span class="spell-name"></span>
-          <canvas class="cooldown-status"></canvas>
-        </button>
-        <button class="action-bar-button blank">
-          <span class="hotkey">2</span>
-          <span class="spell-name"></span>
-          <canvas class="cooldown-status"></canvas>
-        </button>
-        <button class="action-bar-button blank">
-          <span class="hotkey">3</span>
-          <span class="spell-name"></span>
-          <canvas class="cooldown-status"></canvas>
-        </button>
-        <button class="action-bar-button blank">
-          <span class="hotkey">4</span>
-          <span class="spell-name"></span>
-          <canvas class="cooldown-status"></canvas>
-        </button>
-        <button class="action-bar-button blank">
-          <span class="hotkey">5</span>
+        <button id="ability-button-template" class="action-bar-button blank ui-widget-content">
+          <span class="hotkey"></span>
           <span class="spell-name"></span>
           <canvas class="cooldown-status"></canvas>
         </button>

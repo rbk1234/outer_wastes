@@ -96,7 +96,9 @@ body {
     border: 1px solid black;
     color: white;
     font-size: 1.5rem;
-    padding-left: 1rem; }
+    line-height: 1.25;
+    padding-left: 1rem;
+    padding-top: 0.5rem; }
   #player-frame .non-portrait, #target-frame .non-portrait {
     flex: 1 1 auto;
     padding: 0.5rem; }
@@ -148,10 +150,12 @@ body {
         border: 1.5px solid white;
         box-shadow: 0 0 3px 1px #555; }
       .unit-frame .flex-col .clickable-area .image {
-        font-family: monospace; }
+        padding-left: 1rem;
+        font-family: monospace;
+        line-height: 1.25; }
         .unit-frame .flex-col .clickable-area .image pre {
           display: block;
-          overflow: hidden; }
+          overflow: visible; }
       .unit-frame .flex-col .clickable-area .bar {
         height: 0.75rem; }
     .unit-frame .flex-col .effects-area {
@@ -174,6 +178,16 @@ body {
     width: 17.5rem; }
     #ability-tooltip .description .spell-power {
       color: #99F399; }
+
+#navigation-panel {
+  margin: 1rem;
+  padding: 0.5rem;
+  border-radius: 0.313rem;
+  background: #3e2d2e;
+  color: white;
+  flex: 0 1 auto; }
+  #navigation-panel #room-info {
+    margin-bottom: 1rem; }
 
 .game-over {
   border-radius: 0.313rem;
@@ -255,6 +269,9 @@ body {
       text-shadow: 1px 1px 1px #000; }
   .bar.cast-bar .bar-layer.bar-text {
     text-align: center; }
+
+#ability-button-template {
+  display: none; }
 
 .action-bar-button, .effect {
   display: inline-block;

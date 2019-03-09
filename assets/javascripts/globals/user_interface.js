@@ -8,6 +8,8 @@
 
     var MAX_UNIT_FRAMES = 5;
 
+    var NUM_ABILITY_BUTTONS = 6;
+
     /*
         Cast bar / cooldown spinners need high framerates so they can increment smoothly (don't want to tie it to
         normal UPDATES_PER_SECOND because they need at least 60fps). So we start up new Clock intervals when needed.
@@ -252,69 +254,68 @@
             var self = this;
 
             // -------- Can use keyboard arrow keys to target units:
+            // TODO Skip dead units
 
             function targetFirstAlly() {
                 self.targetIndex(Game.Constants.teamIds.player, 0);
             }
 
-            // UP arrow
-            Game.Keyboard.registerKey(38, function() {
-                var index = Game.UnitEngine.indexOfUnit(self._targetedUnit);
+            function targetNextIndex(currentTeamId, currentIndex) {
+                var units = Game.UnitEngine.unitsForTeam(currentTeamId);
+
+                if (currentIndex < (units.length - 1)) {
+                    // target next index in same team
+                    self.targetIndex(currentTeamId, currentIndex + 1);
+                }
+                else {
+                    // target last index of other team
+                    var otherTeamId = Game.UnitEngine.opposingTeamId(currentTeamId);
+                    var otherUnits = Game.UnitEngine.unitsForTeam(otherTeamId);
+                    self.targetIndex(otherTeamId, otherUnits.length - 1);
+                }
+            }
+            function targetPreviousIndex(currentTeamId, currentIndex) {
+                if (currentIndex > 0) {
+                    // target previous index of same team
+                    self.targetIndex(currentTeamId, currentIndex - 1);
+                }
+                else {
+                    // target first index of other team
+                    var otherTeamId = Game.UnitEngine.opposingTeamId(currentTeamId);
+                    self.targetIndex(otherTeamId, 0);
+                }
+
+            }
+
+            // SHIFT-TAB or LEFT ARROW
+            Game.Keyboard.registerKey([{keyCode: 9, shiftKey: true}, 37], function() {
+                var index = Game.UnitEngine.indexOfUnit(self.selectedUnit());
                 if (index === null) {
                     targetFirstAlly();
                 }
                 else {
-                    // target previous unit in same team
-                    if (index > 0) {
-                        self.targetIndex(self._targetedUnit.teamId, index - 1);
+                    if (self.selectedUnit().teamId === Game.Constants.teamIds.player) {
+                        targetNextIndex(Game.Constants.teamIds.player, index);
+                    }
+                    else {
+                        targetPreviousIndex(Game.Constants.teamIds.computer, index);
                     }
                 }
             });
 
-            // DOWN arrow
-            Game.Keyboard.registerKey(40, function() {
-                var index = Game.UnitEngine.indexOfUnit(self._targetedUnit);
+            // TAB or RIGHT ARROW
+            Game.Keyboard.registerKey([9, 39], function() {
+                var index = Game.UnitEngine.indexOfUnit(self.selectedUnit());
                 if (index === null) {
                     targetFirstAlly();
                 }
                 else {
-                    // target next unit in same team
-                    var units = Game.UnitEngine.unitsForTeam(self._targetedUnit.teamId);
-                    if (index < (units.length - 1)) {
-                        self.targetIndex(self._targetedUnit.teamId, index + 1);
+                    if (self.selectedUnit().teamId === Game.Constants.teamIds.player) {
+                        targetPreviousIndex(Game.Constants.teamIds.player, index);
                     }
-                }
-            });
-
-            // LEFT arrow
-            Game.Keyboard.registerKey(37, function() {
-                var index = Game.UnitEngine.indexOfUnit(self._targetedUnit);
-                if (index === null) {
-                    targetFirstAlly();
-                }
-                else {
-                    // target player unit of same index
-                    var units = Game.UnitEngine.unitsForTeam(Game.Constants.teamIds.player);
-                    if (index >= units.length) {
-                        index = units.length - 1; // In case computer had more units than player
+                    else {
+                        targetNextIndex(Game.Constants.teamIds.computer, index);
                     }
-                    self.targetIndex(Game.Constants.teamIds.player, index);
-                }
-            });
-
-            // RIGHT arrow
-            Game.Keyboard.registerKey(39, function() {
-                var index = Game.UnitEngine.indexOfUnit(self._targetedUnit);
-                if (index === null) {
-                    targetFirstAlly();
-                }
-                else {
-                    // target computer unit of same index
-                    var units = Game.UnitEngine.unitsForTeam(Game.Constants.teamIds.computer);
-                    if (index >= units.length) {
-                        index = units.length - 1; // In case player had more units than computer
-                    }
-                    self.targetIndex(Game.Constants.teamIds.computer, index);
                 }
             });
         },
@@ -451,12 +452,14 @@
         },
 
         targetedUnit: function() {
-            return this._targetedUnitOverride ? this._targetedUnitOverride : this._targetedUnit;
+            return this._targetedUnitOverride ? this._targetedUnitOverride : this.selectedUnit();
         },
 
         clearTarget: function() {
             this._targetedUnit = null;
             $('.clickable-area').removeClass('targeted');
+
+            this._clearDetailedFrame(this._targetFrame);
 
             this._refreshAbilityTargets();
         },
@@ -668,12 +671,33 @@
 
         // ----------------------------------------------------- Ability Bar
 
+        _createAbilityButton: function(index) {
+            var $button = this._$abilityButtonTemplate.clone();
+            $button.removeAttr('id');
+
+            $button.find('.hotkey').html(index + 1);
+
+            $button.appendTo(this._$abilityBar);
+
+        },
         _initAbilityBar: function() {
             var self = this;
 
+            this._$abilityBar = $('#ability-bar');
+            this._$abilityButtonTemplate = $('#ability-button-template');
+
+            for (var i = 0; i < NUM_ABILITY_BUTTONS; i++) {
+                this._createAbilityButton(i);
+            }
+
             // Esc key (cancel cast)
             Game.Keyboard.registerKey(27, function() {
-                Game.Player.cancelCast('Interrupted');
+                if (Game.Player.isCasting()) {
+                    Game.Player.cancelCast('Interrupted');
+                }
+                else {
+                    self.clearTarget();
+                }
             });
 
             // alt key (self cast modifier)
@@ -700,6 +724,7 @@
                 $cooldownRemaining: $abilityTooltip.find('.cooldown-remaining'),
                 $description: $abilityTooltip.find('.description')
             };
+
         },
 
         startCooldown: function(ability, totalCooldown, elapsed) {
@@ -710,7 +735,7 @@
         assignAbilityToBar: function(ability, index) {
             var self = this;
 
-            var $button = $('#ability-bar').find('.action-bar-button:nth-child('+(index + 1)+')'); // nth-child is 1-based
+            var $button = $('#ability-bar').find('.action-bar-button:not(#ability-button-template):eq('+(index)+')');
 
             if (ability) {
                 this._$abilityButtons[ability.id] = $button;
@@ -756,6 +781,8 @@
                     self._hideAbilityTooltip();
                 });
             }
+        },
+        removeAbilityFromBar: function(index) {
 
         },
 
