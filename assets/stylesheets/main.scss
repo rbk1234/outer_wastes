@@ -337,11 +337,16 @@ body {
   bottom: 1rem;
   right: 1rem;
 
+  border-radius: 0.25rem;
+  width: 20rem;
+}
+
+.ability-tooltip {
   background: rgba(22,22,22,1);
   padding: 0.5rem;
-  border-radius: 0.25rem;
   color: white;
   font-size: 0.875rem;
+  text-align: left;
 
   .name {
     font-size: 1rem;
@@ -349,12 +354,13 @@ body {
   .description {
     //color: #ffd12c; // WoW color
     color: #A6A8F5; // league of legends color
-    width: 17.5rem;
+    //width: 17.5rem;
 
     .spell-power {
       color: #99F399;
     }
   }
+
 }
 
 
@@ -479,9 +485,14 @@ body {
 
 
 #abilities-modal {
-  height: 60vh;
+  height: 90vh;
 
-  background: $bottom-bar-bg;
+  //background: $bottom-bar-bg;
+
+  background: #3b3021;
+  color: white;
+  
+  font-size: 0.875rem;
 }
 
 
@@ -577,10 +588,57 @@ body {
 
 
 // -------------------------------------------------------- Abilities/effects
+#spellbook-tooltip {
+  position: absolute;
+  border-radius: 0.25rem;
+  border: 1px solid #91bbd4;
+  
+  width: 20rem;
+  z-index: 2;
+  
+  &.underneath {
+    top: 7.5rem;
+  }
+  &.on-top {
+    bottom: 7.5rem;
+  }
+  &.centered {
+    left: 50%;
+    margin-left: -10rem;
+  }
+  &.expand-right {
+    left: 0;
+  }
+  &.expand-left {
+    right: 0;
+  }
+}
 
 
-#ability-button-template, #equipped-ability-template {
+#ability-button-template, #equipped-ability-template, #spellbook-row-template, #spellbook-ability-template {
   display: none;
+}
+
+.button-container {
+  vertical-align: top;
+  text-align: center;
+
+  .button-container-inner {
+    
+    margin: 0.5rem;
+    padding: 0.5rem;
+    height: 7rem;
+    background: #4d2525;
+    border: 1px solid black;
+    position: relative;
+
+
+    &:hover {
+      //border: 1px solid white;
+      background: #622f2f;
+      cursor: pointer;
+    }
+  }
 }
 
 .action-bar-button, .effect {

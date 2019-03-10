@@ -314,9 +314,11 @@
             return this._abilities[id];
         },
         gainAbility: function(ability) {
+            ability.gain(this);
             this._abilities[ability.id] = ability;
         },
         loseAbility: function(ability) {
+            ability.lose(this);
             delete this._abilities[ability.id];
         },
         hasAbility: function(ability) {
@@ -358,14 +360,14 @@
             // equip new ability
             this._equippedAbilityIds[slot] = ability.id;
             ability.equip(this);
-            Game.UserInterface.assignAbilityToBar(ability, slot);
+            Game.UserInterface.equipAbility(ability, slot);
         },
         unequipAbility: function(slot) {
             var ability = this.equippedAbility(slot);
             if (ability) {
                 ability.unequip();
                 if (this.id === Game.Player.id) {
-                    Game.UserInterface.removeAbilityFromBar(ability, slot);
+                    Game.UserInterface.unequipAbility(ability, slot);
                 }
             }
             this._equippedAbilityIds[slot] = null;

@@ -100,8 +100,14 @@
             this.reduceCooldown(seconds);
         },
 
-        equip: function(caster) {
+        gain: function(caster) {
             this.caster = caster;
+        },
+        lose: function() {
+
+        },
+
+        equip: function() {
             this.$eventHandler.trigger('ability:equip');
         },
         unequip: function() {

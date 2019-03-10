@@ -203,7 +203,7 @@
       </div>
 
 
-      <div id="ability-tooltip" hidden>
+      <div id="ability-tooltip" class="ability-tooltip" hidden>
         <table class="no-rows no-spacing">
           <tbody>
           <tr>
@@ -257,28 +257,73 @@
   </div>
 
 
-  <div class="reveal medium" id="abilities-modal" data-reveal data-animation-in="slide-in-down fast" data-animation-out="slide-out-up fast" >
+  <div class="reveal large" id="abilities-modal" data-reveal data-animation-in="slide-in-down fast" data-animation-out="slide-out-up fast" >
     <button class="close-button" data-close aria-label="Close reveal" type="button">
       <span aria-hidden="true">&times;</span>
     </button>
 
     <div class="text-center">
-      <h5>Abilities</h5>
+      <h6>Equipped Abilities</h6>
     </div>
 
-    <div class="text-center">
-      <button id="equipped-ability-template" class="action-bar-button blank">
-        <span class="hotkey"></span>
-      </button>
-      <div id="equipped-abilities"></div>
-    </div>
+    <table class="no-rows tight-spacing">
+      <tbody>
+      <tr id="equipped-abilities">
+        <td id="equipped-ability-template" class="button-container">
+          <div class="button-container-inner">
+            <div class="text-center">
+              <button class="action-bar-button blank">
+                <span class="hotkey"></span>
+              </button>
+            </div>
+            <span class="name"></span>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
 
     <hr>
 
     <div class="text-center">
-      <div id="all-abilities">
-        Hi
-      </div>
+      <h6>Spellbook</h6>
+    </div>
+
+    <div>
+      <table class="no-rows tight-spacing">
+        <tbody id="spellbook">
+        <tr id="spellbook-row-template">
+          <td id="spellbook-ability-template" class="button-container">
+            <div class="button-container-inner">
+              <div class="text-center">
+                <button class="action-bar-button blank"></button>
+              </div>
+              <span class="name"></span>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="spellbook-tooltip" class="ability-tooltip" hidden>
+      <table class="no-rows no-spacing">
+        <tbody>
+        <tr>
+          <td colspan="2" class="name"></td>
+        </tr>
+        <tr>
+          <td colspan="2" class="mana-cost"></td>
+        </tr>
+        <tr>
+          <td class="cast-time"></td>
+          <td class="cooldown text-right"></td>
+        </tr>
+        <tr>
+          <td colspan="2" class="description"></td>
+        </tr>
+        </tbody>
+      </table>
     </div>
 
 

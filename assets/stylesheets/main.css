@@ -166,17 +166,20 @@ body {
   position: absolute;
   bottom: 1rem;
   right: 1rem;
+  border-radius: 0.25rem;
+  width: 20rem; }
+
+.ability-tooltip {
   background: #161616;
   padding: 0.5rem;
-  border-radius: 0.25rem;
   color: white;
-  font-size: 0.875rem; }
-  #ability-tooltip .name {
+  font-size: 0.875rem;
+  text-align: left; }
+  .ability-tooltip .name {
     font-size: 1rem; }
-  #ability-tooltip .description {
-    color: #A6A8F5;
-    width: 17.5rem; }
-    #ability-tooltip .description .spell-power {
+  .ability-tooltip .description {
+    color: #A6A8F5; }
+    .ability-tooltip .description .spell-power {
       color: #99F399; }
 
 #navigation-panel {
@@ -236,8 +239,10 @@ body {
     opacity: 0.0;
     bottom: 2.25rem; } }
 #abilities-modal {
-  height: 60vh;
-  background: #bfa17a; }
+  height: 90vh;
+  background: #3b3021;
+  color: white;
+  font-size: 0.875rem; }
 
 .bar {
   position: relative;
@@ -270,8 +275,40 @@ body {
   .bar.cast-bar .bar-layer.bar-text {
     text-align: center; }
 
-#ability-button-template, #equipped-ability-template {
+#spellbook-tooltip {
+  position: absolute;
+  border-radius: 0.25rem;
+  border: 1px solid #91bbd4;
+  width: 20rem;
+  z-index: 2; }
+  #spellbook-tooltip.underneath {
+    top: 7.5rem; }
+  #spellbook-tooltip.on-top {
+    bottom: 7.5rem; }
+  #spellbook-tooltip.centered {
+    left: 50%;
+    margin-left: -10rem; }
+  #spellbook-tooltip.expand-right {
+    left: 0; }
+  #spellbook-tooltip.expand-left {
+    right: 0; }
+
+#ability-button-template, #equipped-ability-template, #spellbook-row-template, #spellbook-ability-template {
   display: none; }
+
+.button-container {
+  vertical-align: top;
+  text-align: center; }
+  .button-container .button-container-inner {
+    margin: 0.5rem;
+    padding: 0.5rem;
+    height: 7rem;
+    background: #4d2525;
+    border: 1px solid black;
+    position: relative; }
+    .button-container .button-container-inner:hover {
+      background: #622f2f;
+      cursor: pointer; }
 
 .action-bar-button, .effect {
   display: inline-block;

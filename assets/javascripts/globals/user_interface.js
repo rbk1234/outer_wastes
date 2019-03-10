@@ -674,16 +674,10 @@
 
             this._$abilityBar = $('#ability-bar');
             this._$abilityButtonTemplate = $('#ability-button-template');
-            this._$abilitiesModal = $('#abilities-modal');
-            this._$equippedAbilities = $('#equipped-abilities');
-            this._$equippedAbilityTemplate = $('#equipped-ability-template');
 
             for (var i = 0; i < Game.Constants.numPlayerAbilities; i++) {
-                var $button = this._createAbilityButton(i, this._$abilityButtonTemplate);
+                var $button = this._createAbilityButton(i);
                 $button.appendTo(this._$abilityBar);
-
-                var $modalButton = this._createAbilityButton(i, this._$equippedAbilityTemplate);
-                $modalButton.appendTo(this._$equippedAbilities);
             }
 
             this._abilityButtons = {}; // ability -> { $button: $button, timer: CooldownTimer, ability: ability }
@@ -723,8 +717,8 @@
             this._initAbilitiesPage();
         },
 
-        _createAbilityButton: function(index, $template) {
-            var $button = $template.clone();
+        _createAbilityButton: function(index) {
+            var $button = this._$abilityButtonTemplate.clone();
             $button.removeAttr('id');
 
             $button.find('.hotkey').html(index + 1);
@@ -732,22 +726,21 @@
             return $button;
         },
 
-        assignAbilityToBar: function(ability, index) {
+        equipAbility: function(ability, index) {
+            this._assignAbilityToBar(ability, index);
+            this._assignAbilityToEqBar(ability, index);
+        },
+
+        _assignAbilityToBar: function(ability, index) {
             var self = this;
 
-            function applyButtonSkin($bar) {
-                // Note: At this point the $button should be a blank button (the previous ability should have been removed)
-                var $button = $bar.find('.action-bar-button:eq('+(index)+')');
+            // Note: At this point the $button should be a blank button (the previous ability should have been removed)
+            var $button = this._$abilityBar.find('.action-bar-button:not(#ability-button-template):eq('+(index)+')');
 
-                $button.removeClass('blank');
-                $button.addClass(ability.icon);
-                $button.addClass(ability.background);
-
-                return $button;
-            }
-
-            var $button = applyButtonSkin(this._$abilityBar);
-            var $equippedButton = applyButtonSkin(this._$equippedAbilities);
+            $button.removeClass('blank');
+            $button.addClass(ability.icon);
+            $button.addClass(ability.background);
+            $button.find('.name').html(ability.name);
 
             this._abilityButtons[ability.id] = {
                 index: index,
@@ -785,26 +778,20 @@
             $button.off('mouseleave').on('mouseleave', function(evt) {
                 self._hideAbilityTooltip();
             });
-            $equippedButton.off('mouseenter').on('mouseenter', function(evt) {
-                self._showAbilityTooltip(ability);
-            });
-            $equippedButton.off('mouseleave').on('mouseleave', function(evt) {
-                self._hideAbilityTooltip();
-            });
         },
-        removeAbilityFromBar: function(ability, index) {
-            var self = this;
 
+        unequipAbility: function(ability, index) {
+            this._removeAbilityFromBar(ability, index);
+            this._removeAbilityFromEqBar(ability, index);
+        },
+
+        _removeAbilityFromBar: function(ability, index) {
             var buttonData = this._abilityButtons[ability.id];
             buttonData.timer.destroy();
 
-            function replaceButton($bar, $template) {
-                var $newButton = self._createAbilityButton(index, $template);
-                var $oldButton = $bar.find('.action-bar-button:eq('+(index)+')');
-                $oldButton.replaceWith($newButton);
-            }
-            replaceButton(this._$abilityBar, this._$abilityButtonTemplate);
-            replaceButton(this._$equippedAbilities, this._$equippedAbilityTemplate);
+            var $newButton = self._createAbilityButton(index);
+            var $oldButton = this._$abilityBar.find('.action-bar-button:not(#ability-button-template):eq('+(index)+')');
+            $oldButton.replaceWith($newButton);
 
             delete this._abilityButtons[ability.id];
         },
@@ -907,12 +894,154 @@
 
 
         _initAbilitiesPage: function() {
+            var self = this;
+
+            this._$abilitiesModal = $('#abilities-modal');
+            this._$equippedAbilities = $('#equipped-abilities');
+            this._$equippedAbilityTemplate = $('#equipped-ability-template');
+            this._$spellbook = $('#spellbook');
+            this._$spellbookRowTemplate = $('#spellbook-row-template');
+            this._$spellbookAbilityTemplate = $('#spellbook-ability-template');
+
+            for (var i = 0; i < Game.Constants.numPlayerAbilities; i++) {
+                var $buttonContainer = this._createEqAbilityButton(i);
+                $buttonContainer.appendTo(this._$equippedAbilities);
+            }
 
             this._$abilitiesModal.off('open.zf.reveal').on('open.zf.reveal', function(evt) {
                 console.log(evt);
+                self._showSpellbook();
             });
 
-            
+            var $spellbookTooltip = $('#spellbook-tooltip');
+            this._spellbookTooltip = {
+                $tip: $spellbookTooltip,
+                $name: $spellbookTooltip.find('.name'),
+                $manaCost: $spellbookTooltip.find('.mana-cost'),
+                $castTime: $spellbookTooltip.find('.cast-time'),
+                $cooldown: $spellbookTooltip.find('.cooldown'),
+                $description: $spellbookTooltip.find('.description')
+            };
+
+
+        },
+
+        _showSpellbook: function() {
+            var self = this;
+
+            var currentRow = 0;
+            var currentCol = 0;
+            var $currentRow = null;
+
+            // TODO will this have same order every time?
+            Game.Util.iterateObject(Game.Player.abilities(), function(abilityId, ability) {
+                if (currentCol === 0) {
+                    // create row
+                    $currentRow = self._$spellbookRowTemplate.clone();
+                    $currentRow.removeAttr('id');
+                    $currentRow.appendTo(self._$spellbook);
+                }
+
+                // create cell
+                var $buttonContainer = self._$spellbookAbilityTemplate.clone();
+                $buttonContainer.removeAttr('id');
+                $buttonContainer.css('width', (100 / Game.Constants.numPlayerAbilities) + '%');
+                $buttonContainer.appendTo($currentRow);
+
+                var $button = $buttonContainer.find('.action-bar-button');
+                $button.removeClass('blank');
+                $button.addClass(ability.icon);
+                $button.addClass(ability.background);
+                $buttonContainer.find('.name').html(ability.name);
+
+                var $innerContainer = $buttonContainer.find('.button-container-inner');
+
+                var colCopy = currentCol; // copy column to pass to tooltip later
+                $innerContainer.off('mouseenter').on('mouseenter', function(evt) {
+                    self._showSpellbookTooltip($(this), ability, colCopy, 'on-top');
+                });
+                $innerContainer.off('mouseleave').on('mouseleave', function(evt) {
+                    self._hideSpellbookTooltip();
+                });
+
+                currentCol += 1;
+                if (currentCol >= Game.Constants.numPlayerAbilities) {
+                    currentCol = 0;
+                    currentRow += 1;
+                }
+            });
+        },
+
+        _showSpellbookTooltip: function($element, ability, index, directionClass) {
+            var leftRightClass = 'centered';
+            if (index === 0) {
+                leftRightClass = 'expand-right';
+            }
+            if (index === Game.Constants.numPlayerAbilities - 1) {
+                leftRightClass = 'expand-left';
+            }
+            //directionClass = 'underneath';
+
+            this._spellbookTooltip.$name.html(ability.name);
+
+            var manaCost = (ability.manaCost.value() === 0) ? '' : (Game.Util.round(ability.manaCost.value()) + ' Mana');
+            this._spellbookTooltip.$manaCost.html(manaCost);
+
+            var castTime = (ability.castTime.value() === 0) ? 'Instant' : (Game.Util.roundToDecimal(ability.castTime.value(), 2) + ' sec cast');
+            this._spellbookTooltip.$castTime.html(castTime);
+
+            var cooldown = (ability.cooldown.value() === 0) ? '' : (Game.Util.roundToDecimal(ability.cooldown.value(), 2) + ' sec cooldown');
+            this._spellbookTooltip.$cooldown.html(cooldown);
+
+            this._spellbookTooltip.$description.html(ability.description());
+
+            this._spellbookTooltip.$tip
+                .removeClass('expand-left expand-right centered on-top underneath')
+                .addClass(leftRightClass)
+                .addClass(directionClass)
+                .show()
+                .appendTo($element);
+        },
+        _hideSpellbookTooltip: function() {
+            this._spellbookTooltip.$tip.hide();
+        },
+
+        _createEqAbilityButton: function(index) {
+            var $buttonContainer = this._$equippedAbilityTemplate.clone();
+            $buttonContainer.removeAttr('id');
+
+            $buttonContainer.find('.hotkey').html(index + 1);
+
+            $buttonContainer.css('width', (100 / Game.Constants.numPlayerAbilities) + '%');
+
+            return $buttonContainer;
+        },
+
+        _assignAbilityToEqBar: function(ability, index) {
+            var self = this;
+
+            var $buttonContainer = this._$equippedAbilities.find('.button-container:not(#equipped-ability-template):eq('+(index)+')');
+            var $button = $buttonContainer.find('.action-bar-button');
+
+            $button.removeClass('blank');
+            $button.addClass(ability.icon);
+            $button.addClass(ability.background);
+            $buttonContainer.find('.name').html(ability.name);
+
+            var $innerContainer = $buttonContainer.find('.button-container-inner');
+
+            $innerContainer.off('mouseenter').on('mouseenter', function(evt) {
+                self._showSpellbookTooltip($(this), ability, index, 'underneath');
+            });
+            $innerContainer.off('mouseleave').on('mouseleave', function(evt) {
+                self._hideSpellbookTooltip();
+            });
+        },
+
+        _removeAbilityFromEqBar: function(ability, index) {
+            var $newButton = this._createEqAbilityButton(index);
+            var $oldButton = this._$equippedAbilities.find('.button-container:not(#equipped-ability-template):eq('+(index)+')');
+            $oldButton.replaceWith($newButton);
         },
 
 
