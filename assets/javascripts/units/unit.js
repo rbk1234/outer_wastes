@@ -40,6 +40,7 @@
 
             this._castProgress = null;
             this._abilities = {};
+            this._equippedAbilityIds = Game.Util.createArray(Game.Constants.numPlayerAbilities, null);
 
             this._globalCooldown = null;
 
@@ -76,7 +77,7 @@
             }
 
             // update abilities
-            Game.Util.iterateObject(this._abilities, function(id, ability) {
+            this.equippedAbilities().forEach(function(ability) {
                 ability.update(seconds);
             });
 
@@ -305,21 +306,79 @@
         // ------------------------------------------------------------------ Abilities
         // A Unit can have many Abilities
 
+        // -------- _abilities are all the Abilities a unit has access to (may or may not be equipped though)
         abilities: function() {
             return this._abilities;
         },
-        addAbility: function(ability) {
-            ability.setCaster(this);
+        ability: function(id) {
+            return this._abilities[id];
+        },
+        gainAbility: function(ability) {
             this._abilities[ability.id] = ability;
         },
-        abilityForDbKey: function(abilityDbKey) {
-            var matchingAbility = null;
-            Game.Util.iterateObject(this._abilities, function(abilityId, ability) {
-                if (ability.dbKey === abilityDbKey) {
-                    matchingAbility = ability;
-                }
+        loseAbility: function(ability) {
+            delete this._abilities[ability.id];
+        },
+        hasAbility: function(ability) {
+            return !!this.ability(ability.id);
+        },
+
+        // -------- equippedAbilities are Abilities the unit can actually cast
+
+        // @param includeNulls: if true, "empty" ability slots will be left in the array result
+        equippedAbilities: function(includeNulls) {
+            var self = this;
+
+            var abilities = this._equippedAbilityIds.map(function(abilityId) {
+                return self.ability(abilityId);
             });
-            return matchingAbility;
+
+            if (includeNulls) {
+                return abilities;
+            }
+            else {
+                // filter out nulls/undefined
+                return abilities.filter(function(ability) {
+                    return !!ability;
+                });
+            }
+        },
+        equippedAbility: function(slot) {
+            return this.abilities()[this._equippedAbilityIds[slot]];
+        },
+        equipAbility: function(ability, slot) {
+            if (!this.hasAbility(ability)) {
+                console.error('Unit must gainAbility before it can equipAbility: ' + ability.name);
+                return;
+            }
+
+            // unequip old ability
+            this.unequipAbility(slot);
+
+            // equip new ability
+            this._equippedAbilityIds[slot] = ability.id;
+            ability.equip(this);
+            Game.UserInterface.assignAbilityToBar(ability, slot);
+        },
+        unequipAbility: function(slot) {
+            var ability = this.equippedAbility(slot);
+            if (ability) {
+                ability.unequip();
+                if (this.id === Game.Player.id) {
+                    Game.UserInterface.removeAbilityFromBar(ability, slot);
+                }
+            }
+            this._equippedAbilityIds[slot] = null;
+        },
+
+        abilityForDbKey: function(abilityDbKey) {
+            var abilities = this.equippedAbilities();
+            for (var i = 0, len = abilities.length; i < len; i++) {
+                if (abilities[i].dbKey === abilityDbKey) {
+                    return abilities[i];
+                }
+            }
+            return null;
         },
 
         hasManaForAbility: function(ability) {
@@ -327,15 +386,15 @@
         },
 
         // TODO --- this is built around the player right now
-        castAbility: function(abilityId, target) {
+        castAbility: function(abilitySlot, target) {
             // If already casting something, return (TODO might need a latency window)
             if (this.isCasting()) {
                 return;
             }
 
-            this._castAbility = this.abilities()[abilityId];
+            this._castAbility = this.equippedAbilities(true)[abilitySlot];
             if (!this._castAbility) {
-                console.error('Unit ' + this.id + ' does not have ability ' + abilityId);
+                console.error('Unit ' + this.id + ' does not have ability ' + abilitySlot);
                 return;
             }
 
@@ -454,7 +513,7 @@
         _updateAllAbilityCooldowns: function() {
             var self = this;
 
-            Game.Util.iterateObject(this._abilities, function(key, ability) {
+            this.equippedAbilities().forEach(function(ability) {
                 self._updateAbilityCooldown(ability);
             });
         },

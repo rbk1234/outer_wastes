@@ -478,8 +478,8 @@ body {
 
 
 
-#map-modal {
-  height: 80vh;
+#abilities-modal {
+  height: 60vh;
 
   background: $bottom-bar-bg;
 }
@@ -578,7 +578,8 @@ body {
 
 // -------------------------------------------------------- Abilities/effects
 
-#ability-button-template {
+
+#ability-button-template, #equipped-ability-template {
   display: none;
 }
 
@@ -634,15 +635,6 @@ body {
     font-size: 0.9rem;
     color: #fff;
     text-shadow: 1px 1px 1px #000;
-  }
-  .spell-name {
-    display:block;
-    position: absolute;
-    text-align: center;
-    width: 100%;
-    top: 1.25rem;
-    color: white;
-    font-size: 0.9rem;
   }
 }
 .effect {

@@ -8,8 +8,6 @@
 
     var MAX_UNIT_FRAMES = 5;
 
-    var NUM_ABILITY_BUTTONS = 6;
-
     /*
         Cast bar / cooldown spinners need high framerates so they can increment smoothly (don't want to tie it to
         normal UPDATES_PER_SECOND because they need at least 60fps). So we start up new Clock intervals when needed.
@@ -671,24 +669,24 @@
 
         // ----------------------------------------------------- Ability Bar
 
-        _createAbilityButton: function(index) {
-            var $button = this._$abilityButtonTemplate.clone();
-            $button.removeAttr('id');
-
-            $button.find('.hotkey').html(index + 1);
-
-            $button.appendTo(this._$abilityBar);
-
-        },
         _initAbilityBar: function() {
             var self = this;
 
             this._$abilityBar = $('#ability-bar');
             this._$abilityButtonTemplate = $('#ability-button-template');
+            this._$abilitiesModal = $('#abilities-modal');
+            this._$equippedAbilities = $('#equipped-abilities');
+            this._$equippedAbilityTemplate = $('#equipped-ability-template');
 
-            for (var i = 0; i < NUM_ABILITY_BUTTONS; i++) {
-                this._createAbilityButton(i);
+            for (var i = 0; i < Game.Constants.numPlayerAbilities; i++) {
+                var $button = this._createAbilityButton(i, this._$abilityButtonTemplate);
+                $button.appendTo(this._$abilityBar);
+
+                var $modalButton = this._createAbilityButton(i, this._$equippedAbilityTemplate);
+                $modalButton.appendTo(this._$equippedAbilities);
             }
+
+            this._abilityButtons = {}; // ability -> { $button: $button, timer: CooldownTimer, ability: ability }
 
             // Esc key (cancel cast)
             Game.Keyboard.registerKey(27, function() {
@@ -710,9 +708,6 @@
                 self.clearTargetOverride();
             });
 
-            this._$abilityButtons = {}; // ability id -> $button
-            this._abilityCooldowns = {}; // ability id -> CooldownTimer
-
             var $abilityTooltip = $('#ability-tooltip');
             this._abilityTooltip = {
                 ability: null,
@@ -725,41 +720,49 @@
                 $description: $abilityTooltip.find('.description')
             };
 
+            this._initAbilitiesPage();
         },
 
-        startCooldown: function(ability, totalCooldown, elapsed) {
-            this._abilityCooldowns[ability.id].startCooldown(totalCooldown, elapsed);
+        _createAbilityButton: function(index, $template) {
+            var $button = $template.clone();
+            $button.removeAttr('id');
+
+            $button.find('.hotkey').html(index + 1);
+
+            return $button;
         },
 
-        // TODO clean this code up... it's messy right now to handle empty slots
         assignAbilityToBar: function(ability, index) {
             var self = this;
 
-            var $button = $('#ability-bar').find('.action-bar-button:not(#ability-button-template):eq('+(index)+')');
+            function applyButtonSkin($bar) {
+                // Note: At this point the $button should be a blank button (the previous ability should have been removed)
+                var $button = $bar.find('.action-bar-button:eq('+(index)+')');
 
-            if (ability) {
-                this._$abilityButtons[ability.id] = $button;
-
-                //$button.find('.spell-name').html(ability.name);
                 $button.removeClass('blank');
                 $button.addClass(ability.icon);
                 $button.addClass(ability.background);
+
+                return $button;
             }
+
+            var $button = applyButtonSkin(this._$abilityBar);
+            var $equippedButton = applyButtonSkin(this._$equippedAbilities);
+
+            this._abilityButtons[ability.id] = {
+                index: index,
+                $button: $button,
+                ability: ability,
+                timer: new CooldownTimer($button, 'Ability_'+ability.id)
+            };
 
             // Cast the ability, taking the mouse/button evt into account
             function castAbilityWithEvt(evt) {
-                if (ability) {
-                    if (self._targetedUnitOverride && !evt.altKey) {
-                        self.clearTargetOverride(); // Backup catch - in case alt key was released in other window
-                    }
-                    Game.Player.castAbility(ability.id, self.targetedUnit());
+                if (self._targetedUnitOverride && !evt.altKey) {
+                    self.clearTargetOverride(); // Backup catch - in case alt key was released in other window
                 }
+                Game.Player.castAbility(index, self.targetedUnit());
             }
-
-            $button.off('click').on('click', function(evt) {
-                castAbilityWithEvt(evt);
-            });
-            // TODO _toggleButtonPressed on mousedown/mouseup (like keyboard)... but mouseup isn't called if you drag off the button
 
             var keyCode = this._keyCodeForAbilityIndex(index);
             if (keyCode !== null) {
@@ -771,30 +774,52 @@
                 });
             }
 
-            if (ability) {
-                this._abilityCooldowns[ability.id] = new CooldownTimer($button, 'Ability_'+ability.id);
+            $button.off('click').on('click', function(evt) {
+                castAbilityWithEvt(evt);
+            });
+            // TODO _toggleButtonPressed on mousedown/mouseup (like keyboard)... but mouseup isn't called if you drag off the button
 
-                $button.off('mouseenter').on('mouseenter', function(evt) {
-                    self._showAbilityTooltip(ability);
-                });
-                $button.off('mouseleave').on('mouseleave', function(evt) {
-                    self._hideAbilityTooltip();
-                });
+            $button.off('mouseenter').on('mouseenter', function(evt) {
+                self._showAbilityTooltip(ability);
+            });
+            $button.off('mouseleave').on('mouseleave', function(evt) {
+                self._hideAbilityTooltip();
+            });
+            $equippedButton.off('mouseenter').on('mouseenter', function(evt) {
+                self._showAbilityTooltip(ability);
+            });
+            $equippedButton.off('mouseleave').on('mouseleave', function(evt) {
+                self._hideAbilityTooltip();
+            });
+        },
+        removeAbilityFromBar: function(ability, index) {
+            var self = this;
+
+            var buttonData = this._abilityButtons[ability.id];
+            buttonData.timer.destroy();
+
+            function replaceButton($bar, $template) {
+                var $newButton = self._createAbilityButton(index, $template);
+                var $oldButton = $bar.find('.action-bar-button:eq('+(index)+')');
+                $oldButton.replaceWith($newButton);
             }
-        },
-        removeAbilityFromBar: function(index) {
+            replaceButton(this._$abilityBar, this._$abilityButtonTemplate);
+            replaceButton(this._$equippedAbilities, this._$equippedAbilityTemplate);
 
+            delete this._abilityButtons[ability.id];
         },
 
-        // todo removeAbilityFromBar... delete $abilityButton and abilityCooldown
+        startCooldown: function(ability, totalCooldown, elapsed) {
+            this._abilityButtons[ability.id].timer.startCooldown(totalCooldown, elapsed);
+        },
 
         // Note: ability cooldown timers are handled separately
         _refreshAbilityBar: function() {
             var self = this;
 
             // refreshes if buttons disabled or not based on mana
-            Game.Util.iterateObject(this._$abilityButtons, function(abilityId, $button) {
-                var ability = Game.Player.abilities()[abilityId];
+            Game.Util.iterateObject(this._abilityButtons, function(abilityId, buttonData) {
+                var ability = buttonData.ability;
                 self._toggleAbilityManaReq(ability, !Game.Player.hasManaForAbility(ability));
             });
         },
@@ -803,8 +828,8 @@
             var self = this;
 
             // refreshes if buttons are disabled or not based on target
-            Game.Util.iterateObject(this._$abilityButtons, function(abilityId, $button) {
-                var ability = Game.Player.abilities()[abilityId];
+            Game.Util.iterateObject(this._abilityButtons, function(abilityId, buttonData) {
+                var ability = buttonData.ability;
                 self._toggleAbilityTargetReq(ability, !ability.canTargetUnit(self.targetedUnit()));
             });
         },
@@ -833,15 +858,15 @@
         },
 
         _toggleAbilityCasting: function(ability, isCasting) {
-            this._$abilityButtons[ability.id].toggleClass('casting', isCasting);
+            this._abilityButtons[ability.id].$button.toggleClass('casting', isCasting);
         },
 
         _toggleAbilityManaReq: function(ability, notEnoughMana) {
-            this._$abilityButtons[ability.id].toggleClass('not-enough-mana', notEnoughMana);
+            this._abilityButtons[ability.id].$button.toggleClass('not-enough-mana', notEnoughMana);
         },
 
         _toggleAbilityTargetReq: function(ability, invalidTarget) {
-            this._$abilityButtons[ability.id].toggleClass('invalid-target', invalidTarget);
+            this._abilityButtons[ability.id].$button.toggleClass('invalid-target', invalidTarget);
         },
 
         _showAbilityTooltip: function(ability) {
@@ -877,6 +902,22 @@
 
             this._abilityTooltip.$description.html(ability.description());
         },
+
+
+
+
+        _initAbilitiesPage: function() {
+
+            this._$abilitiesModal.off('open.zf.reveal').on('open.zf.reveal', function(evt) {
+                console.log(evt);
+            });
+
+            
+        },
+
+
+
+
 
 
 

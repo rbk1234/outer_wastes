@@ -100,9 +100,12 @@
             this.reduceCooldown(seconds);
         },
 
-        setCaster: function(caster) {
+        equip: function(caster) {
             this.caster = caster;
-            this.$eventHandler.trigger('ability:learn');
+            this.$eventHandler.trigger('ability:equip');
+        },
+        unequip: function() {
+            this.$eventHandler.trigger('ability:unequip');
         },
 
         isReady: function() {

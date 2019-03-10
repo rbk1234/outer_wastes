@@ -236,19 +236,16 @@
 
       </div>
 
-
-      <div id="ability-bar" class="bottom-section" style="text-align:center;">
-        <button id="ability-button-template" class="action-bar-button blank ui-widget-content">
-          <span class="hotkey"></span>
-          <span class="spell-name"></span>
-          <canvas class="cooldown-status"></canvas>
-        </button>
-      </div>
+      <button id="ability-button-template" class="action-bar-button blank">
+        <span class="hotkey"></span>
+        <canvas class="cooldown-status"></canvas>
+      </button>
+      <div id="ability-bar" class="bottom-section" style="text-align:center;"></div>
 
       <div id="item-area" class="bottom-section">
-        <!--<div>-->
-          <!--<p><button class="button" data-toggle="map-modal">Map</button></p>-->
-        <!--</div>-->
+        <div>
+          <p><button class="button" data-toggle="abilities-modal">Abilities</button></p>
+        </div>
       </div>
     </div>
 
@@ -260,12 +257,31 @@
   </div>
 
 
-  <div class="reveal large" id="map-modal" data-reveal data-animation-in="slide-in-down fast" data-animation-out="slide-out-up fast" >
-    <h1>Whoa, I'm dizzy!</h1>
-    <p class="lead">There are many options for animating modals, check out the Motion UI library to see them all</p>
+  <div class="reveal medium" id="abilities-modal" data-reveal data-animation-in="slide-in-down fast" data-animation-out="slide-out-up fast" >
     <button class="close-button" data-close aria-label="Close reveal" type="button">
       <span aria-hidden="true">&times;</span>
     </button>
+
+    <div class="text-center">
+      <h5>Abilities</h5>
+    </div>
+
+    <div class="text-center">
+      <button id="equipped-ability-template" class="action-bar-button blank">
+        <span class="hotkey"></span>
+      </button>
+      <div id="equipped-abilities"></div>
+    </div>
+
+    <hr>
+
+    <div class="text-center">
+      <div id="all-abilities">
+        Hi
+      </div>
+    </div>
+
+
   </div>
 
   <!-- Plugins -->

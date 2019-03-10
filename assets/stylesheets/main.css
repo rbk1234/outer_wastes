@@ -235,8 +235,8 @@ body {
   100% {
     opacity: 0.0;
     bottom: 2.25rem; } }
-#map-modal {
-  height: 80vh;
+#abilities-modal {
+  height: 60vh;
   background: #bfa17a; }
 
 .bar {
@@ -270,7 +270,7 @@ body {
   .bar.cast-bar .bar-layer.bar-text {
     text-align: center; }
 
-#ability-button-template {
+#ability-button-template, #equipped-ability-template {
   display: none; }
 
 .action-bar-button, .effect {
@@ -309,14 +309,6 @@ body {
     font-size: 0.9rem;
     color: #fff;
     text-shadow: 1px 1px 1px #000; }
-  .action-bar-button .spell-name {
-    display: block;
-    position: absolute;
-    text-align: center;
-    width: 100%;
-    top: 1.25rem;
-    color: white;
-    font-size: 0.9rem; }
 
 .effect {
   width: 1.5rem;

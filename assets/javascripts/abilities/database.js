@@ -192,7 +192,7 @@
                 manaReductionDuration: 10
             },
             events: {
-                'ability:learn': function() {
+                'ability:equip': function() {
                     var divineSpirit = this;
 
                     function createDivineSpiritEffect(target) {
@@ -230,8 +230,7 @@
                         }
                     });
                 },
-                // TODO: will this ever happen?
-                'ability:unlearn': function() {
+                'ability:unequip': function() {
                     $(this.caster).off('unit:castComplete.divineSpirit');
                 },
                 'ability:castComplete': function() {
@@ -246,12 +245,12 @@
                         effectKey: 'divineSpirit_manaReduction', // differentiate this Effect from normal divineSpirit Effect
                         events: {
                             'effect:begin': function() {
-                                Game.Util.iterateObject(this.affectedUnit.abilities(), function(abilityId, ability) {
+                                this.affectedUnit.equippedAbilities().forEach(function(ability) {
                                     ability.manaCost.multiplier -= divineSpirit.manaReduction.value();
                                 });
                             },
                             'effect:end': function() {
-                                Game.Util.iterateObject(this.affectedUnit.abilities(), function(abilityId, ability) {
+                                this.affectedUnit.equippedAbilities().forEach(function(ability) {
                                     ability.manaCost.multiplier += divineSpirit.manaReduction.value();
                                 });
                             }
@@ -422,7 +421,7 @@
                     var heal = this.healBase.value() + this.caster.spellPower.value() * this.healSpellPowerScaling.value();
 
                     var livingSeedAbility = this.caster.abilityForDbKey('livingSeed');
-                    var numLivingSeeds = target.existingEffects(livingSeedAbility.defaultEffectParams()).length;
+                    var numLivingSeeds = livingSeedAbility ? target.existingEffects(livingSeedAbility.defaultEffectParams()).length : 0;
 
                     heal += heal * (this.livingSeedBonus.value() * numLivingSeeds);
 
@@ -476,7 +475,7 @@
                     target.addEffect(effect);
 
                     var livingSeedAbility = this.caster.abilityForDbKey('livingSeed');
-                    var numLivingSeeds = target.existingEffects(livingSeedAbility.defaultEffectParams()).length;
+                    var numLivingSeeds = livingSeedAbility ? target.existingEffects(livingSeedAbility.defaultEffectParams()).length : 0;
                     if (numLivingSeeds) {
                         var damage = (numLivingSeeds * (this.burstBase.value() + this.caster.spellPower.value() * this.burstSpellPowerScaling.value()));
                         target.takeDamage(damage, this.caster);
@@ -520,12 +519,12 @@
                 giftOfTheWildDuration: 10
             },
             events: {
-                'ability:learn': function() {
+                'ability:equip': function() {
                     var friendOfTheForest = this;
 
-                    var friendOfTheForestEffect = this.createEffect({
+                    this.friendOfTheForestEffect = this.createEffect({
                         hasDuration: false,
-                        hidden: true,
+                        //hidden: true,
                         stats: {
                             period: this.period.value()
                         },
@@ -546,11 +545,10 @@
                             }
                         }
                     });
-                    this.caster.addEffect(friendOfTheForestEffect);
+                    this.caster.addEffect(this.friendOfTheForestEffect);
                 },
-                // TODO: will this ever happen?
-                'ability:unlearn': function() {
-                    //$(this.caster).off('unit:castComplete.divineSpirit');
+                'ability:unequip': function() {
+                    this.caster.removeEffect(this.friendOfTheForestEffect);
                 },
                 'ability:castComplete': function(evt, target) {
                     var friendOfTheForest = this;
@@ -595,11 +593,11 @@
                 extraLivingSeeds: 1
             },
             events: {
-                'ability:learn': function() {
+                'ability:equip': function() {
                     var livingSeedAbility = this.caster.abilityForDbKey('livingSeed');
                     livingSeedAbility.maxStacks.adder += this.extraLivingSeeds.value();
                 },
-                'ability:unlearn': function() {
+                'ability:unequip': function() {
                     var livingSeedAbility = this.caster.abilityForDbKey('livingSeed');
                     livingSeedAbility.maxStacks.adder -= this.extraLivingSeeds.value();
                 },
