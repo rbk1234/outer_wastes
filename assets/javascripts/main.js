@@ -54,7 +54,7 @@
 
         var holyNova = new Game.Abilities.Ability('holyNova');
         Game.Player.gainAbility(holyNova);
-        //Game.Player.equipAbility(holyNova, 2);
+        Game.Player.equipAbility(holyNova, 2);
 
         var divineSpirit = new Game.Abilities.Ability('divineSpirit');
         Game.Player.gainAbility(divineSpirit);
@@ -62,7 +62,7 @@
 
         var guardianAngel = new Game.Abilities.Ability('guardianAngel');
         Game.Player.gainAbility(guardianAngel);
-        //Game.Player.equipAbility(guardianAngel, 4);
+        Game.Player.equipAbility(guardianAngel, 4);
     }
     if (true) {
         var livingSeed = new Game.Abilities.Ability('livingSeed');

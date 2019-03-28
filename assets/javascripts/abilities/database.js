@@ -20,7 +20,7 @@
                 ally: true
             },
             stats: {
-                manaCost: 20,
+                manaCost: 35,
                 cooldown: 0,
                 castTime: 2,
 
@@ -98,11 +98,11 @@
                 ally: true
             },
             stats: {
-                manaCost: 30,
+                manaCost: 60,
                 cooldown: 8,
                 castTime: 0,
 
-                shieldBase: 70,
+                shieldBase: 100,
                 shieldSpellPowerScaling: 1,
                 armorBase: 10,
                 duration: 7
@@ -137,7 +137,7 @@
             },
             requiresTarget: false,
             stats: {
-                manaCost: 50,
+                manaCost: 100,
                 cooldown: 5,
                 castTime: 1.5,
 
@@ -338,7 +338,7 @@
                 enemy: true
             },
             stats: {
-                manaCost: 20,
+                manaCost: 30,
                 cooldown: 0,
                 castTime: 0,
 
@@ -407,7 +407,7 @@
                 ally: true
             },
             stats: {
-                manaCost: 20,
+                manaCost: 30,
                 cooldown: 0,
                 castTime: 1.5,
 
@@ -449,7 +449,7 @@
                 enemy: true
             },
             stats: {
-                manaCost: 20,
+                manaCost: 45,
                 cooldown: 0,
                 castTime: 1.5,
 
@@ -524,7 +524,7 @@
 
                     this.friendOfTheForestEffect = this.createEffect({
                         hasDuration: false,
-                        //hidden: true,
+                        hidden: true,
                         stats: {
                             period: this.period.value()
                         },
@@ -586,7 +586,7 @@
             },
             requiresTarget: false,
             stats: {
-                manaCost: 80,
+                manaCost: 100,
                 cooldown: 55,
                 castTime: 3,
 
