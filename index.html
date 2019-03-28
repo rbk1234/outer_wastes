@@ -246,6 +246,11 @@
         <div>
           <p><button class="button" data-toggle="abilities-modal">Abilities</button></p>
         </div>
+        &emsp;
+        <div>
+          <p><button class="button" data-toggle="map-modal">Map</button></p>
+        </div>
+
       </div>
     </div>
 
@@ -254,6 +259,14 @@
 
 
 
+  </div>
+
+  <div class="reveal large" id="map-modal" data-reveal data-animation-in="slide-in-down fast" data-animation-out="slide-out-up fast">
+    <button class="close-button" data-close aria-label="Close reveal" type="button">
+      <span aria-hidden="true">&times;</span>
+    </button>
+
+    <pre class="ascii-content"></pre>
   </div>
 
 
@@ -362,6 +375,9 @@
 
   <script src="assets/javascripts/levels/database.js"></script>
   <script src="assets/javascripts/levels/level.js"></script>
+
+  <script src="assets/javascripts/maps/database.js"></script>
+  <script src="assets/javascripts/maps/map.js"></script>
 
   <script src="assets/javascripts/rooms/database.js"></script>
   <script src="assets/javascripts/rooms/room.js"></script>

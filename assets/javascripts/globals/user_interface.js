@@ -47,6 +47,8 @@
             this._initEffects();
             this._initLevelUI();
 
+            this._initMap();
+
             // Start clock
             Game.Clock.setInterval(CLOCK_KEY, function(iterations, period) {
                 // Only draw once (no matter how many iterations)
@@ -112,12 +114,12 @@
             frame.$name.html(unit.name);
 
             // portrait
-            var $div = $('<div></div>');
+            var $pre = $('<pre></pre>');
             unit.portrait().forEach(function(imageRow) {
-                $('<pre>'+imageRow+'</pre>').appendTo($div);
+                $('<span>'+imageRow+'</span><br>').appendTo($pre);
             });
             frame.$portrait.empty();
-            $div.appendTo(frame.$portrait);
+            $pre.appendTo(frame.$portrait);
 
             // load existing effects:
             this._removeAllEffectsInFrame(this._targetFrame);
@@ -398,12 +400,19 @@
             // image (only draw if it has changed)
             var newImage = unit.image();
             if (newImage !== frame.lastImage) {
-                var $div = $('<div></div>');
+                //var $div = $('<div></div>');
+                //unit.image().forEach(function(imageRow) {
+                //    $('<pre>'+imageRow+'</pre>').appendTo($div);
+                //});
+                var $pre = $('<pre></pre>');
                 unit.image().forEach(function(imageRow) {
-                    $('<pre>'+imageRow+'</pre>').appendTo($div);
+                    $('<span>'+imageRow+'</span><br>').appendTo($pre);
                 });
                 frame.$image.empty();
-                $div.appendTo(frame.$image);
+                $pre.appendTo(frame.$image);
+
+                //frame.$image.empty();
+                //$div.appendTo(frame.$image);
                 frame.lastImage = newImage;
             }
 
@@ -894,6 +903,11 @@
         },
 
 
+        _initMap: function() {
+            this._$mapModal = $('#map-modal');
+            var world = new Game.Maps.Map('world');
+            this._$mapModal.find('.ascii-content').html(world.display.join('\n'));
+        },
 
 
         _initAbilitiesPage: function() {

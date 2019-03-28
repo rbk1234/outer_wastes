@@ -244,6 +244,15 @@ body {
   color: white;
   font-size: 0.875rem; }
 
+#map-modal {
+  height: 90vh;
+  background: #3b3021;
+  color: white; }
+  #map-modal .ascii-content {
+    font-size: 0.75rem;
+    line-height: 1;
+    height: 100%; }
+
 .bar {
   position: relative;
   overflow: hidden;
