@@ -349,6 +349,8 @@
             return this.abilities()[this._equippedAbilityIds[slot]];
         },
         equipAbility: function(ability, slot) {
+            var self = this;
+
             if (!this.hasAbility(ability)) {
                 console.error('Unit must gainAbility before it can equipAbility: ' + ability.name);
                 return;
@@ -356,6 +358,13 @@
 
             // unequip old ability
             this.unequipAbility(slot);
+
+            // if unit already has the ability (in a diff slot) unequip it from that slot
+            this.equippedAbilities(true).forEach(function(otherAbility, otherAbilitySlot) {
+                if (otherAbility && otherAbility.id === ability.id) {
+                    self.unequipAbility(otherAbilitySlot);
+                }
+            });
 
             // equip new ability
             this._equippedAbilityIds[slot] = ability.id;
@@ -373,8 +382,9 @@
             this._equippedAbilityIds[slot] = null;
         },
 
+        // todo this will be phased out
         abilityForDbKey: function(abilityDbKey) {
-            var abilities = this.equippedAbilities();
+            var abilities = Object.values(this.abilities());
             for (var i = 0, len = abilities.length; i < len; i++) {
                 if (abilities[i].dbKey === abilityDbKey) {
                     return abilities[i];

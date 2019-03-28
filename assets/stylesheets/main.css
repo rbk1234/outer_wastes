@@ -281,34 +281,35 @@ body {
   border: 1px solid #91bbd4;
   width: 20rem;
   z-index: 2; }
-  #spellbook-tooltip.underneath {
-    top: 7.5rem; }
-  #spellbook-tooltip.on-top {
-    bottom: 7.5rem; }
-  #spellbook-tooltip.centered {
-    left: 50%;
-    margin-left: -10rem; }
-  #spellbook-tooltip.expand-right {
-    left: 0; }
-  #spellbook-tooltip.expand-left {
-    right: 0; }
+  #spellbook-tooltip.show-right {
+    right: -20.5rem;
+    top: 0; }
+  #spellbook-tooltip.show-left {
+    top: 0;
+    left: -20.5rem; }
+
+#spellbook {
+  padding: 1rem;
+  background: #4a3a16; }
 
 #ability-button-template, #equipped-ability-template, #spellbook-row-template, #spellbook-ability-template {
   display: none; }
 
-.button-container {
-  vertical-align: top;
-  text-align: center; }
-  .button-container .button-container-inner {
-    margin: 0.5rem;
-    padding: 0.5rem;
-    height: 7rem;
-    background: #4d2525;
-    border: 1px solid black;
-    position: relative; }
-    .button-container .button-container-inner:hover {
-      background: #622f2f;
-      cursor: pointer; }
+.button-container .button-container-inner {
+  width: 15rem;
+  margin: 0.5rem;
+  padding: 0.5rem;
+  background: #4d2525;
+  border: 1px solid black;
+  position: relative;
+  display: flex;
+  flex-flow: row; }
+  .button-container .button-container-inner:hover {
+    background: #622f2f;
+    cursor: pointer; }
+  .button-container .button-container-inner.selected {
+    border: 1px solid white;
+    background: #622f2f; }
 
 .action-bar-button, .effect {
   display: inline-block;
@@ -494,5 +495,9 @@ table.no-spacing tbody tr td {
 .button {
   border-radius: 0.313rem;
   margin-bottom: 0; }
+
+a[disabled] {
+  pointer-events: none;
+  color: grey; }
 
 /*# sourceMappingURL=main.css.map */

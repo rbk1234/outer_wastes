@@ -262,48 +262,52 @@
       <span aria-hidden="true">&times;</span>
     </button>
 
-    <div class="text-center">
-      <h6>Equipped Abilities</h6>
-    </div>
-
-    <table class="no-rows tight-spacing">
-      <tbody>
-      <tr id="equipped-abilities">
-        <td id="equipped-ability-template" class="button-container">
-          <div class="button-container-inner">
-            <div class="text-center">
-              <button class="action-bar-button blank">
-                <span class="hotkey"></span>
-              </button>
-            </div>
-            <span class="name"></span>
-          </div>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-
-    <hr>
-
-    <div class="text-center">
-      <h6>Spellbook</h6>
-    </div>
-
-    <div>
-      <table class="no-rows tight-spacing">
-        <tbody id="spellbook">
-        <tr id="spellbook-row-template">
-          <td id="spellbook-ability-template" class="button-container">
+    <div class="grid-x">
+      <div class="cell small-4">
+        <h6 class="text-center">Ability Slots</h6>
+        <div id="equipped-abilities">
+          <div id="equipped-ability-template" class="button-container">
             <div class="button-container-inner">
               <div class="text-center">
-                <button class="action-bar-button blank"></button>
+                <button class="action-bar-button blank">
+                  <span class="hotkey"></span>
+                </button>
               </div>
               <span class="name"></span>
             </div>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+          </div>
+        </div>
+      </div>
+      <div class="cell small-7 end">
+        <h6></h6>
+        <div id="spellbook">
+          <div class="page-navigation">
+            <a class="fa fa-fw fa-arrow-left turn-page-left"></a>
+            <span class="current-page"></span>
+            <a class="fa fa-fw fa-arrow-right turn-page-right"></a>
+          </div>
+          <table class="no-rows tight-spacing">
+            <tbody id="spellbook-tbody">
+            <tr id="spellbook-row-template">
+              <td id="spellbook-ability-template" class="button-container">
+                <div class="button-container-inner">
+                  <div class="text-center">
+                    <button class="action-bar-button blank"></button>
+                  </div>
+                  <span class="name"></span>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="instructions text-center">
+          <br>
+          <br>
+          <br>
+          Select an ability slot
+        </div>
+      </div>
     </div>
 
     <div id="spellbook-tooltip" class="ability-tooltip" hidden>

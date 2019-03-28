@@ -29,6 +29,9 @@
     var COMBAT_TEXT_OFFSET_WINDOW = 1000; // if two texts are shown within this time, offset the second text
     var COMBAT_TEXT_COLUMNS = 3;
 
+    var SPELLBOOK_COLS = 2;
+    var SPELLBOOK_ROWS = 4;
+
 
     var UserInterface = function() {};
 
@@ -789,7 +792,7 @@
             var buttonData = this._abilityButtons[ability.id];
             buttonData.timer.destroy();
 
-            var $newButton = self._createAbilityButton(index);
+            var $newButton = this._createAbilityButton(index);
             var $oldButton = this._$abilityBar.find('.action-bar-button:not(#ability-button-template):eq('+(index)+')');
             $oldButton.replaceWith($newButton);
 
@@ -900,8 +903,10 @@
             this._$equippedAbilities = $('#equipped-abilities');
             this._$equippedAbilityTemplate = $('#equipped-ability-template');
             this._$spellbook = $('#spellbook');
+            this._$spellbookTbody = $('#spellbook-tbody');
             this._$spellbookRowTemplate = $('#spellbook-row-template');
             this._$spellbookAbilityTemplate = $('#spellbook-ability-template');
+            this._$spellbookInstructions = this._$abilitiesModal.find('.instructions');
 
             for (var i = 0; i < Game.Constants.numPlayerAbilities; i++) {
                 var $buttonContainer = this._createEqAbilityButton(i);
@@ -910,7 +915,20 @@
 
             this._$abilitiesModal.off('open.zf.reveal').on('open.zf.reveal', function(evt) {
                 console.log(evt);
-                self._showSpellbook();
+                self._clearSpellbookPage();
+                //self._showSpellbookPage(0);
+            });
+
+            this._currentSpellbookPage = 0;
+            this._$spellbookPageLeft = this._$spellbook.find('.turn-page-left');
+            this._$spellbookPageRight = this._$spellbook.find('.turn-page-right');
+            this._$spellbookPageRight.off('click').on('click', function(evt) {
+                evt.preventDefault();
+                self._showSpellbookPage(self._currentSpellbookPage + 1);
+            });
+            this._$spellbookPageLeft.off('click').on('click', function(evt) {
+                evt.preventDefault();
+                self._showSpellbookPage(self._currentSpellbookPage - 1);
             });
 
             var $spellbookTooltip = $('#spellbook-tooltip');
@@ -922,30 +940,69 @@
                 $cooldown: $spellbookTooltip.find('.cooldown'),
                 $description: $spellbookTooltip.find('.description')
             };
+            $spellbookTooltip.off('mouseover').on('mouseover', function() {
+                self._hideSpellbookTooltip();
+            });
 
 
         },
 
-        _showSpellbook: function() {
+        _clearSpellbookPage: function() {
+            if ($.contains(this._$spellbookTbody.get(0), this._spellbookTooltip.$tip.get(0))) {
+                this._spellbookTooltip.$tip.appendTo(this._$spellbook); // move tip out so it doesn't get removed
+            }
+            this._$spellbookTbody.find('tr:not(#spellbook-row-template)').remove();
+            this._$spellbook.hide();
+            this._$spellbookInstructions.show();
+        },
+        _showSpellbookPage: function(page) {
             var self = this;
+
+            this._clearSpellbookPage();
+            this._$spellbookInstructions.hide();
+            this._$spellbook.show();
+            this._$spellbook.find('.current-page').html('Page ' + (page + 1));
+            this._currentSpellbookPage = page;
+
+            var sortedAbilities = Object.values(Game.Player.abilities()).sort(function(a, b) {
+                var nameA = a.name.toUpperCase(); // ignore upper and lowercase
+                var nameB = b.name.toUpperCase(); // ignore upper and lowercase
+                if (nameA < nameB) {
+                    return -1;
+                }
+                if (nameA > nameB) {
+                    return 1;
+                }
+
+                // names must be equal
+                return 0;
+            });
+
+            var spellsPerPage = SPELLBOOK_ROWS * SPELLBOOK_COLS;
+            var startingIndex = page * spellsPerPage;
+            var pageAbilities = sortedAbilities.slice(startingIndex, startingIndex + spellsPerPage);
+            var numPages = Math.ceil(sortedAbilities.length / spellsPerPage);
+
+            this._$spellbookPageLeft.attr('disabled', this._currentSpellbookPage === 0);
+            this._$spellbookPageRight.attr('disabled', this._currentSpellbookPage >= (numPages - 1));
 
             var currentRow = 0;
             var currentCol = 0;
             var $currentRow = null;
 
             // TODO will this have same order every time?
-            Game.Util.iterateObject(Game.Player.abilities(), function(abilityId, ability) {
+            pageAbilities.forEach(function(ability) {
                 if (currentCol === 0) {
                     // create row
                     $currentRow = self._$spellbookRowTemplate.clone();
                     $currentRow.removeAttr('id');
-                    $currentRow.appendTo(self._$spellbook);
+                    $currentRow.appendTo(self._$spellbookTbody);
                 }
 
                 // create cell
                 var $buttonContainer = self._$spellbookAbilityTemplate.clone();
                 $buttonContainer.removeAttr('id');
-                $buttonContainer.css('width', (100 / Game.Constants.numPlayerAbilities) + '%');
+                $buttonContainer.css('width', (100 / SPELLBOOK_COLS) + '%');
                 $buttonContainer.appendTo($currentRow);
 
                 var $button = $buttonContainer.find('.action-bar-button');
@@ -956,16 +1013,26 @@
 
                 var $innerContainer = $buttonContainer.find('.button-container-inner');
 
+                if (self._spellbookOriginalAbilityId === ability.id) {
+                    $innerContainer.addClass('selected');
+                }
+
                 var colCopy = currentCol; // copy column to pass to tooltip later
                 $innerContainer.off('mouseenter').on('mouseenter', function(evt) {
-                    self._showSpellbookTooltip($(this), ability, colCopy, 'on-top');
+                    self._showSpellbookTooltip($(this), ability, colCopy, 'show-left');
                 });
                 $innerContainer.off('mouseleave').on('mouseleave', function(evt) {
                     self._hideSpellbookTooltip();
                 });
+                $innerContainer.off('click').on('click', function() {
+                    // user has chosen the ability
+                    Game.Player.equipAbility(ability, self._spellbookSelectingForIndex);
+                    self._clearEqSelection();
+                    self._clearSpellbookPage();
+                });
 
                 currentCol += 1;
-                if (currentCol >= Game.Constants.numPlayerAbilities) {
+                if (currentCol >= SPELLBOOK_COLS) {
                     currentCol = 0;
                     currentRow += 1;
                 }
@@ -973,14 +1040,13 @@
         },
 
         _showSpellbookTooltip: function($element, ability, index, directionClass) {
-            var leftRightClass = 'centered';
-            if (index === 0) {
-                leftRightClass = 'expand-right';
-            }
-            if (index === Game.Constants.numPlayerAbilities - 1) {
-                leftRightClass = 'expand-left';
-            }
-            //directionClass = 'underneath';
+            //var leftRightClass = 'centered';
+            //if (index === 0) {
+            //    leftRightClass = 'expand-right';
+            //}
+            //if (index === Game.Constants.numPlayerAbilities - 1) {
+            //    leftRightClass = 'expand-left';
+            //}
 
             this._spellbookTooltip.$name.html(ability.name);
 
@@ -996,8 +1062,8 @@
             this._spellbookTooltip.$description.html(ability.description());
 
             this._spellbookTooltip.$tip
-                .removeClass('expand-left expand-right centered on-top underneath')
-                .addClass(leftRightClass)
+                .removeClass('show-left show-right')
+                //.addClass(leftRightClass)
                 .addClass(directionClass)
                 .show()
                 .appendTo($element);
@@ -1007,12 +1073,26 @@
         },
 
         _createEqAbilityButton: function(index) {
+            var self = this;
+
             var $buttonContainer = this._$equippedAbilityTemplate.clone();
             $buttonContainer.removeAttr('id');
 
             $buttonContainer.find('.hotkey').html(index + 1);
 
-            $buttonContainer.css('width', (100 / Game.Constants.numPlayerAbilities) + '%');
+            //$buttonContainer.css('width', (100 / Game.Constants.numPlayerAbilities) + '%');
+
+            var $innerContainer = $buttonContainer.find('.button-container-inner');
+            $innerContainer.off('click').on('click', function(evt) {
+                self._clearEqSelection();
+                $(this).addClass('selected');
+                self._spellbookSelectingForIndex = index;
+                self._spellbookOriginalAbilityId = $buttonContainer.data('ability-id');
+
+                // highlight matching thing, go to correct page?
+                self._showSpellbookPage(0);
+            });
+
 
             return $buttonContainer;
         },
@@ -1031,11 +1111,19 @@
             var $innerContainer = $buttonContainer.find('.button-container-inner');
 
             $innerContainer.off('mouseenter').on('mouseenter', function(evt) {
-                self._showSpellbookTooltip($(this), ability, index, 'underneath');
+                self._showSpellbookTooltip($(this), ability, index, 'show-right');
             });
             $innerContainer.off('mouseleave').on('mouseleave', function(evt) {
                 self._hideSpellbookTooltip();
             });
+
+            $buttonContainer.data('ability-id', ability.id); // store id for on click
+        },
+
+        _clearEqSelection: function() {
+            this._$equippedAbilities.find('.selected').removeClass('selected');
+            this._spellbookSelectingForIndex = null;
+            this._spellbookOriginalAbilityId = null;
         },
 
         _removeAbilityFromEqBar: function(ability, index) {

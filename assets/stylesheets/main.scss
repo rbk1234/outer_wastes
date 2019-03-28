@@ -596,22 +596,18 @@ body {
   width: 20rem;
   z-index: 2;
   
-  &.underneath {
-    top: 7.5rem;
+  &.show-right {
+    right: -20.5rem;
+    top: 0;
   }
-  &.on-top {
-    bottom: 7.5rem;
+  &.show-left {
+    top: 0;
+    left: -20.5rem;
   }
-  &.centered {
-    left: 50%;
-    margin-left: -10rem;
-  }
-  &.expand-right {
-    left: 0;
-  }
-  &.expand-left {
-    right: 0;
-  }
+}
+#spellbook {
+  padding: 1rem;
+  background: #4a3a16;
 }
 
 
@@ -620,23 +616,31 @@ body {
 }
 
 .button-container {
-  vertical-align: top;
-  text-align: center;
+  //vertical-align: top;
+  //text-align: center;
 
   .button-container-inner {
+    width: 15rem;
     
     margin: 0.5rem;
     padding: 0.5rem;
-    height: 7rem;
+    //height: 7rem;
     background: #4d2525;
     border: 1px solid black;
     position: relative;
 
+    display: flex;
+    flex-flow: row;
 
     &:hover {
       //border: 1px solid white;
       background: #622f2f;
       cursor: pointer;
+    }
+
+    &.selected {
+      border: 1px solid white;
+      background: #622f2f;
     }
   }
 }
@@ -929,6 +933,11 @@ table.no-spacing {
 .button {
   border-radius: 0.313rem;
   margin-bottom: 0;
+}
+
+a[disabled] {
+  pointer-events: none;
+  color: grey;
 }
 
 
