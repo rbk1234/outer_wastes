@@ -82,6 +82,8 @@
             // Cache jquery references to elements that will need constant updating
             return {
                 frameType: frameType,
+                effects: {},
+
                 $frame: $frame,
                 $name: $frame.find('.name'),
 
@@ -226,6 +228,8 @@
             // Cache jquery references to elements that will need constant updating
             return {
                 frameType: 'unit',
+                effects: {},
+
                 $frame: $frame,
                 $name: $frame.find('.name'),
 
@@ -597,19 +601,6 @@
             }
         },
 
-        _effectsForFrame: function(frame) {
-            switch(frame.frameType) {
-                case 'unit':
-                    return this._unitEffects;
-                case 'player':
-                    return this._playerEffects;
-                case 'target':
-                    return this._targetEffects;
-                default:
-                    console.error('Invalid frameType: '+frame.frameType);
-            }
-        },
-
         _addEffectToFrame: function(frame, effect) {
             // Unit may not have been loaded into UI yet. That's okay, when it is its effects will be loaded
             if (!frame) {
@@ -636,7 +627,7 @@
                 timer.startCooldown(totalCooldown, elapsed);
             }
 
-            var effects = this._effectsForFrame(frame);
+            var effects = frame.effects;
             effects[effect.id] = {
                 $effect: $effect,
                 timer: timer
@@ -644,7 +635,7 @@
         },
 
         _removeEffectFromFrame: function(frame, effect) {
-            var effects = this._effectsForFrame(frame);
+            var effects = frame.effects;
 
             effects[effect.id].timer.destroy();
             effects[effect.id].$effect.remove();
@@ -652,7 +643,7 @@
         },
 
         _removeAllEffectsInFrame: function(frame) {
-            var effects = this._effectsForFrame(frame);
+            var effects = frame.effects;
 
             Game.Util.iterateObject(effects, function(effectId, effectUi) {
                 effectUi.timer.destroy();
@@ -662,7 +653,7 @@
         },
 
         _refreshEffectInFrame: function(frame, oldEffect, newEffect) {
-            var effects = this._effectsForFrame(frame);
+            var effects = frame.effects;
 
             effects[newEffect.id] = effects[oldEffect.id];
             delete effects[oldEffect.id];
