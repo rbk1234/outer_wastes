@@ -128,6 +128,8 @@ body {
     background: $main-content-bg;
     color: white;
 
+    overflow: hidden; // in case a unit's image goes over the right side
+
     table {
       height: 100%;
     }
@@ -245,7 +247,7 @@ body {
 }
 .unit-frame {
   display: inline-block;
-  width: 20%;
+  //width: 20%;
   padding: 0.1rem;
   height: 100%;
 

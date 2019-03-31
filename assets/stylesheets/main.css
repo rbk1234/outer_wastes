@@ -47,7 +47,8 @@ body {
     flex: 1 1 auto;
     padding: 0.25rem;
     background: #4a806b;
-    color: white; }
+    color: white;
+    overflow: hidden; }
     #body-content #units-area table {
       height: 100%; }
     #body-content #units-area #ally-frames, #body-content #units-area #enemy-frames {
@@ -115,7 +116,6 @@ body {
 
 .unit-frame {
   display: inline-block;
-  width: 20%;
   padding: 0.1rem;
   height: 100%; }
   .unit-frame .flex-col {

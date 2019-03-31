@@ -16,7 +16,7 @@
 #
 # And you run:
 #
-#   ruby ascii_art/art_parser.rb -s source.txt -l 5
+#   ruby ascii_art/art_parser.rb -f source.txt -l 5
 #
 # An output.txt file will be generated with strings:
 #
@@ -34,9 +34,8 @@ options = {}
 OptionParser.new do |opts|
   opts.banner = "Usage: art_parser.rb [options]"
 
-  opts.on('-s', '--source SOURCE', String, 'Source file') do |s|
-    puts s
-    options[:source] = s
+  opts.on('-f', '--file FILE', String, 'Source file') do |v|
+    options[:file] = v
   end
 
   opts.on('-l', '--length LENGTH', Integer, 'Line Length (for r-padding)') do |v|
@@ -51,7 +50,7 @@ end.parse!
 
 lines = []
 
-File.open(File.dirname(__FILE__) + '/' + options[:source], 'r') do |file|
+File.open(File.dirname(__FILE__) + '/' + options[:file], 'r') do |file|
   file.each_line do |line|
     line = line.gsub(/\n/, '') # remove \n from reading the file
     line = line.slice(0...options[:length]).ljust(options[:length], ' ') if options[:length] # pad to length if needed

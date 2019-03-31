@@ -20,10 +20,9 @@
             this.id = currentId++;
             $.extend(true, this, DEFAULTS, Game.Rooms.Database[dbKey], config);
             Game.Util.initStats(this);
-
         },
 
-        _initComplete: function() {
+        load: function() {
             Game.UserInterface.newRoomLoaded(this);
         }
 

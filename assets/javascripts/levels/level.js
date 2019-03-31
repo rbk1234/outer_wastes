@@ -39,7 +39,8 @@
 
             this._currentRoomIndex += 1;
 
-            new Game.Rooms.EnemyRoom(roomDbKey);
+            var room = new Game.Rooms.EnemyRoom(roomDbKey);
+            room.load();
         }
 
     };

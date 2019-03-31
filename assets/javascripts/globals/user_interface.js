@@ -7,6 +7,7 @@
     var CLOCK_KEY = 'UserInterface';
 
     var MAX_UNIT_FRAMES = 5;
+    var FRAME_COLUMNS = 5;
 
     /*
         Cast bar / cooldown spinners need high framerates so they can increment smoothly (don't want to tie it to
@@ -375,6 +376,9 @@
                 self._addEffectToFrame(frame, effect);
             });
 
+            // set frame width
+            frame.$frame.css('width', (unit.animations.width / FRAME_COLUMNS * 100) + '%');
+
             this._refreshUnitFrame(unit);
 
             frame.$frame.visible();
@@ -551,6 +555,9 @@
         newRoomLoaded: function(room) {
             var level = Game.Levels.currentLevel;
             $('#level-info').html(level.name + '&emsp;&mdash;&emsp; Room ' + level.currentRoomIndex() + ' / ' + level.numRooms);
+
+            $('#room-info').html(room.description);
+
         },
 
 

@@ -11,20 +11,17 @@
 
     $.extend(EnemyRoom.prototype, {
 
-        _init: function(config) {
-            Game.Rooms.Room.prototype._init.apply(this, arguments);
-
+        load: function() {
             this._loadEnemies();
 
-            this._initComplete();
+            Game.Rooms.Room.prototype.load.apply(this, arguments);
         },
 
         _loadEnemies: function() {
-            var self = this;
-
             this.enemies.forEach(function(enemyDbKey) {
-                Game.UnitEngine.addUnit(new Game.Units.Unit(enemyDbKey, {teamId: Game.Constants.teamIds.computer}));
-
+                var unit = new Game.Units.Unit(enemyDbKey, {teamId: Game.Constants.teamIds.computer});
+                Game.UnitEngine.addUnit(unit);
+                console.log('loaded unit' + unit.id);
             });
 
             Game.UserInterface.loadTeam(Game.Constants.teamIds.computer);

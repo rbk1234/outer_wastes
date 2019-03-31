@@ -4,6 +4,9 @@
 
     var DEFAULTS = {
         teamId: null,
+        animations: {
+            width: 1
+        },
         stats: {
             maxHealth: 1,
             maxMana: null,
@@ -29,12 +32,15 @@
             this.dbKey = dbKey;
             this.id = currentId++;
             $.extend(true, this, DEFAULTS, Game.Units.Database[dbKey], config);
+            $.extend(true, this.animations, Game.Units.Animations[dbKey]);
             Game.Util.initStats(this);
 
             // init internals
             this.health = this.maxHealth.value();
             this.mana = this.maxMana.value();
-            this._attackTimer = Math.random() * 0.5; // remaining time until next attack. Initialize with random wait
+
+            this._attackTimer = 0;
+            //this._attackTimer = Math.random() * 0.5; // remaining time until next attack. Initialize with random wait
 
             this._effects = {};
 
@@ -280,20 +286,31 @@
         _incrementAttack: function(seconds) {
             this._attackTimer -= seconds;
             if (Game.Util.roundForComparison(this._attackTimer) <= 0) {
-                this.attack();
-
-                // attackSpeed is attacks per second. Add current _attackTimer to catch rollover
-                this._attackTimer = 1.0 / this.attackSpeed.value() + this._attackTimer;
+                if (this.attack()) {
+                    this._startAttackAnimation();
+                    // attackSpeed is attacks per second. Add current _attackTimer to catch rollover
+                    this._attackTimer = 1.0 / this.attackSpeed.value() + this._attackTimer;
+                }
+                else {
+                    // was unable to attack. set timer to a small random offset
+                    this._attackTimer = Math.random() * 0.3;
+                }
             }
         },
 
+        // returns true/false based on whether the attack was successful
         attack: function() {
+            // todo if stunned return false
+
             var target = this.highestThreatTarget();
 
             if (target) {
                 //console.log(this.name + ' attacked ' + target.name + ' for ' + this.attackDamage.value());
                 target.takeDamage(this.attackDamage.value(), this);
+                return true;
             }
+
+            return false;
         },
 
         percentHealth: function() {
@@ -615,14 +632,29 @@
                 return this.animations.idle.image;
             }
 
-            if (Game.Util.roundForComparison(this._attackTimer) > (1.0 / this.attackSpeed.value() - this.animations.attack.duration)) {
-                return this.animations.attack.image;
+            // Only show attack animation if _startAttackAnimation has been called. If the unit is cc'd, the _attackTimer
+            // will be above 0 as the attack resets. We don't want to animate the unit attacking however.
+            if (this._attackAnimation) {
+                var timeIntoAnimation = (1.0 / this.attackSpeed.value()) - this._attackTimer;
+                var cur = 0;
+                for (var i = 0, len = this.animations.attack.length; i < len; i++) {
+                    cur += this.animations.attack[i].duration;
+                    if (timeIntoAnimation < cur) {
+                        return this.animations.attack[i].image;
+                    }
+                }
+                this._endAttackAnimation();
             }
-            else {
-                return this.animations.idle.image;
-            }
+
+            return this.animations.idle.image;
         },
 
+        _startAttackAnimation: function() {
+            this._attackAnimation = true;
+        },
+        _endAttackAnimation: function() {
+            this._attackAnimation = false;
+        }
 
 
     };
