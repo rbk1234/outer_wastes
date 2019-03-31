@@ -4,6 +4,12 @@
 
     Game.namespace('Abilities').Database = {
 
+        // -------------------------------------------------------------------------------------------------------------
+        //
+        //   Player Abilities
+        //
+        // -------------------------------------------------------------------------------------------------------------
+
         holyLight: {
             name: 'Holy Light',
             icon: 'hand-bandage',
@@ -485,37 +491,6 @@
             }
         },
 
-        webWrap: {
-            name: "Web Wrap",
-            icon: 'light-thorny-triskelion',
-            background: 'dracula',
-            description: function() {
-                return 'Wraps the target in a sticky web for ' + this.duration.value() + ' seconds, completely immobilizing them.';
-            },
-
-            requiresTarget: true,
-            allowedTargets: {
-                enemy: true
-            },
-            stats: {
-                manaCost: 0,
-                cooldown: 10,
-                castTime: 2.5,
-
-                duration: 5
-            },
-            events: {
-                'ability:castComplete': function(evt, target) {
-                    var effect = this.createEffect({
-                        stats: {
-                            duration: this.duration.value(),
-                            stunsTarget: true
-                        }
-                    });
-                    target.addEffect(effect);
-                }
-            }
-        },
 
         friendOfTheForest: {
             name: 'Friend of the Forest',
@@ -649,6 +624,141 @@
                 }
             }
         },
+
+
+
+
+
+
+
+
+        // -------------------------------------------------------------------------------------------------------------
+        //
+        //   Enemy Abilities
+        //
+        // -------------------------------------------------------------------------------------------------------------
+
+
+        webWrap: {
+            name: "Web Wrap",
+            icon: 'light-thorny-triskelion',
+            background: 'dracula',
+            description: function() {
+                return 'Wraps the target in a sticky web for ' + this.duration.value() + ' seconds, completely immobilizing them.';
+            },
+
+            requiresTarget: true,
+            allowedTargets: {
+                enemy: true
+            },
+            stats: {
+                manaCost: 0,
+                cooldown: 10,
+                castTime: 2.5,
+
+                duration: 5
+            },
+            events: {
+                'ability:castComplete': function(evt, target) {
+                    var effect = this.createEffect({
+                        stats: {
+                            duration: this.duration.value(),
+                            stunsTarget: true
+                        }
+                    });
+                    target.addEffect(effect);
+                }
+            }
+        },
+        iceTrap: {
+            name: "Ice Trap",
+            icon: 'light-thorny-triskelion',
+            background: 'opal',
+            description: function() {
+                return 'Freezes the target for ' + this.duration.value() + ' seconds.';
+            },
+
+            requiresTarget: true,
+            allowedTargets: {
+                enemy: true
+            },
+            stats: {
+                manaCost: 0,
+                cooldown: 10,
+                castTime: 2,
+
+                duration: 6
+            },
+            events: {
+                'ability:castComplete': function(evt, target) {
+                    var effect = this.createEffect({
+                        stats: {
+                            duration: this.duration.value(),
+                            stunsTarget: true
+                        }
+                    });
+                    target.addEffect(effect);
+                }
+            }
+        },
+
+        explosiveTrap: {
+            name: "Explosive Trap",
+            icon: 'light-thorny-triskelion',
+            background: 'sunny',
+            description: function() {
+                return 'Burns the target for ' +
+                    this.burstBase.value() +
+                    ' <span class="spell-power">(+' + (this.caster.spellPower.value() * this.burstSpellPowerScaling.value()) + ')</span>' +
+                    ' damage and ' +
+                    this.dotBase.value() +
+                    ' <span class="spell-power">(+' + (this.caster.spellPower.value() * this.dotSpellPowerScaling.value()) + ')</span>' +
+                    ' over ' +
+                    this.duration.value() + ' seconds.';
+            },
+
+            requiresTarget: true,
+            allowedTargets: {
+                enemy: true
+            },
+            stats: {
+                manaCost: 0,
+                cooldown: 10,
+                castTime: 2,
+
+                duration: 6,
+                period: 1,
+
+                burstBase: 50,
+                burstSpellPowerScaling: 0.8,
+                dotBase: 40,
+                dotSpellPowerScaling: 0.8
+            },
+            events: {
+                'ability:castComplete': function(evt, target) {
+                    var totalBurst = this.dotBase.value() + this.caster.spellPower.value() * this.dotSpellPowerScaling.value();
+                    target.takeDamage(totalBurst, this.caster);
+
+                    var totalDot = this.dotBase.value() + this.caster.spellPower.value() * this.dotSpellPowerScaling.value();
+                    var numTicks = this.duration.value() / this.period.value();
+                    var amountPerTick = totalDot / numTicks;
+
+                    var effect = this.createEffect({
+                        stats: {
+                            duration: this.duration.value(),
+                            period: this.period.value()
+                        },
+                        events: {
+                            'effect:periodicTick': function() {
+                                this.affectedUnit.takeDamage(amountPerTick, this.sourceUnit);
+                            }
+                        }
+                    });
+                    target.addEffect(effect);
+                }
+            }
+        },
+
 
 
 

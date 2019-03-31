@@ -29,24 +29,9 @@
                                 // --- todo maybe this shouldn't be an encounter? just have the spiders emit an event when they
                                 // --- todo cast the spell that stops others from casting for a bit
 
-                                var highestHealthUnit = null;
-                                Game.UnitEngine.findUnitsByDbKey(Game.Constants.teamIds.computer, 'spider').forEach(function(unit) {
-                                    var webWrap = unit.abilityForDbKey('webWrap');
-                                    if (!webWrap.isReady()) {
-                                        return;
-                                    }
-
-                                    if (highestHealthUnit) {
-                                        if (unit.health > highestHealthUnit.health) {
-                                            highestHealthUnit = unit;
-                                        }
-                                    }
-                                    else {
-                                        highestHealthUnit = unit;
-                                    }
-                                });
-                                if (highestHealthUnit) {
-                                    highestHealthUnit.castAbility(highestHealthUnit.abilityForDbKey('webWrap'), highestHealthUnit.highestThreatTarget());
+                                var unit = Game.UnitEngine.findUnitForAICast(Game.Constants.teamIds.computer, 'spider', 'webWrap');
+                                if (unit) {
+                                    unit.castAbility(unit.abilityForDbKey('webWrap'), unit.highestThreatTarget());
                                 }
                             }
                         }
@@ -57,7 +42,41 @@
         },
         forest_enemy_4: {
             description: 'A forest goblin ambush!',
-            enemies: ['forestGoblin', 'forestGoblin']
+            enemies: ['forestGoblin', 'forestGoblin'],
+            events: {
+                'room:startEncounters': function() {
+                    this.loadEncounter({
+                        type: 'periodic',
+                        stats: {
+                            period: 10,
+                            delay: -5
+                        },
+                        events: {
+                            'encounter:periodicTick': function() {
+                                var unit = Game.UnitEngine.findUnitForAICast(Game.Constants.teamIds.computer, 'forestGoblin', 'iceTrap');
+                                if (unit) {
+                                    unit.castAbility(unit.abilityForDbKey('iceTrap'), unit.highestThreatTarget());
+                                }
+                            }
+                        }
+                    });
+                    this.loadEncounter({
+                        type: 'periodic',
+                        stats: {
+                            period: 4,
+                            delay: -4
+                        },
+                        events: {
+                            'encounter:periodicTick': function() {
+                                var unit = Game.UnitEngine.findUnitForAICast(Game.Constants.teamIds.computer, 'forestGoblin', 'explosiveTrap');
+                                if (unit) {
+                                    unit.castAbility(unit.abilityForDbKey('explosiveTrap'), unit.highestThreatTarget());
+                                }
+                            }
+                        }
+                    });
+                }
+            }
         }
 
     };

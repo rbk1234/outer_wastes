@@ -341,7 +341,7 @@
 
             if (teamId === Game.Constants.teamIds.player) {
                 this._allyFrames.forEach(function(frame) {
-                    frame.$frame.invisible();
+                    self._clearUnitFrame(frame);
                 });
                 this._allyIndices = {}; // Mapping of unit id -> array index of unit
                 Game.UnitEngine.unitsForTeam(teamId).forEach(function(unit, index) {
@@ -353,7 +353,7 @@
             }
             else {
                 this._enemyFrames.forEach(function(frame) {
-                    frame.$frame.invisible();
+                    self._clearUnitFrame(frame);
                 });
                 this._enemyIndices = {}; // Mapping of unit id -> array index of unit
                 Game.UnitEngine.unitsForTeam(teamId).forEach(function(unit, index) {
@@ -392,6 +392,7 @@
         },
         _clearUnitFrame: function(frame) {
             frame.$frame.invisible();
+            frame.$frame.css('width', '0%');
 
             this._removeAllEffectsInFrame(frame);
 
@@ -1261,9 +1262,11 @@
             }
 
             if (unit.id === Game.Player.id) {
-                //startCastBar(this._castBarFrame);
+                startCastBar(this._castBarFrame);
             }
-            startCastBar(this._getUnitFrame(unit));
+            else {
+                startCastBar(this._getUnitFrame(unit));
+            }
         },
 
         _completeCastBar: function(unit) {
@@ -1280,9 +1283,11 @@
             }
 
             if (unit.id === Game.Player.id) {
-                //completeCastBar(this._castBarFrame);
+                completeCastBar(this._castBarFrame);
             }
-            completeCastBar(this._getUnitFrame(unit));
+            else {
+                completeCastBar(this._getUnitFrame(unit));
+            }
         },
 
         _cancelCastBar: function(unit, message) {
@@ -1300,9 +1305,11 @@
             }
 
             if (unit.id === Game.Player.id) {
-                //cancelCastBar(this._castBarFrame);
+                cancelCastBar(this._castBarFrame);
             }
-            cancelCastBar(this._getUnitFrame(unit));
+            else {
+                cancelCastBar(this._getUnitFrame(unit));
+            }
         },
 
         _castBarClockKey: function(unit, frame) {

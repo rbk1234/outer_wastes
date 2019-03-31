@@ -7,8 +7,8 @@
             name: 'Healer (You)',
             stats: {
                 maxHealth: 100,
-                maxMana: 300,
-                manaRegen: 4,
+                maxMana: 350,
+                manaRegen: 5,
                 attackSpeed: 0.3,
                 attackDamage: 5
             }
@@ -76,7 +76,8 @@
                 attackSpeed: 0.8,
                 attackDamage: 30,
                 reward: 20
-            }
+            },
+            abilityKeys: ['iceTrap', 'explosiveTrap']
         }
 
 

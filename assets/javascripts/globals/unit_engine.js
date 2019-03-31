@@ -104,6 +104,29 @@
             return matchingUnits;
         },
 
+        // todo very simple for now. just finds highest health unit that can cast the ability
+        findUnitForAICast: function(teamId, unitDbKey, abilityDbKey) {
+            var matchingUnit = null;
+
+            Game.UnitEngine.findUnitsByDbKey(Game.Constants.teamIds.computer, unitDbKey).forEach(function(unit) {
+                var ability = unit.abilityForDbKey(abilityDbKey);
+                if (!ability.isReady()) {
+                    return;
+                }
+
+                if (matchingUnit) {
+                    if (unit.health > matchingUnit.health) {
+                        matchingUnit = unit;
+                    }
+                }
+                else {
+                    matchingUnit = unit;
+                }
+            });
+
+            return matchingUnit;
+        },
+
         inCombat: function() {
             return this._inCombat;
         },
