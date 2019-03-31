@@ -6,6 +6,7 @@
         name: 'Unknown',
         description: function() { return 'No description available.' },
         requiresTarget: false,
+        autocast: false,
         allowedTargets: {
             /*
               How to read an ability's allowedTargets hash:
@@ -50,6 +51,10 @@
             this.dbKey = dbKey;
             this.id = currentId++;
             this.$eventHandler = $(this);
+            if (!Game.Abilities.Database[dbKey]) { // todo all db classes should have something like this
+                console.error('Could not find ability in database: ', dbKey);
+                return;
+            }
             $.extend(true, this, DEFAULTS, Game.Abilities.Database[dbKey], config);
             Game.Util.initStats(this);
             Game.Util.initEvents(this);
@@ -98,6 +103,12 @@
 
         update: function(seconds) {
             this.reduceCooldown(seconds);
+
+            if (this.autocast && this.isReady()) {
+                // todo not just cast on highest threat
+                // todo debounce timer? incase cc'd
+                var abilityCasted = this.caster.castAbility(this, this.caster.highestThreatTarget());
+            }
         },
 
         gain: function(caster) {

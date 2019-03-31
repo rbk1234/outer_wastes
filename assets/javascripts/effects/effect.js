@@ -19,6 +19,7 @@
             duration: 0,
             period: false,
             absorbAmount: 0,
+            stunsTarget: false,
 
             maxStacks: 1
         },

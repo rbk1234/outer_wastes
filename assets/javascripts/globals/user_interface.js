@@ -17,6 +17,8 @@
         - getting hit slows down a cast by 0.5 seconds
         - reducing ability cooldowns by 1s (e.g. Ezreal Q)
         We will have to restart the animation (at a partially done state) when the events occur.
+
+        TODO there are issues if a buff is applied while another tab is in focus
      */
     var CAST_BAR_CLOCK_KEY = 'CastBar';
     var CAST_BAR_UPDATES_PER_SECOND = 100; // Needs high frame rate to smoothly increment
@@ -225,6 +227,7 @@
             });
 
             var $healthBar = $frame.find('.health-bar');
+            var $castBar = $frame.find('.cast-bar');
 
             // Cache jquery references to elements that will need constant updating
             return {
@@ -243,6 +246,10 @@
                 $healthBarProgress: $healthBar.find('.bar-layer.health'),
                 $healthBarShield: $healthBar.find('.bar-layer.shield'),
                 $healthBarText: $healthBar.find('.bar-layer.bar-text'),
+
+                $castBar: $castBar,
+                $castBarProgress: $castBar.find('.bar-layer.cast-progress'),
+                $castBarText: $castBar.find('.bar-layer.bar-text'),
 
                 combatTextOffsets: {}
             };
@@ -764,7 +771,7 @@
                 if (self._targetedUnitOverride && !evt.altKey) {
                     self.clearTargetOverride(); // Backup catch - in case alt key was released in other window
                 }
-                Game.Player.castAbility(index, self.targetedUnit());
+                Game.Player.castAbility(ability, self.targetedUnit());
             }
 
             var keyCode = this._keyCodeForAbilityIndex(index);
@@ -1234,56 +1241,72 @@
         },
 
         _startCastBar: function(unit, text, castLength) {
-            if (unit.id !== Game.Player.id) {
-                return;
+            var self = this;
+
+            function startCastBar(frame) {
+                // Set up a temporary interval for the cast bar that updates at a very high framerate
+                var accumulatedSeconds = 0;
+                Game.Clock.setInterval(self._castBarClockKey(unit, frame), function (iterations, period) {
+                    accumulatedSeconds += iterations * period;
+                    frame.$castBarProgress.css('width', (accumulatedSeconds / castLength) * 100 + '%');
+                }, 1.0 / CAST_BAR_UPDATES_PER_SECOND);
+
+                frame.$castBarProgress.css('width', '0%')
+                    .removeClass('casting cast-complete cast-canceled')
+                    .addClass('casting');
+                frame.$castBarText.html(text);
+                frame.$castBar.stop(); // stop any fade out animations (from completes/cancels right before)
+                //frame.$castBar.fadeIn(0);
+                frame.$castBar.animate({opacity: 1}, 0);
             }
-            var frame = this._castBarFrame;
 
-            // Set up a temporary interval for the cast bar that updates at a very high framerate
-            var accumulatedSeconds = 0;
-            Game.Clock.setInterval(CAST_BAR_CLOCK_KEY + '_' + unit.id, function(iterations, period) {
-                accumulatedSeconds += iterations * period;
-                frame.$castBarProgress.css('width', (accumulatedSeconds / castLength) * 100 + '%');
-            }, 1.0 / CAST_BAR_UPDATES_PER_SECOND);
-
-            frame.$castBarProgress.css('width', '0%')
-                .removeClass('casting cast-complete cast-canceled')
-                .addClass('casting');
-            frame.$castBarText.html(text);
-            frame.$castBar.stop(); // stop any fade out animations (from completes/cancels right before)
-            //frame.$castBar.fadeIn(0);
-            frame.$castBar.animate({ opacity: 1 }, 0);
+            if (unit.id === Game.Player.id) {
+                //startCastBar(this._castBarFrame);
+            }
+            startCastBar(this._getUnitFrame(unit));
         },
 
         _completeCastBar: function(unit) {
-            if (unit.id !== Game.Player.id) {
-                return;
+            var self = this;
+
+            function completeCastBar(frame) {
+                Game.Clock.clearInterval(self._castBarClockKey(unit, frame));
+
+                frame.$castBarProgress.css('width', '100%')
+                    .removeClass('casting cast-complete cast-canceled')
+                    .addClass('cast-complete');
+                //frame.$castBar.fadeOut(500);
+                frame.$castBar.animate({ opacity: 0 }, 500);
             }
-            var frame = this._castBarFrame;
 
-            Game.Clock.clearInterval(CAST_BAR_CLOCK_KEY + '_' + unit.id);
-
-            frame.$castBarProgress.css('width', '100%')
-                .removeClass('casting cast-complete cast-canceled')
-                .addClass('cast-complete');
-            //frame.$castBar.fadeOut(500);
-            frame.$castBar.animate({ opacity: 0 }, 500);
+            if (unit.id === Game.Player.id) {
+                //completeCastBar(this._castBarFrame);
+            }
+            completeCastBar(this._getUnitFrame(unit));
         },
 
         _cancelCastBar: function(unit, message) {
-            if (unit.id !== Game.Player.id) {
-                return;
+            var self = this;
+
+            function cancelCastBar(frame) {
+                Game.Clock.clearInterval(self._castBarClockKey(unit, frame));
+
+                frame.$castBarProgress.css('width', '100%')
+                    .removeClass('casting cast-complete cast-canceled')
+                    .addClass('cast-canceled');
+                frame.$castBarText.html(Game.Util.defaultFor(message, 'Failed'));
+                //frame.$castBar.fadeOut(500);
+                frame.$castBar.animate({ opacity: 0 }, 500);
             }
-            var frame = this._castBarFrame;
 
-            Game.Clock.clearInterval(CAST_BAR_CLOCK_KEY + '_' + unit.id);
+            if (unit.id === Game.Player.id) {
+                //cancelCastBar(this._castBarFrame);
+            }
+            cancelCastBar(this._getUnitFrame(unit));
+        },
 
-            frame.$castBarProgress.css('width', '100%')
-                .removeClass('casting cast-complete cast-canceled')
-                .addClass('cast-canceled');
-            frame.$castBarText.html(Game.Util.defaultFor(message, 'Failed'));
-            //frame.$castBar.fadeOut(500);
-            frame.$castBar.animate({ opacity: 0 }, 500);
+        _castBarClockKey: function(unit, frame) {
+            return CAST_BAR_CLOCK_KEY + '_' + unit.id + '_' + frame.frameType;
         }
 
     };

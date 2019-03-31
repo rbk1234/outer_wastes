@@ -22,12 +22,17 @@
             Game.Util.initStats(this);
 
             this._currentRoomIndex = 0; // Note: 1-based
+            this._currentRoom = null;
 
             Game.Levels.currentLevel = this; // todo where to store this?
         },
 
         loadRandomEnemyRoom: function() {
             this._loadRoom(Game.Util.randomFromArray(this.enemyRooms))
+        },
+
+        currentRoom: function() {
+            return this._currentRoom;
         },
 
         currentRoomIndex: function() {
@@ -39,8 +44,8 @@
 
             this._currentRoomIndex += 1;
 
-            var room = new Game.Rooms.EnemyRoom(roomDbKey);
-            room.load();
+            this._currentRoom = new Game.Rooms.EnemyRoom(roomDbKey);
+            this._currentRoom.load();
         }
 
     };

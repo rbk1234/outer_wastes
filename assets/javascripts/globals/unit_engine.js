@@ -48,7 +48,7 @@
             return this._teams[teamId] || [];
         },
 
-        // todo this method name is not entirely accurate... 
+        // todo this method name is not entirely accurate...
         highestThreatEnemy: function(unit) {
             if (!this.inCombat()) {
                 return null;
@@ -93,16 +93,35 @@
             return null;
         },
 
+        findUnitsByDbKey: function(teamId, unitDbKey) {
+            var matchingUnits = [];
+            var units = this.unitsForTeam(teamId);
+            for (var i = 0; i < units.length; i++) {
+                if (units[i].dbKey === unitDbKey) {
+                    matchingUnits.push(units[i]);
+                }
+            }
+            return matchingUnits;
+        },
+
         inCombat: function() {
             return this._inCombat;
         },
         enterCombat: function() {
             this._inCombat = true;
             Game.UserInterface.updateCombatStatus();
+
+            if (Game.Levels.currentLevel) {
+                Game.Levels.currentLevel.currentRoom().startEncounters();
+            }
         },
         leaveCombat: function() {
             this._inCombat = false;
             Game.UserInterface.updateCombatStatus();
+
+            if (Game.Levels.currentLevel) {
+                Game.Levels.currentLevel.currentRoom().endEncounters();
+            }
         },
         isPlayerTeamAlive: function() {
             return this._isTeamAlive(Game.Constants.teamIds.player);
@@ -127,6 +146,10 @@
                     unit.update(seconds);
                 });
             });
+
+            if (Game.Levels.currentLevel) {
+                Game.Levels.currentLevel.currentRoom().update(seconds);
+            }
         }
     };
 

@@ -16,7 +16,7 @@
         swashbuckler: {
             name: 'Swashbuckler',
             stats: {
-                maxHealth: 200,
+                maxHealth: 150,
                 attackSpeed: 1.25,
                 attackDamage: 10
             }
@@ -24,7 +24,7 @@
         native: {
             name: 'Native',
             stats: {
-                maxHealth: 300,
+                maxHealth: 250,
                 attackSpeed: 0.5,
                 attackDamage: 20,
                 reward: 50
@@ -66,7 +66,8 @@
                 attackSpeed: 1.2,
                 attackDamage: 11,
                 reward: 20
-            }
+            },
+            abilityKeys: ['webWrap']
         },
         forestGoblin: {
             name: 'Forest Goblin',

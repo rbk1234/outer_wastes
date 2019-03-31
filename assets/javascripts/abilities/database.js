@@ -141,9 +141,9 @@
                 cooldown: 5,
                 castTime: 1.5,
 
-                healBase: 40,
+                healBase: 25,
                 healSpellPowerScaling: 1,
-                damageBase: 40,
+                damageBase: 25,
                 damageSpellPowerScaling: 0.75
             },
             events: {
@@ -481,6 +481,38 @@
                         target.takeDamage(damage, this.caster);
                     }
 
+                }
+            }
+        },
+
+        webWrap: {
+            name: "Web Wrap",
+            icon: 'light-thorny-triskelion',
+            background: 'dracula',
+            description: function() {
+                return 'Wraps the target in a sticky web for ' + this.duration.value() + ' seconds, completely immobilizing them.';
+            },
+
+            requiresTarget: true,
+            allowedTargets: {
+                enemy: true
+            },
+            stats: {
+                manaCost: 0,
+                cooldown: 10,
+                castTime: 2.5,
+
+                duration: 5
+            },
+            events: {
+                'ability:castComplete': function(evt, target) {
+                    var effect = this.createEffect({
+                        stats: {
+                            duration: this.duration.value(),
+                            stunsTarget: true
+                        }
+                    });
+                    target.addEffect(effect);
                 }
             }
         },

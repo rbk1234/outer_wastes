@@ -17,7 +17,8 @@
             threat: 0.5, // takes 50% of the attacks coming to the unit; 50% are sent to units behind
 
             spellPower: 20
-        }
+        },
+        abilityKeys: []
     };
 
     var GLOBAL_COOLDOWN = 1;
@@ -52,6 +53,8 @@
             this._globalCooldown = null;
 
             this._isDead = false;
+
+            this._initStartingAbilities();
         },
 
         update: function(seconds) {
@@ -93,6 +96,19 @@
             this._incrementCast(seconds);
         },
 
+        _initStartingAbilities: function() {
+            var self = this;
+            var currentAbilitySlot = 0;
+            this.abilityKeys.forEach(function(abilityKey) {
+                var ability = new Game.Abilities.Ability(abilityKey);
+                //if (self.id !== Game.Player.id) {
+                //    ability.autocast = true;
+                //}
+                self.gainAbility(ability);
+                self.equipAbility(ability, currentAbilitySlot);
+                currentAbilitySlot += 1;
+            });
+        },
 
         effects: function() {
             return this._effects;
@@ -172,6 +188,11 @@
             return matchingEffects;
         },
 
+        isStunned: function() {
+            return Object.values(this._effects).some(function(effect) {
+                return effect.stunsTarget.value();
+            });
+        },
 
         addHealth: function(amount, healthSource) {
             if (this.isDead()) {
@@ -301,7 +322,9 @@
 
         // returns true/false based on whether the attack was successful
         attack: function() {
-            // todo if stunned return false
+            if (this.isStunned()) {
+                return false;
+            }
 
             var target = this.highestThreatTarget();
 
@@ -387,7 +410,9 @@
             // equip new ability
             this._equippedAbilityIds[slot] = ability.id;
             ability.equip(this);
-            Game.UserInterface.equipAbility(ability, slot);
+            if (this.id === Game.Player.id) {
+                Game.UserInterface.equipAbility(ability, slot);
+            }
         },
         unequipAbility: function(slot) {
             var ability = this.equippedAbility(slot);
@@ -400,7 +425,6 @@
             this._equippedAbilityIds[slot] = null;
         },
 
-        // todo this will be phased out
         abilityForDbKey: function(abilityDbKey) {
             var abilities = Object.values(this.abilities());
             for (var i = 0, len = abilities.length; i < len; i++) {
@@ -415,23 +439,27 @@
             return Game.Util.roundForComparison(this.mana) >= Game.Util.roundForComparison(ability.manaCost.value());
         },
 
-        // TODO --- this is built around the player right now
-        castAbility: function(abilitySlot, target) {
-            // If already casting something, return (TODO might need a latency window)
-            if (this.isCasting()) {
-                return;
+        castAbility: function(ability, target) {
+            if (!this.hasAbility(ability)) {
+                console.error('Unit ' + this.id + ' does not have ability ' + ability);
+                return false;
             }
 
-            this._castAbility = this.equippedAbilities(true)[abilitySlot];
-            if (!this._castAbility) {
-                console.error('Unit ' + this.id + ' does not have ability ' + abilitySlot);
-                return;
+            // If already casting something, return (TODO might need a latency window)
+            if (this.isCasting()) {
+                return false;
             }
+
+            this._castAbility = ability;
+            //if (!this._castAbility) {
+            //    console.error('Unit ' + this.id + ' does not have ability ' + abilitySlot);
+            //    return false;
+            //}
 
             this._castTarget = target;
 
             if (this._hasCasterErrors() || this._hasCastTargetErrors() || this._hasManaError() || this._hasCooldownError()) {
-                return;
+                return false;
             }
 
             this._castTotal = this._castAbility.castTime.value(); // caching length of cast at start of cast (in case haste changes)
@@ -452,6 +480,8 @@
                 this._globalCooldown = GLOBAL_COOLDOWN;
                 this._updateAllAbilityCooldowns(); // propagate global cooldown to all abilities
             }
+
+            return true;
         },
 
         cancelCast: function(message) {
@@ -475,6 +505,10 @@
         _hasCasterErrors: function() {
             if (this.isDead()) {
                 Game.Util.toast('Cannot cast while dead.');
+                return true;
+            }
+            if (this.isStunned()) {
+                Game.Util.toast('Cannot cast while stunned.');
                 return true;
             }
             return false;
@@ -550,6 +584,10 @@
 
         // shows the ability cooling down in the UI
         _updateAbilityCooldown: function(ability) {
+            if (this.id !== Game.Player.id) {
+                return; // only need to do this for player
+            }
+
             var totalCooldown, elapsed;
 
             if (!ability.onGlobalCooldown ||
