@@ -237,8 +237,8 @@
         },
         forestGoblin: {
             portrait: [
-                '',
-                ' Λ7'
+                ' Λ7',
+                '(-`'
             ],
             idle: {
                 image: [

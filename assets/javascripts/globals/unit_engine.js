@@ -48,6 +48,7 @@
             return this._teams[teamId] || [];
         },
 
+        // todo this method name is not entirely accurate... 
         highestThreatEnemy: function(unit) {
             if (!this.inCombat()) {
                 return null;
@@ -56,13 +57,17 @@
             return this.highestThreatOnTeam(this.opposingTeamId(unit.teamId));
         },
 
-        // TODO Just returning first in array atm
         highestThreatOnTeam: function(teamId) {
             var units = this.unitsForTeam(teamId);
 
             for (var i = 0; i < units.length; i++) {
                 var unit = units[i];
-                if (!unit.isDead()) {
+
+                if (unit.isDead()) {
+                    continue;
+                }
+
+                if (Math.random() < unit.threat.value()) {
                     return unit;
                 }
             }

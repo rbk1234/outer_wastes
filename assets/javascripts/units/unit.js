@@ -14,6 +14,7 @@
             attackSpeed: 1,
             attackDamage: 0,
             reward: 0,
+            threat: 0.5, // takes 50% of the attacks coming to the unit; 50% are sent to units behind
 
             spellPower: 20
         }

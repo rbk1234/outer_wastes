@@ -24,7 +24,7 @@
         native: {
             name: 'Native',
             stats: {
-                maxHealth: 400,
+                maxHealth: 300,
                 attackSpeed: 0.5,
                 attackDamage: 20,
                 reward: 50

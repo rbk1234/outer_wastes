@@ -33,12 +33,18 @@
 
     var native = new Game.Units.Unit('native', {teamId: Game.Constants.teamIds.player});
     Game.UnitEngine.addUnit(native);
+    var native = new Game.Units.Unit('native', {teamId: Game.Constants.teamIds.player});
+    Game.UnitEngine.addUnit(native);
+    //var native = new Game.Units.Unit('native', {teamId: Game.Constants.teamIds.player});
+    //Game.UnitEngine.addUnit(native);
+    //var native = new Game.Units.Unit('native', {teamId: Game.Constants.teamIds.player});
+    //Game.UnitEngine.addUnit(native);
     var swashbuckler = new Game.Units.Unit('swashbuckler', {teamId: Game.Constants.teamIds.player});
     Game.UnitEngine.addUnit(swashbuckler);
     var swashbuckler = new Game.Units.Unit('swashbuckler', {teamId: Game.Constants.teamIds.player});
     Game.UnitEngine.addUnit(swashbuckler);
-    var swashbuckler = new Game.Units.Unit('swashbuckler', {teamId: Game.Constants.teamIds.player});
-    Game.UnitEngine.addUnit(swashbuckler);
+    //var swashbuckler = new Game.Units.Unit('swashbuckler', {teamId: Game.Constants.teamIds.player});
+    //Game.UnitEngine.addUnit(swashbuckler);
 
     Game.Player = new Game.Units.Unit('player', {teamId: Game.Constants.teamIds.player});
     Game.UnitEngine.addUnit(Game.Player);
