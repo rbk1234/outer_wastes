@@ -30,6 +30,11 @@
             //'effect:begin': function(evt) {},
             //'effect:end': function(evt) {},
         },
+        animations: {
+            color: 'white',
+            frameLengths: null,
+            frames: null
+        },
 
         effectKey: null, // normally the same as the Ability key, but sometimes has a custom value if Ability spawns multiple Effects
         sourceAbility: null,
@@ -48,6 +53,7 @@
         _init: function(config) {
             this.id = currentId++;
             $.extend(true, this, DEFAULTS, config);
+            $.extend(true, this.animations, Game.Effects.Animations[this.effectKey]);
             Game.Util.initStats(this);
             Game.Util.initEvents(this);
 
@@ -145,9 +151,36 @@
             else {
                 return amount; // absorb nothing
             }
+        },
+
+        image: function() {
+            if (!this.animations.frames) {
+                return null;
+            }
+
+            if (!this.animations.frameLengths) {
+                return this.animations.frames[0];
+            }
+
+            var animationLength = this.animations.frameLengths.reduce(function(total, num) {
+                return total + num;
+            });
+            var elapsedTime = this.duration.value() - this._durationLeft;
+
+            var timeIntoAnimation = elapsedTime % animationLength;
+            var cur = 0;
+            for (var i = 0, l = this.animations.frameLengths.length; i < l; i++) {
+                cur += this.animations.frameLengths[i];
+                if (timeIntoAnimation < cur) {
+                    return this.animations.frames[i];
+                }
+            }
+
+            return null;
+        },
+        imageColor: function() {
+            return this.animations.color;
         }
-
-
 
 
 

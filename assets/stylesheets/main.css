@@ -150,12 +150,14 @@ body {
         border: 1.5px solid white;
         box-shadow: 0 0 3px 1px #555; }
       .unit-frame .flex-col .clickable-area .image {
-        padding-left: 1rem;
         font-family: monospace;
         line-height: 1.25; }
         .unit-frame .flex-col .clickable-area .image pre {
           display: block;
-          overflow: visible; }
+          overflow: visible;
+          position: absolute;
+          bottom: 1rem;
+          left: 0; }
       .unit-frame .flex-col .clickable-area .bar {
         height: 0.75rem; }
     .unit-frame .flex-col .effects-area {

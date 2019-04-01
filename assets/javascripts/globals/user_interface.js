@@ -233,6 +233,7 @@
             return {
                 frameType: 'unit',
                 effects: {},
+                animations: {},
 
                 $frame: $frame,
                 $name: $frame.find('.name'),
@@ -240,6 +241,7 @@
                 $combatTextArea: $frame.find('.combat-text-area'),
                 $clickableArea: $frame.find('.clickable-area'),
                 $image: $frame.find('.image'),
+                $unitImage: $frame.find('.image .unit-pre'),
 
                 $effectsArea: $frame.find('.effects-area'),
 
@@ -411,26 +413,25 @@
         },
 
         _refreshUnitFrame: function(unit) {
+            var self = this;
+
             var frame = this._getUnitFrame(unit);
 
             // image (only draw if it has changed)
             var newImage = unit.image();
             if (newImage !== frame.lastImage) {
-                //var $div = $('<div></div>');
-                //unit.image().forEach(function(imageRow) {
-                //    $('<pre>'+imageRow+'</pre>').appendTo($div);
-                //});
-                var $pre = $('<pre></pre>');
-                unit.image().forEach(function(imageRow) {
-                    $('<span>'+imageRow+'</span><br>').appendTo($pre);
-                });
-                frame.$image.empty();
-                $pre.appendTo(frame.$image);
-
-                //frame.$image.empty();
-                //$div.appendTo(frame.$image);
+                this._paintImage(newImage, frame.$unitImage, unit.imageOffset(), '#ddd');
                 frame.lastImage = newImage;
             }
+
+            // refresh animations
+            Game.Util.iterateObject(frame.effects, function(effectId, effectUi) {
+                var newImage = effectUi.effect.image();
+                if (newImage && newImage !== effectUi.lastImage) {
+                    self._paintImage(newImage, effectUi.$animation, 0, effectUi.effect.imageColor());
+                    effectUi.lastImage = newImage;
+                }
+            });
 
             var healthPercent = unit.percentHealth() + '%';
             frame.$healthBarProgress.css('width', healthPercent);
@@ -443,6 +444,17 @@
             else {
                 frame.$healthBarShield.css('width', 0).removeClass('active');
             }
+        },
+
+        _paintImage: function(image, $pre, offset, color) {
+            $pre.empty();
+
+            $pre.css('color', color);
+
+            image.forEach(function(imageRow) {
+                var offsetSpaces = ' '.repeat(offset);
+                $('<span>'+offsetSpaces+imageRow+'</span><br>').appendTo($pre);
+            });
         },
 
         createFloatingText: function(unit, text, textClass) {
@@ -642,29 +654,41 @@
                 timer.startCooldown(totalCooldown, elapsed);
             }
 
-            var effects = frame.effects;
-            effects[effect.id] = {
+            var effectUi = {
+                effect: effect,
                 $effect: $effect,
                 timer: timer
             };
+            if (frame.frameType === 'unit') {
+                var $animation = $('<pre></pre>');
+                $animation.appendTo(frame.$image);
+                effectUi.$animation = $animation;
+            }
+            frame.effects[effect.id] = effectUi;
         },
 
         _removeEffectFromFrame: function(frame, effect) {
             var effects = frame.effects;
-
-            effects[effect.id].timer.destroy();
-            effects[effect.id].$effect.remove();
+            this._removeEffectUi(effects[effect.id]);
             delete effects[effect.id];
         },
 
         _removeAllEffectsInFrame: function(frame) {
-            var effects = frame.effects;
+            var self = this;
 
+            var effects = frame.effects;
             Game.Util.iterateObject(effects, function(effectId, effectUi) {
-                effectUi.timer.destroy();
-                effectUi.$effect.remove();
+                self._removeEffectUi(effectUi);
                 delete effects[effectId];
             });
+        },
+
+        _removeEffectUi: function(effectUi) {
+            effectUi.timer.destroy();
+            effectUi.$effect.remove();
+            if (effectUi.$animation) {
+                effectUi.$animation.remove();
+            }
         },
 
         _refreshEffectInFrame: function(frame, oldEffect, newEffect) {

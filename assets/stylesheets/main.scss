@@ -304,14 +304,17 @@ body {
         //-ms-text-overflow: ellipsis;
         //text-overflow: ellipsis;
         
-        padding-left: 1rem;
+        //padding-left: 1rem;
         font-family: monospace;
         line-height: 1.25;
 
         pre {
           display: block;
-          //overflow: hidden;
           overflow: visible;
+
+          position: absolute;
+          bottom: 1rem;
+          left: 0;
         }
       }
       .bar {

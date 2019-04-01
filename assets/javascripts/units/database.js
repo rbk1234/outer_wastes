@@ -8,7 +8,7 @@
             stats: {
                 maxHealth: 100,
                 maxMana: 350,
-                manaRegen: 5,
+                manaRegen: 7,
                 attackSpeed: 0.3,
                 attackDamage: 5
             }

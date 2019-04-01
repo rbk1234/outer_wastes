@@ -8,6 +8,7 @@
                 '_O_',
                 '/ \\'
             ],
+            offset: 1,
             idle: {
                 image: [
                     ' _O_',
@@ -44,6 +45,7 @@
                 '~O',
                 '/ \\'
             ],
+            offset: 1,
             idle: {
                 image: [
                     '~O',
@@ -81,6 +83,7 @@
                 '\\|/',
                 '(oo'
             ],
+            offset: 1,
             idle: {
                 image: [
                     ' \\|/ /',

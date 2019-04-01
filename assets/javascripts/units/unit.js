@@ -5,7 +5,8 @@
     var DEFAULTS = {
         teamId: null,
         animations: {
-            width: 1
+            width: 1, // how many frame spaces to occupy
+            offset: 0 // how far of a left-indent
         },
         stats: {
             maxHealth: 1,
@@ -14,7 +15,7 @@
             attackSpeed: 1,
             attackDamage: 0,
             reward: 0,
-            threat: 0.5, // takes 50% of the attacks coming to the unit; 50% are sent to units behind
+            threat: 0.6, // takes 60% of the attacks coming to the unit; 50% are sent to units behind
 
             spellPower: 20
         },
@@ -686,6 +687,9 @@
             }
 
             return this.animations.idle.image;
+        },
+        imageOffset: function() {
+            return this.animations.offset;
         },
 
         _startAttackAnimation: function() {
