@@ -125,7 +125,7 @@ body {
     justify-content: flex-end; }
     .unit-frame .flex-col .combat-text-area {
       position: relative;
-      height: 5rem; }
+      height: 3rem; }
       .unit-frame .flex-col .combat-text-area .combat-text {
         left: 0.25rem; }
         .unit-frame .flex-col .combat-text-area .combat-text.offset-1 {
@@ -136,7 +136,7 @@ body {
       position: relative;
       padding: 0.1rem;
       border: 1.5px solid transparent;
-      height: 11rem;
+      height: 10rem;
       display: flex;
       flex-flow: column;
       justify-content: flex-end; }
