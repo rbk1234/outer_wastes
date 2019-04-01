@@ -27,7 +27,14 @@
             Game.Levels.currentLevel = this; // todo where to store this?
         },
 
-        loadRandomEnemyRoom: function() {
+        loadNextRoom: function() {
+            console.log('loading room: ', this._currentRoomIndex);
+
+            //this._loadRandomEnemyRoom();
+            this._loadRoom(this.enemyRooms[this._currentRoomIndex]);
+        },
+
+        _loadRandomEnemyRoom: function() {
             this._loadRoom(Game.Util.randomFromArray(this.enemyRooms))
         },
 

@@ -134,6 +134,13 @@
             this._inCombat = true;
             Game.UserInterface.updateCombatStatus();
 
+            this.unitsForTeam(Game.Constants.teamIds.player).forEach(function(unit) {
+                unit.enterCombat();
+            });
+            this.unitsForTeam(Game.Constants.teamIds.computer).forEach(function(unit) {
+                unit.enterCombat();
+            });
+
             if (Game.Levels.currentLevel) {
                 Game.Levels.currentLevel.currentRoom().startEncounters();
             }
@@ -141,6 +148,13 @@
         leaveCombat: function() {
             this._inCombat = false;
             Game.UserInterface.updateCombatStatus();
+
+            this.unitsForTeam(Game.Constants.teamIds.player).forEach(function(unit) {
+                unit.leaveCombat();
+            });
+            this.unitsForTeam(Game.Constants.teamIds.computer).forEach(function(unit) {
+                unit.leaveCombat();
+            });
 
             if (Game.Levels.currentLevel) {
                 Game.Levels.currentLevel.currentRoom().endEncounters();

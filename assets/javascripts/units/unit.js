@@ -620,6 +620,19 @@
             }
         },
 
+        enterCombat: function() {
+            if (this._manaRegenBonus) {
+                this._manaRegenBonus = false;
+                this.manaRegen.adder -= 20;
+            }
+        },
+        leaveCombat: function() {
+            if (!this._manaRegenBonus) {
+                this._manaRegenBonus = true;
+                this.manaRegen.adder += 20;
+            }
+        },
+
 
 
 

@@ -5,8 +5,8 @@
     Game.namespace('Levels').Database = {
         forest: {
             name: 'Forest',
-            enemyRooms: ['forest_enemy_1', 'forest_enemy_2', 'forest_enemy_3', 'forest_enemy_4'],
-            //enemyRooms: ['forest_enemy_4'],
+            enemyRooms: ['forest_wolves', 'forest_direWolf', 'forest_spiders', 'forest_goblins'],
+            //enemyRooms: ['forest_goblins'],
             numRooms: 4
         }
 

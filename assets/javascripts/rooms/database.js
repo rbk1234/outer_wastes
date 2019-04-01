@@ -3,15 +3,15 @@
     'use strict';
 
     Game.namespace('Rooms').Database = {
-        forest_enemy_1: {
-            description: 'A dire wolf is stalking the area.',
-            enemies: ['direWolf']
-        },
-        forest_enemy_2: {
+        forest_wolves: {
             description: 'A pack of wolves is inhabiting the area.',
             enemies: ['wolf', 'wolf', 'wolf', 'wolf']
         },
-        forest_enemy_3: {
+        forest_direWolf: {
+            description: 'A dire wolf is stalking the area.',
+            enemies: ['direWolf']
+        },
+        forest_spiders: {
             description: 'Spiders swarm around your party.',
             enemies: ['spider', 'spider', 'spider', 'spider', 'spider'],
             events: {
@@ -40,7 +40,7 @@
                 }
             }
         },
-        forest_enemy_4: {
+        forest_goblins: {
             description: 'A forest goblin ambush!',
             enemies: ['forestGoblin', 'forestGoblin'],
             events: {

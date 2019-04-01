@@ -97,18 +97,13 @@
 
 
     var forest = new Game.Levels.Level('forest');
-    forest.loadRandomEnemyRoom();
+    forest.loadNextRoom();
 
     //Game.UserInterface.targetUnit(native);
 
 
 
 
-
-    //
-    //Game.Clock.run();
-    //
-    //Game.World.Engine.loadLevel(1);
 
     Game.Log.logMessage('Game started!');
 

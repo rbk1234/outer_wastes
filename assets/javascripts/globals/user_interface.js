@@ -557,7 +557,7 @@
 
             this._$nextRoom.off('click').on('click', function(evt) {
                 evt.preventDefault();
-                Game.Levels.currentLevel.loadRandomEnemyRoom();
+                Game.Levels.currentLevel.loadNextRoom();
             })
 
         },
