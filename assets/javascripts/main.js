@@ -54,21 +54,25 @@
         Game.Player.gainAbility(holyLight);
         Game.Player.equipAbility(holyLight, 0);
 
+        var renew = new Game.Abilities.Ability('renew');
+        Game.Player.gainAbility(renew);
+        Game.Player.equipAbility(renew, 1);
+
         var blessedShield = new Game.Abilities.Ability('blessedShield');
         Game.Player.gainAbility(blessedShield);
-        Game.Player.equipAbility(blessedShield, 1);
+        Game.Player.equipAbility(blessedShield, 2);
 
         var holyNova = new Game.Abilities.Ability('holyNova');
         Game.Player.gainAbility(holyNova);
-        Game.Player.equipAbility(holyNova, 2);
+        Game.Player.equipAbility(holyNova, 3);
 
         var divineSpirit = new Game.Abilities.Ability('divineSpirit');
         Game.Player.gainAbility(divineSpirit);
-        Game.Player.equipAbility(divineSpirit, 3);
+        //Game.Player.equipAbility(divineSpirit, 3);
 
         var guardianAngel = new Game.Abilities.Ability('guardianAngel');
         Game.Player.gainAbility(guardianAngel);
-        Game.Player.equipAbility(guardianAngel, 4);
+        //Game.Player.equipAbility(guardianAngel, 4);
     }
     if (true) {
         var livingSeed = new Game.Abilities.Ability('livingSeed');

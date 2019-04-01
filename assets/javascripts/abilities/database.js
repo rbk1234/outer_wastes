@@ -44,7 +44,7 @@
         renew: {
             name: 'Renew',
             icon: 'healing',
-            background: 'green',
+            background: 'green-blue',
             description: function() {
                 return 'Heals a friendly target for ' +
                     this.healBase.value() +
@@ -57,13 +57,13 @@
                 ally: true
             },
             stats: {
-                manaCost: 20,
+                manaCost: 25,
                 cooldown: 0,
                 castTime: 0,
 
-                healBase: 100,
+                healBase: 80,
                 healSpellPowerScaling: 1,
-                duration: 10,
+                duration: 12,
                 period: 1
             },
             events: {
