@@ -61,6 +61,8 @@
                 self._refreshAbilityBar();
                 self._refreshAbilityTooltip();
             }, 1.0 / UPDATES_PER_SECOND);
+
+            this.drawBackground();
         },
 
 
