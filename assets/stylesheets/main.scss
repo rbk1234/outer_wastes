@@ -14,7 +14,6 @@ sass assets/stylesheets/main.scss assets/stylesheets/main.css
 //$navigation-menu: #3e2d2e;
 //$health-border: transparent;
 //$health-border-targeted: white;
-//$main-frames-color: black;
 
 //$top-bar-bg: #384d52;
 //$main-content-bg: #4a806b;
@@ -24,7 +23,6 @@ sass assets/stylesheets/main.scss assets/stylesheets/main.css
 //$navigation-menu: #3e2d2e;
 //$health-border: #acacac;
 //$health-border-targeted: #ffac24;
-//$main-frames-color: white;
 
 //$top-bar-bg: #384d52;
 //$main-content-bg: #96c083; // #b8c083 // grassy
@@ -34,19 +32,32 @@ sass assets/stylesheets/main.scss assets/stylesheets/main.css
 //$navigation-menu: #3e2d2e;
 //$health-border: transparent;
 //$health-border-targeted: white;
-//$main-frames-color: black;
 
-$top-bar-bg: #384d52;
-$main-content-bg: #4a806b;
+// forest:
+//$top-bar-bg: #384d52;
+//$main-content-bg: #4a806b;
+//$main-frames-bg: transparent;
+//$bottom-bar-bg: #bfa17a;
+//$bottom-bar-border: #3e2d2e;
+//$navigation-menu: #3e2d2e;
+//$health-border: transparent;
+//$health-border-targeted: white;
+//$portrait-bg: #153c4a;
+
+// space
+// https://lospec.com/palette-list/nyx8
+$top-bar-bg: #0f2a3f;
+$main-content-bg: #08141e;
 $main-frames-bg: transparent;
-$bottom-bar-bg: #bfa17a;
-$bottom-bar-border: #3e2d2e;
-$navigation-menu: #3e2d2e;
+$bottom-bar-bg: #816271;
+$bottom-bar-border: #4e495f;
+$navigation-menu: #4e495f;
 $health-border: transparent;
-$health-border-targeted: white;
-$main-frames-color: white;
+$health-border-targeted: #f6d6bd;
+$portrait-bg: #20394f;
 
 
+// this could be cool too: https://lospec.com/palette-list/oil-6
 
 body {
   font-family: "Roboto Condensed", sans-serif;
@@ -130,6 +141,8 @@ body {
 
     overflow: hidden; // in case a unit's image goes over the right side
 
+    position: relative;
+
     table {
       height: 100%;
     }
@@ -205,7 +218,7 @@ body {
     width: 5rem;
     flex: 0 1 auto; // fit to content
     
-    background: #153c4a;
+    background: $portrait-bg;
     border-radius: 30%;
     border: 1px solid black;
     
@@ -239,6 +252,23 @@ body {
 
 
 
+
+// -------------------------------------------------------- Unit background
+
+#unit-background {
+  overflow: hidden;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  opacity: 0.5;
+
+  .g {
+    color: green;
+  }
+  .b {
+    color: brown;
+  }
+}
 
 // -------------------------------------------------------- Unit frames
 
@@ -555,6 +585,10 @@ body {
 
     &.background {
       background: linear-gradient(#666,#444);
+
+      &.red {
+        background: linear-gradient(#800c0c,#5f0c0c);
+      }
     }
     &.health {
       background: linear-gradient(#00ff55, #009933);
@@ -718,14 +752,14 @@ body {
   }
 }
 .effect {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1.25rem;
+  height: 1.25rem;
   //margin-top: 0.25rem;
-  margin-left: 0.25rem;
-  margin-right: 0.25rem;
+  margin-left: 0.1rem;
+  margin-right: 0.1rem;
 
   border: 1px solid black;
-  border-radius: 0.188rem;
+  border-radius: 0.1rem;
 
   // TODO HACK: If you have a border and leave the box-sizing at its default, the CooldownTimer spinner won't reach bottom
   //box-sizing: content-box;

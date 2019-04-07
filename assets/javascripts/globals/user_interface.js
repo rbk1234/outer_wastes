@@ -420,7 +420,7 @@
             // image (only draw if it has changed)
             var newImage = unit.image();
             if (newImage !== frame.lastImage) {
-                this._paintImage(newImage, frame.$unitImage, unit.imageOffset(), '#ddd');
+                this._paintImage(newImage, frame.$unitImage, unit.imageOffset(), '#f6d6bd');
                 frame.lastImage = newImage;
             }
 
@@ -1179,7 +1179,55 @@
 
 
 
+        drawBackground: function(image) {
+            var background = new Array(20);
+            for (var j = 0, lenj = background.length; j < lenj; j++) {
+                background[j] = new Array(200).fill(' ');
+            }
 
+            var layout = Game.Levels.Backgrounds['forest'].layout;
+
+            for (var r = 0, numRows = layout.length; r < numRows; r++) {
+                var row = layout[r];
+                for (var c = 0, numCols = row.length; c < numCols; c++) {
+                    if (row[c] && row[c] !== ' ') {
+                        var doodad = Game.Levels.Doodads[row[c]];
+                        if (doodad) {
+                            this._addDoodadToBackground(doodad, r, c, background);
+                        }
+                        else {
+                            background[r][c] = row[c];
+                        }
+                        //for (var doodadR = 0, numDoodadRows = doodad.length; )
+                    }
+                }
+            }
+
+            for (var i = 0, len = background.length; i < len; i++) {
+                background[i] = background[i].join('');
+            }
+            $('#unit-background').html(background.join('\n'));
+        },
+
+        _addDoodadToBackground: function(doodad, startingR, startingC, background) {
+            var image = doodad.image;
+            var colors = doodad.colors;
+            for (var r = 0, numRows = image.length; r < numRows; r++) {
+                if ((startingR - numRows + r) >= 0) {
+                    var row = image[r];
+                    for (var c = 0, numCols = row.length; c < numCols; c++) {
+                        if (row[c] !== ' ') {
+                            if (colors[r][c] && colors[r][c] !== ' ') {
+                                background[startingR - numRows + r][startingC + c] = "<span class='"+colors[r][c]+"'>"+row[c]+"</span>";
+                            }
+                            else {
+                                background[startingR - numRows + r][startingC + c] = row[c];
+                            }
+                        }
+                    }
+                }
+            }
+        },
 
 
 

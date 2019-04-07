@@ -28,7 +28,7 @@
         },
 
         loadNextRoom: function() {
-            console.log('loading room: ', this._currentRoomIndex);
+            //console.log('loading room: ', this._currentRoomIndex);
 
             //this._loadRandomEnemyRoom();
             this._loadRoom(this.enemyRooms[this._currentRoomIndex]);

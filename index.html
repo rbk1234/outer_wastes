@@ -6,8 +6,8 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <title>Title</title>
   <meta name="description" content="">
-  <!--<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">-->
-  <meta name="viewport" content="user-scalable = yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!--<meta name="viewport" content="user-scalable = yes">-->
 
   <link rel="manifest" href="site.webmanifest">
   <link rel="apple-touch-icon" href="icon.png">
@@ -66,7 +66,7 @@
               <div class="non-portrait">
                 <div class="name"></div>
                 <div class="bar health-bar">
-                  <div class="bar-layer background" style="width: 100%;"></div>
+                  <div class="bar-layer background red" style="width: 100%;"></div>
                   <div class="bar-layer shield" style="width: 0;"></div>
                   <div class="bar-layer health" style="width: 100%;"></div>
                   <div class="bar-layer bar-text" style="width: 100%;"></div>
@@ -90,7 +90,7 @@
               <div class="non-portrait">
                 <div class="name"></div>
                 <div class="bar health-bar">
-                  <div class="bar-layer background" style="width: 100%;"></div>
+                  <div class="bar-layer background red" style="width: 100%;"></div>
                   <div class="bar-layer shield" style="width: 0;"></div>
                   <div class="bar-layer health" style="width: 100%;"></div>
                   <div class="bar-layer bar-text" style="width: 100%;"></div>
@@ -163,6 +163,9 @@
 
 
     <div id="units-area">
+      <pre id="unit-background">
+        APPLE
+      </pre>
 
       <div id="unit-frame-template" class="unit-frame">
         <div class="flex-col">
@@ -173,7 +176,7 @@
               <pre class="unit-pre"></pre>
             </div>
             <div class="bar health-bar">
-              <div class="bar-layer background" style="width: 100%;"></div>
+              <div class="bar-layer background red" style="width: 100%;"></div>
               <div class="bar-layer shield" style="width: 0;"></div>
               <div class="bar-layer health" style="width: 100%;"></div>
               <!--<div class="bar-layer bar-text" style="width: 100%;"></div>-->
@@ -197,6 +200,7 @@
         </tr>
         </tbody>
       </table>
+
 
     </div>
 
@@ -381,6 +385,7 @@
   <script src="assets/javascripts/globals/user_interface.js"></script>
 
   <script src="assets/javascripts/levels/database.js"></script>
+  <script src="assets/javascripts/levels/doodads.js"></script>
   <script src="assets/javascripts/levels/level.js"></script>
 
   <script src="assets/javascripts/maps/database.js"></script>

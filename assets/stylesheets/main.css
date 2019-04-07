@@ -33,11 +33,11 @@ body {
   height: 100%; }
   #body-content #header-bar {
     flex: 0 1 auto;
-    background: #384d52;
+    background: #0f2a3f;
     color: white; }
   #body-content #subheader-bar {
     flex: 0 1 auto;
-    background: #4a806b;
+    background: #08141e;
     color: white;
     font-weight: bold;
     padding: 0.25rem;
@@ -46,21 +46,22 @@ body {
   #body-content #units-area {
     flex: 1 1 auto;
     padding: 0.25rem;
-    background: #4a806b;
+    background: #08141e;
     color: white;
-    overflow: hidden; }
+    overflow: hidden;
+    position: relative; }
     #body-content #units-area table {
       height: 100%; }
     #body-content #units-area #ally-frames, #body-content #units-area #enemy-frames {
       height: 100%; }
   #body-content #player-and-target-area {
     flex: 0 1 auto;
-    background: #4a806b; }
+    background: #08141e; }
     #body-content #player-and-target-area table tr td {
       vertical-align: top; }
   #body-content #cast-bar-area {
     flex: 0 1 auto;
-    background: #4a806b;
+    background: #08141e;
     position: relative;
     height: 2rem; }
     #body-content #cast-bar-area #player-cast-bar {
@@ -75,8 +76,8 @@ body {
     flex-flow: row;
     flex: 0 1 auto;
     min-height: 5rem;
-    background: #bfa17a;
-    border: 2px solid #3e2d2e; }
+    background: #816271;
+    border: 2px solid #4e495f; }
     #body-content #bottom-bar .bottom-section {
       display: flex;
       justify-content: center;
@@ -92,7 +93,7 @@ body {
     height: 5rem;
     width: 5rem;
     flex: 0 1 auto;
-    background: #153c4a;
+    background: #20394f;
     border-radius: 30%;
     border: 1px solid black;
     color: white;
@@ -110,6 +111,17 @@ body {
       margin-bottom: 0.25rem; }
     #player-frame .non-portrait .effects-area, #target-frame .non-portrait .effects-area {
       height: 2rem; }
+
+#unit-background {
+  overflow: hidden;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  opacity: 0.5; }
+  #unit-background .g {
+    color: green; }
+  #unit-background .b {
+    color: brown; }
 
 #unit-frame-template {
   display: none; }
@@ -147,7 +159,7 @@ body {
         width: 100%;
         cursor: pointer; }
       .unit-frame .flex-col .clickable-area.targeted {
-        border: 1.5px solid white;
+        border: 1.5px solid #f6d6bd;
         box-shadow: 0 0 3px 1px #555; }
       .unit-frame .flex-col .clickable-area .image {
         font-family: monospace;
@@ -188,7 +200,7 @@ body {
   margin: 1rem;
   padding: 0.5rem;
   border-radius: 0.313rem;
-  background: #3e2d2e;
+  background: #4e495f;
   color: white;
   flex: 0 1 auto; }
   #navigation-panel #room-info {
@@ -196,7 +208,7 @@ body {
 
 .game-over {
   border-radius: 0.313rem;
-  background: #3e2d2e; }
+  background: #4e495f; }
   .game-over .skull {
     height: 3rem;
     width: 3rem; }
@@ -266,6 +278,8 @@ body {
     height: 100%; }
     .bar .bar-layer.background {
       background: linear-gradient(#666, #444); }
+      .bar .bar-layer.background.red {
+        background: linear-gradient(#800c0c, #5f0c0c); }
     .bar .bar-layer.health {
       background: linear-gradient(#00ff55, #009933); }
     .bar .bar-layer.mana {
@@ -360,12 +374,12 @@ body {
     text-shadow: 1px 1px 1px #000; }
 
 .effect {
-  width: 1.5rem;
-  height: 1.5rem;
-  margin-left: 0.25rem;
-  margin-right: 0.25rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-left: 0.1rem;
+  margin-right: 0.1rem;
   border: 1px solid black;
-  border-radius: 0.188rem;
+  border-radius: 0.1rem;
   line-height: inherit; }
   .effect .effect-name {
     display: block;
