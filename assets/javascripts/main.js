@@ -30,6 +30,7 @@
     Game.Log.logMessage('Initializing 2...');
     Game.Log.logMessage('Initializing 3...');
 
+    Game.UserInterface.drawBackground('forest', 0);
 
     var native = new Game.Units.Unit('native', {teamId: Game.Constants.teamIds.player});
     Game.UnitEngine.addUnit(native);
@@ -110,5 +111,6 @@
 
 
     Game.Log.logMessage('Game started!');
+    Game.UnitEngine.countdownToRoom();
 
 })(jQuery);

@@ -30,14 +30,14 @@ body {
 #body-content {
   display: flex;
   flex-flow: column;
-  height: 100%; }
+  height: 100%;
+  background: #08141e; }
   #body-content #header-bar {
     flex: 0 1 auto;
     background: #0f2a3f;
     color: white; }
   #body-content #subheader-bar {
     flex: 0 1 auto;
-    background: #08141e;
     color: white;
     font-weight: bold;
     padding: 0.25rem;
@@ -45,23 +45,19 @@ body {
     border-bottom: 1px solid white; }
   #body-content #units-area {
     flex: 1 1 auto;
-    padding: 0.25rem;
-    background: #08141e;
     color: white;
-    overflow: hidden;
     position: relative; }
     #body-content #units-area table {
       height: 100%; }
-    #body-content #units-area #ally-frames, #body-content #units-area #enemy-frames {
+    #body-content #units-area #ally-frames, #body-content #units-area #enemy-frames, #body-content #units-area #center-area {
       height: 100%; }
   #body-content #player-and-target-area {
     flex: 0 1 auto;
-    background: #08141e; }
+    z-index: 2; }
     #body-content #player-and-target-area table tr td {
       vertical-align: top; }
   #body-content #cast-bar-area {
     flex: 0 1 auto;
-    background: #08141e;
     position: relative;
     height: 2rem; }
     #body-content #cast-bar-area #player-cast-bar {
@@ -112,16 +108,17 @@ body {
     #player-frame .non-portrait .effects-area, #target-frame .non-portrait .effects-area {
       height: 2rem; }
 
-#unit-background {
+#room-background {
   overflow: hidden;
   position: absolute;
   height: 100%;
   width: 100%;
-  opacity: 0.5; }
-  #unit-background .g {
-    color: green; }
-  #unit-background .b {
-    color: brown; }
+  opacity: 0.5;
+  bottom: 6rem; }
+  #room-background .g {
+    color: #00ff00; }
+  #room-background .b {
+    color: #bf8040; }
 
 #unit-frame-template {
   display: none; }
@@ -176,6 +173,16 @@ body {
       padding-top: 0.25rem;
       height: 2rem; }
 
+#center-area pre {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+  font-size: 0.5rem;
+  top: 0;
+  padding: 0.5rem 1rem;
+  background: #4e495f;
+  border-radius: 0.313rem; }
+
 #ability-tooltip {
   position: absolute;
   bottom: 1rem;
@@ -184,7 +191,7 @@ body {
   width: 20rem; }
 
 .ability-tooltip {
-  background: #161616;
+  background: #371616;
   padding: 0.5rem;
   color: white;
   font-size: 0.875rem;
@@ -200,15 +207,16 @@ body {
   margin: 1rem;
   padding: 0.5rem;
   border-radius: 0.313rem;
-  background: #4e495f;
   color: white;
-  flex: 0 1 auto; }
+  flex: 0 1 auto;
+  text-align: center; }
   #navigation-panel #room-info {
     margin-bottom: 1rem; }
 
 .game-over {
   border-radius: 0.313rem;
-  background: #4e495f; }
+  background: #4e495f;
+  padding: 0.5rem; }
   .game-over .skull {
     height: 3rem;
     width: 3rem; }
@@ -229,8 +237,10 @@ body {
   bottom: 0.25rem; }
   .combat-text.heal {
     color: #00ff55; }
+  .combat-text.damage {
+    color: #ff0000; }
   .combat-text.ally-damage {
-    color: #ff9900; }
+    color: #ff0000; }
   .combat-text.take-damage {
     color: #ff0000; }
 

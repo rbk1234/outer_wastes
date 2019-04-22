@@ -10,19 +10,25 @@
 
     UnitEngine.prototype = {
         init: function() {
-            var self = this;
 
             this._teams = {}; // team id -> [Units on that team]
+
+            Game.Timers.addTimerSupport(this);
             
             this._inCombat = false; 
 
-            // Start clock
+            this.startClock();
+        },
+
+        startClock: function() {
+            var self = this;
+
             Game.Clock.setInterval(CLOCK_KEY, function(iterations, period) {
                 while (iterations > 0) {
                     //if (self._enemies.length) {
-                        // If there are enemies, iterate through updates one by one (cannot batch)
-                        self._update(period);
-                        iterations--;
+                    // If there are enemies, iterate through updates one by one (cannot batch)
+                    self._update(period);
+                    iterations--;
                     //}
                     //else {
                     //    // If no ememies, ok to batch updates
@@ -31,6 +37,10 @@
                     //}
                 }
             }, 1.0 / UPDATES_PER_SECOND);
+
+        },
+        stopClock: function() {
+            Game.Clock.clearInterval(CLOCK_KEY);
         },
 
         addUnit: function(unit) {
@@ -144,6 +154,8 @@
             if (Game.Levels.currentLevel) {
                 Game.Levels.currentLevel.currentRoom().startEncounters();
             }
+
+            Game.UserInterface.roomStarted();
         },
         leaveCombat: function() {
             this._inCombat = false;
@@ -172,10 +184,39 @@
             });
         },
 
+        countdownToRoom: function() {
+            Game.UserInterface.setCenterImage(Game.Levels.Centerpieces.three.image);
+
+            this.setTimeout(function() {
+                Game.UserInterface.setCenterImage(Game.Levels.Centerpieces.two.image);
+            }, 1000);
+            this.setTimeout(function() {
+                Game.UserInterface.setCenterImage(Game.Levels.Centerpieces.one.image);
+            }, 2000);
+            this.setTimeout(function() {
+                Game.UserInterface.setCenterImage(Game.Levels.Centerpieces.battle.image);
+                Game.UnitEngine.enterCombat();
+            }, 3000);
+            this.setTimeout(function() {
+                Game.UserInterface.clearCenterImage();
+            }, 4000);
+        },
+
         _update: function(seconds) {
-            if (!this.isPlayerTeamAlive() || !this.isComputerTeamAlive()) {
+            var self = this;
+
+            if (!this.isPlayerTeamAlive()) {
+                Game.UserInterface.roomFailed();
                 this.leaveCombat();
-                //this.clearEnemies();
+                this.stopClock();
+            }
+            if (this.inCombat() && !this.isComputerTeamAlive()) {
+                Game.UserInterface.roomComplete();
+                this.leaveCombat();
+                this.setTimeout(function() {
+                    Game.Levels.currentLevel.loadNextRoom();
+                    self.countdownToRoom();
+                }, 3000);
             }
 
             Game.Util.iterateObject(this._teams, function(teamId, units) {
@@ -187,7 +228,10 @@
             if (Game.Levels.currentLevel) {
                 Game.Levels.currentLevel.currentRoom().update(seconds);
             }
+
+            this.updateTimers(seconds);
         }
+
     };
 
     Game.UnitEngine = new UnitEngine();

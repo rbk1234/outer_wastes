@@ -48,6 +48,7 @@ sass assets/stylesheets/main.scss assets/stylesheets/main.css
 // https://lospec.com/palette-list/nyx8
 $top-bar-bg: #0f2a3f;
 $main-content-bg: #08141e;
+$center-area-bg: #4e495f;
 $main-frames-bg: transparent;
 $bottom-bar-bg: #816271;
 $bottom-bar-border: #4e495f;
@@ -115,6 +116,7 @@ body {
   display: flex;
   flex-flow: column;
   height: 100%;
+  background: $main-content-bg;
 
   #header-bar {
     flex: 0 1 auto; // fit to content
@@ -123,7 +125,6 @@ body {
   }
   #subheader-bar {
     flex: 0 1 auto; // fit to content
-    background: $main-content-bg;
     color: white;
     font-weight: bold;
 
@@ -134,12 +135,10 @@ body {
   }
   #units-area {
     flex: 1 1 auto; // fill remaining space
-    padding: 0.25rem;
 
-    background: $main-content-bg;
     color: white;
 
-    overflow: hidden; // in case a unit's image goes over the right side
+    //overflow: hidden; // in case a unit's image goes over the right side
 
     position: relative;
 
@@ -147,14 +146,13 @@ body {
       height: 100%;
     }
 
-    #ally-frames, #enemy-frames {
+    #ally-frames, #enemy-frames, #center-area {
       height: 100%;
     }
   }
   #player-and-target-area {
     flex: 0 1 auto; // fit to content
-
-    background: $main-content-bg;
+    z-index: 2;
 
     table {
       tr td {
@@ -165,8 +163,6 @@ body {
   #cast-bar-area {
     flex: 0 1 auto; // fit to content
 
-    background: $main-content-bg;
-    
     position: relative;
     height: 2rem;
     
@@ -255,18 +251,22 @@ body {
 
 // -------------------------------------------------------- Unit background
 
-#unit-background {
+#room-background {
   overflow: hidden;
   position: absolute;
   height: 100%;
   width: 100%;
   opacity: 0.5;
 
+  bottom: 6rem;
+
   .g {
-    color: green;
+    //color: green;
+    color: #00ff00;
   }
   .b {
-    color: brown;
+    //color: brown;
+    color: #bf8040;
   }
 }
 
@@ -362,6 +362,23 @@ body {
 
 
 
+#center-area {
+  pre {
+    // center horizontally:
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+
+    font-size: 0.5rem;
+    top: 0;
+    padding: 0.5rem 1rem;
+    background: $center-area-bg;
+    //border: 1px solid #4f1818;
+    border-radius: 0.313rem;
+  }
+}
+
+
 
 
 // -------------------------------------------------------- Ability tooltip
@@ -377,7 +394,7 @@ body {
 }
 
 .ability-tooltip {
-  background: rgba(22,22,22,1);
+  background: rgba(55,22,22,1);
   padding: 0.5rem;
   color: white;
   font-size: 0.875rem;
@@ -408,10 +425,12 @@ body {
   margin: 1rem;
   padding: 0.5rem;
   border-radius: 0.313rem;
-  background: $navigation-menu;
+  //background: $navigation-menu;
   color: white;
 
   flex: 0 1 auto; // fill to content
+
+  text-align: center;
 
   #room-info {
     //background: $top-bar-bg;
@@ -423,6 +442,7 @@ body {
 .game-over {
   border-radius: 0.313rem;
   background: $navigation-menu;
+  padding: 0.5rem;
 
   .skull {
     height: 3rem;
@@ -475,8 +495,13 @@ body {
     color: #00ff55;
   }
 
+  &.damage {
+    //color: white;
+    color: #ff0000;
+  }
   &.ally-damage {
-    color: #ff9900;
+    //color: #ff9900;
+    color: #ff0000;
   }
   &.take-damage {
     color: #ff0000;

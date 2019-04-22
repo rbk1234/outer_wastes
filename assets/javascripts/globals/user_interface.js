@@ -51,6 +51,7 @@
             this._initLevelUI();
 
             this._initMap();
+            Game.Timers.addTimerSupport(this);
 
             // Start clock
             Game.Clock.setInterval(CLOCK_KEY, function(iterations, period) {
@@ -60,9 +61,10 @@
                 self._refreshPlayerBars();
                 self._refreshAbilityBar();
                 self._refreshAbilityTooltip();
+
+                self.updateTimers(iterations * period);
             }, 1.0 / UPDATES_PER_SECOND);
 
-            this.drawBackground();
         },
 
 
@@ -476,7 +478,7 @@
             };
 
             var $text = $('<span class="combat-text ' + textClass + ' ' + ('offset-'+offsetLevel) + '">' + text + '</span>').appendTo(frame.$combatTextArea);
-            window.setTimeout(function() {
+            this.setTimeout(function() {
                 $text.remove();
             }, COMBAT_TEXT_DURATION);
         },
@@ -560,13 +562,20 @@
             this._$nextRoom.off('click').on('click', function(evt) {
                 evt.preventDefault();
                 Game.Levels.currentLevel.loadNextRoom();
-            })
+            });
 
+            this._$enemyFrames = $('#enemy-frames');
+            this._$centerImage = $('#center-area').find('pre');
+            this.clearCenterImage();
         },
 
         updateCombatStatus: function() {
             this._$engageCombat.prop('disabled', Game.UnitEngine.inCombat() || !Game.UnitEngine.isComputerTeamAlive());
             this._$nextRoom.toggleClass('invisible', Game.UnitEngine.isComputerTeamAlive());
+
+            if (Game.UnitEngine.inCombat()) {
+                this._$enemyFrames.stop().animate({opacity: 1}, 0);
+            }
 
             if (!Game.UnitEngine.isPlayerTeamAlive()) {
                 this._$navigationPanel.find('.normal-navigation').hide();
@@ -580,9 +589,27 @@
 
             $('#room-info').html(room.description);
 
+            this._$enemyFrames.stop().animate({opacity: 1}, 1000);
         },
 
+        roomComplete: function() {
+            this._$enemyFrames.stop().animate({opacity: 0}, 2000);
+        },
 
+        roomFailed: function() {
+
+        },
+
+        roomStarted: function() {
+        },
+
+        setCenterImage: function(image) {
+            this._paintImage(image, this._$centerImage, 0, 'white');
+            this._$centerImage.show();
+        },
+        clearCenterImage: function() {
+            this._$centerImage.hide();
+        },
 
 
 
@@ -1181,34 +1208,60 @@
 
 
 
-        drawBackground: function(image) {
-            var background = new Array(20);
-            for (var j = 0, lenj = background.length; j < lenj; j++) {
-                background[j] = new Array(200).fill(' ');
+        // ----------------------------------------------------- Background
+
+        // TODO Can remove this later. This was a way to do scrolling background
+        //var totalOffset = 0;
+        //Game.Clock.setInterval('UserInterface_backgroundScroll', function(iterations, period) {
+        //    totalOffset += (4 * period * iterations);
+        //
+        //    self.drawBackground('forest', totalOffset);
+        //}, 1.0 / 3);
+
+        drawBackground: function(key, offset) {
+            var bgRecord = Game.Levels.Backgrounds[key];
+            var image = bgRecord.layout;
+            var r, c, numRows = image.length, numCols = image[0].length; // todo assuming all rows same length
+
+            // Mod the offset so background scrolls in an endless loop
+            offset = Math.round(offset % numCols);
+
+            // Only redraw the background if it's changed since last draw
+            if (key === this._lastBackgroundKey && offset === this._lastBackgroundOffset) {
+                return;
+            }
+            this._lastBackgroundKey = key;
+            this._lastBackgroundOffset = offset;
+
+            // Set up an array to hold the characters
+            var background = new Array(numRows);
+            for (r = 0; r < numRows; r++) {
+                background[r] = new Array(numCols).fill(' ');
             }
 
-            var layout = Game.Levels.Backgrounds['forest'].layout;
-
-            for (var r = 0, numRows = layout.length; r < numRows; r++) {
-                var row = layout[r];
-                for (var c = 0, numCols = row.length; c < numCols; c++) {
+            // Iterate through image, unfolding doodads if necessary
+            for (r = 0; r < numRows; r++) {
+                var row = image[r];
+                for (c = 0; c < numCols; c++) {
                     if (row[c] && row[c] !== ' ') {
-                        var doodad = Game.Levels.Doodads[row[c]];
-                        if (doodad) {
-                            this._addDoodadToBackground(doodad, r, c, background);
+                        var doodadKey = bgRecord.doodads[row[c]];
+                        if (doodadKey) {
+                            this._addDoodadToBackground(Game.Levels.Doodads[doodadKey], r, c, background);
                         }
                         else {
                             background[r][c] = row[c];
                         }
-                        //for (var doodadR = 0, numDoodadRows = doodad.length; )
                     }
                 }
             }
 
-            for (var i = 0, len = background.length; i < len; i++) {
-                background[i] = background[i].join('');
+            // Join the background array into a single string
+            for (r = 0; r < numRows; r++) {
+                // If offset, the background will be scrolled to the left
+                background[r] = background[r].slice(offset).join('') + background[r].slice(0, offset).join('');
             }
-            $('#unit-background').html(background.join('\n'));
+
+            $('#room-background').html(background.join('\n'));
         },
 
         _addDoodadToBackground: function(doodad, startingR, startingC, background) {

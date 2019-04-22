@@ -276,7 +276,7 @@
                     this.statBonuses.value() + ' Strength, Intellect, and Haste' +
                     ' for ' + this.duration.value() + ' seconds.' +
                     ' If the target dies during the effect, the angel will restore them to ' +
-                    (this.resurrectAmount.value() * 100) + '% health and end the effect.';
+                    (this.resurrectPercentage.value() * 100) + '% health and end the effect.';
             },
             requiresTarget: true,
             allowedTargets: {
@@ -289,7 +289,7 @@
 
                 statBonuses: 12,
                 duration: 10,
-                resurrectAmount: 0.5
+                resurrectPercentage: 0.5
             },
             events: {
                 'ability:castComplete': function(evt, target) {
@@ -306,7 +306,7 @@
 
                                 $(this.affectedUnit).on('unit:beforeDeath.guardianAngel', function() {
                                     this.preventNextDeath();
-                                    this.addHealth(this.maxHealth.value() * ability.resurrectAmount.value(), caster);
+                                    this.addHealth(this.maxHealth.value() * ability.resurrectPercentage.value(), caster);
                                     this.removeEffect(effect);
                                 });
                             },

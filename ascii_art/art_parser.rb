@@ -2,9 +2,9 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #
 # Generates txt files that can be cut-and-pasted into a javascript file.
-# - Strings will be set to the same length (left-justified with spaces)
 # - Certain characters will be escaped (e.g. \ and ')
 # - Each line will be surrounded by single quotes, and all but the last line will end in a comma
+# - Strings can be set to the same length with the -l option
 #
 # E.g. if your source file is:
 #

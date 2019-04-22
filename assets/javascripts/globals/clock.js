@@ -1,5 +1,7 @@
-/* Handles Game time. Register all periodic functions with Clock.setInterval */
-/* Do not use window.setInterval, since that will be paused while browser tab is in the background */
+/* Handles Game time. Register all periodic functions with Clock.setInterval
+*  Do not use window.setInterval, since that will be paused while browser tab is in the background
+*  Do not use window.setTimeout, use the Timer class below.
+* */
 /* Singleton */
 
 (function ($) {
@@ -93,5 +95,63 @@
     };
 
     Game.Clock = new Clock();
+
+
+
+
+    /*
+    *  Todo not sure if this is the best way to do this...
+    *  window.setTimeout does not work
+    *  E.g. when the user focuses the game window, the Clock will rapidly iterate to catch the game up. If these iterations
+    *       call window.setTimeout, those timeouts will occur much later than they should. The timeouts need to occur
+    *       in the same game loop, so they can be iterated faster than normal too.
+    *  To set up a class to use Timers, call Game.Timers.addTimerSupport(this) in the class's initializer.
+    * */
+
+    var currentTimerId = 1;
+
+    /* duration is in milliseconds */
+    var Timer = function(onTimeout, duration) {
+        this._init(onTimeout, duration);
+    };
+    Timer.prototype = {
+        _init: function(onTimeout, duration) {
+            this.id = currentTimerId++;
+            this._onTimeout = onTimeout;
+            this._durationRemaining = duration;
+        },
+
+        update: function(seconds) {
+            this._durationRemaining -= seconds * 1000; // convert to milliseconds
+
+            if (this.expired() && this._onTimeout) {
+                this._onTimeout();
+                this._onTimeout = null; // clear timeout so it can only trigger once
+            }
+
+        },
+
+        expired: function() {
+            return Game.Util.roundForComparison(this._durationRemaining) <= 0;
+        }
+    };
+
+    Game.namespace('Timers').Timer = Timer;
+
+    Game.namespace('Timers').addTimerSupport = function(obj) {
+        obj._timers = {};
+        obj.setTimeout = function(onTimeout, duration) {
+            var timer = new Game.Timers.Timer(onTimeout, duration);
+            obj._timers[timer.id] = timer;
+        };
+        obj.updateTimers = function(seconds) {
+            Game.Util.iterateObject(obj._timers, function(timerId, timer) {
+                timer.update(seconds);
+                if (timer.expired()) {
+                    delete obj._timers[timerId];
+                }
+            });
+        };
+    };
 
 }(jQuery));
