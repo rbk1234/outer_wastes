@@ -549,7 +549,7 @@
         _initLevelUI: function() {
             this._$navigationPanel = $('#navigation-panel');
             this._$engageCombat = this._$navigationPanel.find('#engage-combat');
-            this._$nextRoom = this._$navigationPanel.find('#next-room');
+            this._$nextEncounter = this._$navigationPanel.find('#next-encounter');
             this._$engageCombat.off('click').on('click', function(evt) {
                 evt.preventDefault();
                 Game.UnitEngine.enterCombat();
@@ -559,9 +559,9 @@
                 location.reload();
             });
 
-            this._$nextRoom.off('click').on('click', function(evt) {
+            this._$nextEncounter.off('click').on('click', function(evt) {
                 evt.preventDefault();
-                Game.Levels.currentLevel.loadNextRoom();
+                Game.Levels.currentLevel.loadNextEncounter();
             });
 
             this._$enemyFrames = $('#enemy-frames');
@@ -571,7 +571,7 @@
 
         updateCombatStatus: function() {
             this._$engageCombat.prop('disabled', Game.UnitEngine.inCombat() || !Game.UnitEngine.isComputerTeamAlive());
-            this._$nextRoom.toggleClass('invisible', Game.UnitEngine.isComputerTeamAlive());
+            this._$nextEncounter.toggleClass('invisible', Game.UnitEngine.isComputerTeamAlive());
 
             if (Game.UnitEngine.inCombat()) {
                 this._$enemyFrames.stop().animate({opacity: 1}, 0);
@@ -583,24 +583,24 @@
             }
         },
 
-        newRoomLoaded: function(room) {
+        newEncounterLoaded: function(encounter) {
             //var level = Game.Levels.currentLevel;
-            //$('#level-info').html(level.name + '&emsp;&mdash;&emsp; Room ' + level.currentRoomIndex() + ' / ' + level.numRooms);
+            //$('#level-info').html(level.name + '&emsp;&mdash;&emsp; Encounter ' + level.currentEncounterIndex() + ' / ' + level.numEncounters);
 
-            //$('#room-info').html(room.description);
+            //$('#encounter-info').html(encounter.description);
 
             this._$enemyFrames.stop().animate({opacity: 1}, 1000);
         },
 
-        roomComplete: function() {
+        encounterComplete: function() {
             this._$enemyFrames.stop().animate({opacity: 0}, 2000);
         },
 
-        roomFailed: function() {
+        encounterFailed: function() {
 
         },
 
-        roomStarted: function() {
+        encounterStarted: function() {
         },
 
         setCenterImage: function(image) {
@@ -1261,7 +1261,7 @@
                 background[r] = background[r].slice(offset).join('') + background[r].slice(0, offset).join('');
             }
 
-            $('#room-background').html(background.join('\n'));
+            $('#encounter-background').html(background.join('\n'));
         },
 
         _addDoodadToBackground: function(doodad, startingR, startingC, background) {

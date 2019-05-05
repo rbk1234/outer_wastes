@@ -1,7 +1,7 @@
 
 /*
 
- Note: AIs don't have a corresponding database. Their data comes from the Room spawning it
+ Note: AIs don't have a corresponding database. Their data comes from the Encounter spawning it
 
  */
 
@@ -21,7 +21,7 @@
             //'AI:end': function(evt) {},
         },
 
-        sourceRoom: null
+        sourceEncounter: null
 
     };
 
@@ -74,6 +74,6 @@
 
     };
 
-    Game.namespace('Rooms').AI = AI;
+    Game.namespace('Encounters').AI = AI;
 
 }(jQuery));

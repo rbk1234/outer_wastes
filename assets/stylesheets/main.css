@@ -108,16 +108,16 @@ body {
     #player-frame .non-portrait .effects-area, #target-frame .non-portrait .effects-area {
       height: 2rem; }
 
-#room-background {
+#encounter-background {
   overflow: hidden;
   position: absolute;
   height: 100%;
   width: 100%;
   opacity: 0.5;
   bottom: 6rem; }
-  #room-background .g {
+  #encounter-background .g {
     color: #00ff00; }
-  #room-background .b {
+  #encounter-background .b {
     color: #bf8040; }
 
 #unit-frame-template {
@@ -211,7 +211,7 @@ body {
   color: white;
   flex: 0 1 auto;
   text-align: center; }
-  #navigation-panel #room-info {
+  #navigation-panel #encounter-info {
     margin-bottom: 1rem; }
 
 .game-over {

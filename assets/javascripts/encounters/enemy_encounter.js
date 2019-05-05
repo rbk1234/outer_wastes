@@ -1,21 +1,21 @@
-/* Subclass of Room */
+/* Subclass of Encounter */
 
 (function ($) {
     'use strict';
 
-    var EnemyRoom = function(dbKey, config) {
-        Game.Rooms.Room.call(this, dbKey, config);
+    var EnemyEncounter = function(dbKey, config) {
+        Game.Encounters.Encounter.call(this, dbKey, config);
     };
-    EnemyRoom.prototype = Object.create(Game.Rooms.Room.prototype);
-    EnemyRoom.prototype.constructor = EnemyRoom;
+    EnemyEncounter.prototype = Object.create(Game.Encounters.Encounter.prototype);
+    EnemyEncounter.prototype.constructor = EnemyEncounter;
 
-    $.extend(EnemyRoom.prototype, {
+    $.extend(EnemyEncounter.prototype, {
 
         load: function() {
             this._loadEnemies();
             this._AIs = {};
 
-            Game.Rooms.Room.prototype.load.apply(this, arguments);
+            Game.Encounters.Encounter.prototype.load.apply(this, arguments);
         },
 
         update: function(seconds) {
@@ -41,11 +41,11 @@
         },
 
         startAIs: function() {
-            $(this).trigger('room:startAIs');
+            $(this).trigger('encounter:startAIs');
         },
 
         endAIs: function() {
-            $(this).trigger('room:endAIs');
+            $(this).trigger('encounter:endAIs');
         },
 
         loadAI: function(AIParams) {
@@ -54,20 +54,20 @@
         },
 
         createAI: function(AIParams) {
-            return new Game.Rooms.AI($.extend(true, this.defaultAIParams(), AIParams));
+            return new Game.Encounters.AI($.extend(true, this.defaultAIParams(), AIParams));
         },
 
         // When this ability spawns an Effect, use these defaults
         defaultAIParams: function() {
             return {
-                sourceRoom: this
+                sourceEncounter: this
             };
         }
 
 
     });
 
-    Game.namespace('Rooms').EnemyRoom = EnemyRoom;
+    Game.namespace('Encounters').EnemyEncounter = EnemyEncounter;
 
 
 

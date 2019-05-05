@@ -16,7 +16,7 @@
             Game.Timers.addTimerSupport(this);
             
             this._inCombat = false;
-            this._currentRoom = null;
+            this._currentEncounter = null;
 
             this.startClock();
         },
@@ -45,18 +45,18 @@
         },
 
         loadTile: function(tile) {
-            // todo set room title?
-            this.loadRoomByDbKey(Game.Util.randomFromArray(tile.encounters));
+            // todo set encounter title?
+            this.loadEncounterByDbKey(Game.Util.randomFromArray(tile.encounters));
         },
-        loadRoomByDbKey: function(roomDbKey) {
+        loadEncounterByDbKey: function(encounterDbKey) {
             var self = this;
 
             this.clearTeam(Game.Constants.teamIds.computer);
-            this._currentRoom = new Game.Rooms.EnemyRoom(roomDbKey);
-            this._currentRoom.load();
+            this._currentEncounter = new Game.Encounters.EnemyEncounter(encounterDbKey);
+            this._currentEncounter.load();
 
             this.setTimeout(function() {
-                self.countdownToRoom();
+                self.countdownToEncounter();
             }, 2000);
         },
 
@@ -168,11 +168,11 @@
                 unit.enterCombat();
             });
 
-            if (this._currentRoom) {
-                this._currentRoom.startAIs();
+            if (this._currentEncounter) {
+                this._currentEncounter.startAIs();
             }
 
-            Game.UserInterface.roomStarted();
+            Game.UserInterface.encounterStarted();
         },
         leaveCombat: function() {
             this._inCombat = false;
@@ -185,8 +185,8 @@
                 unit.leaveCombat();
             });
 
-            if (this._currentRoom) {
-                this._currentRoom.endAIs();
+            if (this._currentEncounter) {
+                this._currentEncounter.endAIs();
             }
         },
         isPlayerTeamAlive: function() {
@@ -201,7 +201,7 @@
             });
         },
 
-        countdownToRoom: function() {
+        countdownToEncounter: function() {
             Game.UserInterface.setCenterImage(Game.Levels.Centerpieces.three.image);
 
             this.setTimeout(function() {
@@ -223,16 +223,16 @@
             var self = this;
 
             if (!this.isPlayerTeamAlive()) {
-                Game.UserInterface.roomFailed();
+                Game.UserInterface.encounterFailed();
                 this.leaveCombat();
                 this.stopClock();
             }
             if (this.inCombat() && !this.isComputerTeamAlive()) {
-                Game.UserInterface.roomComplete();
+                Game.UserInterface.encounterComplete();
                 this.leaveCombat();
                 //this.setTimeout(function() {
-                //    Game.Levels.currentLevel.loadNextRoom();
-                //    self.countdownToRoom();
+                //    Game.Levels.currentLevel.loadNextEncounter();
+                //    self.countdownToEncounter();
                 //}, 3000);
             }
 
@@ -242,8 +242,8 @@
                 });
             });
 
-            if (this._currentRoom) {
-                this._currentRoom.update(seconds);
+            if (this._currentEncounter) {
+                this._currentEncounter.update(seconds);
             }
 
             this.updateTimers(seconds);

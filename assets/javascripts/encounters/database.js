@@ -2,7 +2,7 @@
 (function ($) {
     'use strict';
 
-    Game.namespace('Rooms').Database = {
+    Game.namespace('Encounters').Database = {
         forest_wolves: {
             description: 'A pack of wolves is inhabiting the area.',
             enemies: ['wolf', 'wolf', 'wolf', 'wolf']
@@ -15,7 +15,7 @@
             description: 'Spiders swarm around your party.',
             enemies: ['spider', 'spider', 'spider', 'spider', 'spider'],
             events: {
-                'room:startAIs': function() {
+                'encounter:startAIs': function() {
                     this.loadAI({
                         type: 'periodic',
                         stats: {
@@ -44,7 +44,7 @@
             description: 'A forest goblin ambush!',
             enemies: ['forestGoblin', 'forestGoblin'],
             events: {
-                'room:startAIs': function() {
+                'encounter:startAIs': function() {
                     this.loadAI({
                         type: 'periodic',
                         stats: {

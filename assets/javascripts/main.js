@@ -102,12 +102,12 @@
 
 
     //var forest = new Game.Levels.Level('forest');
-    //forest.loadNextRoom();
+    //forest.loadNextEncounter();
 
     Game.UserInterface.clearTarget();
 
     //Game.Log.logMessage('Game started!');
-    //Game.UnitEngine.countdownToRoom();
+    //Game.UnitEngine.countdownToEncounter();
 
     console.log('nightvale');
     var map = new Game.UI.Map('nightvale');
