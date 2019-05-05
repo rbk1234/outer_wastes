@@ -15,7 +15,8 @@
 
             Game.Timers.addTimerSupport(this);
             
-            this._inCombat = false; 
+            this._inCombat = false;
+            this._currentRoom = null;
 
             this.startClock();
         },
@@ -41,6 +42,22 @@
         },
         stopClock: function() {
             Game.Clock.clearInterval(CLOCK_KEY);
+        },
+
+        loadTile: function(tile) {
+            // todo set room title?
+            this.loadRoomByDbKey(Game.Util.randomFromArray(tile.encounters));
+        },
+        loadRoomByDbKey: function(roomDbKey) {
+            var self = this;
+
+            this.clearTeam(Game.Constants.teamIds.computer);
+            this._currentRoom = new Game.Rooms.EnemyRoom(roomDbKey);
+            this._currentRoom.load();
+
+            this.setTimeout(function() {
+                self.countdownToRoom();
+            }, 2000);
         },
 
         addUnit: function(unit) {
@@ -151,8 +168,8 @@
                 unit.enterCombat();
             });
 
-            if (Game.Levels.currentLevel) {
-                Game.Levels.currentLevel.currentRoom().startAIs();
+            if (this._currentRoom) {
+                this._currentRoom.startAIs();
             }
 
             Game.UserInterface.roomStarted();
@@ -168,8 +185,8 @@
                 unit.leaveCombat();
             });
 
-            if (Game.Levels.currentLevel) {
-                Game.Levels.currentLevel.currentRoom().endAIs();
+            if (this._currentRoom) {
+                this._currentRoom.endAIs();
             }
         },
         isPlayerTeamAlive: function() {
@@ -213,10 +230,10 @@
             if (this.inCombat() && !this.isComputerTeamAlive()) {
                 Game.UserInterface.roomComplete();
                 this.leaveCombat();
-                this.setTimeout(function() {
-                    Game.Levels.currentLevel.loadNextRoom();
-                    self.countdownToRoom();
-                }, 3000);
+                //this.setTimeout(function() {
+                //    Game.Levels.currentLevel.loadNextRoom();
+                //    self.countdownToRoom();
+                //}, 3000);
             }
 
             Game.Util.iterateObject(this._teams, function(teamId, units) {
@@ -225,8 +242,8 @@
                 });
             });
 
-            if (Game.Levels.currentLevel) {
-                Game.Levels.currentLevel.currentRoom().update(seconds);
+            if (this._currentRoom) {
+                this._currentRoom.update(seconds);
             }
 
             this.updateTimers(seconds);

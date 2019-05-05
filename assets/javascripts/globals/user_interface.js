@@ -584,10 +584,10 @@
         },
 
         newRoomLoaded: function(room) {
-            var level = Game.Levels.currentLevel;
-            $('#level-info').html(level.name + '&emsp;&mdash;&emsp; Room ' + level.currentRoomIndex() + ' / ' + level.numRooms);
+            //var level = Game.Levels.currentLevel;
+            //$('#level-info').html(level.name + '&emsp;&mdash;&emsp; Room ' + level.currentRoomIndex() + ' / ' + level.numRooms);
 
-            $('#room-info').html(room.description);
+            //$('#room-info').html(room.description);
 
             this._$enemyFrames.stop().animate({opacity: 1}, 1000);
         },

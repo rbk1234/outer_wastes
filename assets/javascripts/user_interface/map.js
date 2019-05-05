@@ -47,6 +47,7 @@
             this._refreshTiles();
 
             if (this.$modal) {
+                Game.UnitEngine.loadTile(tile);
                 this.$modal.foundation('close');
             }
         },
