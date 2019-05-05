@@ -86,6 +86,9 @@
             setupMiniMapTile($map.find('.south-button'), adjacentTiles.south);
             setupMiniMapTile($map.find('.west-button'), adjacentTiles.west);
 
+            var currentTile = this.currentTile();
+            $map.find('.current-tile').removeClass().addClass('current-tile tile-name').addClass(currentTile.color).html(currentTile.name);
+
             function setupMiniMapTile($button, tile) {
                 if (tile) {
                     $button

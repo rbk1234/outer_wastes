@@ -118,14 +118,16 @@
                 <table>
                   <tbody>
                   <tr>
-                    <td colspan="3">
+                    <td colspan="3" style="position:relative;">
                       <div id="current-tile-desc">
                         You are in the <span class="tile-name"></span>.
-                        <!--<span class="tile-name"></span>-->
                       </div>
                       <div id="encounter-info">
-
                       </div>
+
+                      <a class="full-map-button button" hidden style="position:absolute;top:0;right:0;" data-toggle="map-modal">
+                        Map
+                      </a>
                     </td>
                   </tr>
                   <tr>
@@ -200,29 +202,29 @@
           <td width="50%" class="relative-container">
             <div id="enemy-frames" style="opacity:0;"></div>
 
-            <div id="mini-map" style="opacity:0;padding:1rem;">
-              <div class="ascii-content">
+            <div id="mini-map" style="opacity:0;padding:0 2rem;">
+              <!--<div class="ascii-content">-->
                 <!--<table>-->
                   <!--<tbody>-->
                   <!--<tr>-->
                     <!--<td width="33%"></td>-->
-                    <!--<td width="33%" class="text-center">↑<br>North<br><button class="button north-button move-on-click"><span class="tile-name"></span></button></td>-->
+                    <!--<td width="33%" class="text-center"><div>↑<br>North<br><button class="button north-button move-on-click"><span class="tile-name"></span></button></div></td>-->
                     <!--<td width="33%" class="text-right"></td>-->
                   <!--</tr>-->
                   <!--<tr>-->
-                    <!--<td>← West<br><button class="button west-button move-on-click"><span class="tile-name"></span></button></td>-->
-                    <!--<td class="text-center"><br><br><a class="no-focus-outline" data-toggle="map-modal">Full Map</a><br><br><br></td>-->
-                    <!--<td class="text-right">East →<br><button class="button east-button move-on-click"><span class="tile-name"></span></button></td>-->
+                    <!--<td><div>← West<br><button class="button west-button move-on-click"><span class="tile-name"></span></button></div></td>-->
+                    <!--<td class="text-center"><div><br><br><span class="current-tile tile-name"></span><br><br><br></div></td>-->
+                    <!--<td class="text-right"><div>East →<br><button class="button east-button move-on-click"><span class="tile-name"></span></button></div></td>-->
                   <!--</tr>-->
                   <!--<tr>-->
                     <!--<td></td>-->
-                    <!--<td class="text-center"><button class="button south-button move-on-click"><span class="tile-name"></span></button><br>South<br>↓</td>-->
+                    <!--<td class="text-center"><div><button class="button south-button move-on-click"><span class="tile-name"></span></button><br>South<br>↓</div></td>-->
                     <!--<td class="text-right"></td>-->
                   <!--</tr>-->
                   <!--</tbody>-->
                 <!--</table>-->
-
-                <!--Note: This table cannot have new lines (\n) due to ascii-content pre formatting-->
+              <!--</div>-->
+              <div class="ascii-content">
                 <table>
                   <tbody>
                   <tr>
@@ -232,7 +234,7 @@
                   </tr>
                   <tr>
                     <td><div>← <button class="button west-button move-on-click"><span class="tile-name"></span></button></div></td>
-                    <td class="text-center"><div><br><br><a class="no-focus-outline" data-toggle="map-modal">Full Map</a><br><br><br></div></td>
+                    <td class="text-center"><div><br><br><span class="current-tile tile-name"></span><br><br><br></div></td>
                     <td class="text-right"><div><button class="button east-button move-on-click"><span class="tile-name"></span></button> →</div></td>
                   </tr>
                   <tr>

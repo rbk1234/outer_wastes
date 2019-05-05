@@ -28,7 +28,7 @@
             stats: {
                 manaCost: 35,
                 cooldown: 0,
-                castTime: 2,
+                castTime: 1.5,
 
                 healBase: 75,
                 healSpellPowerScaling: 1

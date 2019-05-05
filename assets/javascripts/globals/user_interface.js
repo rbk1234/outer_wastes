@@ -562,6 +562,7 @@
             this._$miniMap = $('#mini-map');
 
             this._$standardInfo.show();
+            this._$fullMapButton = this._$encounterHeader.find('.full-map-button');
         },
 
         newEncounterLoaded: function(encounter) {
@@ -603,9 +604,11 @@
             this._$encounterInfo.html('Choose your path...');
             this._map.loadMiniMapHtml(this._$miniMap.find('.ascii-content'));
             this._$miniMap.stop().animate({opacity: 1}, 500);
+            this._$fullMapButton.show();
         },
         hideMiniMap: function() {
             this._$miniMap.stop().animate({opacity: 0}, 100);
+            this._$fullMapButton.hide();
         },
 
 
