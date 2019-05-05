@@ -51,6 +51,7 @@
             }
             else {
                 // TODO Tile is not yet implemented
+                this.clearTeam(Game.Constants.teamIds.computer);
                 Game.UserInterface.encounterComplete();
                 Game.UserInterface.newEncounterLoaded({description: '[Not yet implemented]'});
                 this.setTimeout(function() {

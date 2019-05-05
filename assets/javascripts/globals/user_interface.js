@@ -569,7 +569,9 @@
             this._map.loadTileDescription(this._$currentTile);
             this._$encounterInfo.html(encounter.description);
 
-            this._$enemyFrames.stop().animate({opacity: 1}, 1000);
+            if (Game.UnitEngine.isComputerTeamAlive()) {
+                this._$enemyFrames.stop().animate({opacity: 1}, 1000);
+            }
         },
 
         encounterComplete: function() {
