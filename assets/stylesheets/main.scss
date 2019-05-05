@@ -56,7 +56,12 @@ $navigation-menu: #4e495f;
 $health-border: transparent;
 $health-border-targeted: #f6d6bd;
 $portrait-bg: #20394f;
+$button-color: #4e495f;
+$button-hover-color: #3b3748;
 
+$mini-map-button: #08141e;
+$mini-map-button-border: #4e495f;
+$mini-map-button-hover: #0f2a3f;
 
 // this could be cool too: https://lospec.com/palette-list/oil-6
 
@@ -143,11 +148,21 @@ body {
 
     table {
       height: 100%;
+
+      td.relative-container {
+        // so the divs inside this td can overlap
+        position: relative;
+        #ally-frames, #enemy-frames, #mini-map {
+          //height: 100%;
+          position: absolute;
+          //top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+        }
+      }
     }
 
-    #ally-frames, #enemy-frames, #center-area {
-      height: 100%;
-    }
   }
   #player-and-target-area {
     flex: 0 1 auto; // fit to content
@@ -337,7 +352,7 @@ body {
         font-family: monospace;
         line-height: 1.25;
 
-        pre {
+        .ascii-content {
           display: block;
           overflow: visible;
 
@@ -358,11 +373,19 @@ body {
   }
 }
 
+.ascii-content {
+  font-family: monospace, monospace;
+  font-size: 1em;
+  white-space: pre;
+}
 
 
 
 #center-area {
-  pre {
+  position: absolute;
+  width: 100%;
+
+  .ascii-content {
     // center horizontally:
     position: absolute;
     left: 50%;
@@ -569,6 +592,47 @@ body {
 }
 
 
+#mini-map {
+  .button {
+    background-color: $mini-map-button;
+    border-color: $mini-map-button-border;
+
+    &:hover, &:focus {
+      background-color: $mini-map-button-hover;
+    }
+
+  }
+}
+
+#map-modal, #mini-map {
+  .tile-name {
+    // colors:
+    &.green {
+      color: green;
+    }
+    &.grey {
+      color: grey;
+    }
+    &.white {
+      color: white;
+    }
+    &.light-blue {
+      color: lightblue;
+    }
+    &.orange {
+      color: darkorange;
+    }
+    &.purple {
+      color: mediumpurple;
+    }
+    &.beige {
+      color: #ffcc99;
+    }
+    &.red {
+      color: darkred;
+    }
+  }
+}
 
 #map-modal {
   background: $main-content-bg;
@@ -593,10 +657,9 @@ body {
     width: 100%;
 
     td {
-      // make the cells square - note: this is dependent on the number of cells per row?
-      // there are 8 columns ... 1/8 = 0.125 ... put half as top and half as bottom padding (1/16)
-      padding-top: 6.25%;
-      padding-bottom: 6.25%;
+      // Note: The td's padding-top and padding-bottom are set in javascript to be specific amounts
+      //       This is important to making square cells
+
       text-align: center;
       position: relative;
       cursor: default;
@@ -625,31 +688,6 @@ body {
           margin-top: -1.5rem;
         }
 
-        // colors:
-        &.green {
-          color: green;
-        }
-        &.grey {
-          color: grey;
-        }
-        &.white {
-          color: white;
-        }
-        &.light-blue {
-          color: lightblue;
-        }
-        &.orange {
-          color: darkorange;
-        }
-        &.purple {
-          color: mediumpurple;
-        }
-        &.beige {
-          color: #ffcc99;
-        }
-        &.red {
-          color: darkred;
-        }
       }
     }
 
@@ -1161,5 +1199,12 @@ a[disabled] {
   color: grey;
 }
 
+.button {
+  background-color: $button-color;
+
+  &:hover, &:focus {
+    background-color: $button-hover-color;
+  }
+}
 
 

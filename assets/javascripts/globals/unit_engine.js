@@ -230,10 +230,11 @@
             if (this.inCombat() && !this.isComputerTeamAlive()) {
                 Game.UserInterface.encounterComplete();
                 this.leaveCombat();
-                //this.setTimeout(function() {
-                //    Game.Levels.currentLevel.loadNextEncounter();
-                //    self.countdownToEncounter();
-                //}, 3000);
+                this.setTimeout(function() {
+                    //Game.Levels.currentLevel.loadNextEncounter();
+                    //self.countdownToEncounter();
+                    Game.UserInterface.showMiniMap();
+                }, 2000);
             }
 
             Game.Util.iterateObject(this._teams, function(teamId, units) {

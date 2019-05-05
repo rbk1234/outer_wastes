@@ -164,9 +164,9 @@
 
     <div id="units-area">
       <div style="height:100%;max-width:1280px;margin:0 auto;">
-      <pre id="encounter-background" style="max-width:1280px;">
+      <div id="encounter-background" class="ascii-content" style="max-width:1280px;">
 
-      </pre>
+      </div>
 
       <div id="unit-frame-template" class="unit-frame">
         <div class="flex-col">
@@ -174,7 +174,7 @@
           <div class="clickable-area">
             <div class="click-target"></div>
             <div class="image">
-              <pre class="unit-pre"></pre>
+              <div class="unit-pre ascii-content"></div>
             </div>
             <div class="bar health-bar">
               <div class="bar-layer background red" style="width: 100%;"></div>
@@ -192,12 +192,62 @@
         </div>
       </div>
 
+      <div id="center-area"><div class="ascii-content"></div></div>
+
       <table class="no-rows no-spacing">
         <tbody>
         <tr>
-          <td width="45%"><div id="ally-frames"></div></td>
-          <td width="10%"><div id="center-area"><pre></pre></div></td>
-          <td width="45%"><div id="enemy-frames"></div></td>
+          <td width="45%" class="relative-container">
+            <div id="ally-frames"></div>
+          </td>
+          <td width="5%" class="relative-container"></td>
+          <td width="5%" class="relative-container"></td>
+          <td width="45%" class="relative-container">
+            <div id="enemy-frames" style="opacity:0;"></div>
+
+            <div id="mini-map" style="opacity:0;padding:1rem;">
+              <div class="ascii-content">
+                <table>
+                  <!--<tbody>-->
+                  <!--<tr>-->
+                    <!--<td width="33%"></td>-->
+                    <!--<td width="33%" class="text-center">↑<br>North<br><button class="button north-button move-on-click"><span class="tile-name"></span></button></td>-->
+                    <!--<td width="33%" class="text-right"></td>-->
+                  <!--</tr>-->
+                  <!--<tr>-->
+                    <!--<td>← West<br><button class="button west-button move-on-click"><span class="tile-name"></span></button></td>-->
+                    <!--<td class="text-center"><br><br><a data-toggle="map-modal">Full Map</a><br><br><br></td>-->
+                    <!--<td class="text-right">East →<br><button class="button east-button move-on-click"><span class="tile-name"></span></button></td>-->
+                  <!--</tr>-->
+                  <!--<tr>-->
+                    <!--<td></td>-->
+                    <!--<td class="text-center"><button class="button south-button move-on-click"><span class="tile-name"></span></button><br>South<br>↓</td>-->
+                    <!--<td class="text-right"></td>-->
+                  <!--</tr>-->
+                  <!--</tbody>-->
+                <!--</table>-->
+                <table>
+                  <tbody>
+                  <tr>
+                    <td width="33%"></td>
+                    <td width="33%" class="text-center">↑<br><button class="button north-button move-on-click"><span class="tile-name"></span></button></td>
+                    <td width="33%" class="text-right"></td>
+                  </tr>
+                  <tr>
+                    <td>← <button class="button west-button move-on-click"><span class="tile-name"></span></button></td>
+                    <td class="text-center"><br><br><a data-toggle="map-modal">Full Map</a><br><br><br></td>
+                    <td class="text-right"><button class="button east-button move-on-click"><span class="tile-name"></span></button> →</td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td class="text-center"><button class="button south-button move-on-click"><span class="tile-name"></span></button><br>↓</td>
+                    <td class="text-right"></td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </td>
         </tr>
         </tbody>
       </table>
@@ -253,18 +303,18 @@
       </button>
       <div id="ability-bar" class="bottom-section" style="text-align:center;"></div>
 
-      <div id="item-area" class="bottom-section">
+      <div id="item-area" class="bottom-section text-right">
         <div>
           <p><button class="button" data-toggle="abilities-modal">Abilities</button></p>
         </div>
-        &emsp;
-        <div>
-          <p><button class="button" data-toggle="world-map-modal">World</button></p>
-        </div>
-        &emsp;
-        <div>
-          <p><button class="button" data-toggle="map-modal">Map</button></p>
-        </div>
+        <!--&emsp;-->
+        <!--<div>-->
+          <!--<p><button class="button" data-toggle="world-map-modal">World</button></p>-->
+        <!--</div>-->
+        <!--&emsp;-->
+        <!--<div>-->
+          <!--<p><button class="button" data-toggle="map-modal">Map</button></p>-->
+        <!--</div>-->
 
       </div>
     </div>
@@ -281,7 +331,7 @@
       <span aria-hidden="true">&times;</span>
     </button>
 
-    <pre class="ascii-content"></pre>
+    <div class="ascii-content"></div>
   </div>
 
   <div class="reveal large" id="map-modal" data-reveal data-animation-in=" fast" data-animation-out=" fast">
@@ -292,7 +342,7 @@
       <h4 class="map-name"></h4>
     </div>
     <div>
-      <pre class="ascii-content"></pre>
+      <div class="ascii-content"></div>
     </div>
     <br>
     <div>

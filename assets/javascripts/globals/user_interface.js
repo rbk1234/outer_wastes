@@ -123,7 +123,7 @@
             frame.$name.html(unit.name);
 
             // portrait
-            var $pre = $('<pre></pre>');
+            var $pre = $('<div class="ascii-content"></div>');
             unit.portrait().forEach(function(imageRow) {
                 $('<span>'+imageRow+'</span><br>').appendTo($pre);
             });
@@ -565,8 +565,11 @@
             });
 
             this._$enemyFrames = $('#enemy-frames');
-            this._$centerImage = $('#center-area').find('pre');
+            this._$centerImage = $('#center-area').find('.ascii-content');
             this.clearCenterImage();
+
+            this._map = null;
+            this._$miniMap = $('#mini-map');
         },
 
         updateCombatStatus: function() {
@@ -594,6 +597,7 @@
 
         encounterComplete: function() {
             this._$enemyFrames.stop().animate({opacity: 0}, 2000);
+            this._map.exploreCurrentTile();
         },
 
         encounterFailed: function() {
@@ -609,6 +613,19 @@
         },
         clearCenterImage: function() {
             this._$centerImage.hide();
+        },
+
+        loadMap: function(mapKey) {
+            this._map = new Game.UI.Map(mapKey);
+            this._map.loadModalHtml($('#map-modal'));
+        },
+
+        showMiniMap: function() {
+            this._map.loadMiniMapHtml(this._$miniMap.find('.ascii-content'));
+            this._$miniMap.stop().animate({opacity: 1}, 500);
+        },
+        hideMiniMap: function() {
+            this._$miniMap.stop().animate({opacity: 0}, 100);
         },
 
 
@@ -689,7 +706,7 @@
                 timer: timer
             };
             if (frame.frameType === 'unit') {
-                var $animation = $('<pre></pre>');
+                var $animation = $('<div class="ascii-content"></div>');
                 $animation.appendTo(frame.$image);
                 effectUi.$animation = $animation;
             }

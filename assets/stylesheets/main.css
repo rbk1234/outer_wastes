@@ -49,8 +49,13 @@ body {
     position: relative; }
     #body-content #units-area table {
       height: 100%; }
-    #body-content #units-area #ally-frames, #body-content #units-area #enemy-frames, #body-content #units-area #center-area {
-      height: 100%; }
+      #body-content #units-area table td.relative-container {
+        position: relative; }
+        #body-content #units-area table td.relative-container #ally-frames, #body-content #units-area table td.relative-container #enemy-frames, #body-content #units-area table td.relative-container #mini-map {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0; }
   #body-content #player-and-target-area {
     flex: 0 1 auto;
     z-index: 2; }
@@ -161,7 +166,7 @@ body {
       .unit-frame .flex-col .clickable-area .image {
         font-family: monospace;
         line-height: 1.25; }
-        .unit-frame .flex-col .clickable-area .image pre {
+        .unit-frame .flex-col .clickable-area .image .ascii-content {
           display: block;
           overflow: visible;
           position: absolute;
@@ -173,16 +178,24 @@ body {
       padding-top: 0.25rem;
       height: 2rem; }
 
-#center-area pre {
+.ascii-content {
+  font-family: monospace, monospace;
+  font-size: 1em;
+  white-space: pre; }
+
+#center-area {
   position: absolute;
-  left: 50%;
-  transform: translate(-50%);
-  font-size: 0.5rem;
-  top: 0;
-  padding: 0.5rem 1rem;
-  background: transparent;
-  font-weight: bold;
-  border-radius: 0.313rem; }
+  width: 100%; }
+  #center-area .ascii-content {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    font-size: 0.5rem;
+    top: 0;
+    padding: 0.5rem 1rem;
+    background: transparent;
+    font-weight: bold;
+    border-radius: 0.313rem; }
 
 #ability-tooltip {
   position: absolute;
@@ -278,6 +291,29 @@ body {
     line-height: 1;
     height: 100%; }
 
+#mini-map .button {
+  background-color: #08141e;
+  border-color: #4e495f; }
+  #mini-map .button:hover, #mini-map .button:focus {
+    background-color: #0f2a3f; }
+
+#map-modal .tile-name.green, #mini-map .tile-name.green {
+  color: green; }
+#map-modal .tile-name.grey, #mini-map .tile-name.grey {
+  color: grey; }
+#map-modal .tile-name.white, #mini-map .tile-name.white {
+  color: white; }
+#map-modal .tile-name.light-blue, #mini-map .tile-name.light-blue {
+  color: lightblue; }
+#map-modal .tile-name.orange, #mini-map .tile-name.orange {
+  color: darkorange; }
+#map-modal .tile-name.purple, #mini-map .tile-name.purple {
+  color: mediumpurple; }
+#map-modal .tile-name.beige, #mini-map .tile-name.beige {
+  color: #ffcc99; }
+#map-modal .tile-name.red, #mini-map .tile-name.red {
+  color: darkred; }
+
 #map-modal {
   background: #08141e;
   color: white; }
@@ -292,8 +328,6 @@ body {
     table-layout: fixed;
     width: 100%; }
     #map-modal .map-table td {
-      padding-top: 6.25%;
-      padding-bottom: 6.25%;
       text-align: center;
       position: relative;
       cursor: default; }
@@ -314,22 +348,6 @@ body {
           margin-top: -1rem; }
         #map-modal .map-table td .tile-name.num-lines-3 {
           margin-top: -1.5rem; }
-        #map-modal .map-table td .tile-name.green {
-          color: green; }
-        #map-modal .map-table td .tile-name.grey {
-          color: grey; }
-        #map-modal .map-table td .tile-name.white {
-          color: white; }
-        #map-modal .map-table td .tile-name.light-blue {
-          color: lightblue; }
-        #map-modal .map-table td .tile-name.orange {
-          color: darkorange; }
-        #map-modal .map-table td .tile-name.purple {
-          color: mediumpurple; }
-        #map-modal .map-table td .tile-name.beige {
-          color: #ffcc99; }
-        #map-modal .map-table td .tile-name.red {
-          color: darkred; }
     #map-modal .map-table td.visible .tile-name {
       display: inline-table; }
     #map-modal .map-table td.visible:hover .travel-desc {
@@ -600,5 +618,10 @@ table.no-spacing tbody tr td {
 a[disabled] {
   pointer-events: none;
   color: grey; }
+
+.button {
+  background-color: #4e495f; }
+  .button:hover, .button:focus {
+    background-color: #3b3748; }
 
 /*# sourceMappingURL=main.css.map */

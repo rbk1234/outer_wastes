@@ -110,7 +110,8 @@
     //Game.UnitEngine.countdownToEncounter();
 
     console.log('nightvale');
-    var map = new Game.UI.Map('nightvale');
-    map.loadHtml($('#map-modal'));
+    Game.UserInterface.loadMap('nightvale');
+    Game.UserInterface.showMiniMap();
+
 
 })(jQuery);

@@ -25,6 +25,7 @@
 
             this._initTiles();
             this._moveToTile(this._tileForCoord(this.startingCoord));
+            this.exploreCurrentTile();
         },
 
         _initTiles: function() {
@@ -42,57 +43,117 @@
         },
 
         _moveToTile: function(tile) {
-            tile.explored = true;
             this.playerCoord = tile.coordinate;
-            this._refreshTiles();
+            this._propagateVisbility();
 
             if (this.$modal) {
+                this._refreshModal();
                 Game.UnitEngine.loadTile(tile);
                 this.$modal.foundation('close');
+                Game.UserInterface.hideMiniMap();
             }
+        },
+
+        exploreCurrentTile: function() {
+            var currentTile = this._tileForCoord(this.playerCoord);
+            currentTile.explored = true;
+            this._propagateVisbility();
+            this._refreshModal();
         },
 
         _tileForCoord: function(coordinate) {
             return this.tiles[coordinate[0]][coordinate[1]];
         },
 
-        loadHtml: function($modal) {
+        loadMiniMapHtml: function($map) {
+            var adjacentTiles = this._adjacentTiles(this.playerCoord[0], this.playerCoord[1]);
+
+            setupMiniMapTile($map.find('.north-button'), adjacentTiles.north);
+            setupMiniMapTile($map.find('.east-button'), adjacentTiles.east);
+            setupMiniMapTile($map.find('.south-button'), adjacentTiles.south);
+            setupMiniMapTile($map.find('.west-button'), adjacentTiles.west);
+
+            function setupMiniMapTile($button, tile) {
+                $button
+                    .data('tile', tile);
+
+                $button.find('.tile-name')
+                    .removeClass()
+                    .addClass('tile-name')
+                    .addClass(tile.color)
+                    .html(tile.name);
+            }
+
+            this._initEventHandlers($map);
+        },
+
+        loadModalHtml: function($modal) {
+            console.log('loadModalHtml');
             this.$modal = $modal;
-            var r, c, numRows, numCols;
+            this._propagateVisbility();
+            this._refreshModal();
+            $modal.find('.map-name').html(this.name);
+        },
+
+        _refreshModal: function() {
+            if (this.$modal) {
+                this._loadHtml(this.$modal.find('.ascii-content'), this.tiles);
+            }
+        },
+
+        _loadHtml: function($target, tiles) {
+            var r, c, numRows, numCols, isCurrentLocation;
 
             var $table = $('<table/>').addClass('map-table');
-            for (r = 0, numRows = this.tiles.length; r < numRows; r++) {
+            for (r = 0, numRows = tiles.length; r < numRows; r++) {
                 var $tr = $('<tr/>');
-                for (c = 0, numCols = this.tiles[r].length; c < numCols; c++) {
-                    var tile = this.tiles[r][c];
-                    var $td = $('<td/>').data('tile', tile);
-                    var $name = $('<span/>').addClass('tile-name');//.text(tile.name);
-                    //var numLines = (tile.name.match(/\n/g) || []).length + 1;
-                    //$name.addClass('num-lines-'+numLines).addClass(tile.color);
+                for (c = 0, numCols = tiles[r].length; c < numCols; c++) {
+                    var tile = tiles[r][c];
+                    isCurrentLocation = Game.Util.arraysEqual(tile.coordinate, this.playerCoord);
+
+                    var tdPadding = (1 / numCols / 2 * 100) + '%'; // Set td padding to make square cells. (/2) since half on top half on bottom.
+                    var $td = $('<td/>')
+                        .data('tile', tile)
+                        .css('padding-top', tdPadding)
+                        .css('padding-bottom', tdPadding)
+                        .addClass('move-on-click')
+                        .toggleClass('explored', tile.explored)
+                        .toggleClass('visible', tile.visible)
+                        .toggleClass('current-location', isCurrentLocation)
+                        .toggleClass('travelable', tile.travelable);
+
+                    var tileName = tile.name;
+                    var numLines = (tileName.match(/\n/g) || []).length + 1;
+                    var $name = $('<span/>')
+                        .removeClass()
+                        .addClass('tile-name')
+                        .addClass('num-lines-'+numLines)
+                        .addClass(tile.color)
+                        .html(tileName);
                     $td.append($name);
 
-                    var $travelDesc = $('<span/>').addClass('travel-desc');
+                    var travelDesc = tile.travelable ? '' : 'Too Far';
+                    if (isCurrentLocation) {
+                        travelDesc = '';
+                    }
+                    var $travelDesc = $('<span/>')
+                        .addClass('travel-desc')
+                        .html(travelDesc);
                     $td.append($travelDesc);
-
-                    tile.$td = $td;
-                    tile.$name = $name;
-                    tile.$travelDesc = $travelDesc;
 
                     $tr.append($td);
                 }
                 $table.append($tr);
             }
 
-            $modal.find('.map-name').html(this.name);
-            $modal.find('.ascii-content').empty().append($table);
+            $target.empty().append($table);
             this._initEventHandlers($table);
-            this._refreshTiles();
         },
 
-        _initEventHandlers: function($table) {
+        _initEventHandlers: function($map) {
             var self = this;
 
-            $table.off('click', 'td').on('click', 'td', function() {
+            $map.off('click', '.move-on-click').on('click', '.move-on-click', function() {
                 var tile = $(this).data('tile');
                 if (tile.travelable) {
                     self._moveToTile(tile);
@@ -101,7 +162,7 @@
         },
 
 
-        _refreshTiles: function() {
+        _propagateVisbility: function() {
             var r, c, numRows, numCols, tile, isCurrentLocation;
 
             // Reset internal attributes
@@ -121,7 +182,7 @@
 
                     // Set tiles visible if they are explored, or adjacent to an explored tile
                     tile.visible = tile.explored;
-                    this._adjacentTiles(r, c).forEach(function(adjacentTile) {
+                    Object.values(this._adjacentTiles(r, c)).forEach(function(adjacentTile) {
                         if (adjacentTile.explored) {
                             tile.visible = true;
                         }
@@ -131,57 +192,23 @@
                     });
                 }
             }
-
-            // Update HTML
-            if (!this.$modal) {
-                return;
-            }
-            for (r = 0, numRows = this.tiles.length; r < numRows; r++) {
-                for (c = 0, numCols = this.tiles[r].length; c < numCols; c++) {
-                    tile = this.tiles[r][c];
-                    isCurrentLocation = Game.Util.arraysEqual(tile.coordinate, this.playerCoord);
-
-                    tile.$td.toggleClass('explored', tile.explored);
-                    tile.$td.toggleClass('visible', tile.visible);
-                    tile.$td.toggleClass('current-location', isCurrentLocation);
-                    tile.$td.toggleClass('travelable', tile.travelable);
-
-                    //var tileName = tile.explored ? tile.name : '???';
-                    var tileName = tile.name;
-                    var numLines = (tileName.match(/\n/g) || []).length + 1;
-                    tile.$name.removeClass()
-                        .addClass('tile-name')
-                        .addClass('num-lines-'+numLines)
-                        .addClass(tile.color)
-                        .html(tileName);
-
-                    var travelDesc = tile.travelable ? '' : 'Too Far';
-                    if (isCurrentLocation) {
-                        travelDesc = '';
-                    }
-                    tile.$travelDesc.html(travelDesc);
-                }
-            }
-
-
-
         },
         
 
         _adjacentTiles: function(r, c) {
-            var adjacentTiles = [];
+            var adjacentTiles = {};
 
             if (this.tiles[r][c - 1]) {
-                adjacentTiles.push(this.tiles[r][c - 1]);
+                adjacentTiles.west = this.tiles[r][c - 1];
             }
             if (this.tiles[r][c + 1]) {
-                adjacentTiles.push(this.tiles[r][c + 1]);
+                adjacentTiles.east = this.tiles[r][c + 1];
             }
             if (this.tiles[r - 1] && this.tiles[r - 1][c]) {
-                adjacentTiles.push(this.tiles[r - 1][c])
+                adjacentTiles.north = this.tiles[r - 1][c];
             }
             if (this.tiles[r + 1] && this.tiles[r + 1][c]) {
-                adjacentTiles.push(this.tiles[r + 1][c])
+                adjacentTiles.south = this.tiles[r + 1][c];
             }
             return adjacentTiles;
         }
