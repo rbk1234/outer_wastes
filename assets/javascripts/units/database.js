@@ -46,7 +46,7 @@
             stats: {
                 maxHealth: 350,
                 attackSpeed: 0.8,
-                attackDamage: 10,
+                attackDamage: 17,
                 reward: 10
             }
         },
@@ -55,7 +55,7 @@
             stats: {
                 maxHealth: 1100,
                 attackSpeed: 1.0,
-                attackDamage: 45,
+                attackDamage: 52,
                 reward: 20
             }
         },
@@ -64,7 +64,7 @@
             stats: {
                 maxHealth: 250,
                 attackSpeed: 1.2,
-                attackDamage: 11,
+                attackDamage: 14,
                 reward: 20
             },
             abilityKeys: ['webWrap']

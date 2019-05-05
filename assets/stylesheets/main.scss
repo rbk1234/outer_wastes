@@ -270,7 +270,7 @@ body {
   width: 100%;
   opacity: 0.5;
 
-  bottom: 6rem;
+  bottom: 3rem;
 
   .g {
     //color: green;
@@ -381,7 +381,8 @@ body {
 
 #center-area {
   position: absolute;
-  width: 100%;
+  left: 50%;
+  transform: translate(-50%);
 
   .ascii-content {
     // center horizontally:

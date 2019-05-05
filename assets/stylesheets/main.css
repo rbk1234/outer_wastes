@@ -117,7 +117,7 @@ body {
   height: 100%;
   width: 100%;
   opacity: 0.5;
-  bottom: 6rem; }
+  bottom: 3rem; }
   #encounter-background .g {
     color: #00ff00; }
   #encounter-background .b {
@@ -183,7 +183,8 @@ body {
 
 #center-area {
   position: absolute;
-  width: 100%; }
+  left: 50%;
+  transform: translate(-50%); }
   #center-area .ascii-content {
     position: absolute;
     left: 50%;
