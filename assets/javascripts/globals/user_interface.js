@@ -369,8 +369,6 @@
 
                 this._loadDetailedFrame(this._targetFrame, this.selectedUnit());
             }
-
-            this.updateCombatStatus();
         },
 
         _loadUnitFrame: function(unit) {
@@ -547,21 +545,13 @@
         // ----------------------------------------------------- Level UI
 
         _initLevelUI: function() {
-            this._$navigationPanel = $('#navigation-panel');
-            this._$engageCombat = this._$navigationPanel.find('#engage-combat');
-            this._$nextEncounter = this._$navigationPanel.find('#next-encounter');
-            this._$engageCombat.off('click').on('click', function(evt) {
-                evt.preventDefault();
-                Game.UnitEngine.enterCombat();
-            });
+            this._$encounterHeader = $('#encounter-header');
+            this._$encounterInfo = $('#encounter-info');
+            this._$currentTile = $('#current-tile-desc');
+            this._$standardInfo = this._$encounterHeader.find('.standard-info');
 
-            this._$navigationPanel.find('.restart').off('click').on('click', function(evt) {
+            this._$encounterHeader.find('.restart').off('click').on('click', function(evt) {
                 location.reload();
-            });
-
-            this._$nextEncounter.off('click').on('click', function(evt) {
-                evt.preventDefault();
-                Game.Levels.currentLevel.loadNextEncounter();
             });
 
             this._$enemyFrames = $('#enemy-frames');
@@ -570,27 +560,13 @@
 
             this._map = null;
             this._$miniMap = $('#mini-map');
-        },
 
-        updateCombatStatus: function() {
-            this._$engageCombat.prop('disabled', Game.UnitEngine.inCombat() || !Game.UnitEngine.isComputerTeamAlive());
-            this._$nextEncounter.toggleClass('invisible', Game.UnitEngine.isComputerTeamAlive());
-
-            if (Game.UnitEngine.inCombat()) {
-                this._$enemyFrames.stop().animate({opacity: 1}, 0);
-            }
-
-            if (!Game.UnitEngine.isPlayerTeamAlive()) {
-                this._$navigationPanel.find('.normal-navigation').hide();
-                $('.game-over').show();
-            }
+            this._$standardInfo.show();
         },
 
         newEncounterLoaded: function(encounter) {
-            //var level = Game.Levels.currentLevel;
-            //$('#level-info').html(level.name + '&emsp;&mdash;&emsp; Encounter ' + level.currentEncounterIndex() + ' / ' + level.numEncounters);
-
-            //$('#encounter-info').html(encounter.description);
+            this._map.loadTileDescription(this._$currentTile);
+            this._$encounterInfo.html(encounter.description);
 
             this._$enemyFrames.stop().animate({opacity: 1}, 1000);
         },
@@ -601,10 +577,12 @@
         },
 
         encounterFailed: function() {
-
+            this._$standardInfo.hide();
+            $('.game-over').show();
         },
 
         encounterStarted: function() {
+            this._$enemyFrames.stop().animate({opacity: 1}, 0); // make sure enemies showing
         },
 
         setCenterImage: function(image) {
@@ -621,6 +599,8 @@
         },
 
         showMiniMap: function() {
+            this._map.loadTileDescription(this._$currentTile);
+            this._$encounterInfo.html('Choose your path...');
             this._map.loadMiniMapHtml(this._$miniMap.find('.ascii-content'));
             this._$miniMap.stop().animate({opacity: 1}, 500);
         },
@@ -1004,7 +984,6 @@
             }
 
             this._$abilitiesModal.off('open.zf.reveal').on('open.zf.reveal', function(evt) {
-                console.log(evt);
                 self._clearSpellbookPage();
                 //self._showSpellbookPage(0);
             });

@@ -109,7 +109,6 @@
     //Game.Log.logMessage('Game started!');
     //Game.UnitEngine.countdownToEncounter();
 
-    console.log('nightvale');
     Game.UserInterface.loadMap('nightvale');
     Game.UserInterface.showMiniMap();
 

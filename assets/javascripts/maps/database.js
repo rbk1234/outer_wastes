@@ -9,7 +9,7 @@
         },
         village: {
             name: 'Village',
-            color: 'white',
+            color: 'beige',
             description: "Contains"
         },
         woods: {
@@ -56,7 +56,7 @@
     Game.namespace('Maps').Database = {
         nightvale: {
             name: 'Nightvale',
-            startingCoord: [1, 1],
+            startingCoord: [0, 1],
             tileKeys: [
                 'gvwwcwGh',
                 'wwwddwGG',

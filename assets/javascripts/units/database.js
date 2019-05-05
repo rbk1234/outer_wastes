@@ -7,7 +7,7 @@
             name: 'Healer (You)',
             stats: {
                 maxHealth: 100,
-                maxMana: 350,
+                maxMana: 400,
                 manaRegen: 7,
                 attackSpeed: 0.3,
                 attackDamage: 5

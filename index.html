@@ -56,7 +56,7 @@
 
 
     <div id="player-and-target-area">
-      <table class="no-rows no-spacing">
+      <table class="no-rows no-spacing" style="max-width: 1280px; margin: 0 auto;">
         <tbody>
         <tr>
           <td width="0%"></td>
@@ -112,27 +112,23 @@
             </div>
           </td>
           <td width="50%">
-            <div id="navigation-panel" class="">
+            <div id="encounter-header" class="">
 
-              <div class="normal-navigation">
+              <div class="standard-info" hidden>
                 <table>
                   <tbody>
                   <tr>
                     <td colspan="3">
+                      <div id="current-tile-desc">
+                        You are in the <span class="tile-name"></span>.
+                        <!--<span class="tile-name"></span>-->
+                      </div>
                       <div id="encounter-info">
+
                       </div>
                     </td>
                   </tr>
                   <tr>
-                    <td class="nostretch">
-                      <!--<button id="" class="button invisible">Next</button>-->
-                    </td>
-                    <td class="text-center">
-                      <!--<button id="engage-combat" class="button">Engage</button>-->
-                    </td>
-                    <td class="nostretch">
-                      <!--<button id="next-encounter" class="button invisible">Next</button>-->
-                    </td>
                   </tr>
                   </tbody>
                 </table>
@@ -201,13 +197,12 @@
             <div id="ally-frames"></div>
           </td>
           <td width="5%" class="relative-container"></td>
-          <td width="5%" class="relative-container"></td>
-          <td width="45%" class="relative-container">
+          <td width="50%" class="relative-container">
             <div id="enemy-frames" style="opacity:0;"></div>
 
             <div id="mini-map" style="opacity:0;padding:1rem;">
               <div class="ascii-content">
-                <table>
+                <!--<table>-->
                   <!--<tbody>-->
                   <!--<tr>-->
                     <!--<td width="33%"></td>-->
@@ -216,7 +211,7 @@
                   <!--</tr>-->
                   <!--<tr>-->
                     <!--<td>← West<br><button class="button west-button move-on-click"><span class="tile-name"></span></button></td>-->
-                    <!--<td class="text-center"><br><br><a data-toggle="map-modal">Full Map</a><br><br><br></td>-->
+                    <!--<td class="text-center"><br><br><a class="no-focus-outline" data-toggle="map-modal">Full Map</a><br><br><br></td>-->
                     <!--<td class="text-right">East →<br><button class="button east-button move-on-click"><span class="tile-name"></span></button></td>-->
                   <!--</tr>-->
                   <!--<tr>-->
@@ -226,21 +221,23 @@
                   <!--</tr>-->
                   <!--</tbody>-->
                 <!--</table>-->
+
+                <!--Note: This table cannot have new lines (\n) due to ascii-content pre formatting-->
                 <table>
                   <tbody>
                   <tr>
                     <td width="33%"></td>
-                    <td width="33%" class="text-center">↑<br><button class="button north-button move-on-click"><span class="tile-name"></span></button></td>
+                    <td width="33%" class="text-center"><div>↑<br><button class="button north-button move-on-click"><span class="tile-name"></span></button></div></td>
                     <td width="33%" class="text-right"></td>
                   </tr>
                   <tr>
-                    <td>← <button class="button west-button move-on-click"><span class="tile-name"></span></button></td>
-                    <td class="text-center"><br><br><a data-toggle="map-modal">Full Map</a><br><br><br></td>
-                    <td class="text-right"><button class="button east-button move-on-click"><span class="tile-name"></span></button> →</td>
+                    <td><div>← <button class="button west-button move-on-click"><span class="tile-name"></span></button></div></td>
+                    <td class="text-center"><div><br><br><a class="no-focus-outline" data-toggle="map-modal">Full Map</a><br><br><br></div></td>
+                    <td class="text-right"><div><button class="button east-button move-on-click"><span class="tile-name"></span></button> →</div></td>
                   </tr>
                   <tr>
                     <td></td>
-                    <td class="text-center"><button class="button south-button move-on-click"><span class="tile-name"></span></button><br>↓</td>
+                    <td class="text-center"><div><button class="button south-button move-on-click"><span class="tile-name"></span></button><br>↓</div></td>
                     <td class="text-right"></td>
                   </tr>
                   </tbody>
@@ -346,7 +343,7 @@
     </div>
     <br>
     <div>
-      Move Speed: 1 Square &emsp;&emsp; [town portal]
+      Move Speed: 1 Square
     </div>
   </div>
 
@@ -376,9 +373,16 @@
         <h6></h6>
         <div id="spellbook">
           <div class="page-navigation">
-            <a class="fa fa-fw fa-arrow-left turn-page-left"></a>
-            <span class="current-page"></span>
-            <a class="fa fa-fw fa-arrow-right turn-page-right"></a>
+            <button class="button turn-page-left">
+              <span class="fa fa-fw fa-arrow-left"></span>
+            </button>
+            <!--<a class="fa fa-fw fa-arrow-left turn-page-left"></a>-->
+            &nbsp;<span class="current-page"></span>&nbsp;
+            <button class="button turn-page-right">
+              <span class="fa fa-fw fa-arrow-right"></span>
+            </button>
+            <!--<a class="fa fa-fw fa-arrow-right turn-page-right"></a>-->
+            <br><br>
           </div>
           <table class="no-rows tight-spacing">
             <tbody id="spellbook-tbody">

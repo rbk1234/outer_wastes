@@ -262,7 +262,7 @@
                 Game.UserInterface.createFloatingText(this, '' + Game.Util.round(amount), 'ally-damage');
             }
             if (this.teamId === Game.Constants.teamIds.player) {
-                Game.UserInterface.createFloatingText(this, '-' + Game.Util.round(amount), 'take-damage');
+                Game.UserInterface.createFloatingText(this, '' + Game.Util.round(amount), 'take-damage');
             }
 
             if (Game.Util.roundForComparison(this.health) > 0) {

@@ -45,8 +45,18 @@
         },
 
         loadTile: function(tile) {
-            // todo set encounter title?
-            this.loadEncounterByDbKey(Game.Util.randomFromArray(tile.encounters));
+            var encounter = Game.Util.randomFromArray(tile.encounters);
+            if (encounter) {
+                this.loadEncounterByDbKey(encounter);
+            }
+            else {
+                // TODO Tile is not yet implemented
+                Game.UserInterface.encounterComplete();
+                Game.UserInterface.newEncounterLoaded({description: '[Not yet implemented]'});
+                this.setTimeout(function() {
+                    Game.UserInterface.showMiniMap();
+                }, 2000);
+            }
         },
         loadEncounterByDbKey: function(encounterDbKey) {
             var self = this;
@@ -159,7 +169,6 @@
         },
         enterCombat: function() {
             this._inCombat = true;
-            Game.UserInterface.updateCombatStatus();
 
             this.unitsForTeam(Game.Constants.teamIds.player).forEach(function(unit) {
                 unit.enterCombat();
@@ -176,7 +185,6 @@
         },
         leaveCombat: function() {
             this._inCombat = false;
-            Game.UserInterface.updateCombatStatus();
 
             this.unitsForTeam(Game.Constants.teamIds.player).forEach(function(unit) {
                 unit.leaveCombat();
@@ -231,8 +239,6 @@
                 Game.UserInterface.encounterComplete();
                 this.leaveCombat();
                 this.setTimeout(function() {
-                    //Game.Levels.currentLevel.loadNextEncounter();
-                    //self.countdownToEncounter();
                     Game.UserInterface.showMiniMap();
                 }, 2000);
             }

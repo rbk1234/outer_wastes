@@ -54,11 +54,24 @@
             }
         },
 
+        currentTile: function() {
+            return this._tileForCoord(this.playerCoord);
+        },
         exploreCurrentTile: function() {
-            var currentTile = this._tileForCoord(this.playerCoord);
-            currentTile.explored = true;
+            this.currentTile().explored = true;
             this._propagateVisbility();
             this._refreshModal();
+        },
+        loadTileDescription: function($description) {
+            var tile = this.currentTile();
+
+            var nameWithoutLines = tile.name.replace(/\n/g, ' ');
+
+            $description.find('.tile-name')
+                .removeClass()
+                .addClass('tile-name')
+                .addClass(tile.color)
+                .html(nameWithoutLines);
         },
 
         _tileForCoord: function(coordinate) {
@@ -74,21 +87,27 @@
             setupMiniMapTile($map.find('.west-button'), adjacentTiles.west);
 
             function setupMiniMapTile($button, tile) {
-                $button
-                    .data('tile', tile);
+                if (tile) {
+                    $button
+                        .data('tile', tile);
 
-                $button.find('.tile-name')
-                    .removeClass()
-                    .addClass('tile-name')
-                    .addClass(tile.color)
-                    .html(tile.name);
+                    $button.closest('div').removeClass('invisible');
+
+                    $button.find('.tile-name')
+                        .removeClass()
+                        .addClass('tile-name')
+                        .addClass(tile.color)
+                        .html(tile.name);
+                }
+                else {
+                    $button.closest('div').addClass('invisible');
+                }
             }
 
             this._initEventHandlers($map);
         },
 
         loadModalHtml: function($modal) {
-            console.log('loadModalHtml');
             this.$modal = $modal;
             this._propagateVisbility();
             this._refreshModal();
@@ -221,7 +240,8 @@
     var TILE_DEFAULTS = {
         explored: false,
         visible: false,
-        travelable: false
+        travelable: false,
+        encounters: []
     };
     var currentTileId = 1;
 

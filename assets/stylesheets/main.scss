@@ -58,6 +58,7 @@ $health-border-targeted: #f6d6bd;
 $portrait-bg: #20394f;
 $button-color: #4e495f;
 $button-hover-color: #3b3748;
+$button-disabled: #2f2c3a;
 
 $mini-map-button: #08141e;
 $mini-map-button-border: #4e495f;
@@ -125,17 +126,14 @@ body {
   #header-bar {
     flex: 0 1 auto; // fit to content
     background: $top-bar-bg;
-    color: white;
+    color: #888;
   }
   #subheader-bar {
     flex: 0 1 auto; // fit to content
     color: white;
     font-weight: bold;
 
-    padding: 0.25rem;
-    padding-bottom: 0;
-
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid #888;
   }
   #units-area {
     flex: 1 1 auto; // fill remaining space
@@ -417,7 +415,9 @@ body {
 }
 
 .ability-tooltip {
-  background: rgba(55,22,22,1);
+  //background: rgba(55,22,22,1);
+  background: $main-content-bg;
+  border: 1px solid $bottom-bar-bg;
   padding: 0.5rem;
   color: white;
   font-size: 0.875rem;
@@ -444,7 +444,7 @@ body {
 
 
 
-#navigation-panel {
+#encounter-header {
   margin: 1rem;
   padding: 0.5rem;
   border-radius: 0.313rem;
@@ -455,10 +455,10 @@ body {
 
   text-align: center;
 
-  #encounter-info {
-    //background: $top-bar-bg;
-    margin-bottom: 1rem;
-  }
+  //#encounter-info {
+  //  //background: $top-bar-bg;
+  //  margin-bottom: 1rem;
+  //}
 }
 
 
@@ -604,7 +604,7 @@ body {
   }
 }
 
-#map-modal, #mini-map {
+//#map-modal, #mini-map {
   .tile-name {
     // colors:
     &.green {
@@ -632,7 +632,7 @@ body {
       color: darkred;
     }
   }
-}
+//}
 
 #map-modal {
   background: $main-content-bg;
@@ -1205,6 +1205,14 @@ a[disabled] {
   &:hover, &:focus {
     background-color: $button-hover-color;
   }
+
+  &.disabled, &.disabled:hover, &.disabled:focus, &[disabled], &[disabled]:hover, &[disabled]:focus {
+    background-color: $button-disabled;
+  }
 }
 
-
+.no-focus-outline {
+  &:focus {
+    outline: none;
+  }
+}

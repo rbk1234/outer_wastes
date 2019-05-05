@@ -35,14 +35,12 @@ body {
   #body-content #header-bar {
     flex: 0 1 auto;
     background: #0f2a3f;
-    color: white; }
+    color: #888; }
   #body-content #subheader-bar {
     flex: 0 1 auto;
     color: white;
     font-weight: bold;
-    padding: 0.25rem;
-    padding-bottom: 0;
-    border-bottom: 1px solid white; }
+    border-bottom: 1px solid #888; }
   #body-content #units-area {
     flex: 1 1 auto;
     color: white;
@@ -205,7 +203,8 @@ body {
   width: 20rem; }
 
 .ability-tooltip {
-  background: #371616;
+  background: #08141e;
+  border: 1px solid #816271;
   padding: 0.5rem;
   color: white;
   font-size: 0.875rem;
@@ -217,15 +216,13 @@ body {
     .ability-tooltip .description .spell-power {
       color: #99F399; }
 
-#navigation-panel {
+#encounter-header {
   margin: 1rem;
   padding: 0.5rem;
   border-radius: 0.313rem;
   color: white;
   flex: 0 1 auto;
   text-align: center; }
-  #navigation-panel #encounter-info {
-    margin-bottom: 1rem; }
 
 .game-over {
   border-radius: 0.313rem;
@@ -297,21 +294,21 @@ body {
   #mini-map .button:hover, #mini-map .button:focus {
     background-color: #0f2a3f; }
 
-#map-modal .tile-name.green, #mini-map .tile-name.green {
+.tile-name.green {
   color: green; }
-#map-modal .tile-name.grey, #mini-map .tile-name.grey {
+.tile-name.grey {
   color: grey; }
-#map-modal .tile-name.white, #mini-map .tile-name.white {
+.tile-name.white {
   color: white; }
-#map-modal .tile-name.light-blue, #mini-map .tile-name.light-blue {
+.tile-name.light-blue {
   color: lightblue; }
-#map-modal .tile-name.orange, #mini-map .tile-name.orange {
+.tile-name.orange {
   color: darkorange; }
-#map-modal .tile-name.purple, #mini-map .tile-name.purple {
+.tile-name.purple {
   color: mediumpurple; }
-#map-modal .tile-name.beige, #mini-map .tile-name.beige {
+.tile-name.beige {
   color: #ffcc99; }
-#map-modal .tile-name.red, #mini-map .tile-name.red {
+.tile-name.red {
   color: darkred; }
 
 #map-modal {
@@ -623,5 +620,10 @@ a[disabled] {
   background-color: #4e495f; }
   .button:hover, .button:focus {
     background-color: #3b3748; }
+  .button.disabled, .button.disabled:hover, .button.disabled:focus, .button[disabled], .button[disabled]:hover, .button[disabled]:focus {
+    background-color: #2f2c3a; }
+
+.no-focus-outline:focus {
+  outline: none; }
 
 /*# sourceMappingURL=main.css.map */
