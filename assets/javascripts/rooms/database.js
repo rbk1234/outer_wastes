@@ -15,18 +15,18 @@
             description: 'Spiders swarm around your party.',
             enemies: ['spider', 'spider', 'spider', 'spider', 'spider'],
             events: {
-                'room:startEncounters': function() {
-                    this.loadEncounter({
+                'room:startAIs': function() {
+                    this.loadAI({
                         type: 'periodic',
                         stats: {
                             period: 6,
                             delay: -5
                         },
                         events: {
-                            'encounter:periodicTick': function() {
+                            'AI:periodicTick': function() {
                                 // pick highest health computer unit, have it cast webwrap on non-player playerUnits
 
-                                // --- todo maybe this shouldn't be an encounter? just have the spiders emit an event when they
+                                // --- todo maybe this shouldn't be an AI? just have the spiders emit an event when they
                                 // --- todo cast the spell that stops others from casting for a bit
 
                                 var unit = Game.UnitEngine.findUnitForAICast(Game.Constants.teamIds.computer, 'spider', 'webWrap');
@@ -44,15 +44,15 @@
             description: 'A forest goblin ambush!',
             enemies: ['forestGoblin', 'forestGoblin'],
             events: {
-                'room:startEncounters': function() {
-                    this.loadEncounter({
+                'room:startAIs': function() {
+                    this.loadAI({
                         type: 'periodic',
                         stats: {
                             period: 10,
                             delay: -5
                         },
                         events: {
-                            'encounter:periodicTick': function() {
+                            'AI:periodicTick': function() {
                                 var unit = Game.UnitEngine.findUnitForAICast(Game.Constants.teamIds.computer, 'forestGoblin', 'iceTrap');
                                 if (unit) {
                                     unit.castAbility(unit.abilityForDbKey('iceTrap'), unit.highestThreatTarget());
@@ -60,14 +60,14 @@
                             }
                         }
                     });
-                    this.loadEncounter({
+                    this.loadAI({
                         type: 'periodic',
                         stats: {
                             period: 4,
                             delay: -4
                         },
                         events: {
-                            'encounter:periodicTick': function() {
+                            'AI:periodicTick': function() {
                                 var unit = Game.UnitEngine.findUnitForAICast(Game.Constants.teamIds.computer, 'forestGoblin', 'explosiveTrap');
                                 if (unit) {
                                     unit.castAbility(unit.abilityForDbKey('explosiveTrap'), unit.highestThreatTarget());

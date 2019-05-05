@@ -106,11 +106,11 @@
 
     //Game.UserInterface.targetUnit(native);
 
-
-
-
-
     Game.Log.logMessage('Game started!');
     Game.UnitEngine.countdownToRoom();
+
+    console.log('nightvale');
+    var map = new Game.UI.Map('nightvale');
+    map.loadHtml($('#map-modal'));
 
 })(jQuery);

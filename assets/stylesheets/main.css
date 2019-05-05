@@ -180,7 +180,8 @@ body {
   font-size: 0.5rem;
   top: 0;
   padding: 0.5rem 1rem;
-  background: #4e495f;
+  background: transparent;
+  font-weight: bold;
   border-radius: 0.313rem; }
 
 #ability-tooltip {
@@ -268,14 +269,79 @@ body {
   color: white;
   font-size: 0.875rem; }
 
-#map-modal {
+#world-map-modal {
   height: 90vh;
-  background: #3b3021;
+  background: #08141e;
   color: white; }
-  #map-modal .ascii-content {
+  #world-map-modal .ascii-content {
     font-size: 0.75rem;
     line-height: 1;
     height: 100%; }
+
+#map-modal {
+  background: #08141e;
+  color: white; }
+  #map-modal .map-name {
+    font-family: monospace; }
+  #map-modal .ascii-content {
+    line-height: 1;
+    height: 100%;
+    max-width: 980px;
+    margin: auto; }
+  #map-modal .map-table {
+    table-layout: fixed;
+    width: 100%; }
+    #map-modal .map-table td {
+      padding-top: 6.25%;
+      padding-bottom: 6.25%;
+      text-align: center;
+      position: relative;
+      cursor: default; }
+      #map-modal .map-table td .travel-desc {
+        position: absolute;
+        bottom: 0.25rem;
+        width: 100%;
+        margin-left: -50%;
+        display: none; }
+      #map-modal .map-table td .tile-name {
+        position: absolute;
+        width: 100%;
+        margin-left: -50%;
+        display: none; }
+        #map-modal .map-table td .tile-name.num-lines-1 {
+          margin-top: -0.5rem; }
+        #map-modal .map-table td .tile-name.num-lines-2 {
+          margin-top: -1rem; }
+        #map-modal .map-table td .tile-name.num-lines-3 {
+          margin-top: -1.5rem; }
+        #map-modal .map-table td .tile-name.green {
+          color: green; }
+        #map-modal .map-table td .tile-name.grey {
+          color: grey; }
+        #map-modal .map-table td .tile-name.white {
+          color: white; }
+        #map-modal .map-table td .tile-name.light-blue {
+          color: lightblue; }
+        #map-modal .map-table td .tile-name.orange {
+          color: darkorange; }
+        #map-modal .map-table td .tile-name.purple {
+          color: mediumpurple; }
+        #map-modal .map-table td .tile-name.beige {
+          color: #ffcc99; }
+        #map-modal .map-table td .tile-name.red {
+          color: darkred; }
+    #map-modal .map-table td.visible .tile-name {
+      display: inline-table; }
+    #map-modal .map-table td.visible:hover .travel-desc {
+      display: inline-table; }
+    #map-modal .map-table td.visible:hover {
+      background: linear-gradient(to right, #000 90%, #bbb 0%) top/10px 1px repeat-x, linear-gradient(#000 90%, #bbb 0%) right/1px 10px repeat-y, linear-gradient(to right, #000 90%, #bbb 0%) bottom/10px 1px repeat-x, linear-gradient(#000 90%, #bbb 0%) left/1px 10px repeat-y;
+      /* left */ }
+    #map-modal .map-table td.current-location, #map-modal .map-table td.current-location:hover {
+      background: linear-gradient(to right, #000 50%, #fff 0%) top/10px 1px repeat-x, linear-gradient(#000 50%, #fff 0%) right/1px 10px repeat-y, linear-gradient(to right, #000 50%, #fff 0%) bottom/10px 1px repeat-x, linear-gradient(#000 50%, #fff 0%) left/1px 10px repeat-y;
+      /* left */ }
+    #map-modal .map-table td.travelable:hover {
+      cursor: pointer; }
 
 .bar {
   position: relative;

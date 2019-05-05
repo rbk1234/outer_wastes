@@ -13,19 +13,19 @@
 
         load: function() {
             this._loadEnemies();
-            this._encounters = {};
+            this._AIs = {};
 
             Game.Rooms.Room.prototype.load.apply(this, arguments);
         },
 
         update: function(seconds) {
-            Game.Util.iterateObject(this._encounters, function(id, encounter) {
-                if (!encounter) {
-                    return; // The encounter may have been deleted while iterating
+            Game.Util.iterateObject(this._AIs, function(id, AI) {
+                if (!AI) {
+                    return; // The AI may have been deleted while iterating
                 }
 
-                encounter.update(seconds);
-                //if (encounter.isExpired()) {
+                AI.update(seconds);
+                //if (AI.isExpired()) {
                 //    todo delete
                 //}
             });
@@ -40,25 +40,25 @@
             Game.UserInterface.loadTeam(Game.Constants.teamIds.computer);
         },
 
-        startEncounters: function() {
-            $(this).trigger('room:startEncounters');
+        startAIs: function() {
+            $(this).trigger('room:startAIs');
         },
 
-        endEncounters: function() {
-            $(this).trigger('room:endEncounters');
+        endAIs: function() {
+            $(this).trigger('room:endAIs');
         },
 
-        loadEncounter: function(encounterParams) {
-            var encounter = this.createEncounter(encounterParams);
-            this._encounters[encounter.id] = encounter;
+        loadAI: function(AIParams) {
+            var AI = this.createAI(AIParams);
+            this._AIs[AI.id] = AI;
         },
 
-        createEncounter: function(encounterParams) {
-            return new Game.Rooms.Encounter($.extend(true, this.defaultEncounterParams(), encounterParams));
+        createAI: function(AIParams) {
+            return new Game.Rooms.AI($.extend(true, this.defaultAIParams(), AIParams));
         },
 
         // When this ability spawns an Effect, use these defaults
-        defaultEncounterParams: function() {
+        defaultAIParams: function() {
             return {
                 sourceRoom: this
             };

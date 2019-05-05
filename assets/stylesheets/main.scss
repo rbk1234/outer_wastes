@@ -48,7 +48,7 @@ sass assets/stylesheets/main.scss assets/stylesheets/main.css
 // https://lospec.com/palette-list/nyx8
 $top-bar-bg: #0f2a3f;
 $main-content-bg: #08141e;
-$center-area-bg: #4e495f;
+$center-area-bg: transparent;
 $main-frames-bg: transparent;
 $bottom-bar-bg: #816271;
 $bottom-bar-border: #4e495f;
@@ -101,7 +101,6 @@ body {
   height: 100%;
   margin: 0
 }
-
 
 
 
@@ -373,6 +372,7 @@ body {
     top: 0;
     padding: 0.5rem 1rem;
     background: $center-area-bg;
+    font-weight: bold;
     //border: 1px solid #4f1818;
     border-radius: 0.313rem;
   }
@@ -555,9 +555,9 @@ body {
   font-size: 0.875rem;
 }
 
-#map-modal {
+#world-map-modal {
   height: 90vh;
-  background: #3b3021;
+  background: $main-content-bg;
   color: white;
   //font-size: 0.875rem;
 
@@ -568,6 +568,150 @@ body {
   }
 }
 
+
+
+#map-modal {
+  background: $main-content-bg;
+  color: white;
+
+  .map-name {
+    font-family: monospace;
+  }
+
+  .ascii-content {
+    //font-size: 0.75rem;
+    line-height: 1;
+    height: 100%;
+
+    //padding: 0 4rem;
+    max-width: 980px;
+    margin: auto; // center horizontally
+  }
+
+  .map-table {
+    table-layout: fixed; // equal width cells
+    width: 100%;
+
+    td {
+      // make the cells square - note: this is dependent on the number of cells per row?
+      // there are 8 columns ... 1/8 = 0.125 ... put half as top and half as bottom padding (1/16)
+      padding-top: 6.25%;
+      padding-bottom: 6.25%;
+      text-align: center;
+      position: relative;
+      cursor: default;
+
+      .travel-desc {
+        position: absolute;
+        bottom: 0.25rem;
+        width: 100%;
+        margin-left: -50%;
+        display: none;
+      }
+
+      .tile-name {
+        position: absolute;
+        width: 100%;
+        margin-left: -50%;
+        display: none;
+
+        &.num-lines-1 {
+          margin-top: -0.5rem;
+        }
+        &.num-lines-2 {
+          margin-top: -1rem;
+        }
+        &.num-lines-3 {
+          margin-top: -1.5rem;
+        }
+
+        // colors:
+        &.green {
+          color: green;
+        }
+        &.grey {
+          color: grey;
+        }
+        &.white {
+          color: white;
+        }
+        &.light-blue {
+          color: lightblue;
+        }
+        &.orange {
+          color: darkorange;
+        }
+        &.purple {
+          color: mediumpurple;
+        }
+        &.beige {
+          color: #ffcc99;
+        }
+        &.red {
+          color: darkred;
+        }
+      }
+    }
+
+    td.visible .tile-name {
+      display: inline-table;
+    }
+    td.visible:hover .travel-desc {
+      display: inline-table;
+    }
+    // Dotted cell borders implemented with solution found here: https://stackoverflow.com/a/53309284/4904996
+
+    //td.explored {
+    //  background: linear-gradient(to right, #000 90%, #999 0%) top/10px 1px repeat-x, /* top */
+    //  linear-gradient(#000 90%, #999 0%) right/1px 10px repeat-y, /* right */
+    //  linear-gradient(to right, #000 90%, #999 0%) bottom/10px 1px repeat-x, /* bottom */
+    //  linear-gradient(#000 90%, #999 0%) left/1px 10px repeat-y; /* left */
+    //}
+
+    td.visible:hover {
+      background: linear-gradient(to right, #000 90%, #bbb 0%) top/10px 1px repeat-x, /* top */
+      linear-gradient(#000 90%, #bbb 0%) right/1px 10px repeat-y, /* right */
+      linear-gradient(to right, #000 90%, #bbb 0%) bottom/10px 1px repeat-x, /* bottom */
+      linear-gradient(#000 90%, #bbb 0%) left/1px 10px repeat-y; /* left */
+    }
+    td.current-location, td.current-location:hover {
+      background: linear-gradient(to right, #000 50%, #fff 0%) top/10px 1px repeat-x, /* top */
+      linear-gradient(#000 50%, #fff 0%) right/1px 10px repeat-y, /* right */
+      linear-gradient(to right, #000 50%, #fff 0%) bottom/10px 1px repeat-x, /* bottom */
+      linear-gradient(#000 50%, #fff 0%) left/1px 10px repeat-y; /* left */
+    }
+
+    td.travelable:hover {
+      cursor: pointer;
+    }
+
+    //td {
+    //  background: linear-gradient(to right, #000 90%, #fff 0%) top/10px 1px repeat-x, /* top */
+    //  linear-gradient(#000 90%, #fff 0%) left/1px 10px repeat-y; /* left */
+    //
+    //  &:last-child {
+    //    background: linear-gradient(to right, #000 90%, #fff 0%) top/10px 1px repeat-x, /* top */
+    //    linear-gradient(#000 90%, #fff 0%) right/1px 10px repeat-y, /* right */
+    //    linear-gradient(#000 90%, #fff 0%) left/1px 10px repeat-y; /* left */
+    //  }
+    //}
+    //
+    //tr:last-child {
+    //  td {
+    //    background: linear-gradient(to right, #000 90%, #fff 0%) top/10px 1px repeat-x, /* top */
+    //                linear-gradient(to right, #000 90%, #fff 0%) bottom/10px 1px repeat-x, /* bottom */
+    //                linear-gradient(#000 90%, #fff 0%) left/1px 10px repeat-y; /* left */
+    //
+    //    &:last-child {
+    //      background: linear-gradient(to right, #000 90%, #fff 0%) top/10px 1px repeat-x, /* top */
+    //                  linear-gradient(#000 90%, #fff 0%) right/1px 10px repeat-y, /* right */
+    //                  linear-gradient(to right, #000 90%, #fff 0%) bottom/10px 1px repeat-x, /* bottom */
+    //                  linear-gradient(#000 90%, #fff 0%) left/1px 10px repeat-y; /* left */
+    //    }
+    //  }
+    //}
+  }
+}
 
 
 

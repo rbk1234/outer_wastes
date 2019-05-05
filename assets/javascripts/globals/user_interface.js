@@ -50,7 +50,7 @@
             this._initEffects();
             this._initLevelUI();
 
-            this._initMap();
+            this._initWorldMap();
             Game.Timers.addTimerSupport(this);
 
             // Start clock
@@ -962,10 +962,10 @@
         },
 
 
-        _initMap: function() {
-            this._$mapModal = $('#map-modal');
+        _initWorldMap: function() {
+            this._$worldMapModal = $('#world-map-modal');
             var world = new Game.Maps.Map('world');
-            this._$mapModal.find('.ascii-content').html(world.display.join('\n'));
+            this._$worldMapModal.find('.ascii-content').html(world.display.join('\n'));
         },
 
 

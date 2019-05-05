@@ -152,7 +152,7 @@
             });
 
             if (Game.Levels.currentLevel) {
-                Game.Levels.currentLevel.currentRoom().startEncounters();
+                Game.Levels.currentLevel.currentRoom().startAIs();
             }
 
             Game.UserInterface.roomStarted();
@@ -169,7 +169,7 @@
             });
 
             if (Game.Levels.currentLevel) {
-                Game.Levels.currentLevel.currentRoom().endEncounters();
+                Game.Levels.currentLevel.currentRoom().endAIs();
             }
         },
         isPlayerTeamAlive: function() {

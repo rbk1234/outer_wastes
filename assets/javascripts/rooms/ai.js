@@ -1,7 +1,7 @@
 
 /*
 
- Note: Encounters don't have a corresponding database. Their data comes from the Room spawning it
+ Note: AIs don't have a corresponding database. Their data comes from the Room spawning it
 
  */
 
@@ -15,10 +15,10 @@
             delay: 0 // how long to wait before starting period. can be negative to speed up first tick.
         },
         events: {
-            //'encounter:periodicTick': function(evt) {},
+            //'AI:periodicTick': function(evt) {},
 
-            //'encounter:begin': function(evt) {},
-            //'encounter:end': function(evt) {},
+            //'AI:begin': function(evt) {},
+            //'AI:end': function(evt) {},
         },
 
         sourceRoom: null
@@ -27,10 +27,10 @@
 
     var currentId = 1;
 
-    var Encounter = function(config) {
+    var AI = function(config) {
         this._init(config);
     };
-    Encounter.prototype = {
+    AI.prototype = {
 
         _init: function(config) {
             this.id = currentId++;
@@ -49,12 +49,12 @@
             }
         },
 
-        // todo trigger encounter:begin, encounter:end
+        // todo trigger AI:begin, AI:end
 
         _incrementPeriod: function(seconds) {
             this._periodLeft -= seconds;
             if (Game.Util.roundForComparison(this._periodLeft) <= 0) {
-                $(this).trigger('encounter:periodicTick');
+                $(this).trigger('AI:periodicTick');
 
                 // Add current _periodLeft to catch rollover
                 this._periodLeft = this.period.value() + this._periodLeft;
@@ -74,6 +74,6 @@
 
     };
 
-    Game.namespace('Rooms').Encounter = Encounter;
+    Game.namespace('Rooms').AI = AI;
 
 }(jQuery));
