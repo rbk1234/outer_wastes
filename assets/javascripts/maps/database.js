@@ -17,7 +17,7 @@
             color: 'green',
             description: "",
             background: 'forest',
-            encounters: ['forest_wolves', 'forest_direWolf', 'forest_spiders', 'forest_goblins']
+            encounters: ['forest_goblins']
         },
         cave: {
             name: 'Cave',
@@ -33,7 +33,7 @@
         },
         darkGrove: {
             name: "Dark\nGrove",
-            color: "orange"
+            color: "purple"
         },
         witchsHut: {
             name: "Witch's\nHut",
@@ -41,7 +41,7 @@
         },
         cursedGlade: {
             name: 'Cursed\nGlade',
-            color: 'purple'
+            color: 'orange'
         },
         ruins: {
             name: 'Ruins',
@@ -58,10 +58,11 @@
             name: 'Nightvale',
             startingCoord: [0, 1],
             tileKeys: [
-                'gvwwcwGh',
-                'wwwddwGG',
-                'wwwdddwr',
-                'wawllwre'
+                'gvdwcwGhddd',
+                'wwwddwGGddd',
+                'wwwdddwrddd',
+                'wwwdddwrddd',
+                'wawllwreddd'
             ],
             legend: {
                 g: 'graveyard',

@@ -64,6 +64,8 @@ $mini-map-button: #08141e;
 $mini-map-button-border: #4e495f;
 $mini-map-button-hover: #0f2a3f;
 
+$bottom-bar-height: 5rem;
+
 // this could be cool too: https://lospec.com/palette-list/oil-6
 
 body {
@@ -127,11 +129,13 @@ body {
     flex: 0 1 auto; // fit to content
     background: $top-bar-bg;
     color: #888;
+    z-index: 2; // above background
   }
   #subheader-bar {
     flex: 0 1 auto; // fit to content
     color: white;
     font-weight: bold;
+    z-index: 2; // above background
 
     border-bottom: 1px solid #888;
   }
@@ -193,7 +197,7 @@ body {
     flex-flow: row;
 
     flex: 0 1 auto; // fill to content
-    min-height: 5rem;
+    min-height: $bottom-bar-height;
 
     background: $bottom-bar-bg;
     border: 2px solid $bottom-bar-border;
@@ -266,19 +270,49 @@ body {
 #encounter-background {
   overflow: hidden;
   position: absolute;
-  height: 100%;
   width: 100%;
   opacity: 0.5;
 
-  bottom: 3rem;
+  color: white;
+  bottom: $bottom-bar-height;
 
-  .g {
-    //color: green;
+  .green {
     color: #00ff00;
   }
-  .b {
-    //color: brown;
+  .brown {
     color: #bf8040;
+  }
+  .darkbrown {
+    color: #734d26;
+  }
+  .lightbrown {
+    color: #dfbf9f;
+  }
+
+  .white-beige {
+    color: #f6d6bd;
+  }
+  .orange {
+    color: darkorange;
+  }
+  .beige {
+    color: #ffcc99;
+  }
+
+  .white {
+    color: white;
+  }
+  .grey {
+    color: #666699;
+  }
+  .red {
+    color: #cb4154;
+  }
+  .black {
+
+  }
+  .darkblue {
+    color: #a8ccd7;
   }
 }
 
@@ -678,6 +712,7 @@ body {
         width: 100%;
         margin-left: -50%;
         display: none;
+        font-size: 0.875rem;
 
         &.num-lines-1 {
           margin-top: -0.5rem;

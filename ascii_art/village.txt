@@ -1,0 +1,89 @@
+
+
+
+
+
+
+
+
+
+
+          ^
+         ( )
+      / / | \ \
+    / / \ | / \ \
+  / /    \|/    \ \
+/ /===============\ \
+ |  /     |     \  |
+ | /      |      \ |
+ |/       |       \|
+ |-----------------|
+ |       ___       |
+ |      |  /|      |
+ |      | //|      |
+ |      |//.|      |
+ |      |/  |      |
+
+          t
+         ooo
+      bbbwbwbbb
+    bbbwbwbwbwbbb
+  bbbwwwwbbbwwwwbbb
+bbbbbbbbbbbbbbbbbbbbb
+ bwwbwwwwwbwwwwwbwwb
+ bwbwwwwwwbwwwwwwbwb
+ bbwwwwwwwbwwwwwwwbb
+ bbbbbbbbbbbbbbbbbbb
+ bwwwwwwwdddwwwwwwwb
+ bwwwwwwdddddwwwwwwb
+ bwwwwwwdddddwwwwwwb
+ bwwwwwwdddxdwwwwwwb
+ bwwwwwwdddddwwwwwwb
+
+
+
+                               (
+                                  )
+                                (
+                              ______
+                             /______\
+                            [________]
+    _________________________|      |_______
+   /                 /       |      |   \   \
+  /          /               |      |        \
+ /     /                               \      \
+|______________________________________________|
+   |    _____        _____        _____     |
+   |   //\ /\\      /\/ \/\      //\ /\\  = |
+   |   |\/ \/|   =  |/\ /\|      |\/ \/|    |
+   |   |/\ /\|      |\/ \/|      |/\ /\|    |
+   |   ¯¯¯¯¯¯¯      ¯¯¯¯¯¯¯      ¯¯¯¯¯¯¯=   |
+   |                          =             |
+   |    =                =                  |
+   |         =                              |
+   |              =                 =       |
+
+
+
+                               w
+                                  w
+                                w
+                              gggggg
+                             gggggggg
+                            gggggggggg
+    rrrrrrrrrrrrrrrrrrrrrrrrrggggggggrrrrrrr
+   rrrrrrrrrrrrrrrrrrrrrrrrrrggggggggrrrrrrrr
+  rrrrrrrrrrrrrrrrrrrrrrrrrrrggggggggrrrrrrrrr
+ rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
+rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
+   bbbbbsssssbbbbbbbbsssssbbbbbbbbsssssbbbbbb
+   bbbbsxxxxxsbbbbbbsxxxxxsbbbbbbsxxxxxsbbbbb
+   bbbbsxxxxxsbbbbbbsxxxxxsbbbbbbsxxxxxsbbbbb
+   bbbbsxxxxxsbbbbbbsxxxxxsbbbbbbsxxxxxsbbbbb
+   bbbbsssssssbbbbbbsssssssbbbbbbsssssssbbbbb
+   bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+   bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+   bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+   bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+
+

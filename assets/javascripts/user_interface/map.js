@@ -45,6 +45,7 @@
         _moveToTile: function(tile) {
             this.playerCoord = tile.coordinate;
             this._propagateVisbility();
+            Game.UserInterface.drawBackground(tile.dbKey, 0);
 
             if (this.$modal) {
                 this._refreshModal();
@@ -61,6 +62,11 @@
             this.currentTile().explored = true;
             this._propagateVisbility();
             this._refreshModal();
+        },
+        openModal: function() {
+            if (this.$modal) {
+                this.$modal.foundation('open');
+            }
         },
         loadTileDescription: function($description) {
             var tile = this.currentTile();
@@ -241,7 +247,7 @@
 
 
     var TILE_DEFAULTS = {
-        explored: false,
+        explored: true,
         visible: false,
         travelable: false,
         encounters: []

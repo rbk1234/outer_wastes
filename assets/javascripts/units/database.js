@@ -18,7 +18,7 @@
             stats: {
                 maxHealth: 180,
                 attackSpeed: 1.25,
-                attackDamage: 15
+                attackDamage: 85
             }
         },
         native: {

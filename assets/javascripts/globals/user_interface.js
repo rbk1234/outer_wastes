@@ -1221,6 +1221,12 @@
 
         drawBackground: function(key, offset) {
             var bgRecord = Game.Levels.Backgrounds[key];
+            if (!bgRecord) {
+                this._lastBackgroundKey = null;
+                $('#encounter-background').empty();
+                return;
+            }
+
             var image = bgRecord.layout;
             var r, c, numRows = image.length, numCols = image[0].length; // todo assuming all rows same length
 
@@ -1267,18 +1273,15 @@
 
         _addDoodadToBackground: function(doodad, startingR, startingC, background) {
             var image = doodad.image;
-            var colors = doodad.colors;
+
             for (var r = 0, numRows = image.length; r < numRows; r++) {
                 if ((startingR - numRows + r) >= 0) {
                     var row = image[r];
                     for (var c = 0, numCols = row.length; c < numCols; c++) {
-                        if (row[c] !== ' ') {
-                            if (colors[r][c] && colors[r][c] !== ' ') {
-                                background[startingR - numRows + r][startingC + c] = "<span class='"+colors[r][c]+"'>"+row[c]+"</span>";
-                            }
-                            else {
-                                background[startingR - numRows + r][startingC + c] = row[c];
-                            }
+                        // Important! If no color, nothing will be drawn. This way, even an 'empty' space (no character)
+                        //            can still block a doodad behind it
+                        if (doodad.fills[r][c] !== ' ') {
+                            background[startingR - numRows + r][startingC + c] = "<span class='"+doodad.colors[doodad.fills[r][c]]+"'>"+row[c]+"</span>";
                         }
                     }
                 }
