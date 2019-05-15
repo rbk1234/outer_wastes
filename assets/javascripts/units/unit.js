@@ -44,6 +44,7 @@
 
             this._attackTimer = 0;
             //this._attackTimer = Math.random() * 0.5; // remaining time until next attack. Initialize with random wait
+            this._castAnimProgress = 0;
 
             this._effects = {};
 
@@ -95,6 +96,8 @@
             // auto attack
             this._incrementAttack(seconds);
             this._incrementCast(seconds);
+
+            this._castAnimProgress += seconds;
         },
 
         _initStartingAbilities: function() {
@@ -573,6 +576,8 @@
                 Game.UserInterface.finishCast(this, this._castAbility);
             }
             this._updateAbilityCooldown(this._castAbility);
+
+            this._startCastAnimation();
         },
 
         _updateAllAbilityCooldowns: function() {
@@ -678,9 +683,21 @@
             return this.animations.portrait;
         },
         image: function() {
+            var timeIntoAnimation, image;//, cur, i, len;
+
             if (this.isDead()) {
                 return this.animations.dead.image;
             }
+
+            if (this._castAnimation && this.animations.cast) {
+                timeIntoAnimation = this._castAnimProgress;
+                image = this._imageForTime(this.animations.cast, timeIntoAnimation);
+                if (image) {
+                    return image;
+                }
+                this._endCastAnimation();
+            }
+
             if (!Game.UnitEngine.inCombat()) {
                 return this.animations.idle.image;
             }
@@ -688,28 +705,48 @@
             // Only show attack animation if _startAttackAnimation has been called. If the unit is cc'd, the _attackTimer
             // will be above 0 as the attack resets. We don't want to animate the unit attacking however.
             if (this._attackAnimation) {
-                var timeIntoAnimation = (1.0 / this.attackSpeed.value()) - this._attackTimer;
-                var cur = 0;
-                for (var i = 0, len = this.animations.attack.length; i < len; i++) {
-                    cur += this.animations.attack[i].duration;
-                    if (timeIntoAnimation < cur) {
-                        return this.animations.attack[i].image;
-                    }
+                timeIntoAnimation = (1.0 / this.attackSpeed.value()) - this._attackTimer;
+                image = this._imageForTime(this.animations.attack, timeIntoAnimation);
+                if (image) {
+                    return image;
                 }
                 this._endAttackAnimation();
             }
 
             return this.animations.idle.image;
         },
+        _imageForTime: function(animations, timeIntoAnimation) {
+            var cur = 0;
+            for (var i = 0, len = animations.length; i < len; i++) {
+                cur += animations[i].duration;
+                if (timeIntoAnimation < cur) {
+                    return animations[i].image;
+                }
+            }
+            return null;
+        },
         imageOffset: function() {
             return this.animations.offset;
         },
 
         _startAttackAnimation: function() {
-            this._attackAnimation = true;
+            if (!this._castAnimation) {
+                this._attackAnimation = true;
+            }
         },
         _endAttackAnimation: function() {
             this._attackAnimation = false;
+        },
+
+        // Note: this is a "post"-cast animation (once the cast is done)
+        // TODO some kind of animation DURING the cast (if has cast time)
+        _startCastAnimation: function() {
+            this._endAttackAnimation();
+            this._castAnimation = true;
+            this._castAnimProgress = 0;
+        },
+        _endCastAnimation: function() {
+            this._castAnimation = false;
         }
 
 

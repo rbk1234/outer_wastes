@@ -8,7 +8,7 @@
                 '_O_',
                 '/ \\'
             ],
-            offset: 1,
+            offset: 3,
             idle: {
                 image: [
                     ' _O_',
@@ -19,6 +19,18 @@
                 ]
             },
             attack: [
+                {
+                    image: [
+                        ' _O_ .',
+                        ' / \\_|',
+                        ' \\   |',
+                        ' | ) |',
+                        '/__|'
+                    ],
+                    duration: 0.4
+                }
+            ],
+            cast: [
                 {
                     image: [
                         ' _O_ .',
@@ -45,7 +57,7 @@
                 '~O',
                 '/ \\'
             ],
-            offset: 1,
+            offset: 3,
             idle: {
                 image: [
                     '~O',
@@ -83,7 +95,7 @@
                 '\\|/',
                 '(oo'
             ],
-            offset: 1,
+            offset: 3,
             idle: {
                 image: [
                     ' \\|/ /',

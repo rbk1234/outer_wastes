@@ -32,6 +32,7 @@
         },
         animations: {
             color: 'white',
+            offset: 0,
             frameLengths: null,
             frames: null
         },
@@ -61,6 +62,7 @@
             this._durationLeft = this.duration.value();
             this._periodLeft = this.period.value();
             this._absorbRemaining = this.absorbAmount.value();
+            this._currentImageOffset = null;
         },
 
         update: function(seconds) {
@@ -167,6 +169,13 @@
             });
             var elapsedTime = this.duration.value() - this._durationLeft;
 
+            // Count what animation loop we're on, so we can change the image offset if it is randomized
+            var animationLoop = Math.floor(elapsedTime / animationLength);
+            if (animationLoop !== this._lastAnimationLoop) {
+                this._currentImageOffset = null;
+            }
+            this._lastAnimationLoop = animationLoop;
+
             var timeIntoAnimation = elapsedTime % animationLength;
             var cur = 0;
             for (var i = 0, l = this.animations.frameLengths.length; i < l; i++) {
@@ -180,6 +189,18 @@
         },
         imageColor: function() {
             return this.animations.color;
+        },
+        imageOffset: function() {
+            // If offset is an array, choose a random offset from within the array and keep that offset for the rest of the animation loop
+            if ($.isArray(this.animations.offset)) {
+                if (this._currentImageOffset === null) {
+                    this._currentImageOffset = Game.Util.randomIntFromInterval(this.animations.offset[0], this.animations.offset[1]);
+                }
+                return this._currentImageOffset;
+            }
+            else {
+                return this.animations.offset;
+            }
         }
 
 

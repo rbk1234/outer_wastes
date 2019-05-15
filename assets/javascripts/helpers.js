@@ -165,6 +165,10 @@
         return (typeof obj === 'string' || obj instanceof String);
     };
 
+    Game.Util.randomIntFromInterval = function(min, max) {
+        return Math.floor(Math.random()*(max - min + 1) + min);
+    };
+
     // Creates an array of length 'length', with each element set to be 'initialValue'
     Game.Util.createArray = function(length, initialValue) {
         initialValue = Game.Util.defaultFor(initialValue, null);

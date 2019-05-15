@@ -430,7 +430,7 @@
             Game.Util.iterateObject(frame.effects, function(effectId, effectUi) {
                 var newImage = effectUi.effect.image();
                 if (newImage && newImage !== effectUi.lastImage) {
-                    self._paintImage(newImage, effectUi.$animation, 0, effectUi.effect.imageColor());
+                    self._paintImage(newImage, effectUi.$animation, unit.imageOffset() + effectUi.effect.imageOffset(), effectUi.effect.imageColor());
                     effectUi.lastImage = newImage;
                 }
             });
@@ -725,8 +725,10 @@
         _refreshEffectInFrame: function(frame, oldEffect, newEffect) {
             var effects = frame.effects;
 
+            // update effectUi pointer
             effects[newEffect.id] = effects[oldEffect.id];
             delete effects[oldEffect.id];
+            effects[newEffect.id].effect = newEffect;
 
             if (newEffect.hasDuration) {
                 var totalCooldown = newEffect.duration.value();
