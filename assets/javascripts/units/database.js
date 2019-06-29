@@ -18,7 +18,7 @@
             stats: {
                 maxHealth: 180,
                 attackSpeed: 1.25,
-                attackDamage: 85
+                attackDamage: 15
             }
         },
         native: {
@@ -26,8 +26,7 @@
             stats: {
                 maxHealth: 300,
                 attackSpeed: 0.5,
-                attackDamage: 20,
-                reward: 50
+                attackDamage: 20
             }
         },
 
@@ -78,7 +77,26 @@
                 reward: 20
             },
             abilityKeys: ['iceTrap', 'explosiveTrap']
+        },
+        bear: {
+            name: 'Grizzly Bear',
+            stats: {
+                maxHealth: 900,
+                attackSpeed: 1.0,
+                attackDamage: 53,
+                reward: 20
+            }
+        },
+        bearCub: {
+            name: 'Grizzly Cub',
+            stats: {
+                maxHealth: 200,
+                attackSpeed: 1.25,
+                attackDamage: 10,
+                reward: 5
+            }
         }
+
 
 
     };

@@ -77,7 +77,12 @@
                     });
                 }
             }
-        }
+        },
+        forest_grizzlies: {
+            description: 'You come upon a grizzly den.',
+            enemies: ['bear', 'bearCub', 'bearCub']
+        },
+
 
     };
 

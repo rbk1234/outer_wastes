@@ -682,6 +682,9 @@
         portrait: function() {
             return this.animations.portrait;
         },
+        portraitFontSize: function() {
+            return this.animations.portraitFontSize || 1.0;
+        },
         image: function() {
             var timeIntoAnimation, image;//, cur, i, len;
 

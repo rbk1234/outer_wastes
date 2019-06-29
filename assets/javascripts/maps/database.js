@@ -17,7 +17,7 @@
             color: 'green',
             description: "",
             background: 'forest',
-            encounters: ['forest_goblins']
+            encounters: ['forest_grizzlies']
         },
         cave: {
             name: 'Cave',

@@ -123,7 +123,7 @@
             frame.$name.html(unit.name);
 
             // portrait
-            var $pre = $('<div class="ascii-content"></div>');
+            var $pre = $('<div class="ascii-content"></div>').css('font-size', unit.portraitFontSize() + 'em');
             unit.portrait().forEach(function(imageRow) {
                 $('<span>'+imageRow+'</span><br>').appendTo($pre);
             });
