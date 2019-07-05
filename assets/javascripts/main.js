@@ -49,7 +49,7 @@
     Game.Player = new Game.Units.Unit('player', {teamId: Game.Constants.teamIds.player});
     Game.UnitEngine.addUnit(Game.Player);
 
-    if (true) {
+    if (false) {
         var holyLight = new Game.Abilities.Ability('holyLight');
         Game.Player.gainAbility(holyLight);
         Game.Player.equipAbility(holyLight, 0);
@@ -74,7 +74,7 @@
         Game.Player.gainAbility(guardianAngel);
         //Game.Player.equipAbility(guardianAngel, 4);
     }
-    if (true) {
+    if (false) {
         var livingSeed = new Game.Abilities.Ability('livingSeed');
         Game.Player.gainAbility(livingSeed);
         //Game.Player.equipAbility(livingSeed, 0);

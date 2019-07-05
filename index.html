@@ -57,112 +57,6 @@
     </div>
 
 
-
-    <div id="player-and-target-area">
-      <table class="no-rows no-spacing" style="max-width: 1280px; margin: 0 auto;">
-        <tbody>
-        <tr>
-          <td width="0%"></td>
-          <td width="25%">
-            <div id="player-frame">
-              <div class="portrait"></div>
-              <div class="non-portrait">
-                <div class="name"></div>
-                <div class="bar health-bar">
-                  <div class="bar-layer background red" style="width: 100%;"></div>
-                  <div class="bar-layer shield" style="width: 0;"></div>
-                  <div class="bar-layer health" style="width: 100%;"></div>
-                  <div class="bar-layer bar-text" style="width: 100%;"></div>
-                </div>
-                <div class="bar mana-bar">
-                  <div class="bar-layer background" style="width: 100%;"></div>
-                  <div class="bar-layer mana" style="width: 100%;"></div>
-                  <div class="bar-layer bar-text" style="width: 100%;"></div>
-                </div>
-                <div class="effects-area"></div>
-                <div class="bar cast-bar" hidden style="opacity: 0;">
-                  <div class="bar-layer background" style="width: 100%;"></div>
-                  <div class="bar-layer cast-progress" style="width: 100%;"></div>
-                  <div class="bar-layer bar-text" style="width: 100%;"></div>
-                </div>
-              </div>
-            </div>
-          </td>
-          <td width="25%">
-            <div id="target-frame">
-              <div class="non-portrait">
-                <div class="name"></div>
-                <div class="bar health-bar">
-                  <div class="bar-layer background red" style="width: 100%;"></div>
-                  <div class="bar-layer shield" style="width: 0;"></div>
-                  <div class="bar-layer health" style="width: 100%;"></div>
-                  <div class="bar-layer bar-text" style="width: 100%;"></div>
-                </div>
-                <div class="bar mana-bar">
-                  <div class="bar-layer background" style="width: 100%;"></div>
-                  <div class="bar-layer mana" style="width: 100%;"></div>
-                  <div class="bar-layer bar-text" style="width: 100%;"></div>
-                </div>
-                <div class="effects-area"></div>
-                <div class="bar cast-bar" hidden style="opacity: 0;">
-                  <div class="bar-layer background" style="width: 100%;"></div>
-                  <div class="bar-layer cast-progress" style="width: 100%;"></div>
-                  <div class="bar-layer bar-text" style="width: 100%;"></div>
-                </div>
-              </div>
-              <div class="portrait"></div>
-
-            </div>
-          </td>
-          <td width="50%">
-            <div id="encounter-header" class="">
-
-              <div class="standard-info" hidden>
-                <table>
-                  <tbody>
-                  <tr>
-                    <td colspan="3" style="position:relative;">
-                      <div id="current-tile-desc">
-                        You are in the <span class="tile-name"></span>.
-                      </div>
-                      <div id="encounter-info">
-                      </div>
-
-                      <a class="full-map-button button" hidden style="position:absolute;top:0;right:0;" data-toggle="map-modal">
-                        Map
-                      </a>
-                    </td>
-                  </tr>
-                  <tr>
-                  </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              <div class="game-over" hidden>
-                <table>
-                  <tbody>
-                  <tr>
-                    <td class="nostretch">
-                      <div class="skull"></div>
-                    </td>
-                    <td>Your party has been killed.</td>
-                    <td class="nostretch">
-                      <button class="restart alert button">Restart</button>
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-
-    </div>
-
-
     <div id="units-area">
       <div style="height:100%;max-width:1280px;margin:0 auto;">
 
@@ -178,6 +72,11 @@
               <div class="bar-layer background red" style="width: 100%;"></div>
               <div class="bar-layer shield" style="width: 0;"></div>
               <div class="bar-layer health" style="width: 100%;"></div>
+              <!--<div class="bar-layer bar-text" style="width: 100%;"></div>-->
+            </div>
+            <div class="bar mana-bar">
+              <div class="bar-layer background" style="width: 100%;"></div>
+              <div class="bar-layer mana" style="width: 100%;"></div>
               <!--<div class="bar-layer bar-text" style="width: 100%;"></div>-->
             </div>
           </div>
@@ -204,7 +103,7 @@
 
             <div id="mini-map" style="opacity:0;padding:0 2rem;">
               <div class="ascii-content">
-                <table>
+                <table class="no-rows no-spacing">
                   <tbody>
                   <tr>
                     <td width="33%"></td>
@@ -239,66 +138,105 @@
     </div>
 
 
-    <div id="cast-bar-area">
-      <div id="player-cast-bar" class="bar cast-bar" style="opacity: 0;">
-        <div class="bar-layer background" style="width: 100%;"></div>
-        <div class="bar-layer cast-progress" style="width: 100%;"></div>
-        <div class="bar-layer bar-text" style="width: 100%;"></div>
-      </div>
-
-
-      <div id="ability-tooltip" class="ability-tooltip" hidden>
-        <table class="no-rows no-spacing">
-          <tbody>
-          <tr>
-            <td colspan="2" class="name"></td>
-          </tr>
-          <tr>
-            <td colspan="2" class="mana-cost"></td>
-          </tr>
-          <tr>
-            <td class="cast-time"></td>
-            <td class="cooldown text-right"></td>
-          </tr>
-          <tr>
-            <td colspan="2" class="cooldown-remaining"></td>
-          </tr>
-          <tr>
-            <td colspan="2" class="description"></td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-
-    </div>
-
-
-
 
     <div id="bottom-bar">
-      <div id="player-bars" class="bottom-section">
+      <div class="grid-x" style="max-width: 1280px; margin: 0 auto;">
+        <div class="cell small-4">
+          <div class="bottom-container">
+            <div id="target-frame">
+              <table class="no-rows tight-spacing">
+                <tbody>
+                <tr>
+                  <td>
 
-      </div>
+                    <table class="no-rows no-spacing" style="margin-bottom:0.75rem;">
+                      <tbody>
+                      <tr>
+                        <td class="nostretch">
+                          <div class="portrait" style="margin-right:0.5rem;"></div>
+                        </td>
+                        <td>
+                          <div class="formal-name">Rinley</div>
+                          <div class="name" style="font-size:0.875rem;"></div>
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
 
-      <button id="ability-button-template" class="action-bar-button blank">
-        <span class="hotkey"></span>
-        <canvas class="cooldown-status"></canvas>
-      </button>
-      <div id="ability-bar" class="bottom-section" style="text-align:center;"></div>
+                    <table class="no-rows bottom-spacing" style="font-size: 0.875rem;">
+                      <tbody>
+                      <tr>
+                        <td class="nostretch">Health&emsp;</td>
+                        <td>
+                          <div class="bar health-bar">
+                            <div class="bar-layer background red" style="width: 100%;"></div>
+                            <div class="bar-layer shield" style="width: 0;"></div>
+                            <div class="bar-layer health" style="width: 100%;"></div>
+                            <div class="bar-layer bar-text" style="width: 100%;"></div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="nostretch">Mana&emsp;</td>
+                        <td>
+                          <div class="bar mana-bar">
+                            <div class="bar-layer background" style="width: 100%;"></div>
+                            <div class="bar-layer mana" style="width: 100%;"></div>
+                            <div class="bar-layer bar-text" style="width: 100%;"></div>
+                          </div>
+                        </td>
+                      </tr>
+                      <!--<tr>-->
+                        <!--<td class="nostretch">Threat&emsp;</td>-->
+                        <!--<td>10%</td>-->
+                      <!--</tr>-->
+                      <!--<tr>-->
+                      <!--<td colspan="2"><a>View all stats</a></td>-->
+                      <!--</tr>-->
+                      </tbody>
+                    </table>
 
-      <div id="item-area" class="bottom-section text-right">
-        <div>
-          <p><button class="button" data-toggle="abilities-modal">Abilities</button></p>
+
+                  </td>
+                  <td class="nostretch">
+                    <table class="no-rows inventory">
+                      <tbody>
+                      <tr>
+                        <td><div></div></td>
+                        <td><div></div></td>
+                      </tr>
+                      <tr>
+                        <td><div></div></td>
+                        <td><div></div></td>
+                      </tr>
+                      <tr>
+                        <td><div></div></td>
+                        <td><div></div></td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+
+
+
+
+            </div>
+          </div>
+
         </div>
-        <!--&emsp;-->
-        <!--<div>-->
-          <!--<p><button class="button" data-toggle="world-map-modal">World</button></p>-->
-        <!--</div>-->
-        <!--&emsp;-->
-        <!--<div>-->
-          <!--<p><button class="button" data-toggle="map-modal">Map</button></p>-->
-        <!--</div>-->
-
+        <div class="cell small-4">
+          <div class="bottom-container">
+            Loot!
+          </div>
+        </div>
+        <div class="cell small-4">
+          <div class="bottom-container">
+            Text!
+          </div>
+        </div>
       </div>
     </div>
 

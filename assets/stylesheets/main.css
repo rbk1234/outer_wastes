@@ -61,57 +61,42 @@ body {
     z-index: 2; }
     #body-content #player-and-target-area table tr td {
       vertical-align: top; }
-  #body-content #cast-bar-area {
-    flex: 0 1 auto;
-    position: relative;
-    height: 2rem; }
-    #body-content #cast-bar-area #player-cast-bar {
-      position: absolute;
-      bottom: 0.5rem;
-      left: 50%;
-      margin-left: -10rem;
-      height: 1.5rem;
-      width: 20rem; }
   #body-content #bottom-bar {
-    display: flex;
-    flex-flow: row;
-    flex: 0 1 auto;
-    min-height: 5rem;
-    background: #816271;
-    border: 2px solid #4e495f; }
+    height: 10rem;
+    background: #272744; }
     #body-content #bottom-bar .bottom-section {
       display: flex;
       justify-content: center;
       flex: 1;
       padding: 0.5rem; }
 
-#player-frame, #target-frame {
-  display: flex;
-  flex-flow: row;
-  padding: 0.75rem; }
-  #player-frame .portrait, #target-frame .portrait {
-    margin-top: 0.5rem;
-    height: 5rem;
-    width: 5rem;
-    flex: 0 1 auto;
-    background: #20394f;
-    border-radius: 30%;
-    border: 1px solid black;
+.bottom-container {
+  margin: 0.5rem;
+  height: 9rem;
+  color: white;
+  background: #494d7e; }
+
+#player-frame .portrait, #target-frame .portrait {
+  height: 3rem;
+  width: 3rem;
+  background: #20394f;
+  border-radius: 30%;
+  border: 1px solid black;
+  color: white;
+  font-size: 0.875rem;
+  line-height: 1.25;
+  padding-left: 0.65rem;
+  padding-top: 0.35rem; }
+#player-frame .non-portrait, #target-frame .non-portrait {
+  flex: 1 1 auto;
+  padding: 0.5rem; }
+  #player-frame .non-portrait .name, #target-frame .non-portrait .name {
     color: white;
-    font-size: 1.5rem;
-    line-height: 1.25;
-    padding-left: 1rem;
-    padding-top: 0.5rem; }
-  #player-frame .non-portrait, #target-frame .non-portrait {
-    flex: 1 1 auto;
-    padding: 0.5rem; }
-    #player-frame .non-portrait .name, #target-frame .non-portrait .name {
-      color: white;
-      text-align: center; }
-    #player-frame .non-portrait .health-bar, #player-frame .non-portrait .mana-bar, #target-frame .non-portrait .health-bar, #target-frame .non-portrait .mana-bar {
-      margin-bottom: 0.25rem; }
-    #player-frame .non-portrait .effects-area, #target-frame .non-portrait .effects-area {
-      height: 2rem; }
+    text-align: center; }
+  #player-frame .non-portrait .health-bar, #player-frame .non-portrait .mana-bar, #target-frame .non-portrait .health-bar, #target-frame .non-portrait .mana-bar {
+    margin-bottom: 0.25rem; }
+  #player-frame .non-portrait .effects-area, #target-frame .non-portrait .effects-area {
+    height: 2rem; }
 
 #encounter-background {
   overflow: hidden;
@@ -119,7 +104,7 @@ body {
   width: 100%;
   opacity: 0.5;
   color: white;
-  bottom: 5rem; }
+  bottom: 10rem; }
   #encounter-background .green {
     color: #00ff00; }
   #encounter-background .brown {
@@ -188,13 +173,24 @@ body {
           display: block;
           overflow: visible;
           position: absolute;
-          bottom: 1rem;
+          bottom: 1.35rem;
           left: 0; }
-      .unit-frame .flex-col .clickable-area .bar {
+      .unit-frame .flex-col .clickable-area .bar.health-bar {
         height: 0.75rem; }
+      .unit-frame .flex-col .clickable-area .bar.mana-bar {
+        height: 0.35rem; }
     .unit-frame .flex-col .effects-area {
       padding-top: 0.25rem;
       height: 2rem; }
+
+.inventory > tbody > tr > td {
+  padding: 0.15em 0.15em; }
+.inventory div {
+  height: 2.5rem;
+  width: 2.5rem;
+  background: #0f2a3f;
+  border-radius: 0.313rem;
+  border: 1px solid #aaa; }
 
 .ascii-content {
   font-family: monospace, monospace;
@@ -384,7 +380,7 @@ body {
   position: relative;
   overflow: hidden;
   height: 1.5rem;
-  border: 1px solid #333;
+  border: 1px solid #111;
   border-radius: 0.1rem; }
   .bar .bar-layer {
     position: absolute;
@@ -618,16 +614,19 @@ table {
     background: transparent;
     border: none; }
 
-table.no-rows tbody tr.even,
-table.no-rows tbody tr:nth-of-type(even),
-table.no-rows tbody tr.odd,
-table.no-rows tbody tr:nth-of-type(odd) {
+table.no-rows > tbody > tr.even,
+table.no-rows > tbody > tr:nth-of-type(even),
+table.no-rows > tbody > tr.odd,
+table.no-rows > tbody > tr:nth-of-type(odd) {
   background: transparent; }
 
-table.tight-spacing tbody tr td {
+table.tight-spacing > tbody > tr > td {
   padding: 0.25em 0.25em; }
 
-table.no-spacing tbody tr td {
+table.bottom-spacing > tbody > tr > td {
+  padding: 0 0 0.25em 0; }
+
+table.no-spacing > tbody > tr > td {
   padding: 0; }
 
 .button {

@@ -4,7 +4,7 @@
 
     Game.namespace('Units').Database = {
         player: {
-            name: 'Healer (You)',
+            name: 'Cleric',
             stats: {
                 maxHealth: 120,
                 maxMana: 400,
@@ -17,6 +17,8 @@
             name: 'Swashbuckler',
             stats: {
                 maxHealth: 180,
+                maxMana: 100,
+                manaRegen: 10,
                 attackSpeed: 1.25,
                 attackDamage: 15
             }
@@ -63,7 +65,7 @@
             stats: {
                 maxHealth: 250,
                 attackSpeed: 1.2,
-                attackDamage: 14,
+                attackDamage: 3,
                 reward: 20
             },
             abilityKeys: ['webWrap']

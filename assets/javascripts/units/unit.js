@@ -40,7 +40,8 @@
 
             // init internals
             this.health = this.maxHealth.value();
-            this.mana = this.maxMana.value();
+            //this.mana = this.maxMana.value();
+            this.mana = 0;
 
             this._attackTimer = 0;
             //this._attackTimer = Math.random() * 0.5; // remaining time until next attack. Initialize with random wait

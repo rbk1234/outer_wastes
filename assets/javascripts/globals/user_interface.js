@@ -231,6 +231,7 @@
             });
 
             var $healthBar = $frame.find('.health-bar');
+            var $manaBar = $frame.find('.mana-bar');
             var $castBar = $frame.find('.cast-bar');
 
             // Cache jquery references to elements that will need constant updating
@@ -252,6 +253,9 @@
                 $healthBarProgress: $healthBar.find('.bar-layer.health'),
                 $healthBarShield: $healthBar.find('.bar-layer.shield'),
                 $healthBarText: $healthBar.find('.bar-layer.bar-text'),
+
+                $manaBarProgress: $manaBar.find('.bar-layer.mana'),
+                $manaBarText: $manaBar.find('.bar-layer.bar-text'),
 
                 $castBar: $castBar,
                 $castBarProgress: $castBar.find('.bar-layer.cast-progress'),
@@ -446,6 +450,17 @@
             else {
                 frame.$healthBarShield.css('width', 0).removeClass('active');
             }
+
+            if (unit.maxMana.value() === null) {
+                frame.$manaBarProgress.css('width', '0%');
+                frame.$manaBarText.html('');
+            }
+            else {
+                var manaPercent = unit.percentMana() + '%';
+                frame.$manaBarProgress.css('width', manaPercent);
+                frame.$manaBarText.html(Game.Util.round(unit.mana) + '/' + Game.Util.round(unit.maxMana.value()));
+            }
+
         },
 
         _paintImage: function(image, $pre, offset, color) {

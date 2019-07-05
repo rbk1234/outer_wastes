@@ -64,9 +64,18 @@ $mini-map-button: #08141e;
 $mini-map-button-border: #4e495f;
 $mini-map-button-hover: #0f2a3f;
 
-$bottom-bar-height: 5rem;
+$bottom-bar-height: 10rem;
 
 // this could be cool too: https://lospec.com/palette-list/oil-6
+$dark-purple: #272744;
+$purple: #494d7e;
+$pink: #8b6d9c;
+$baishe: #c69fa5;
+$gold: #f2d3ab;
+$light: #fbf5ef;
+
+$black: #08141e;
+$dark-blue: #0f2a3f;
 
 body {
   font-family: "Roboto Condensed", sans-serif;
@@ -176,31 +185,31 @@ body {
       }
     }
   }
-  #cast-bar-area {
-    flex: 0 1 auto; // fit to content
-
-    position: relative;
-    height: 2rem;
-    
-    #player-cast-bar {
-      position:absolute;
-      bottom:0.5rem;
-      left:50%;
-      margin-left:-10rem;
-      height:1.5rem;
-
-      width: 20rem;
-    }
-  }
+  //#cast-bar-area {
+  //  flex: 0 1 auto; // fit to content
+  //
+  //  position: relative;
+  //  height: 2rem;
+  //
+  //  #player-cast-bar {
+  //    position:absolute;
+  //    bottom:0.5rem;
+  //    left:50%;
+  //    margin-left:-10rem;
+  //    height:1.5rem;
+  //
+  //    width: 20rem;
+  //  }
+  //}
   #bottom-bar {
-    display: flex;
-    flex-flow: row;
+    //display: flex;
+    //flex-flow: row;
+    //
+    //flex: 0 1 auto; // fill to content
+    height: $bottom-bar-height;
 
-    flex: 0 1 auto; // fill to content
-    min-height: $bottom-bar-height;
-
-    background: $bottom-bar-bg;
-    border: 2px solid $bottom-bar-border;
+    background: $dark-purple;
+    //border: 2px solid $bottom-bar-border;
 
     // Centering bottom bar according to https://stackoverflow.com/a/32546033/4904996
     .bottom-section {
@@ -217,28 +226,33 @@ body {
 
 // -------------------------------------------------------- Detailed frames (one for player, one for target)
 
+.bottom-container {
+  margin: 0.5rem;
+  //padding: 0.5rem;
+  height: 9rem;
+  color: white;
+  background: $purple;
+}
 
 #player-frame, #target-frame {
-  display: flex;
-  flex-flow: row;
+  //display: flex;
+  //flex-flow: row;
   
-  padding: 0.75rem;
+  //padding: 0.75rem;
   
   .portrait {
-    margin-top: 0.5rem;
-    height: 5rem;
-    width: 5rem;
-    flex: 0 1 auto; // fit to content
-    
+    height: 3rem;
+    width: 3rem;
+
     background: $portrait-bg;
     border-radius: 30%;
     border: 1px solid black;
     
     color: white;
-    font-size: 1.5rem;
+    font-size: 0.875rem;
     line-height: 1.25;
-    padding-left: 1rem;
-    padding-top: 0.5rem;
+    padding-left: 0.65rem;
+    padding-top: 0.35rem;
     
     //&:before {
     //  content: url('icons/wizard-face.svg');
@@ -389,12 +403,15 @@ body {
           overflow: visible;
 
           position: absolute;
-          bottom: 1rem;
+          bottom: 1.35rem;
           left: 0;
         }
       }
-      .bar {
+      .bar.health-bar {
         height: 0.75rem;
+      }
+      .bar.mana-bar {
+        height: 0.35rem;
       }
     }
 
@@ -402,6 +419,20 @@ body {
       padding-top: 0.25rem;
       height: 2rem;
     }
+  }
+}
+
+.inventory {
+  > tbody > tr > td {
+    padding: 0.15em 0.15em;
+  }
+
+  div {
+    height: 2.5rem;
+    width: 2.5rem;
+    background: $dark-blue;
+    border-radius: 0.313rem;
+    border: 1px solid #aaa;
   }
 }
 
@@ -812,7 +843,7 @@ body {
   overflow: hidden;
   height: 1.5rem;
 
-  border: 1px solid #333;
+  border: 1px solid #111;
   border-radius: 0.1rem;
 
   // TODO HACK: The inside of the bar is sometimes not reaching the very end (stuck at 99%)
@@ -1207,20 +1238,25 @@ table {
   }
 }
 table.no-rows{
-  tbody tr.even,
-  tbody tr:nth-of-type(even),
-  tbody tr.odd,
-  tbody tr:nth-of-type(odd){
+  > tbody > tr.even,
+  > tbody > tr:nth-of-type(even),
+  > tbody > tr.odd,
+  > tbody > tr:nth-of-type(odd){
     background: transparent;
   }
 }
 table.tight-spacing {
-  tbody tr td {
+  > tbody > tr > td {
     padding: 0.25em 0.25em;
   }
 }
+table.bottom-spacing {
+  > tbody > tr > td {
+    padding: 0 0 0.25em 0;
+  }
+}
 table.no-spacing {
-  tbody tr td {
+  > tbody > tr > td {
     padding: 0;
   }
 }
