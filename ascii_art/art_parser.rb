@@ -16,15 +16,15 @@
 #
 # And you run:
 #
-#   ruby ascii_art/art_parser.rb -f source.txt -l 5
+#   ruby ascii_art/art_parser.rb -f source.txt
 #
 # An output.txt file will be generated with strings:
 #
-# '~O   ',
-# '/ \\  ',
+# '~O',
+# '/ \\',
 # '\\+---',
-# ' |\\  ',
-# ' /|  '
+# ' |\\',
+# ' /|'
 #
 # ----------------------------------------------------------------------------------------------------------------------
 

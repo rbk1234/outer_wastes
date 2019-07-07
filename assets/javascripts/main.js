@@ -33,21 +33,33 @@
 
     var native = new Game.Units.Unit('native', {teamId: Game.Constants.teamIds.player});
     Game.UnitEngine.addUnit(native);
-    var native = new Game.Units.Unit('native', {teamId: Game.Constants.teamIds.player});
-    Game.UnitEngine.addUnit(native);
+    native.equipAbility('special', new Game.Abilities.Ability('blessedShield'));
+
+    var brewmaster = new Game.Units.Unit('brewmaster', {teamId: Game.Constants.teamIds.player});
+    Game.UnitEngine.addUnit(brewmaster);
+    brewmaster.equipAbility('special', new Game.Abilities.Ability('backstab'));
+
     //var native = new Game.Units.Unit('native', {teamId: Game.Constants.teamIds.player});
     //Game.UnitEngine.addUnit(native);
     //var native = new Game.Units.Unit('native', {teamId: Game.Constants.teamIds.player});
     //Game.UnitEngine.addUnit(native);
     var swashbuckler = new Game.Units.Unit('swashbuckler', {teamId: Game.Constants.teamIds.player});
     Game.UnitEngine.addUnit(swashbuckler);
+    swashbuckler.equipAbility('special', new Game.Abilities.Ability('backstab'));
+
     var swashbuckler = new Game.Units.Unit('swashbuckler', {teamId: Game.Constants.teamIds.player});
     Game.UnitEngine.addUnit(swashbuckler);
+    swashbuckler.equipAbility('special', new Game.Abilities.Ability('backstab'));
+
     //var swashbuckler = new Game.Units.Unit('swashbuckler', {teamId: Game.Constants.teamIds.player});
     //Game.UnitEngine.addUnit(swashbuckler);
 
-    Game.Player = new Game.Units.Unit('player', {teamId: Game.Constants.teamIds.player});
-    Game.UnitEngine.addUnit(Game.Player);
+    //Game.Player = new Game.Units.Unit('player', {teamId: Game.Constants.teamIds.player});
+    //Game.UnitEngine.addUnit(Game.Player);
+
+    var cleric = new Game.Units.Unit('cleric', { teamId: Game.Constants.teamIds.player });
+    Game.UnitEngine.addUnit(cleric);
+    cleric.equipAbility('special', new Game.Abilities.Ability('holyNova'));
 
     if (false) {
         var holyLight = new Game.Abilities.Ability('holyLight');

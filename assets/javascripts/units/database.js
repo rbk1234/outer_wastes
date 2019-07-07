@@ -3,13 +3,12 @@
     'use strict';
 
     Game.namespace('Units').Database = {
-        player: {
+        cleric: {
             name: 'Cleric',
             stats: {
                 maxHealth: 120,
-                maxMana: 400,
                 manaRegen: 7,
-                attackSpeed: 0.3,
+                attackSpeed: 0.7,
                 attackDamage: 5
             }
         },
@@ -17,7 +16,6 @@
             name: 'Swashbuckler',
             stats: {
                 maxHealth: 180,
-                maxMana: 100,
                 manaRegen: 10,
                 attackSpeed: 1.25,
                 attackDamage: 15
@@ -29,6 +27,14 @@
                 maxHealth: 300,
                 attackSpeed: 0.5,
                 attackDamage: 20
+            }
+        },
+        brewmaster: {
+            name: 'Brewmaster',
+            stats: {
+                maxHealth: 350,
+                attackSpeed: 0.9,
+                attackDamage: 18
             }
         },
 
@@ -47,7 +53,7 @@
             stats: {
                 maxHealth: 350,
                 attackSpeed: 0.8,
-                attackDamage: 17,
+                attackDamage: 12,
                 reward: 10
             }
         },
@@ -56,7 +62,7 @@
             stats: {
                 maxHealth: 1100,
                 attackSpeed: 1.0,
-                attackDamage: 52,
+                attackDamage: 25,
                 reward: 20
             }
         },
@@ -64,6 +70,7 @@
             name: 'Spider',
             stats: {
                 maxHealth: 250,
+                manaRegen: 10,
                 attackSpeed: 1.2,
                 attackDamage: 3,
                 reward: 20
@@ -75,7 +82,7 @@
             stats: {
                 maxHealth: 700,
                 attackSpeed: 0.8,
-                attackDamage: 30,
+                attackDamage: 15,
                 reward: 20
             },
             abilityKeys: ['iceTrap', 'explosiveTrap']
@@ -85,7 +92,7 @@
             stats: {
                 maxHealth: 900,
                 attackSpeed: 1.0,
-                attackDamage: 53,
+                attackDamage: 20,
                 reward: 20
             }
         },
@@ -94,7 +101,7 @@
             stats: {
                 maxHealth: 200,
                 attackSpeed: 1.25,
-                attackDamage: 10,
+                attackDamage: 5,
                 reward: 5
             }
         }

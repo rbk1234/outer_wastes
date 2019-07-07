@@ -58,8 +58,8 @@
                 // Only draw once (no matter how many iterations)
                 self._refreshDetailedFrames();
                 self._refreshUnitFrames();
-                self._refreshPlayerBars();
-                self._refreshAbilityBar();
+                //self._refreshPlayerBars();
+                //self._refreshAbilityBar();
                 self._refreshAbilityTooltip();
 
                 self.updateTimers(iterations * period);
@@ -151,7 +151,6 @@
             // todo stop updates
         },
         _refreshDetailedFrames: function() {
-            this._refreshDetailedFrame(this._playerFrame, Game.Player);
             this._refreshDetailedFrame(this._targetFrame, this.selectedUnit());
         },
         _refreshDetailedFrame: function(frame, unit) {
@@ -171,14 +170,14 @@
                 frame.$healthBarShield.css('width', 0).removeClass('active');
             }
 
-            if (unit.maxMana.value() === null) {
+            if (unit.maxMana() === null) {
                 frame.$manaBarProgress.css('width', '0%');
                 frame.$manaBarText.html('');
             }
             else {
                 var manaPercent = unit.percentMana() + '%';
                 frame.$manaBarProgress.css('width', manaPercent);
-                frame.$manaBarText.html(Game.Util.round(unit.mana) + '/' + Game.Util.round(unit.maxMana.value()));
+                frame.$manaBarText.html(Game.Util.round(unit.mana) + '/' + Game.Util.round(unit.maxMana()));
             }
         },
 
@@ -358,8 +357,6 @@
                     self._allyIndices[unit.id] = index;
                     self._loadUnitFrame(unit);
                 });
-
-                this._loadDetailedFrame(this._playerFrame, Game.Player);
             }
             else {
                 this._enemyFrames.forEach(function(frame) {
@@ -370,9 +367,9 @@
                     self._enemyIndices[unit.id] = index;
                     self._loadUnitFrame(unit);
                 });
-
-                this._loadDetailedFrame(this._targetFrame, this.selectedUnit());
             }
+
+            this._loadDetailedFrame(this._targetFrame, this.selectedUnit());
         },
 
         _loadUnitFrame: function(unit) {
@@ -451,14 +448,14 @@
                 frame.$healthBarShield.css('width', 0).removeClass('active');
             }
 
-            if (unit.maxMana.value() === null) {
+            if (unit.maxMana() === null) {
                 frame.$manaBarProgress.css('width', '0%');
                 frame.$manaBarText.html('');
             }
             else {
                 var manaPercent = unit.percentMana() + '%';
                 frame.$manaBarProgress.css('width', manaPercent);
-                frame.$manaBarText.html(Game.Util.round(unit.mana) + '/' + Game.Util.round(unit.maxMana.value()));
+                frame.$manaBarText.html(Game.Util.round(unit.mana) + '/' + Game.Util.round(unit.maxMana()));
             }
 
         },
@@ -643,35 +640,26 @@
         addEffect: function(unit, effect) {
             this._addEffectToFrame(this._getUnitFrame(unit), effect);
 
-            if (this.selectedUnit() && unit.id === this.selectedUnit().id) {
-                this._addEffectToFrame(this._targetFrame, effect);
-            }
-            if (unit.id === Game.Player.id) {
-                this._addEffectToFrame(this._playerFrame, effect);
-            }
+            //if (this.selectedUnit() && unit.id === this.selectedUnit().id) {
+            //    this._addEffectToFrame(this._targetFrame, effect);
+            //}
         },
 
         removeEffect: function(unit, effect) {
             this._removeEffectFromFrame(this._getUnitFrame(unit), effect);
 
-            if (this.selectedUnit() && unit.id === this.selectedUnit().id) {
-                this._removeEffectFromFrame(this._targetFrame, effect);
-            }
-            if (unit.id === Game.Player.id) {
-                this._removeEffectFromFrame(this._playerFrame, effect);
-            }
+            //if (this.selectedUnit() && unit.id === this.selectedUnit().id) {
+            //    this._removeEffectFromFrame(this._targetFrame, effect);
+            //}
         },
 
         // Refresh an existing effect so it stays in the same place (won't jump to end of $effectsArea)
         refreshEffect: function(unit, oldEffect, newEffect) {
             this._refreshEffectInFrame(this._getUnitFrame(unit), oldEffect, newEffect);
 
-            if (this.selectedUnit() && unit.id === this.selectedUnit().id) {
-                this._refreshEffectInFrame(this._targetFrame, oldEffect, newEffect);
-            }
-            if (unit.id === Game.Player.id) {
-                this._refreshEffectInFrame(this._playerFrame, oldEffect, newEffect);
-            }
+            //if (this.selectedUnit() && unit.id === this.selectedUnit().id) {
+            //    this._refreshEffectInFrame(this._targetFrame, oldEffect, newEffect);
+            //}
         },
 
         _addEffectToFrame: function(frame, effect) {
@@ -774,23 +762,23 @@
 
             // Esc key (cancel cast)
             Game.Keyboard.registerKey(27, function() {
-                if (Game.Player.isCasting()) {
-                    Game.Player.cancelCast('Interrupted');
-                }
-                else {
+                //if (Game.Player.isCasting()) {
+                //    Game.Player.cancelCast('Interrupted');
+                //}
+                //else {
                     self.clearTarget();
-                }
+                //}
             });
 
             // alt key (self cast modifier)
-            Game.Keyboard.registerKey(18, function() {
-                // With this here we can immediately update ability target requirements as soon as alt is pressed
-                self.overrideTargetUnit(Game.Player);
-            }, function() {
-                // Note: Can't depend on catching this (e.g. hold alt then switch to another window)
-                //       So we also clear override if altKey is not pressed during actual ability click
-                self.clearTargetOverride();
-            });
+            //Game.Keyboard.registerKey(18, function() {
+            //    // With this here we can immediately update ability target requirements as soon as alt is pressed
+            //    self.overrideTargetUnit(Game.Player);
+            //}, function() {
+            //    // Note: Can't depend on catching this (e.g. hold alt then switch to another window)
+            //    //       So we also clear override if altKey is not pressed during actual ability click
+            //    self.clearTargetOverride();
+            //});
 
             var $abilityTooltip = $('#ability-tooltip');
             this._abilityTooltip = {
@@ -844,7 +832,7 @@
                 if (self._targetedUnitOverride && !evt.altKey) {
                     self.clearTargetOverride(); // Backup catch - in case alt key was released in other window
                 }
-                Game.Player.castAbility(ability, self.targetedUnit());
+                //Game.Player.castAbility(ability, self.targetedUnit());
             }
 
             var keyCode = this._keyCodeForAbilityIndex(index);
@@ -891,15 +879,15 @@
         },
 
         // Note: ability cooldown timers are handled separately
-        _refreshAbilityBar: function() {
-            var self = this;
-
-            // refreshes if buttons disabled or not based on mana
-            Game.Util.iterateObject(this._abilityButtons, function(abilityId, buttonData) {
-                var ability = buttonData.ability;
-                self._toggleAbilityManaReq(ability, !Game.Player.hasManaForAbility(ability));
-            });
-        },
+        //_refreshAbilityBar: function() {
+        //    var self = this;
+        //
+        //    // refreshes if buttons disabled or not based on mana
+        //    Game.Util.iterateObject(this._abilityButtons, function(abilityId, buttonData) {
+        //        var ability = buttonData.ability;
+        //        self._toggleAbilityManaReq(ability, !Game.Player.hasManaForAbility(ability));
+        //    });
+        //},
         
         _refreshAbilityTargets: function() {
             var self = this;
@@ -1324,16 +1312,6 @@
             };
         },
 
-        _refreshPlayerBars: function() {
-            //var healthWidth = Game.Util.roundForComparison(Game.Player.health / Game.Player.maxHealth.value()) * 100 + '%';
-            //this._playerHealth.$progress.css('width', healthWidth);
-            //this._playerHealth.$text.html(Game.Util.round(Game.Player.health) + '/' + Game.Util.round(Game.Player.maxHealth.value()));
-
-            var widthPercent = Game.Util.roundForComparison(Game.Player.mana / Game.Player.maxMana.value()) * 100 + '%';
-            this._playerMana.$progress.css('width', widthPercent);
-            this._playerMana.$text.html(Game.Util.round(Game.Player.mana) + '/' + Game.Util.round(Game.Player.maxMana.value()));
-        },
-
 
 
 
@@ -1358,35 +1336,17 @@
             
             var castLength = ability.castTime.value();
             if (castLength !== 0) {
-                // Has cast time; show cast bar, highlight ability if player
+                // Has cast time; show cast bar
                 this._startCastBar(unit, ability.name, castLength);
-                if (unit.id === Game.Player.id) {
-                    this._toggleAbilityCasting(ability, true);
-                }
-            }
-            else {
-                // Instant cast; briefly highlight ability if player even though it was instant cast
-                if (unit.id === Game.Player.id) {
-                    this._toggleAbilityCasting(ability, true);
-                    window.setTimeout(function() {
-                        self._toggleAbilityCasting(ability, false);
-                    }, HIGHLIGHT_INSTANT_DURATION);
-                }
             }
         },
 
         cancelCast: function(unit, ability, message) {
             this._cancelCastBar(unit, message);
-            if (unit.id === Game.Player.id) {
-                this._toggleAbilityCasting(ability, false);
-            }
         },
 
         finishCast: function(unit, ability) {
             this._completeCastBar(unit);
-            if (unit.id === Game.Player.id) {
-                this._toggleAbilityCasting(ability, false);
-            }
         },
 
         _startCastBar: function(unit, text, castLength) {
@@ -1409,12 +1369,7 @@
                 frame.$castBar.animate({opacity: 1}, 0);
             }
 
-            if (unit.id === Game.Player.id) {
-                startCastBar(this._castBarFrame);
-            }
-            else {
-                startCastBar(this._getUnitFrame(unit));
-            }
+            startCastBar(this._getUnitFrame(unit));
         },
 
         _completeCastBar: function(unit) {
@@ -1430,12 +1385,7 @@
                 frame.$castBar.animate({ opacity: 0 }, 500);
             }
 
-            if (unit.id === Game.Player.id) {
-                completeCastBar(this._castBarFrame);
-            }
-            else {
-                completeCastBar(this._getUnitFrame(unit));
-            }
+            completeCastBar(this._getUnitFrame(unit));
         },
 
         _cancelCastBar: function(unit, message) {
@@ -1452,12 +1402,7 @@
                 frame.$castBar.animate({ opacity: 0 }, 500);
             }
 
-            if (unit.id === Game.Player.id) {
-                cancelCastBar(this._castBarFrame);
-            }
-            else {
-                cancelCastBar(this._getUnitFrame(unit));
-            }
+            cancelCastBar(this._getUnitFrame(unit));
         },
 
         _castBarClockKey: function(unit, frame) {

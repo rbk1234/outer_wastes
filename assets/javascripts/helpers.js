@@ -44,7 +44,11 @@
                 base: baseValue,
                 multiplier: 1,
                 adder: 0,
+                override: false,
                 value: function() {
+                    if (stat.override !== false) {
+                        return stat.override;
+                    }
                     if (stat.base === false || stat.base === undefined || stat.base === null) {
                         return null;
                     }

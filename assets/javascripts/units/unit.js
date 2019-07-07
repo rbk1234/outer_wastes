@@ -10,7 +10,6 @@
         },
         stats: {
             maxHealth: 1,
-            maxMana: null,
             manaRegen: null,
             attackSpeed: 1,
             attackDamage: 0,
@@ -58,6 +57,8 @@
             this._isDead = false;
 
             this._initStartingAbilities();
+
+            this.leaveCombat();
         },
 
         update: function(seconds) {
@@ -90,9 +91,13 @@
             }
 
             // update abilities
-            this.equippedAbilities().forEach(function(ability) {
-                ability.update(seconds);
-            });
+            //this.equippedAbilities().forEach(function(ability) {
+            //    ability.update(seconds);
+            //});
+            if (this.maxMana() && this.mana >= this.maxMana()) {
+                this.castAbility(this.ability('special'), this.ability('special').autoTarget());
+            }
+
 
             // auto attack
             this._incrementAttack(seconds);
@@ -109,8 +114,7 @@
                 //if (self.id !== Game.Player.id) {
                 //    ability.autocast = true;
                 //}
-                self.gainAbility(ability);
-                self.equipAbility(ability, currentAbilitySlot);
+                self.equipAbility('special', ability);
                 currentAbilitySlot += 1;
             });
         },
@@ -210,9 +214,9 @@
             }
             this.health += amount;
 
-            if (healthSource.id === Game.Player.id) {
+            //if (healthSource.teamId === Game.Constants.teamIds.player) {
                 Game.UserInterface.createFloatingText(this, '+' + Game.Util.round(amount), 'heal');
-            }
+            //}
 
             if (this.health >= this.maxHealth.value()) {
                 this.health = this.maxHealth.value();
@@ -222,14 +226,26 @@
             if (this.isDead()) {
                 return;
             }
+            if (this.maxMana() === null) {
+                return;
+            }
 
             if (Game.Util.roundForComparison(amount) < 0) {
                 console.warn('Cannot add a negative energy amount: use consumeMana function.');
                 return;
             }
             this.mana += amount;
-            if (this.mana >= this.maxMana.value()) {
-                this.mana = this.maxMana.value();
+            if (this.mana >= this.maxMana()) {
+                this.mana = this.maxMana();
+            }
+        },
+        maxMana: function() {
+            var specialAbility = this.ability('special');
+            if (specialAbility) {
+                return specialAbility.manaCost.value();
+            }
+            else {
+                return null;
             }
         },
 
@@ -259,10 +275,10 @@
                 amount = effect.absorbDamage(amount);
             });
 
-            if (damageSource.id === Game.Player.id) {
-                Game.UserInterface.createFloatingText(this, '' + Game.Util.round(amount), 'damage');
-            }
-            else if (damageSource.teamId === Game.Constants.teamIds.player) {
+            //if (damageSource.id === Game.Player.id) {
+            //    Game.UserInterface.createFloatingText(this, '' + Game.Util.round(amount), 'damage');
+            //}
+            if (damageSource.teamId === Game.Constants.teamIds.player) {
                 Game.UserInterface.createFloatingText(this, '' + Game.Util.round(amount), 'ally-damage');
             }
             if (this.teamId === Game.Constants.teamIds.player) {
@@ -336,6 +352,9 @@
             if (target) {
                 //console.log(this.name + ' attacked ' + target.name + ' for ' + this.attackDamage.value());
                 target.takeDamage(this.attackDamage.value(), this);
+
+                this.addMana(10);
+
                 return true;
             }
 
@@ -346,12 +365,40 @@
             return Game.Util.roundForComparison(this.health / this.maxHealth.value()) * 100;
         },
         percentMana: function() {
-            return Game.Util.roundForComparison(this.mana / this.maxMana.value()) * 100;
+            return Game.Util.roundForComparison(this.mana / this.maxMana()) * 100;
         },
 
         // ------------------------------------------------------------------ Abilities
-        // A Unit can have many Abilities
 
+
+        // @params key: 'basic', 'special', 'passive1', etc.
+        ability: function(key) {
+            return this._abilities[key];
+        },
+        equipAbility: function(key, ability) {
+            this.unequipAbility(key);
+
+            this._abilities[key] = ability;
+            ability.equip(this);
+
+            // todo update UserInterface
+        },
+        unequipAbility: function(key) {
+            var ability = this.ability(key);
+            if (ability) {
+                ability.unequip();
+                this._abilities[key] = null;
+
+                // todo update UserInterface
+            }
+        },
+
+
+
+
+
+        // A Unit can have many Abilities
+/*
         // -------- _abilities are all the Abilities a unit has access to (may or may not be equipped though)
         abilities: function() {
             return this._abilities;
@@ -439,16 +486,17 @@
             }
             return null;
         },
-
+*/
         hasManaForAbility: function(ability) {
             return Game.Util.roundForComparison(this.mana) >= Game.Util.roundForComparison(ability.manaCost.value());
         },
 
         castAbility: function(ability, target) {
-            if (!this.hasAbility(ability)) {
-                console.error('Unit ' + this.id + ' does not have ability ' + ability);
-                return false;
-            }
+            //console.log('cast!', ability, target);
+            //if (!this.hasAbility(ability)) {
+            //    console.error('Unit ' + this.id + ' does not have ability ' + ability);
+            //    return false;
+            //}
 
             // If already casting something, return (TODO might need a latency window)
             if (this.isCasting()) {
@@ -481,10 +529,10 @@
             Game.UserInterface.startCast(this, this._castAbility);
 
             // start global cooldown
-            if (this._castAbility.onGlobalCooldown) {
-                this._globalCooldown = GLOBAL_COOLDOWN;
-                this._updateAllAbilityCooldowns(); // propagate global cooldown to all abilities
-            }
+            //if (this._castAbility.onGlobalCooldown) {
+            //    this._globalCooldown = GLOBAL_COOLDOWN;
+            //    this._updateAllAbilityCooldowns(); // propagate global cooldown to all abilities
+            //}
 
             return true;
         },
@@ -500,7 +548,7 @@
             //Game.UserInterface.cancelCastBar(message);
             Game.UserInterface.cancelCast(this, this._castAbility, message);
 
-            this._updateAllAbilityCooldowns(); // since global cd was undone, have to sync ability cooldowns
+            //this._updateAllAbilityCooldowns(); // since global cd was undone, have to sync ability cooldowns
         },
 
         isCasting: function(ability) {
@@ -576,42 +624,42 @@
                 //Game.UserInterface.completeCastBar();
                 Game.UserInterface.finishCast(this, this._castAbility);
             }
-            this._updateAbilityCooldown(this._castAbility);
+            //this._updateAbilityCooldown(this._castAbility);
 
             this._startCastAnimation();
         },
 
-        _updateAllAbilityCooldowns: function() {
-            var self = this;
-
-            this.equippedAbilities().forEach(function(ability) {
-                self._updateAbilityCooldown(ability);
-            });
-        },
+        //_updateAllAbilityCooldowns: function() {
+        //    var self = this;
+        //
+        //    this.equippedAbilities().forEach(function(ability) {
+        //        self._updateAbilityCooldown(ability);
+        //    });
+        //},
 
         // shows the ability cooling down in the UI
-        _updateAbilityCooldown: function(ability) {
-            if (this.id !== Game.Player.id) {
-                return; // only need to do this for player
-            }
-
-            var totalCooldown, elapsed;
-
-            if (!ability.onGlobalCooldown ||
-                this._globalCooldown === null ||
-                ability.remainingCooldown() > this._globalCooldown) {
-                // show ability cooldown
-                totalCooldown = ability.cooldown.value();
-                elapsed = totalCooldown - ability.remainingCooldown();
-                Game.UserInterface.startCooldown(ability, totalCooldown, elapsed);
-            }
-            else {
-                // show global cooldown
-                totalCooldown = GLOBAL_COOLDOWN;
-                elapsed = totalCooldown - this._globalCooldown;
-                Game.UserInterface.startCooldown(ability, totalCooldown, elapsed);
-            }
-        },
+        //_updateAbilityCooldown: function(ability) {
+        //    if (this.id !== Game.Player.id) {
+        //        return; // only need to do this for player
+        //    }
+        //
+        //    var totalCooldown, elapsed;
+        //
+        //    if (!ability.onGlobalCooldown ||
+        //        this._globalCooldown === null ||
+        //        ability.remainingCooldown() > this._globalCooldown) {
+        //        // show ability cooldown
+        //        totalCooldown = ability.cooldown.value();
+        //        elapsed = totalCooldown - ability.remainingCooldown();
+        //        Game.UserInterface.startCooldown(ability, totalCooldown, elapsed);
+        //    }
+        //    else {
+        //        // show global cooldown
+        //        totalCooldown = GLOBAL_COOLDOWN;
+        //        elapsed = totalCooldown - this._globalCooldown;
+        //        Game.UserInterface.startCooldown(ability, totalCooldown, elapsed);
+        //    }
+        //},
 
 
 
@@ -627,16 +675,10 @@
         },
 
         enterCombat: function() {
-            if (this._manaRegenBonus) {
-                this._manaRegenBonus = false;
-                this.manaRegen.adder -= 20;
-            }
+            //this.manaRegen.override = false;
         },
         leaveCombat: function() {
-            if (!this._manaRegenBonus) {
-                this._manaRegenBonus = true;
-                this.manaRegen.adder += 20;
-            }
+            this.manaRegen.override = 0;
         },
 
 
@@ -699,7 +741,7 @@
                 if (image) {
                     return image;
                 }
-                this._endCastAnimation();
+                this._endAnimations();
             }
 
             if (!Game.UnitEngine.inCombat()) {
@@ -714,7 +756,7 @@
                 if (image) {
                     return image;
                 }
-                this._endAttackAnimation();
+                this._endAnimations();
             }
 
             return this.animations.idle.image;
@@ -738,20 +780,20 @@
                 this._attackAnimation = true;
             }
         },
-        _endAttackAnimation: function() {
+        _endAnimations: function() {
             this._attackAnimation = false;
+            this._castAnimation = false;
         },
 
         // Note: this is a "post"-cast animation (once the cast is done)
         // TODO some kind of animation DURING the cast (if has cast time)
         _startCastAnimation: function() {
-            this._endAttackAnimation();
-            this._castAnimation = true;
-            this._castAnimProgress = 0;
+            if (this.animations.cast) {
+                this._endAnimations();
+                this._castAnimation = true;
+                this._castAnimProgress = 0;
+            }
         },
-        _endCastAnimation: function() {
-            this._castAnimation = false;
-        }
 
 
     };

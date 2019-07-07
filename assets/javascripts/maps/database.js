@@ -17,7 +17,7 @@
             color: 'green',
             description: "",
             background: 'forest',
-            encounters: ['forest_spiders']
+            encounters: ['forest_wolves', 'forest_direWolf']
         },
         cave: {
             name: 'Cave',

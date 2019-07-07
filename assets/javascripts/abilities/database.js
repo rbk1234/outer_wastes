@@ -25,10 +25,11 @@
             allowedTargets: {
                 ally: true
             },
+            targetingAI: 'lowestHealthAlly',
             stats: {
                 manaCost: 35,
                 cooldown: 0,
-                castTime: 1.5,
+                castTime: 0,
 
                 healBase: 75,
                 healSpellPowerScaling: 1
@@ -53,6 +54,7 @@
             },
 
             requiresTarget: true,
+            targetingAI: 'self',
             allowedTargets: {
                 ally: true
             },
@@ -100,6 +102,7 @@
             },
 
             requiresTarget: true,
+            targetingAI: 'self',
             allowedTargets: {
                 ally: true
             },
@@ -436,6 +439,35 @@
             }
         },
 
+        backstab: {
+            name: "Backstab",
+            icon: '',
+            background: '',
+            description: function() {
+                return '';
+            },
+
+            requiresTarget: true,
+            targetingAI: 'highestThreatEnemy',
+            allowedTargets: {
+                enemy: true
+            },
+            stats: {
+                manaCost: 40,
+                cooldown: 0,
+                castTime: 0,
+
+                damage: 100
+            },
+            events: {
+                'ability:castComplete': function(evt, target) {
+                    var damage = this.damage.value();
+                    target.takeDamage(damage, this.caster);
+
+                }
+            }
+        },
+
         naturesGrasp: {
             name: "Nature's Grasp",
             icon: 'light-thorny-triskelion',
@@ -451,6 +483,7 @@
             },
 
             requiresTarget: true,
+            targetingAI: 'highestHealthEnemy',
             allowedTargets: {
                 enemy: true
             },
@@ -480,12 +513,12 @@
                     });
                     target.addEffect(effect);
 
-                    var livingSeedAbility = this.caster.abilityForDbKey('livingSeed');
-                    var numLivingSeeds = livingSeedAbility ? target.existingEffects(livingSeedAbility.defaultEffectParams()).length : 0;
-                    if (numLivingSeeds) {
-                        var damage = (numLivingSeeds * (this.burstBase.value() + this.caster.spellPower.value() * this.burstSpellPowerScaling.value()));
-                        target.takeDamage(damage, this.caster);
-                    }
+                    //var livingSeedAbility = this.caster.abilityForDbKey('livingSeed');
+                    //var numLivingSeeds = livingSeedAbility ? target.existingEffects(livingSeedAbility.defaultEffectParams()).length : 0;
+                    //if (numLivingSeeds) {
+                    //    var damage = (numLivingSeeds * (this.burstBase.value() + this.caster.spellPower.value() * this.burstSpellPowerScaling.value()));
+                    //    target.takeDamage(damage, this.caster);
+                    //}
 
                 }
             }
@@ -651,10 +684,11 @@
             allowedTargets: {
                 enemy: true
             },
+            targetingAI: 'highestThreatEnemy',
             stats: {
-                manaCost: 0,
-                cooldown: 10,
-                castTime: 2.5,
+                manaCost: 65,
+                cooldown: 0,
+                castTime: 0,
 
                 duration: 5
             },
@@ -684,7 +718,7 @@
             },
             stats: {
                 manaCost: 0,
-                cooldown: 10,
+                cooldown: 0,
                 castTime: 2,
 
                 duration: 6
@@ -723,7 +757,7 @@
             },
             stats: {
                 manaCost: 0,
-                cooldown: 10,
+                cooldown: 0,
                 castTime: 2,
 
                 duration: 6,

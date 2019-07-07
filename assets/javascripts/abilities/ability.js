@@ -101,14 +101,49 @@
             return true;
         },
 
-        update: function(seconds) {
-            this.reduceCooldown(seconds);
+        //update: function(seconds) {
+        //    this.reduceCooldown(seconds);
+        //
+        //    if (this.autocast && this.isReady()) {
+        //        // todo not just cast on highest threat
+        //        // todo debounce timer? incase cc'd
+        //        var abilityCasted = this.caster.castAbility(this, this.caster.highestThreatTarget());
+        //    }
+        //},
 
-            if (this.autocast && this.isReady()) {
-                // todo not just cast on highest threat
-                // todo debounce timer? incase cc'd
-                var abilityCasted = this.caster.castAbility(this, this.caster.highestThreatTarget());
+        autoTarget: function() {
+            switch (this.targetingAI) {
+                case 'lowestHealthAlly':
+                    return this._lowestHealthAlly();
+                case 'highestThreatEnemy':
+                    return Game.UnitEngine.highestThreatEnemy(this.caster);
+                case 'highestHealthEnemy':
+                    return this._highestHealthEnemy();
+                case 'self':
+                    return this.caster;
+                default:
+                    console.warn('No targetingAI for ability: ', this);
+                    return null;
             }
+        },
+        _highestHealthEnemy: function() {
+            var target = null;
+            this.caster.enemies().forEach(function(unit) {
+                if (!target || unit.health > target.health) {
+                    target = unit;
+                }
+            });
+            return target;
+        },
+        _lowestHealthAlly: function() {
+            var target = null;
+            this.caster.allies().forEach(function(unit) {
+                if (unit.percentHealth() < 100 &&
+                    (!target || unit.percentHealth() < target.percentHealth())) {
+                    target = unit;
+                }
+            });
+            return target;
         },
 
         gain: function(caster) {
@@ -118,7 +153,8 @@
 
         },
 
-        equip: function() {
+        equip: function(caster) {
+            this.caster = caster;
             this.$eventHandler.trigger('ability:equip');
         },
         unequip: function() {

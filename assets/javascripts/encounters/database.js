@@ -29,10 +29,10 @@
                                 // --- todo maybe this shouldn't be an AI? just have the spiders emit an event when they
                                 // --- todo cast the spell that stops others from casting for a bit
 
-                                var unit = Game.UnitEngine.findUnitForAICast(Game.Constants.teamIds.computer, 'spider', 'webWrap');
-                                if (unit) {
-                                    unit.castAbility(unit.abilityForDbKey('webWrap'), unit.highestThreatTarget());
-                                }
+                                //var unit = Game.UnitEngine.findUnitForAICast(Game.Constants.teamIds.computer, 'spider', 'webWrap');
+                                //if (unit) {
+                                //    unit.castAbility(unit.abilityForDbKey('webWrap'), unit.highestThreatTarget());
+                                //}
                             }
                         }
 
@@ -53,10 +53,10 @@
                         },
                         events: {
                             'AI:periodicTick': function() {
-                                var unit = Game.UnitEngine.findUnitForAICast(Game.Constants.teamIds.computer, 'forestGoblin', 'iceTrap');
-                                if (unit) {
-                                    unit.castAbility(unit.abilityForDbKey('iceTrap'), unit.highestThreatTarget());
-                                }
+                                //var unit = Game.UnitEngine.findUnitForAICast(Game.Constants.teamIds.computer, 'forestGoblin', 'iceTrap');
+                                //if (unit) {
+                                //    unit.castAbility(unit.abilityForDbKey('iceTrap'), unit.highestThreatTarget());
+                                //}
                             }
                         }
                     });
@@ -68,10 +68,10 @@
                         },
                         events: {
                             'AI:periodicTick': function() {
-                                var unit = Game.UnitEngine.findUnitForAICast(Game.Constants.teamIds.computer, 'forestGoblin', 'explosiveTrap');
-                                if (unit) {
-                                    unit.castAbility(unit.abilityForDbKey('explosiveTrap'), unit.highestThreatTarget());
-                                }
+                                //var unit = Game.UnitEngine.findUnitForAICast(Game.Constants.teamIds.computer, 'forestGoblin', 'explosiveTrap');
+                                //if (unit) {
+                                //    unit.castAbility(unit.abilityForDbKey('explosiveTrap'), unit.highestThreatTarget());
+                                //}
                             }
                         }
                     });
