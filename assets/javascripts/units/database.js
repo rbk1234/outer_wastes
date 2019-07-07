@@ -17,7 +17,16 @@
             stats: {
                 maxHealth: 180,
                 manaRegen: 10,
-                attackSpeed: 1.25,
+                attackSpeed: 0.7,
+                attackDamage: 15
+            }
+        },
+        smuggler: {
+            name: 'Smuggler',
+            stats: {
+                maxHealth: 150,
+                manaRegen: 10,
+                attackSpeed: 0.7,
                 attackDamage: 15
             }
         },
@@ -33,7 +42,7 @@
             name: 'Brewmaster',
             stats: {
                 maxHealth: 350,
-                attackSpeed: 0.9,
+                attackSpeed: 0.7,
                 attackDamage: 18
             }
         },

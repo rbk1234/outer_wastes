@@ -94,7 +94,7 @@
             //this.equippedAbilities().forEach(function(ability) {
             //    ability.update(seconds);
             //});
-            if (this.maxMana() && this.mana >= this.maxMana()) {
+            if (Game.UnitEngine.inCombat() && this.maxMana() && this.mana >= this.maxMana()) {
                 this.castAbility(this.ability('special'), this.ability('special').autoTarget());
             }
 

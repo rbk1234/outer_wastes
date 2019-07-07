@@ -47,9 +47,9 @@
     Game.UnitEngine.addUnit(swashbuckler);
     swashbuckler.equipAbility('special', new Game.Abilities.Ability('backstab'));
 
-    var swashbuckler = new Game.Units.Unit('swashbuckler', {teamId: Game.Constants.teamIds.player});
-    Game.UnitEngine.addUnit(swashbuckler);
-    swashbuckler.equipAbility('special', new Game.Abilities.Ability('backstab'));
+    var smuggler = new Game.Units.Unit('smuggler', {teamId: Game.Constants.teamIds.player});
+    Game.UnitEngine.addUnit(smuggler);
+    smuggler.equipAbility('special', new Game.Abilities.Ability('backstab'));
 
     //var swashbuckler = new Game.Units.Unit('swashbuckler', {teamId: Game.Constants.teamIds.player});
     //Game.UnitEngine.addUnit(swashbuckler);
