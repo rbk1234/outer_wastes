@@ -122,7 +122,7 @@
                 case 'self':
                     return this.caster;
                 default:
-                    console.warn('No targetingAI for ability: ', this);
+                    //console.warn('No targetingAI for ability: ', this);
                     return null;
             }
         },

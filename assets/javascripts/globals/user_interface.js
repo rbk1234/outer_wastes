@@ -246,6 +246,7 @@
                 $clickableArea: $frame.find('.clickable-area'),
                 $image: $frame.find('.image'),
                 $unitImage: $frame.find('.image .unit-pre'),
+                $level: $frame.find('.level-and-color'),
 
                 $effectsArea: $frame.find('.effects-area'),
 
@@ -391,6 +392,9 @@
             // set frame width
             frame.$frame.css('width', (unit.animations.width / FRAME_COLUMNS * 100) + '%');
 
+            frame.$level.removeClass('unit-1 unit-2 unit-3 unit-4 unit-5');
+            frame.$level.addClass('unit-' + (this._allyIndices[unit.id] + 1));
+
             this._refreshUnitFrame(unit);
 
             frame.$frame.visible();
@@ -466,12 +470,12 @@
             $pre.css('color', color);
 
             image.forEach(function(imageRow) {
-                var offsetSpaces = ' '.repeat(offset);
+                var offsetSpaces = offset >= 0 ? ' '.repeat(offset) : '';
                 $('<span>'+offsetSpaces+imageRow+'</span><br>').appendTo($pre);
             });
         },
 
-        createFloatingText: function(unit, text, textClass, delay) {
+        createFloatingText: function(unit, sourceUnit, text, textClass, delay) {
             var self = this;
 
             delay = Game.Util.defaultFor(delay, 0);
@@ -484,7 +488,6 @@
                 var now = Date.now() || (new Date).getTime();
                 var offsetLevel = 1;
                 var maxColumns = COMBAT_TEXT_COLUMNS * unit.animations.width;
-                console.log(maxColumns, oldOffsetData.offsetLevel);
 
                 if (oldOffsetData && oldOffsetData.offsetLevel < maxColumns && (now - oldOffsetData.time < COMBAT_TEXT_OFFSET_WINDOW)) {
                     offsetLevel = oldOffsetData.offsetLevel + 1;
@@ -495,7 +498,10 @@
                     offsetLevel: offsetLevel
                 };
 
-                var $text = $('<span class="combat-text ' + textClass + ' ' + ('offset-'+offsetLevel) + '">' + text + '</span>').appendTo(frame.$combatTextArea);
+                //var colorClass = 'unit-'+ (self._allyIndices[sourceUnit.id] + 1);
+                var colorClass = '';
+
+                var $text = $('<span class="combat-text ' + textClass + ' ' + colorClass + ' ' + ('offset-'+offsetLevel) + '">' + text + '</span>').appendTo(frame.$combatTextArea);
                 self.setTimeout(function() {
                     $text.remove();
                 }, COMBAT_TEXT_DURATION);

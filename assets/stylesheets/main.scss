@@ -77,6 +77,12 @@ $light: #fbf5ef;
 $black: #08141e;
 $dark-blue: #0f2a3f;
 
+$unit1: #3366ff;
+$unit2: #00ffff;
+$unit3: #9933ff;
+$unit4: #ffff00;
+$unit5: #ff9933;
+
 body {
   font-family: "Roboto Condensed", sans-serif;
 }
@@ -417,12 +423,50 @@ body {
           left: 0;
         }
       }
+
+      $level-height: 17px;
+
       .bar.health-bar {
         height: 0.75rem;
+        margin-left: $level-height;
       }
       .bar.mana-bar {
         height: 0.35rem;
+        margin-left: $level-height;
       }
+
+
+      .level-and-color {
+        position: absolute;
+        background: $dark-purple;
+        border: 1px solid $purple;
+        color: $light;
+        width: $level-height;
+        text-align: center;
+        height: $level-height;
+        font-size: 0.75rem;
+        border-radius: 0.1rem;
+        line-height: $level-height;
+        //color: black;
+
+        //&.unit-1 {
+        //  background: $unit1;
+        //}
+        //&.unit-2 {
+        //  background: $unit2;
+        //}
+        //&.unit-3 {
+        //  background: $unit3;
+        //}
+        //&.unit-4 {
+        //  background: $unit4;
+        //}
+        //&.unit-5 {
+        //  background: $unit5;
+        //}
+
+      }
+
     }
 
     .effects-area {
@@ -607,6 +651,22 @@ body {
   }
   &.large {
     font-size: 1.4rem;
+  }
+
+  &.unit-1 {
+    color: $unit1;
+  }
+  &.unit-2 {
+    color: $unit2;
+  }
+  &.unit-3 {
+    color: $unit3;
+  }
+  &.unit-4 {
+    color: $unit4;
+  }
+  &.unit-5 {
+    color: $unit5;
   }
 }
 

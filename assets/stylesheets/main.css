@@ -182,9 +182,22 @@ body {
           bottom: 1.35rem;
           left: 0; }
       .unit-frame .flex-col .clickable-area .bar.health-bar {
-        height: 0.75rem; }
+        height: 0.75rem;
+        margin-left: 17px; }
       .unit-frame .flex-col .clickable-area .bar.mana-bar {
-        height: 0.35rem; }
+        height: 0.35rem;
+        margin-left: 17px; }
+      .unit-frame .flex-col .clickable-area .level-and-color {
+        position: absolute;
+        background: #272744;
+        border: 1px solid #494d7e;
+        color: #fbf5ef;
+        width: 17px;
+        text-align: center;
+        height: 17px;
+        font-size: 0.75rem;
+        border-radius: 0.1rem;
+        line-height: 17px; }
     .unit-frame .flex-col .effects-area {
       padding-top: 0.25rem;
       height: 2rem; }
@@ -279,6 +292,16 @@ body {
     color: #ffff00; }
   .combat-text.large {
     font-size: 1.4rem; }
+  .combat-text.unit-1 {
+    color: #3366ff; }
+  .combat-text.unit-2 {
+    color: #00ffff; }
+  .combat-text.unit-3 {
+    color: #9933ff; }
+  .combat-text.unit-4 {
+    color: #ffff00; }
+  .combat-text.unit-5 {
+    color: #ff9933; }
 
 /* Safari 4.0 - 8.0 */
 @-webkit-keyframes combat-text-fade {

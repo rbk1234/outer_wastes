@@ -462,7 +462,7 @@
             events: {
                 'ability:castComplete': function(evt, target) {
                     var damage = this.damage.value();
-                    target.takeDamage(damage, this.caster, 'yellow large', 400);
+                    target.takeDamage(damage, this.caster, 'large yellow', 400);
 
                 }
             }

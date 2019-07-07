@@ -31,9 +31,9 @@
     Game.Log.logMessage('Initializing 3...');
 
 
-    var native = new Game.Units.Unit('native', {teamId: Game.Constants.teamIds.player});
-    Game.UnitEngine.addUnit(native);
-    native.equipAbility('special', new Game.Abilities.Ability('blessedShield'));
+    var crusader = new Game.Units.Unit('crusader', {teamId: Game.Constants.teamIds.player});
+    Game.UnitEngine.addUnit(crusader);
+    crusader.equipAbility('special', new Game.Abilities.Ability('blessedShield'));
 
     var brewmaster = new Game.Units.Unit('brewmaster', {teamId: Game.Constants.teamIds.player});
     Game.UnitEngine.addUnit(brewmaster);

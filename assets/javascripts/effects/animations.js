@@ -5,7 +5,7 @@
     Game.namespace('Effects').Animations = {
         blessedShield: {
             color: '#ffff80',
-            offset: -2,
+            offset: 0,
             frameLengths: [0.2,0.2,0.2,0.2],
             frames: [
                 [

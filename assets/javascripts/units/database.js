@@ -46,6 +46,14 @@
                 attackDamage: 25
             }
         },
+        crusader: {
+            name: 'Crusader',
+            stats: {
+                maxHealth: 350,
+                attackSpeed: 0.5,
+                attackDamage: 30
+            }
+        },
 
 
         oozeling: {

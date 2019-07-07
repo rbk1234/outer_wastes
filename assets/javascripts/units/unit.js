@@ -215,7 +215,7 @@
             this.health += amount;
 
             //if (healthSource.teamId === Game.Constants.teamIds.player) {
-                Game.UserInterface.createFloatingText(this, '+' + Game.Util.round(amount), 'heal');
+                Game.UserInterface.createFloatingText(this, healthSource, '+' + Game.Util.round(amount), 'heal');
             //}
 
             if (this.health >= this.maxHealth.value()) {
@@ -281,11 +281,11 @@
             //    Game.UserInterface.createFloatingText(this, '' + Game.Util.round(amount), 'damage');
             //}
             if (damageSource.teamId === Game.Constants.teamIds.player) {
-                Game.UserInterface.createFloatingText(this, '' + Game.Util.round(amount), css, delay);
-                //Game.UserInterface.createFloatingText(damageSource, '' + Game.Util.round(amount), css, delay);
+                Game.UserInterface.createFloatingText(this, damageSource, '' + Game.Util.round(amount), css, delay);
+                //Game.UserInterface.createFloatingText(damageSource, damageSource, '' + Game.Util.round(amount), css, delay);
             }
             if (this.teamId === Game.Constants.teamIds.player) {
-                Game.UserInterface.createFloatingText(this, '' + Game.Util.round(amount), 'red');
+                Game.UserInterface.createFloatingText(this, damageSource, '-' + Game.Util.round(amount), 'red');
             }
 
             if (Game.Util.roundForComparison(this.health) > 0) {
