@@ -257,7 +257,9 @@
             return amount;
         },
 
-        takeDamage: function(amount, damageSource) {
+        takeDamage: function(amount, damageSource, css) {
+            css = Game.Util.defaultFor(css, 'white');
+
             if (this.isDead()) {
                 return;
             }
@@ -279,10 +281,12 @@
             //    Game.UserInterface.createFloatingText(this, '' + Game.Util.round(amount), 'damage');
             //}
             if (damageSource.teamId === Game.Constants.teamIds.player) {
-                Game.UserInterface.createFloatingText(this, '' + Game.Util.round(amount), 'ally-damage');
+                //Game.UserInterface.createFloatingText(this, '' + Game.Util.round(amount), css);
+                Game.UserInterface.createFloatingText(damageSource, '' + Game.Util.round(amount), css);
             }
             if (this.teamId === Game.Constants.teamIds.player) {
-                Game.UserInterface.createFloatingText(this, '' + Game.Util.round(amount), 'take-damage');
+                //Game.UserInterface.createFloatingText(this, '' + Game.Util.round(amount), 'red');
+                //Game.UserInterface.createFloatingText(damageSource, '' + Game.Util.round(amount), 'red');
             }
 
             if (Game.Util.roundForComparison(this.health) > 0) {

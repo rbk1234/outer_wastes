@@ -265,12 +265,16 @@ body {
   bottom: 0.25rem; }
   .combat-text.heal {
     color: #00ff55; }
-  .combat-text.damage {
+  .combat-text.white {
+    color: #fff; }
+  .combat-text.red {
     color: #ff0000; }
-  .combat-text.ally-damage {
-    color: #ff0000; }
+  .combat-text.yellow {
+    color: #ffff00; }
   .combat-text.take-damage {
-    color: #ff0000; }
+    color: #fff; }
+  .combat-text.large {
+    font-size: 1.4rem; }
 
 /* Safari 4.0 - 8.0 */
 @-webkit-keyframes combat-text-fade {

@@ -584,16 +584,19 @@ body {
     color: #00ff55;
   }
 
-  &.damage {
+  &.white {
     //color: white;
-    color: #ff0000;
+    color: #fff;
   }
-  &.ally-damage {
-    //color: #ff9900;
+  &.red {
     color: #ff0000;
+    //color: #fff;
   }
-  &.take-damage {
-    color: #ff0000;
+  &.yellow {
+    color: #ffff00;
+  }
+  &.large {
+    font-size: 1.4rem;
   }
 }
 

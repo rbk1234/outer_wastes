@@ -42,8 +42,8 @@
             name: 'Brewmaster',
             stats: {
                 maxHealth: 350,
-                attackSpeed: 0.7,
-                attackDamage: 18
+                attackSpeed: 0.5,
+                attackDamage: 25
             }
         },
 
@@ -60,18 +60,18 @@
         wolf: {
             name: 'Wolf',
             stats: {
-                maxHealth: 300350,
+                maxHealth: 350,
                 attackSpeed: 0.8,
-                attackDamage: 0,
+                attackDamage: 12,
                 reward: 10
             }
         },
         direWolf: {
             name: 'Dire Wolf',
             stats: {
-                maxHealth: 300000,
+                maxHealth: 1100,
                 attackSpeed: 1.0,
-                attackDamage: 0,
+                attackDamage: 25,
                 reward: 20
             }
         },
