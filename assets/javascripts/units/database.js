@@ -60,18 +60,18 @@
         wolf: {
             name: 'Wolf',
             stats: {
-                maxHealth: 350,
+                maxHealth: 300350,
                 attackSpeed: 0.8,
-                attackDamage: 12,
+                attackDamage: 0,
                 reward: 10
             }
         },
         direWolf: {
             name: 'Dire Wolf',
             stats: {
-                maxHealth: 1100,
+                maxHealth: 300000,
                 attackSpeed: 1.0,
-                attackDamage: 25,
+                attackDamage: 0,
                 reward: 20
             }
         },
