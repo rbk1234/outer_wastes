@@ -471,26 +471,44 @@
             });
         },
 
-        createFloatingText: function(unit, text, textClass) {
-            var frame = this._getUnitFrame(unit);
+        createFloatingText: function(unit, text, textClass, delay) {
+            var self = this;
 
-            // If two combat texts are shown (for the same unit) within the COMBAT_TEXT_OFFSET_WINDOW, offset one to the side
-            var oldOffsetData = frame.combatTextOffsets;
-            var now = Date.now() || (new Date).getTime();
-            var offsetLevel = 1;
-            if (oldOffsetData && oldOffsetData.offsetLevel < COMBAT_TEXT_COLUMNS && (now - oldOffsetData.time < COMBAT_TEXT_OFFSET_WINDOW)) {
-                offsetLevel = oldOffsetData.offsetLevel + 1;
+            delay = Game.Util.defaultFor(delay, 0);
+
+            function createText() {
+                var frame = self._getUnitFrame(unit);
+
+                // If two combat texts are shown (for the same unit) within the COMBAT_TEXT_OFFSET_WINDOW, offset one to the side
+                var oldOffsetData = frame.combatTextOffsets;
+                var now = Date.now() || (new Date).getTime();
+                var offsetLevel = 1;
+                var maxColumns = COMBAT_TEXT_COLUMNS * unit.animations.width;
+                console.log(maxColumns, oldOffsetData.offsetLevel);
+
+                if (oldOffsetData && oldOffsetData.offsetLevel < maxColumns && (now - oldOffsetData.time < COMBAT_TEXT_OFFSET_WINDOW)) {
+                    offsetLevel = oldOffsetData.offsetLevel + 1;
+                }
+
+                frame.combatTextOffsets = {
+                    time: now,
+                    offsetLevel: offsetLevel
+                };
+
+                var $text = $('<span class="combat-text ' + textClass + ' ' + ('offset-'+offsetLevel) + '">' + text + '</span>').appendTo(frame.$combatTextArea);
+                self.setTimeout(function() {
+                    $text.remove();
+                }, COMBAT_TEXT_DURATION);
             }
 
-            frame.combatTextOffsets = {
-                time: now,
-                offsetLevel: offsetLevel
-            };
-
-            var $text = $('<span class="combat-text ' + textClass + ' ' + ('offset-'+offsetLevel) + '">' + text + '</span>').appendTo(frame.$combatTextArea);
-            this.setTimeout(function() {
-                $text.remove();
-            }, COMBAT_TEXT_DURATION);
+            if (delay === 0) {
+                createText();
+            }
+            else {
+                self.setTimeout(function() {
+                    createText();
+                }, delay);
+            }
         },
 
 

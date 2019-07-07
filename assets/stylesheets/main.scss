@@ -361,6 +361,16 @@ body {
         &.offset-2 {
           left: 4.25rem;
         }
+        &.offset-3 {
+          left: 6.25rem;
+        }
+        &.offset-4 {
+          left: 8.25rem;
+        }
+        &.offset-5 {
+          left: 10.25rem;
+        }
+        // todo better way to do this
       }
     }
 

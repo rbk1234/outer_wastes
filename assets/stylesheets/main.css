@@ -149,6 +149,12 @@ body {
           left: 2.25rem; }
         .unit-frame .flex-col .combat-text-area .combat-text.offset-2 {
           left: 4.25rem; }
+        .unit-frame .flex-col .combat-text-area .combat-text.offset-3 {
+          left: 6.25rem; }
+        .unit-frame .flex-col .combat-text-area .combat-text.offset-4 {
+          left: 8.25rem; }
+        .unit-frame .flex-col .combat-text-area .combat-text.offset-5 {
+          left: 10.25rem; }
     .unit-frame .flex-col .clickable-area {
       position: relative;
       padding: 0.1rem;
@@ -271,8 +277,6 @@ body {
     color: #ff0000; }
   .combat-text.yellow {
     color: #ffff00; }
-  .combat-text.take-damage {
-    color: #fff; }
   .combat-text.large {
     font-size: 1.4rem; }
 
