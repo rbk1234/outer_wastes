@@ -9,25 +9,32 @@ body {
   color: #fbf5ef;
   background: #08141e; }
 
-.no-margin {
-  margin: 0; }
-
-.no-bottom-margin {
-  margin-bottom: 0; }
-
+/* ------------------------------------------------- Layout --------------------------------------------------------- */
 #top-bar {
   position: fixed;
   top: 0;
   height: 1.5rem;
   width: 100%;
-  background: #0f2a3f;
-  border-bottom: 1px solid #4e495f; }
+  z-index: 2; }
 
 #main-content {
   margin-top: 1.5rem;
-  margin-bottom: 0; }
-  #main-content.bottom-bar-showing {
-    margin-bottom: 10rem; }
+  margin-bottom: 0;
+  min-height: calc(100vh - 1.5rem);
+  position: relative; }
+  #main-content #units-area {
+    display: none; }
+    #main-content #units-area table {
+      height: 100%; }
+      #main-content #units-area table td.relative-container {
+        position: relative; }
+        #main-content #units-area table td.relative-container #ally-frames, #main-content #units-area table td.relative-container #enemy-frames, #main-content #units-area table td.relative-container #mini-map {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0; }
+  #main-content #background-art {
+    line-height: 1em; }
 
 #bottom-bar {
   position: fixed;
@@ -35,70 +42,68 @@ body {
   height: 10rem;
   width: 100%;
   display: none;
-  background: #20394f; }
-  #bottom-bar.bottom-bar-showing {
+  z-index: 2; }
+
+body.combat-ui #main-content {
+  margin-bottom: 10rem;
+  min-height: calc(100vh - 1.5rem - 10rem); }
+  body.combat-ui #main-content #units-area {
     display: block; }
+  body.combat-ui #main-content #background-art {
+    opacity: 0.7; }
+body.combat-ui #bottom-bar {
+  display: block; }
 
 .restricted-width {
   margin: 0 auto; }
 
-#body-content {
-  display: flex;
-  flex-flow: column;
-  height: 100%;
-  background: #08141e; }
-  #body-content #header-bar {
-    flex: 0 1 auto;
-    background: #0f2a3f;
-    color: #888;
-    z-index: 2; }
-  #body-content #subheader-bar {
-    flex: 0 1 auto;
-    color: white;
-    font-weight: bold;
-    z-index: 2;
-    border-bottom: 1px solid #888; }
-  #body-content #units-area {
-    flex: 1 1 auto;
-    color: white;
-    position: relative; }
-    #body-content #units-area table {
-      height: 100%; }
-      #body-content #units-area table td.relative-container {
-        position: relative; }
-        #body-content #units-area table td.relative-container #ally-frames, #body-content #units-area table td.relative-container #enemy-frames, #body-content #units-area table td.relative-container #mini-map {
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          right: 0; }
-  #body-content #player-and-target-area {
-    flex: 0 1 auto;
-    z-index: 2; }
-    #body-content #player-and-target-area table tr td {
-      vertical-align: top; }
-  #body-content #bottom-bar {
-    display: none;
-    height: 10rem;
-    background: #272744; }
-    #body-content #bottom-bar .bottom-section {
-      display: flex;
-      justify-content: center;
-      flex: 1;
-      padding: 0.5rem; }
+/* ------------------------------------------------- Color Scheme --------------------------------------------------- */
+#top-bar {
+  background: #0d2b45;
+  border-bottom: 1px solid #203c56; }
+
+#bottom-bar {
+  background: #0d2b45;
+  border-top: 1px solid #203c56; }
+  #bottom-bar .bottom-container {
+    margin: 0.5rem;
+    height: 9rem;
+    background: #203c56;
+    border: 1px solid #544e68; }
 
 .town-group {
   background: #272744;
-  color: white;
   margin: 1rem;
   padding: 0.5rem;
   min-height: 5rem;
   border-radius: 0.313rem; }
 
-.bottom-container {
-  margin: 0.5rem;
-  height: 9rem;
-  color: white;
-  background: #494d7e; }
+#background-art .green {
+  color: #00ff00; }
+#background-art .brown {
+  color: #bf8040; }
+#background-art .darkbrown {
+  color: #734d26; }
+#background-art .lightbrown {
+  color: #dfbf9f; }
+#background-art .white-beige {
+  color: #f6d6bd; }
+#background-art .orange {
+  color: darkorange; }
+#background-art .beige {
+  color: #ffcc99; }
+#background-art .yellow {
+  color: #cccc00; }
+#background-art .white {
+  color: white; }
+#background-art .grey {
+  color: #8c8c8c; }
+#background-art .blue {
+  color: #404fcc; }
+#background-art .red {
+  color: #cb4154; }
+#background-art .darkblue {
+  color: #a8ccd7; }
 
 #player-frame .portrait, #target-frame .portrait {
   height: 3rem;
@@ -121,35 +126,6 @@ body {
     margin-bottom: 0.25rem; }
   #player-frame .non-portrait .effects-area, #target-frame .non-portrait .effects-area {
     height: 2rem; }
-
-#encounter-background {
-  line-height: 1em; }
-  #encounter-background .green {
-    color: #00ff00; }
-  #encounter-background .brown {
-    color: #bf8040; }
-  #encounter-background .darkbrown {
-    color: #734d26; }
-  #encounter-background .lightbrown {
-    color: #dfbf9f; }
-  #encounter-background .white-beige {
-    color: #f6d6bd; }
-  #encounter-background .orange {
-    color: darkorange; }
-  #encounter-background .beige {
-    color: #ffcc99; }
-  #encounter-background .yellow {
-    color: #cccc00; }
-  #encounter-background .white {
-    color: white; }
-  #encounter-background .grey {
-    color: #8c8c8c; }
-  #encounter-background .blue {
-    color: #404fcc; }
-  #encounter-background .red {
-    color: #cb4154; }
-  #encounter-background .darkblue {
-    color: #a8ccd7; }
 
 #unit-frame-template {
   display: none; }
@@ -635,6 +611,12 @@ body {
     /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to top, #4A569D, #DC2424);
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ }
+
+.no-margin {
+  margin: 0; }
+
+.no-bottom-margin {
+  margin-bottom: 0; }
 
 .tabs {
   background: transparent;

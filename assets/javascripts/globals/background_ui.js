@@ -19,7 +19,7 @@
         init: function() {
             var self = this;
 
-            this.$background = $('#encounter-background');
+            this.$background = $('#background-art');
 
             $('.restricted-width').css('width', BACKGROUND_WIDTH);
 

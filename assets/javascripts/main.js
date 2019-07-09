@@ -10,8 +10,10 @@
     Game.Keyboard.init();
     Game.ResourceEngine.init();
     Game.Statistics.init();
-    Game.UnitEngine.init(); // todo move this to combat
     Game.BackgroundUI.init();
+    Game.UnitEngine.init();
+    Game.CombatUI.init();
+    Game.TownUI.init();
 
     Game.Clock.setInterval(
         'debug',
@@ -30,49 +32,67 @@
     Game.Log.logMessage('Initializing 2...');
     Game.Log.logMessage('Initializing 3...');
 
+    function loadTown() {
+        Game.UnitEngine.stopEngine();
+        Game.CombatUI.closeUI();
 
-    var crusader = new Game.Units.Unit('crusader', {teamId: Game.Constants.teamIds.player});
-    Game.UnitEngine.addUnit(crusader);
-    crusader.equipAbility('special', new Game.Abilities.Ability('blessedShield'));
-
-    var brewmaster = new Game.Units.Unit('brewmaster', {teamId: Game.Constants.teamIds.player});
-    Game.UnitEngine.addUnit(brewmaster);
-    brewmaster.equipAbility('special', new Game.Abilities.Ability('backstab'));
-
-    var swashbuckler = new Game.Units.Unit('swashbuckler', {teamId: Game.Constants.teamIds.player});
-    Game.UnitEngine.addUnit(swashbuckler);
-    swashbuckler.equipAbility('special', new Game.Abilities.Ability('backstab'));
-
-    var smuggler = new Game.Units.Unit('smuggler', {teamId: Game.Constants.teamIds.player});
-    Game.UnitEngine.addUnit(smuggler);
-    smuggler.equipAbility('special', new Game.Abilities.Ability('backstab'));
-
-    var cleric = new Game.Units.Unit('cleric', { teamId: Game.Constants.teamIds.player });
-    Game.UnitEngine.addUnit(cleric);
-    cleric.equipAbility('special', new Game.Abilities.Ability('holyNova'));
-
-    var TOWN = true;
-
-    if (TOWN) {
-        Game.TownUI.init();
         Game.BackgroundUI.drawBackground('town', 0)
     }
-    else {
-        Game.UserInterface.init();
 
-        Game.UserInterface.loadTeam(Game.Constants.teamIds.player);
+    function loadQuest() {
+        // -------- Background
+        Game.BackgroundUI.drawBackground('woods', 0);
+
+        // -------- UnitEngine
+        Game.UnitEngine.loadEngine();
+
+        var crusader = new Game.Units.Unit('crusader', {teamId: Game.Constants.teamIds.player});
+        Game.UnitEngine.addUnit(crusader);
+        crusader.equipAbility('special', new Game.Abilities.Ability('blessedShield'));
+
+        var brewmaster = new Game.Units.Unit('brewmaster', {teamId: Game.Constants.teamIds.player});
+        Game.UnitEngine.addUnit(brewmaster);
+        brewmaster.equipAbility('special', new Game.Abilities.Ability('backstab'));
+
+        var swashbuckler = new Game.Units.Unit('swashbuckler', {teamId: Game.Constants.teamIds.player});
+        Game.UnitEngine.addUnit(swashbuckler);
+        swashbuckler.equipAbility('special', new Game.Abilities.Ability('backstab'));
+
+        var smuggler = new Game.Units.Unit('smuggler', {teamId: Game.Constants.teamIds.player});
+        Game.UnitEngine.addUnit(smuggler);
+        smuggler.equipAbility('special', new Game.Abilities.Ability('backstab'));
+
+        var cleric = new Game.Units.Unit('cleric', { teamId: Game.Constants.teamIds.player });
+        Game.UnitEngine.addUnit(cleric);
+        cleric.equipAbility('special', new Game.Abilities.Ability('holyNova'));
+
+        // -------- CombatUI
+        Game.CombatUI.loadUI();
+
+
+        //Game.CombatUI.loadMap('nightvale');
+        //Game.CombatUI.showMiniMap();
     }
 
     Game.Clock.run();
 
-    if (TOWN) {
+    loadTown();
 
-    }
-    else {
-        Game.UserInterface.clearTarget();
-        Game.UserInterface.loadMap('nightvale');
-        Game.UserInterface.showMiniMap();
-    }
+    Game.Keyboard.registerKey([81], function() { // q
+        loadQuest();
+    });
+    Game.Keyboard.registerKey([87], function() { // w
+        loadTown();
+    });
+    Game.Keyboard.registerKey([69], function() { // e
+        Game.UnitEngine.loadTile(new Game.UI.Tile('woods'));
+    });
+    //Game.Keyboard.registerKey([82], function() { // r
+    //
+    //});
+    //Game.Keyboard.registerKey([84], function() { // t
+    //
+    //});
 
 
 })(jQuery);

@@ -10,18 +10,23 @@
 
     UnitEngine.prototype = {
         init: function() {
-
-            this._teams = {}; // team id -> [Units on that team]
-
             Game.Timers.addTimerSupport(this);
-            
-            this._inCombat = false;
-            this._currentEncounter = null;
-
-            this.startClock();
         },
 
-        startClock: function() {
+        loadEngine: function() {
+            this._teams = {}; // team id -> [Units on that team]
+            this._currentEncounter = null;
+            this._inCombat = false;
+
+            this._startClock();
+        },
+
+        stopEngine: function() {
+            this._stopClock();
+        },
+
+
+        _startClock: function() {
             var self = this;
 
             Game.Clock.setInterval(CLOCK_KEY, function(iterations, period) {
@@ -40,7 +45,7 @@
             }, 1.0 / UPDATES_PER_SECOND);
 
         },
-        stopClock: function() {
+        _stopClock: function() {
             Game.Clock.clearInterval(CLOCK_KEY);
         },
 
@@ -52,10 +57,10 @@
             else {
                 // TODO Tile is not yet implemented
                 this.clearTeam(Game.Constants.teamIds.computer);
-                Game.UserInterface.encounterComplete();
-                Game.UserInterface.newEncounterLoaded({description: '[Not yet implemented]'});
+                Game.CombatUI.encounterComplete();
+                Game.CombatUI.newEncounterLoaded({description: '[Not yet implemented]'});
                 this.setTimeout(function() {
-                    Game.UserInterface.showMiniMap();
+                    Game.CombatUI.showMiniMap();
                 }, 2000);
             }
         },
@@ -182,7 +187,7 @@
                 this._currentEncounter.startAIs();
             }
 
-            Game.UserInterface.encounterStarted();
+            Game.CombatUI.encounterStarted();
         },
         leaveCombat: function() {
             this._inCombat = false;
@@ -211,36 +216,40 @@
         },
 
         countdownToEncounter: function() {
-            Game.UserInterface.setCenterImage(Game.Levels.Centerpieces.three.image);
+            Game.CombatUI.setCenterImage(Game.Levels.Centerpieces.three.image);
 
             this.setTimeout(function() {
-                Game.UserInterface.setCenterImage(Game.Levels.Centerpieces.two.image);
+                Game.CombatUI.setCenterImage(Game.Levels.Centerpieces.two.image);
             }, 1000);
             this.setTimeout(function() {
-                Game.UserInterface.setCenterImage(Game.Levels.Centerpieces.one.image);
+                Game.CombatUI.setCenterImage(Game.Levels.Centerpieces.one.image);
             }, 2000);
             this.setTimeout(function() {
-                Game.UserInterface.setCenterImage(Game.Levels.Centerpieces.battle.image);
+                Game.CombatUI.setCenterImage(Game.Levels.Centerpieces.battle.image);
                 Game.UnitEngine.enterCombat();
             }, 3000);
             this.setTimeout(function() {
-                Game.UserInterface.clearCenterImage();
+                Game.CombatUI.clearCenterImage();
             }, 4000);
         },
 
         _update: function(seconds) {
             var self = this;
 
+            if (Object.keys(this._teams).length === 0) {
+                return; // waiting on a team to be loaded
+            }
+
             if (!this.isPlayerTeamAlive()) {
-                Game.UserInterface.encounterFailed();
+                Game.CombatUI.encounterFailed();
                 this.leaveCombat();
-                this.stopClock();
+                this._stopClock();
             }
             if (this.inCombat() && !this.isComputerTeamAlive()) {
-                Game.UserInterface.encounterComplete();
+                Game.CombatUI.encounterComplete();
                 this.leaveCombat();
                 this.setTimeout(function() {
-                    Game.UserInterface.showMiniMap();
+                    Game.CombatUI.showMiniMap();
                 }, 2000);
             }
 

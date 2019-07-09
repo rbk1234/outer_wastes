@@ -1,10 +1,10 @@
-/* UserInterface is a Singleton */
+/* CombatUI is a Singleton */
 
 (function($) {
     'use strict';
 
     var UPDATES_PER_SECOND = 15;
-    var CLOCK_KEY = 'UserInterface';
+    var CLOCK_KEY = 'CombatUI';
 
     var MAX_UNIT_FRAMES = 5;
     var FRAME_COLUMNS = 5;
@@ -36,11 +36,10 @@
     var SPELLBOOK_ROWS = 4;
 
 
-    var UserInterface = function() {};
+    var CombatUI = function() {};
 
-    UserInterface.prototype = {
+    CombatUI.prototype = {
         init: function() {
-            var self = this;
 
             this._initDetailedFrames();
             this._initUnitFrames();
@@ -52,8 +51,13 @@
 
             this._initWorldMap();
             Game.Timers.addTimerSupport(this);
+        },
 
-            // Start clock
+
+
+        _startClock: function() {
+            var self = this;
+
             Game.Clock.setInterval(CLOCK_KEY, function(iterations, period) {
                 // Only draw once (no matter how many iterations)
                 self._refreshDetailedFrames();
@@ -64,14 +68,35 @@
 
                 self.updateTimers(iterations * period);
             }, 1.0 / UPDATES_PER_SECOND);
-
+        },
+        _stopClock: function() {
+            Game.Clock.clearInterval(CLOCK_KEY);
         },
 
+        loadUI: function() {
+            this._toggleBottomBar(true);
 
+            // show unit frames
 
+            this.loadTeam(Game.Constants.teamIds.player);
 
+            this.clearTarget();
 
+            this._startClock();
+        },
 
+        closeUI: function() {
+            this._toggleBottomBar(false);
+
+            // hide unit frames
+
+            // stop clock
+            this._stopClock();
+        },
+
+        _toggleBottomBar: function(show) {
+            $('body').toggleClass('combat-ui', show);
+        },
 
 
         // ----------------------------------------------------- Detailed frames (one for the player, one for the target)
@@ -602,8 +627,8 @@
         },
 
         newEncounterLoaded: function(encounter) {
-            this._map.loadTileDescription(this._$currentTile);
-            this._$encounterInfo.html(encounter.description);
+            //this._map.loadTileDescription(this._$currentTile);
+            //this._$encounterInfo.html(encounter.description);
 
             if (Game.UnitEngine.isComputerTeamAlive()) {
                 this._$enemyFrames.stop().animate({opacity: 1}, 1000);
@@ -1355,7 +1380,7 @@
 
     };
 
-    Game.UserInterface = new UserInterface();
+    Game.CombatUI = new CombatUI();
 
 
 

@@ -37,7 +37,7 @@
                 Game.UnitEngine.addUnit(unit);
             });
 
-            Game.UserInterface.loadTeam(Game.Constants.teamIds.computer);
+            Game.CombatUI.loadTeam(Game.Constants.teamIds.computer);
         },
 
         startAIs: function() {

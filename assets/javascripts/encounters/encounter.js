@@ -24,7 +24,7 @@
         },
 
         load: function() {
-            Game.UserInterface.newEncounterLoaded(this);
+            Game.CombatUI.newEncounterLoaded(this);
         }
 
     };

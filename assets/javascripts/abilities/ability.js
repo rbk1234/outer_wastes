@@ -95,7 +95,7 @@
                 return false;
             }
 
-            // TODO     As you add more possible target restrictions, UserInterface will need to _refreshAbilityTargets()
+            // TODO     As you add more possible target restrictions, CombatUI will need to _refreshAbilityTargets()
             // TODO     when those restrictions can change. E.g. when rezzing is implemented, have to refresh on rez.
 
             return true;

@@ -51,7 +51,7 @@
                 this._refreshModal();
                 Game.UnitEngine.loadTile(tile);
                 this.$modal.foundation('close');
-                Game.UserInterface.hideMiniMap();
+                Game.CombatUI.hideMiniMap();
             }
         },
 

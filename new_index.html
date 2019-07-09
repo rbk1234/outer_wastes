@@ -52,12 +52,195 @@
 </div>
 
 <div id="main-content">
-  <div id="encounter-background" class="ascii-content restricted-width"></div>
+  <div id="background-art" class="ascii-content restricted-width "></div>
+
+
+  <div id="units-area" class="restricted-width ">
+
+      <div id="unit-frame-template" class="unit-frame">
+        <div class="flex-col">
+          <div class="combat-text-area"></div>
+          <div class="clickable-area">
+            <div class="click-target"></div>
+            <div class="image">
+              <div class="unit-pre ascii-content"></div>
+            </div>
+            <div class="level-and-color">
+              6
+            </div>
+            <div class="bar health-bar">
+              <div class="bar-layer background red" style="width: 100%;"></div>
+              <div class="bar-layer shield" style="width: 0;"></div>
+              <div class="bar-layer health" style="width: 100%;"></div>
+              <!--<div class="bar-layer bar-text" style="width: 100%;"></div>-->
+            </div>
+            <div class="bar mana-bar">
+              <div class="bar-layer background" style="width: 100%;"></div>
+              <div class="bar-layer mana" style="width: 100%;"></div>
+              <!--<div class="bar-layer bar-text" style="width: 100%;"></div>-->
+            </div>
+          </div>
+          <div class="effects-area"></div>
+          <div class="bar cast-bar" style="opacity: 0;">
+            <div class="bar-layer background" style="width: 100%;"></div>
+            <div class="bar-layer cast-progress" style="width: 100%;"></div>
+            <div class="bar-layer bar-text" style="width: 100%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="center-area"><div class="ascii-content"></div></div>
+
+      <table class="no-rows no-spacing">
+        <tbody>
+        <tr>
+          <td width="45%" class="relative-container">
+            <div id="ally-frames"></div>
+          </td>
+          <td width="5%" class="relative-container"></td>
+          <td width="50%" class="relative-container">
+            <div id="enemy-frames" style="opacity:0;"></div>
+
+            <div id="mini-map" style="opacity:0;padding:0 2rem;">
+              <div class="ascii-content">
+                <table class="no-rows no-spacing">
+                  <tbody>
+                  <tr>
+                    <td width="33%"></td>
+                    <td width="33%" class="text-center"><div>↑<br><button class="button north-button move-on-click"><span class="tile-name"></span></button></div></td>
+                    <td width="33%" class="text-right"></td>
+                  </tr>
+                  <tr>
+                    <td><div>← <button class="button west-button move-on-click"><span class="tile-name"></span></button></div></td>
+                    <td class="text-center"><div><br><br><span class="current-tile tile-name"></span><br><br><br></div></td>
+                    <td class="text-right"><div><button class="button east-button move-on-click"><span class="tile-name"></span></button> →</div></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td class="text-center"><div><button class="button south-button move-on-click"><span class="tile-name"></span></button><br>↓</div></td>
+                    <td class="text-right"></td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div id="loot-table" style="opacity:0;">
+
+            </div>
+
+          </td>
+        </tr>
+        </tbody>
+      </table>
+
+    <!--</div>-->
+  </div>
+
+
 </div>
 
 <div id="bottom-bar">
   <div class="restricted-width">
-    Gold: 100
+    <div class="grid-x">
+      <div class="cell small-4">
+        <div class="bottom-container">
+          <div id="target-frame">
+            <table class="no-rows tight-spacing">
+              <tbody>
+              <tr>
+                <td>
+
+                  <table class="no-rows no-spacing" style="margin-bottom:0.75rem;">
+                    <tbody>
+                    <tr>
+                      <td class="nostretch">
+                        <div class="portrait" style="margin-right:0.5rem;"></div>
+                      </td>
+                      <td>
+                        <div class="formal-name">Rinley</div>
+                        <div class="name" style="font-size:0.875rem;"></div>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+
+                  <table class="no-rows bottom-spacing" style="font-size: 0.875rem;">
+                    <tbody>
+                    <tr>
+                      <td class="nostretch">Health&emsp;</td>
+                      <td>
+                        <div class="bar health-bar">
+                          <div class="bar-layer background red" style="width: 100%;"></div>
+                          <div class="bar-layer shield" style="width: 0;"></div>
+                          <div class="bar-layer health" style="width: 100%;"></div>
+                          <div class="bar-layer bar-text" style="width: 100%;"></div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="nostretch">Mana&emsp;</td>
+                      <td>
+                        <div class="bar mana-bar">
+                          <div class="bar-layer background" style="width: 100%;"></div>
+                          <div class="bar-layer mana" style="width: 100%;"></div>
+                          <div class="bar-layer bar-text" style="width: 100%;"></div>
+                        </div>
+                      </td>
+                    </tr>
+                    <!--<tr>-->
+                    <!--<td class="nostretch">Threat&emsp;</td>-->
+                    <!--<td>10%</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                    <!--<td colspan="2"><a>View all stats</a></td>-->
+                    <!--</tr>-->
+                    </tbody>
+                  </table>
+
+
+                </td>
+                <td class="nostretch">
+                  <table class="no-rows inventory">
+                    <tbody>
+                    <tr>
+                      <td><div></div></td>
+                      <td><div></div></td>
+                    </tr>
+                    <tr>
+                      <td><div></div></td>
+                      <td><div></div></td>
+                    </tr>
+                    <tr>
+                      <td><div></div></td>
+                      <td><div></div></td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+
+
+
+
+          </div>
+        </div>
+
+      </div>
+      <div class="cell small-4">
+        <div class="bottom-container">
+          <div style="margin:0.5rem;">Loot!</div>
+        </div>
+      </div>
+      <div class="cell small-4">
+        <div class="bottom-container">
+          <div style="margin:0.5rem;">Text!</div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -89,7 +272,7 @@
 <script src="assets/javascripts/globals/settings.js"></script>
 <script src="assets/javascripts/globals/statistics.js"></script>
 <script src="assets/javascripts/globals/unit_engine.js"></script>
-<script src="assets/javascripts/globals/user_interface.js"></script>
+<script src="assets/javascripts/globals/combat_ui.js"></script>
 <script src="assets/javascripts/globals/background_ui.js"></script>
 <script src="assets/javascripts/globals/town_ui.js"></script>
 

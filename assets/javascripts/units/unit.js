@@ -132,7 +132,7 @@
             }
             else {
                 // add new effect
-                Game.UserInterface.addEffect(this, effect);
+                Game.CombatUI.addEffect(this, effect);
                 this._effects[effect.id] = effect;
             }
 
@@ -144,7 +144,7 @@
 
             // delete old effect, update UI accordingly
             delete this._effects[oldEffect.id];
-            Game.UserInterface.refreshEffect(this, oldEffect, newEffect);
+            Game.CombatUI.refreshEffect(this, oldEffect, newEffect);
 
             // add new effect
             this._effects[newEffect.id] = newEffect;
@@ -156,7 +156,7 @@
             if (this._effects[effect.id]) {
                 effect.removeFromUnit(this);
                 delete this._effects[effect.id];
-                Game.UserInterface.removeEffect(this, effect);
+                Game.CombatUI.removeEffect(this, effect);
             }
         },
 
@@ -215,7 +215,7 @@
             this.health += amount;
 
             //if (healthSource.teamId === Game.Constants.teamIds.player) {
-                Game.UserInterface.createFloatingText(this, healthSource, '+' + Game.Util.round(amount), 'heal');
+                Game.CombatUI.createFloatingText(this, healthSource, '+' + Game.Util.round(amount), 'heal');
             //}
 
             if (this.health >= this.maxHealth.value()) {
@@ -278,14 +278,14 @@
             });
 
             //if (damageSource.id === Game.Player.id) {
-            //    Game.UserInterface.createFloatingText(this, '' + Game.Util.round(amount), 'damage');
+            //    Game.CombatUI.createFloatingText(this, '' + Game.Util.round(amount), 'damage');
             //}
             if (damageSource.teamId === Game.Constants.teamIds.player) {
-                Game.UserInterface.createFloatingText(this, damageSource, '' + Game.Util.round(amount), css, delay);
-                //Game.UserInterface.createFloatingText(damageSource, damageSource, '' + Game.Util.round(amount), css, delay);
+                Game.CombatUI.createFloatingText(this, damageSource, '' + Game.Util.round(amount), css, delay);
+                //Game.CombatUI.createFloatingText(damageSource, damageSource, '' + Game.Util.round(amount), css, delay);
             }
             if (this.teamId === Game.Constants.teamIds.player) {
-                Game.UserInterface.createFloatingText(this, damageSource, '-' + Game.Util.round(amount), 'red');
+                Game.CombatUI.createFloatingText(this, damageSource, '-' + Game.Util.round(amount), 'red');
             }
 
             if (Game.Util.roundForComparison(this.health) > 0) {
@@ -384,7 +384,7 @@
             this._abilities[key] = ability;
             ability.equip(this);
 
-            // todo update UserInterface
+            // todo update CombatUI
         },
         unequipAbility: function(key) {
             var ability = this.ability(key);
@@ -392,7 +392,7 @@
                 ability.unequip();
                 this._abilities[key] = null;
 
-                // todo update UserInterface
+                // todo update CombatUI
             }
         },
 
@@ -466,7 +466,7 @@
             this._equippedAbilityIds[slot] = ability.id;
             ability.equip(this);
             if (this.id === Game.Player.id) {
-                Game.UserInterface.equipAbility(ability, slot);
+                Game.CombatUI.equipAbility(ability, slot);
             }
         },
         unequipAbility: function(slot) {
@@ -474,7 +474,7 @@
             if (ability) {
                 ability.unequip();
                 if (this.id === Game.Player.id) {
-                    Game.UserInterface.unequipAbility(ability, slot);
+                    Game.CombatUI.unequipAbility(ability, slot);
                 }
             }
             this._equippedAbilityIds[slot] = null;
@@ -527,9 +527,9 @@
             else {
                 // Has cast time; start progress
                 this._castProgress = 0;
-                //Game.UserInterface.startCastBar(this._castAbility.name, this._castTotal);
+                //Game.CombatUI.startCastBar(this._castAbility.name, this._castTotal);
             }
-            Game.UserInterface.startCast(this, this._castAbility);
+            Game.CombatUI.startCast(this, this._castAbility);
 
             // start global cooldown
             //if (this._castAbility.onGlobalCooldown) {
@@ -548,8 +548,8 @@
             this._castProgress = null;
             this._globalCooldown = null; // undo any global cooldown
 
-            //Game.UserInterface.cancelCastBar(message);
-            Game.UserInterface.cancelCast(this, this._castAbility, message);
+            //Game.CombatUI.cancelCastBar(message);
+            Game.CombatUI.cancelCast(this, this._castAbility, message);
 
             //this._updateAllAbilityCooldowns(); // since global cd was undone, have to sync ability cooldowns
         },
@@ -624,8 +624,8 @@
 
             if (this._castProgress !== null) {
                 this._castProgress = null;
-                //Game.UserInterface.completeCastBar();
-                Game.UserInterface.finishCast(this, this._castAbility);
+                //Game.CombatUI.completeCastBar();
+                Game.CombatUI.finishCast(this, this._castAbility);
             }
             //this._updateAbilityCooldown(this._castAbility);
 
@@ -654,13 +654,13 @@
         //        // show ability cooldown
         //        totalCooldown = ability.cooldown.value();
         //        elapsed = totalCooldown - ability.remainingCooldown();
-        //        Game.UserInterface.startCooldown(ability, totalCooldown, elapsed);
+        //        Game.CombatUI.startCooldown(ability, totalCooldown, elapsed);
         //    }
         //    else {
         //        // show global cooldown
         //        totalCooldown = GLOBAL_COOLDOWN;
         //        elapsed = totalCooldown - this._globalCooldown;
-        //        Game.UserInterface.startCooldown(ability, totalCooldown, elapsed);
+        //        Game.CombatUI.startCooldown(ability, totalCooldown, elapsed);
         //    }
         //},
 
@@ -708,7 +708,7 @@
                     self.removeEffect(effect);
                 });
 
-                Game.UserInterface.unitDied(this);
+                Game.CombatUI.unitDied(this);
             }
         },
 

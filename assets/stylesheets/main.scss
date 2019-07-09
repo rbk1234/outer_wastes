@@ -5,45 +5,6 @@ sass assets/stylesheets/main.scss assets/stylesheets/main.css
 
 */
 
-// mother earth palette https://lospec.com/palette-list/mother-earth
-//$top-bar-bg: #384d52;
-//$main-content-bg: #4a806b; // #b8c083 // grassy
-//$main-frames-bg: #96c083;
-//$bottom-bar-bg: #bfa17a;
-//$bottom-bar-border: #3e2d2e;
-//$navigation-menu: #3e2d2e;
-//$health-border: transparent;
-//$health-border-targeted: white;
-
-//$top-bar-bg: #384d52;
-//$main-content-bg: #4a806b;
-//$main-frames-bg: #384d52;
-//$bottom-bar-bg: #bfa17a;
-//$bottom-bar-border: #3e2d2e;
-//$navigation-menu: #3e2d2e;
-//$health-border: #acacac;
-//$health-border-targeted: #ffac24;
-
-//$top-bar-bg: #384d52;
-//$main-content-bg: #96c083; // #b8c083 // grassy
-//$main-frames-bg: transparent;
-//$bottom-bar-bg: #bfa17a;
-//$bottom-bar-border: #3e2d2e;
-//$navigation-menu: #3e2d2e;
-//$health-border: transparent;
-//$health-border-targeted: white;
-
-// forest:
-//$top-bar-bg: #384d52;
-//$main-content-bg: #4a806b;
-//$main-frames-bg: transparent;
-//$bottom-bar-bg: #bfa17a;
-//$bottom-bar-border: #3e2d2e;
-//$navigation-menu: #3e2d2e;
-//$health-border: transparent;
-//$health-border-targeted: white;
-//$portrait-bg: #153c4a;
-
 // space
 // https://lospec.com/palette-list/nyx8
 $top-bar-bg: #0f2a3f;
@@ -82,6 +43,12 @@ $nyx8-brown: #997577;
 $nyx8-maroon: #816271;
 $nyx8-purple: #4e495f;
 
+// https://lospec.com/palette-list/slso8
+$slso8-dark-blue: #0d2b45;
+$slso8-blue: #203c56;
+$slso8-purple: #544e68;
+$slso8-maroon: #8d697a;
+
 
 $unit1: #3366ff;
 $unit2: #00ffff;
@@ -89,13 +56,15 @@ $unit3: #9933ff;
 $unit4: #ffff00;
 $unit5: #ff9933;
 
-/*                   NEW SCSS              */
 
 body {
   font-family: "Roboto Condensed", sans-serif;
   color: $light;
   background: $nyx8-black;
 }
+
+
+/* ------------------------------------------------- Layout --------------------------------------------------------- */
 
 $top-bar-height: 1.5rem;
 $bottom-bar-height: 10rem;
@@ -105,18 +74,40 @@ $bottom-bar-height: 10rem;
   top:0;
 
   height:$top-bar-height;
-  width:100%; // todo
+  width:100%;
 
-  background:$nyx8-dark-blue;
-  border-bottom:1px solid $nyx8-purple;
+  z-index: 2;
 }
 
 #main-content {
   margin-top:$top-bar-height;
   margin-bottom: 0;
 
-  &.bottom-bar-showing {
-    margin-bottom:$bottom-bar-height;
+  min-height: calc(100vh - #{$top-bar-height});
+
+  position: relative;
+
+  #units-area {
+    display: none; // will be shown by combat-ui
+
+    table {
+      height: 100%;
+
+      td.relative-container {
+        position: relative; // so the divs inside this td can overlap
+
+        #ally-frames, #enemy-frames, #mini-map {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+        }
+      }
+    }
+  }
+
+  #background-art {
+    line-height: 1em;
   }
 }
 
@@ -125,16 +116,31 @@ $bottom-bar-height: 10rem;
   bottom:0;
 
   height:$bottom-bar-height;
-  width:100%; // todo
+  width:100%;
 
-  display: none;
-  &.bottom-bar-showing {
-    display: block;
-  }
+  display: none; // shown by .combat-ui
 
-  background:$nyx8-blue;
+  z-index:2;
 }
 
+body.combat-ui {
+  #main-content {
+    margin-bottom: $bottom-bar-height;
+
+    min-height: calc(100vh - #{$top-bar-height} - #{$bottom-bar-height});
+
+    #units-area {
+      display: block;
+    }
+
+    #background-art {
+      opacity: 0.7;
+    }
+  }
+  #bottom-bar {
+    display: block;
+  }
+}
 
 .restricted-width {
   margin: 0 auto; // center horizontally
@@ -142,8 +148,41 @@ $bottom-bar-height: 10rem;
 }
 
 
-#encounter-background {
-  line-height: 1em;
+
+/* ------------------------------------------------- Color Scheme --------------------------------------------------- */
+
+#top-bar {
+  background:$slso8-dark-blue;
+  border-bottom:1px solid $slso8-blue;
+}
+#bottom-bar {
+  //background:$nyx8-blue;
+  background:$slso8-dark-blue;
+  border-top: 1px solid $slso8-blue;
+
+  .bottom-container {
+    margin: 0.5rem;
+    //padding: 0.5rem;
+    height: 9rem;
+    background: $slso8-blue;
+    border: 1px solid $slso8-purple;
+  }
+
+}
+
+
+.town-group {
+  background: $dark-purple;
+
+  margin: 1rem;
+  padding: 0.5rem;
+
+  min-height: 5rem;
+  border-radius: 0.313rem;
+}
+
+
+#background-art {
 
   .green {
     color: #00ff00;
@@ -193,105 +232,9 @@ $bottom-bar-height: 10rem;
 
 
 
-// -------------------------------------------------------- Main body layout
-
-#body-content {
-  display: flex;
-  flex-flow: column;
-  height: 100%;
-  background: $main-content-bg;
-
-  #header-bar {
-    flex: 0 1 auto; // fit to content
-    background: $top-bar-bg;
-    color: #888;
-    z-index: 2; // above background
-  }
-  #subheader-bar {
-    flex: 0 1 auto; // fit to content
-    color: white;
-    font-weight: bold;
-    z-index: 2; // above background
-
-    border-bottom: 1px solid #888;
-  }
-  #units-area {
-    flex: 1 1 auto; // fill remaining space
-
-    color: white;
-
-    //overflow: hidden; // in case a unit's image goes over the right side
-
-    position: relative;
-
-    table {
-      height: 100%;
-
-      td.relative-container {
-        // so the divs inside this td can overlap
-        position: relative;
-        #ally-frames, #enemy-frames, #mini-map {
-          //height: 100%;
-          position: absolute;
-          //top: 0;
-          bottom: 0;
-          left: 0;
-          right: 0;
-        }
-      }
-    }
-
-  }
-  #player-and-target-area {
-    flex: 0 1 auto; // fit to content
-    z-index: 2;
-
-    table {
-      tr td {
-        vertical-align: top;
-      }
-    }
-  }
-  #bottom-bar {
-    display: none;
-    height: $bottom-bar-height;
-
-    background: $dark-purple;
-
-    // Centering bottom bar according to https://stackoverflow.com/a/32546033/4904996
-    .bottom-section {
-      display: flex;
-      justify-content: center;
-      flex: 1;
-      padding: 0.5rem;
-    }
-  }
-}
-
-
-.town-group {
-  background: $dark-purple;
-  color: white;
-
-  margin: 1rem;
-  padding: 0.5rem;
-
-  min-height: 5rem;
-  border-radius: 0.313rem;
-}
-
-
 
 
 // -------------------------------------------------------- Detailed frames (one for player, one for target)
-
-.bottom-container {
-  margin: 0.5rem;
-  //padding: 0.5rem;
-  height: 9rem;
-  color: white;
-  background: $purple;
-}
 
 #player-frame, #target-frame {
   //display: flex;
@@ -1404,3 +1347,87 @@ a[disabled] {
 //
 //  background:$nyx8-blue;
 //}
+
+
+
+
+
+
+
+
+//
+//// -------------------------------------------------------- Main body layout
+//
+//#body-content {
+//  display: flex;
+//  flex-flow: column;
+//  height: 100%;
+//  background: $main-content-bg;
+//
+//  #header-bar {
+//    flex: 0 1 auto; // fit to content
+//    background: $top-bar-bg;
+//    color: #888;
+//    z-index: 2; // above background
+//  }
+//  #subheader-bar {
+//    flex: 0 1 auto; // fit to content
+//    color: white;
+//    font-weight: bold;
+//    z-index: 2; // above background
+//
+//    border-bottom: 1px solid #888;
+//  }
+//  #units-area {
+//    flex: 1 1 auto; // fill remaining space
+//
+//    color: white;
+//
+//    //overflow: hidden; // in case a unit's image goes over the right side
+//
+//    position: relative;
+//
+//    table {
+//      height: 100%;
+//
+//      td.relative-container {
+//        // so the divs inside this td can overlap
+//        position: relative;
+//        #ally-frames, #enemy-frames, #mini-map {
+//          //height: 100%;
+//          position: absolute;
+//          //top: 0;
+//          bottom: 0;
+//          left: 0;
+//          right: 0;
+//        }
+//      }
+//    }
+//
+//  }
+//  #player-and-target-area {
+//    flex: 0 1 auto; // fit to content
+//    z-index: 2;
+//
+//    table {
+//      tr td {
+//        vertical-align: top;
+//      }
+//    }
+//  }
+//  #bottom-bar {
+//    display: none;
+//    height: $bottom-bar-height;
+//
+//    background: $dark-purple;
+//
+//    // Centering bottom bar according to https://stackoverflow.com/a/32546033/4904996
+//    .bottom-section {
+//      display: flex;
+//      justify-content: center;
+//      flex: 1;
+//      padding: 0.5rem;
+//    }
+//  }
+//}
+
