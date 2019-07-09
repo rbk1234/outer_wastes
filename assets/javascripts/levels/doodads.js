@@ -94,10 +94,358 @@
                 '                         g                               g                        gg              g                                  ',
                 '                   g                                                                                                    g            '
             ]
+        },
+
+        town: {
+            doodads: { m: 'moon', g: 'gate',w: 'wall', t: 'tavern', c: 'chapel', b: 'blacksmith', a: 'alchemyLab',
+                L: 'huntersLodge', h: 'rightHouse1', j: 'rightHouse2', k: 'rightHouse3', l: 'leftHouse1', r: 'road', T: 'tree'  },
+            layout: [
+                //'     X                                                                                                                      X',
+                '                                                                                                                             ',
+                '                        .                                                       .                  .                         ',
+                '                                                                                                                             ',
+                '          .                                                                             .                  .                 ',
+                '                                                .                  .                                                         ',
+                '                                m                                                                     .                      ',
+                ' .                 .                                                                           .                             ',
+                '                                       .                                     .                                       .       ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                'w                w                w               g                         w                w                w              ',
+                '                                                                                                                             ',
+                '                                        T                                                                                    ',
+                '                                                                                                                             ',
+                '              b                                                                                                              ',
+                '                                                                                                                             ',
+                '                                                                                                    c                        ',
+                '                                                                                                                             ',
+                '                                                                                  k                              T           ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '  T                                                                                                                          ',
+                '                               t                                                                                        T    ',
+                '                                                                                                                             ',
+                '           l                                                                                    j                            ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                            ',
+                '                     T                                                                                                       ',
+                '                                                                     h                                                       ',
+                '                                                                                                             T               ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                  T                                                      a                                  ',
+                '                                                                                                                           ',
+                '                                                                                                                            ',
+                '              L                                                                                                             ',
+                '                                                                                                                            ',
+                '                                                                                                              k             ',
+                '                                                                                                                             ',
+                '                                            T        r                                                T                      ',
+                '         T                                                                                                                 ',
+                '                                                                                                                             ',
+                //' w                w                w                w                w                w                w                w     ',
+                //'                                                                                                                             ',
+            ]
         }
     };
 
     Game.namespace('Levels').Doodads = {
+        moon: {
+            image: [
+                ' ,-,',
+                '/ /',
+                '\\ \\',
+                ' `-`'
+            ]
+        },
+
+        gate: {
+            image: [
+                '   ___               ___',
+                '  /   \\             /   \\',
+                ' /     \\           /     \\',
+                '/       \\         /       \\',
+                '| ╬   ╬ |---------| ╬   ╬ |',
+                '[-------] ∩ ∩ ∩ ∩ [-------]',
+                ' |     |   .---.   |   - |',
+                ' | |   | .\'     \'. |     |',
+                ' |   - |/         \\|     |',
+                ' |     |           | ]   |',
+                ' |  _  |           |     |',
+                ' |     |           |   _ |'
+            ],
+            fills: [
+                '   bbb               bbb',
+                '  b   b             b   b',
+                ' b     b           b     b',
+                'b       b         b       b',
+                'g w   w ggggggggggg w   w g',
+                'ggggggggg g g g g ggggggggg',
+                ' ggggggg   ggggg   ggggggg',
+                ' ggggggg gg     gg ggggggg',
+                ' gggggggg         gggggggg',
+                ' ggggggg           ggggggg',
+                ' ggggggg           ggggggg',
+                ' ggggggg           ggggggg'
+            ],
+            colors: {
+                w: 'grey', // or white
+                g: 'grey',
+                b: 'grey' // or blue
+            }
+        },
+        wall: {
+            image: [
+                '_|¯|_|¯|_|¯|_|¯|_',
+                '|               |',
+                '|   ∩   ∩   ∩   |',
+                '|               |',
+                '|     -         |',
+                '|-           =  |'
+            ],
+            fills: [
+                'ggggggggggggggggg',
+                'ggggggggggggggggg',
+                'ggggggggggggggggg',
+                'ggggggggggggggggg',
+                'ggggggggggggggggg',
+                'ggggggggggggggggg'
+            ],
+            colors: {
+                g: 'grey',
+            }
+        },
+        tavern: {
+            image: [
+                '        ___',
+                '       /___\\',
+                '   ____|___|__________',
+                '  /  /                \\',
+                ' /  /    /     \\   \\   \\',
+                '/__/____________________\\',
+                ' |  | ┌┬┐   __ __   ┌┬┐ |',
+                ' |  | └┴┘  |  |  |  └┴┘ |',
+                ' |  |      | ·|· |      |'
+            ]
+        },
+        chapel: {
+            image: [
+                '     ╬_____',
+                '    /_\\    \\',
+                '   // \\\\    \\',
+                '  // _ \\\\    \\',
+                ' // /┼\\ \\\\    \\',
+                '//  ├┼┤  \\\\____\\',
+                '||  ¯¯¯  ||    |',
+                '||  ___  ||    |',
+                '||  | |  ||    |',
+                '||  | |  ||    |',
+            ]
+        },
+        blacksmith: {
+            image: [
+                '     __',
+                '    /__\\',
+                '   _|= |________',
+                '  / |__|    - \\ \\',
+                ' /  ______┬____\\_\\',
+                '/__/|░░|  |[]  | |',
+                '|[]       |[]  | |',
+                '|[]  ____',
+                '      )(¯',
+            ],
+            fills: [
+                '     gg',
+                '    gggg',
+                '   rggggrrrrrrrr',
+                '  rrggggrrrrrrrrr',
+                ' rrrrrrrrrsrrrrrrr',
+                'rrrrgoog  sxx  s s',
+                'sxx       sxx  s s',
+                'sxx  BBBB',
+                '      BBB'
+            ],
+            colors: {
+                //g: 'white',
+                //r: 'red',
+                //s: 'white',
+                //B: 'grey',
+                //o: 'orange',
+                //x: 'white'
+            }
+        },
+        alchemyLab: {
+            image: [
+                '        -o-',
+                '    _    I',
+                '   /_\\_./ \\',
+                '   |  _/  |',
+                '   /\\/ / /\\_',
+                '  /_/  _/   \\',
+                ' // _ /  ___ \\',
+                '//   /   |·| |',
+                '||=  |   |·| |'
+            ]
+        },
+        huntersLodge: {
+            image: [
+                '    __            /\\',
+                '    ||___________/  \\___',
+                '   //     //    / /\\ \\  \\',
+                '  //     //    / |__| \\  \\',
+                ' //     //    /        \\  \\',
+                '//T¯¯¯¯//¯¯¯¯¯|.--¯¯--.|¯T\\\\',
+                ' ||    ||     |  /¯¯\\  | ||',
+                ' ||    ||     |  |  |  | ||'
+            ]
+        },
+        rightHouse1: {
+            image: [
+                '   ________',
+                '  / | \\    \\',
+                ' /─┬┴┬─\\  \\ \\',
+                '/__|_|__\\____\\',
+                ' |     |    |',
+                ' | [X] | ┌┐ |',
+                ' |     | ││ |'
+            ],
+            //fills: [
+            //    '   yyyyyyyy',
+            //    '  ybbbyyyyyy',
+            //    ' ybbbbbyyyyyy',
+            //    'ybbbbbbbyyyyyy',
+            //    ' wwwwwwwwwwww',
+            //    ' wwXXXwwwddww',
+            //    ' wwwwwwwwddww'
+            //],
+            //colors: {
+            //    y: 'yellow',
+            //    b: 'brown',
+            //    w: 'darkbrown',
+            //    d: 'darkbrown',
+            //    X: 'darkbrown'
+            //}
+        },
+        rightHouse2: {
+            image: [
+                '   ________',
+                '  /\\ /\\    \\',
+                ' /__V__\\  \\ \\',
+                '/___I___\\____\\',
+                ' |     |    |',
+                ' | [X] | ┌┐ |',
+                ' |     | ││ |',
+            ]
+        },
+        rightHouse3: {
+            image: [
+                '        __',
+                '   _____││_',
+                '  / | \\ \'\' \\',
+                ' /─┬┴┬─\\  \\ \\',
+                '/__|_|__\\____\\',
+                ' |     |    |',
+                ' | ┌─┐ | [] |',
+                ' | │·│ |    |'
+            ]
+        },
+        leftHouse1: {
+            image: [
+                '   ________',
+                '  /    / | \\',
+                ' / /  /─┬┴┬─\\',
+                '/____/__|_|__\\',
+                ' |    |     |',
+                ' | ┌┐ | [X] |',
+                ' | ││ |     |',
+            ]
+        },
+        road: {
+            image: [
+                '              -',
+                '       _   ¯',
+                '         _    ¯',
+                '      -      _',
+                '',
+                '       =   _',
+                '                -',
+                '',
+                '              .     ¯',
+                '',
+                '                  -     =',
+                '                      ,',
+                '               =',
+                '',
+                '                    _',
+                '            -=',
+                '         .      _',
+                '',
+                '           ,',
+                '     ¯',
+                '   .        -',
+                '     _',
+                '.',
+                '          -    =',
+                '    =        .',
+                '-',
+                '         _',
+                '',
+                '  `          .     _',
+                '',
+                '        -',
+                '      .        =        _',
+                '          _          ,      -',
+            ],
+            fills: [
+                '              b',
+                '       b   b',
+                '         b    b',
+                '      b      b',
+                '',
+                '       b   b',
+                '                b',
+                '',
+                '              b     b',
+                '',
+                '                  b     b',
+                '                      b',
+                '               b',
+                '',
+                '                    b',
+                '            bb',
+                '         b      b',
+                '',
+                '           b',
+                '     b',
+                '   b        b',
+                '     b',
+                'b',
+                '          b    b',
+                '    b        b',
+                'b',
+                '         b',
+                '',
+                '  b          b     b',
+                '',
+                '        b',
+                '      b        b        b',
+                '          b          b      b',
+            ],
+            colors: {
+                g: 'green',
+                b: 'brown'
+            }
+        },
+
+
         grass: {
             image: [
                 ','

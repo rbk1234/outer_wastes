@@ -10,8 +10,8 @@
     Game.Keyboard.init();
     Game.ResourceEngine.init();
     Game.Statistics.init();
-    Game.UnitEngine.init();
-    Game.UserInterface.init();
+    Game.UnitEngine.init(); // todo move this to combat
+    Game.BackgroundUI.init();
 
     Game.Clock.setInterval(
         'debug',
@@ -39,10 +39,6 @@
     Game.UnitEngine.addUnit(brewmaster);
     brewmaster.equipAbility('special', new Game.Abilities.Ability('backstab'));
 
-    //var native = new Game.Units.Unit('native', {teamId: Game.Constants.teamIds.player});
-    //Game.UnitEngine.addUnit(native);
-    //var native = new Game.Units.Unit('native', {teamId: Game.Constants.teamIds.player});
-    //Game.UnitEngine.addUnit(native);
     var swashbuckler = new Game.Units.Unit('swashbuckler', {teamId: Game.Constants.teamIds.player});
     Game.UnitEngine.addUnit(swashbuckler);
     swashbuckler.equipAbility('special', new Game.Abilities.Ability('backstab'));
@@ -51,77 +47,32 @@
     Game.UnitEngine.addUnit(smuggler);
     smuggler.equipAbility('special', new Game.Abilities.Ability('backstab'));
 
-    //var swashbuckler = new Game.Units.Unit('swashbuckler', {teamId: Game.Constants.teamIds.player});
-    //Game.UnitEngine.addUnit(swashbuckler);
-
-    //Game.Player = new Game.Units.Unit('player', {teamId: Game.Constants.teamIds.player});
-    //Game.UnitEngine.addUnit(Game.Player);
-
     var cleric = new Game.Units.Unit('cleric', { teamId: Game.Constants.teamIds.player });
     Game.UnitEngine.addUnit(cleric);
     cleric.equipAbility('special', new Game.Abilities.Ability('holyNova'));
 
-    if (false) {
-        var holyLight = new Game.Abilities.Ability('holyLight');
-        Game.Player.gainAbility(holyLight);
-        Game.Player.equipAbility(holyLight, 0);
+    var TOWN = true;
 
-        var renew = new Game.Abilities.Ability('renew');
-        Game.Player.gainAbility(renew);
-        Game.Player.equipAbility(renew, 1);
-
-        var blessedShield = new Game.Abilities.Ability('blessedShield');
-        Game.Player.gainAbility(blessedShield);
-        Game.Player.equipAbility(blessedShield, 2);
-
-        var holyNova = new Game.Abilities.Ability('holyNova');
-        Game.Player.gainAbility(holyNova);
-        Game.Player.equipAbility(holyNova, 3);
-
-        var divineSpirit = new Game.Abilities.Ability('divineSpirit');
-        Game.Player.gainAbility(divineSpirit);
-        //Game.Player.equipAbility(divineSpirit, 3);
-
-        var guardianAngel = new Game.Abilities.Ability('guardianAngel');
-        Game.Player.gainAbility(guardianAngel);
-        //Game.Player.equipAbility(guardianAngel, 4);
+    if (TOWN) {
+        Game.TownUI.init();
+        Game.BackgroundUI.drawBackground('town', 0)
     }
-    if (false) {
-        var livingSeed = new Game.Abilities.Ability('livingSeed');
-        Game.Player.gainAbility(livingSeed);
-        //Game.Player.equipAbility(livingSeed, 0);
+    else {
+        Game.UserInterface.init();
 
-        var bloom = new Game.Abilities.Ability('bloom');
-        Game.Player.gainAbility(bloom);
-        //Game.Player.equipAbility(bloom, 1);
-
-        var naturesGrasp = new Game.Abilities.Ability('naturesGrasp');
-        Game.Player.gainAbility(naturesGrasp);
-        //Game.Player.equipAbility(naturesGrasp, 2);
-
-        var friendOfTheForest = new Game.Abilities.Ability('friendOfTheForest');
-        Game.Player.gainAbility(friendOfTheForest);
-        //Game.Player.equipAbility(friendOfTheForest, 3);
-
-        var overgrowth = new Game.Abilities.Ability('overgrowth');
-        Game.Player.gainAbility(overgrowth);
-        //Game.Player.equipAbility(overgrowth, 4);
+        Game.UserInterface.loadTeam(Game.Constants.teamIds.player);
     }
 
-    Game.UserInterface.loadTeam(Game.Constants.teamIds.player);
     Game.Clock.run();
 
+    if (TOWN) {
 
-    //var forest = new Game.Levels.Level('forest');
-    //forest.loadNextEncounter();
-
-    Game.UserInterface.clearTarget();
-
-    //Game.Log.logMessage('Game started!');
-    //Game.UnitEngine.countdownToEncounter();
-
-    Game.UserInterface.loadMap('nightvale');
-    Game.UserInterface.showMiniMap();
+    }
+    else {
+        Game.UserInterface.clearTarget();
+        Game.UserInterface.loadMap('nightvale');
+        Game.UserInterface.showMiniMap();
+    }
 
 
 })(jQuery);

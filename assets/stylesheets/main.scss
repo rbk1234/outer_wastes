@@ -64,8 +64,6 @@ $mini-map-button: #08141e;
 $mini-map-button-border: #4e495f;
 $mini-map-button-hover: #0f2a3f;
 
-$bottom-bar-height: 10rem;
-
 // this could be cool too: https://lospec.com/palette-list/oil-6
 $dark-purple: #272744;
 $purple: #494d7e;
@@ -74,8 +72,16 @@ $baishe: #c69fa5;
 $gold: #f2d3ab;
 $light: #fbf5ef;
 
-$black: #08141e;
-$dark-blue: #0f2a3f;
+// https://lospec.com/palette-list/nyx8
+$nyx8-black: #08141e;
+$nyx8-dark-blue: #0f2a3f;
+$nyx8-blue: #20394f;
+$nyx8-baishe: #f6d6bd;
+$nyx8-gold: #c3a38a;
+$nyx8-brown: #997577;
+$nyx8-maroon: #816271;
+$nyx8-purple: #4e495f;
+
 
 $unit1: #3366ff;
 $unit2: #00ffff;
@@ -83,52 +89,107 @@ $unit3: #9933ff;
 $unit4: #ffff00;
 $unit5: #ff9933;
 
+/*                   NEW SCSS              */
+
 body {
   font-family: "Roboto Condensed", sans-serif;
+  color: $light;
+  background: $nyx8-black;
 }
 
+$top-bar-height: 1.5rem;
+$bottom-bar-height: 10rem;
 
-.no-margin {
-  margin: 0;
+#top-bar {
+  position:fixed;
+  top:0;
+
+  height:$top-bar-height;
+  width:100%; // todo
+
+  background:$nyx8-dark-blue;
+  border-bottom:1px solid $nyx8-purple;
 }
-.no-bottom-margin {
+
+#main-content {
+  margin-top:$top-bar-height;
   margin-bottom: 0;
+
+  &.bottom-bar-showing {
+    margin-bottom:$bottom-bar-height;
+  }
+}
+
+#bottom-bar {
+  position:fixed;
+  bottom:0;
+
+  height:$bottom-bar-height;
+  width:100%; // todo
+
+  display: none;
+  &.bottom-bar-showing {
+    display: block;
+  }
+
+  background:$nyx8-blue;
 }
 
 
-.log-paragraph {
-  margin-bottom: 0; }
-
-//canvas {
-//  position:absolute;
-//  left: 0;
-//  right: 0;
-//  margin: auto
-//  /*alpha:0.5;*/
-//}
-
-
-//.canvas-container {
-//  z-index: 2;
-//  /* Keep above log-container so don't catch scroll events */
-//  position: absolute; }
-
-.log-container {
-  overflow-y: scroll; }
-
-#base-log {
-  height: 200px; }
-
-html,
-body {
-  height: 100%;
-  margin: 0
+.restricted-width {
+  margin: 0 auto; // center horizontally
+  // Note: width will be set in background_ui.js
 }
 
 
+#encounter-background {
+  line-height: 1em;
 
+  .green {
+    color: #00ff00;
+  }
+  .brown {
+    color: #bf8040;
+  }
+  .darkbrown {
+    color: #734d26;
+  }
+  .lightbrown {
+    color: #dfbf9f;
+  }
 
+  .white-beige {
+    color: #f6d6bd;
+  }
+  .orange {
+    color: darkorange;
+  }
+  .beige {
+    color: #ffcc99;
+  }
+  .yellow {
+    color: #cccc00;
+  }
+  .white {
+    color: white;
+  }
+  .grey {
+    //color: #666699;
+    color: #8c8c8c;
+  }
+  .blue {
+    color: #404fcc;
+  }
+  .red {
+    color: #cb4154;
+  }
+  .black {
 
+  }
+  .darkblue {
+    color: #a8ccd7;
+  }
+}
 
 
 
@@ -191,31 +252,11 @@ body {
       }
     }
   }
-  //#cast-bar-area {
-  //  flex: 0 1 auto; // fit to content
-  //
-  //  position: relative;
-  //  height: 2rem;
-  //
-  //  #player-cast-bar {
-  //    position:absolute;
-  //    bottom:0.5rem;
-  //    left:50%;
-  //    margin-left:-10rem;
-  //    height:1.5rem;
-  //
-  //    width: 20rem;
-  //  }
-  //}
   #bottom-bar {
-    //display: flex;
-    //flex-flow: row;
-    //
-    //flex: 0 1 auto; // fill to content
+    display: none;
     height: $bottom-bar-height;
 
     background: $dark-purple;
-    //border: 2px solid $bottom-bar-border;
 
     // Centering bottom bar according to https://stackoverflow.com/a/32546033/4904996
     .bottom-section {
@@ -225,6 +266,18 @@ body {
       padding: 0.5rem;
     }
   }
+}
+
+
+.town-group {
+  background: $dark-purple;
+  color: white;
+
+  margin: 1rem;
+  padding: 0.5rem;
+
+  min-height: 5rem;
+  border-radius: 0.313rem;
 }
 
 
@@ -284,57 +337,6 @@ body {
 
 
 
-
-// -------------------------------------------------------- Unit background
-
-#encounter-background {
-  overflow: hidden;
-  position: absolute;
-  width: 100%;
-  opacity: 0.5;
-
-  color: white;
-  bottom: $bottom-bar-height;
-
-  .green {
-    color: #00ff00;
-  }
-  .brown {
-    color: #bf8040;
-  }
-  .darkbrown {
-    color: #734d26;
-  }
-  .lightbrown {
-    color: #dfbf9f;
-  }
-
-  .white-beige {
-    color: #f6d6bd;
-  }
-  .orange {
-    color: darkorange;
-  }
-  .beige {
-    color: #ffcc99;
-  }
-
-  .white {
-    color: white;
-  }
-  .grey {
-    color: #666699;
-  }
-  .red {
-    color: #cb4154;
-  }
-  .black {
-
-  }
-  .darkblue {
-    color: #a8ccd7;
-  }
-}
 
 // -------------------------------------------------------- Unit frames
 
@@ -484,7 +486,7 @@ body {
   div {
     height: 2.5rem;
     width: 2.5rem;
-    background: $dark-blue;
+    background: $nyx8-blue;
     border-radius: 0.313rem;
     border: 1px solid #aaa;
   }
@@ -1275,6 +1277,15 @@ body {
 
 // -------------------------------------------------------- Standard elements
 
+.no-margin {
+  margin: 0;
+}
+.no-bottom-margin {
+  margin-bottom: 0;
+}
+
+
+
 .tabs {
   background: transparent;
   border: none;
@@ -1361,3 +1372,35 @@ a[disabled] {
     outline: none;
   }
 }
+
+
+
+
+// todo can delete this later:
+//#top-bar {
+//  height:$top-bar-height;
+//  width:100%; // todo
+//
+//  background:$nyx8-blue;
+//}
+//#main-content {
+//  height: calc(100vh - #{$top-bar-height});
+//  overflow: auto;
+//
+//  &.bottom-bar-showing {
+//    height: calc(100vh - #{$top-bar-height} - #{$bottom-bar-height});
+//  }
+//
+//  background: $nyx8-black;
+//}
+//#bottom-bar {
+//  height:$bottom-bar-height;
+//  width:100%; // todo
+//
+//  display: none;
+//  &.bottom-bar-showing {
+//    display: block;
+//  }
+//
+//  background:$nyx8-blue;
+//}

@@ -45,7 +45,7 @@
         _moveToTile: function(tile) {
             this.playerCoord = tile.coordinate;
             this._propagateVisbility();
-            Game.UserInterface.drawBackground(tile.dbKey, 0);
+            Game.BackgroundUI.drawBackground(tile.dbKey, 0);
 
             if (this.$modal) {
                 this._refreshModal();

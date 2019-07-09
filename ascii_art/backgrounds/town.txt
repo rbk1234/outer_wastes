@@ -1,0 +1,281 @@
+
+GATE / DRAWBRIDGE
+
+   ___               ___
+  /   \             /   \
+ /     \           /     \
+/       \         /       \
+| ╬   ╬ |---------| ╬   ╬ |
+[-------] ∩ ∩ ∩ ∩ [-------]
+ |     |   .---.   |   - |
+ | |   | .'     '. |     |
+ |   - |/         \|     |
+ |     |           | ]   |
+ |  _  |           |     |
+ |     |           |   _ |
+
+   bbb               bbb
+  b   b             b   b
+ b     b           b     b
+b       b         b       b
+g w   w ggggggggggg w   w g
+ggggggggg g g g g ggggggggg
+ ggggggg   ggggg   ggggggg
+ ggggggg gg     gg ggggggg
+ gggggggg         gggggggg
+ ggggggg           ggggggg
+ ggggggg           ggggggg
+ ggggggg           ggggggg
+
+
+WALL
+
+_|¯|_|¯|_|¯|_|¯|_
+|               |
+|   ∩   ∩   ∩   |
+|               |
+|     -         |
+|-           =  |
+
+
+ggggggggggggggggg
+ggggggggggggggggg
+ggggggggggggggggg
+ggggggggggggggggg
+ggggggggggggggggg
+ggggggggggggggggg
+
+
+TAVERN
+
+              (
+                )
+              ___
+             /__\\
+  ___________|__||
+ / _ /      \   \ \
+/________________\_\
+ |  __   _   _  | |
+ | |  | [X] [X] | |
+ | |· |         | |
+
+
+        (
+          )
+        ___
+       /___\
+   ____|___|__________
+  /  /                \
+ /  /    /     \   \   \
+/__/____________________\
+ |  | ┌┬┐   __ __   ┌┬┐ |
+ |  | └┴┘  |  |  |  └┴┘ |
+ |  |      | ·|· |      |
+
+
+CHAPEL
+
+     ╬_____
+    /_\    \
+   // \\    \
+  // _ \\    \
+ // /┼\ \\    \
+//  ├┼┤  \\____\
+||  ¯¯¯  ||    |
+||  ___  ||    |
+||  | |  ||    |
+||  | |  ||    |
+
+
+BLACKSMITH
+
+     __
+    /__\
+   _|= |________
+  / |__|    - \ \
+ /________┬____\_\
+ []       |[]  | |
+ [] ____  |[]  | |
+ []  )(¯  |[]  | |
+
+
+     __
+    /__\
+   _|= |________
+  / |__|    - \ \
+ /  ______┬____\_\
+/__/|░░|  |[]  | |
+|[]       |[]  | |
+|[]  ____
+      )(¯
+
+
+     gg
+    gggg
+   rggggrrrrrrrr
+  rrggggrrrrrrrrr
+ rrrrrrrrrsrrrrrrr
+rrrrgoog  sxx  s s
+sxx       sxx  s s
+sxx  BBBB
+      BBB
+
+
+
+
+ALCHEMY LAB
+
+     )
+   (    -o-
+    _    I
+   /_\_./ \
+   |  _/  |
+   /\/ / /\_
+  /_/  _/   \
+ // _ /  ___ \
+//   /   |·| |
+||=  |   |·| |
+
+
+HOUSE (RIGHT, V1)
+
+   ________
+  / | \    \
+ /─┬┴┬─\  \ \
+/__|_|__\____\
+ |     |    |
+ | [X] | ┌┐ |
+ |     | ││ |
+
+   yyyyyyyy
+  ybbbyyyyyy
+ ybbbbbyyyyyy
+ybbbbbbbyyyyyy
+ wwwwwwwwwwww
+ wwXXXwwwddww
+ wwwwwwwwddww
+
+
+HOUSE (RIGHT, V2)
+
+
+   ________
+  /\ /\    \
+ /__V__\  \ \
+/___I___\____\
+ |     |    |
+ | [X] | ┌┐ |
+ |     | ││ |
+
+
+HOUSE (RIGHT, V3)
+        __
+   _____││_
+  / | \ '' \
+ /─┬┴┬─\  \ \
+/__|_|__\____\
+ |     |    |
+ | ┌─┐ | [] |
+ | │·│ |    |
+
+
+HOUSE (LEFT, V1)
+
+   ________
+  /    / | \
+ / /  /─┬┴┬─\
+/____/__|_|__\
+ |    |     |
+ | ┌┐ | [X] |
+ | ││ |     |
+
+
+HUNTER LODGE
+
+
+    __            /\
+    ||___________/  \___
+   //     //    / /\ \  \
+  //     //    / |__| \  \
+ //     //    /        \  \
+//T¯¯¯¯//¯¯¯¯¯|.--¯¯--.|¯T\\
+ ||    ||     |  /¯¯\  | ||
+ ||    ||     |  |  |  | ||
+
+
+
+ROAD
+
+              -
+       .   ¯
+         _    ¯
+      -      _
+
+       =   _
+                -
+
+              .     ¯
+
+                  -     =
+                      ,
+               =
+
+                    _
+            -=
+         .      _
+
+           ,
+     ¯
+   .        -
+     _
+.
+          -    =
+    =        .
+-
+         _
+
+  `          .     _
+
+        -
+      .        =        _
+          _          ,      -
+
+
+ROAD (fill) (regex:     _|=|-|,|\.|¯|`    )
+
+              b
+       b   b
+         b    b
+      b      b
+
+       b   b
+                b
+
+              b     b
+
+                  b     b
+                      b
+               b
+
+                    b
+            bb
+         b      b
+
+           b
+     b
+   b        b
+     b
+b
+          b    b
+    b        b
+b
+         b
+
+  b          b     b
+
+        b
+      b        b        b
+          b          b      b
+
+
+

@@ -32,12 +32,16 @@
     <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
   <![endif]-->
 
-  <div id="body-content">
+
+
+
+  <div id="body-content" style="background: #558ebd;">
 
     <div id="header-bar" class="show-for-large">
       <div class="grid-x">
         <div class="cell auto">
-
+          &nbsp;
+          <span id="gold-value">0</span> gold
         </div>
         <div class="cell shrink">
           FPS: <span id="fps"></span>&emsp;&mdash;&emsp;
@@ -52,10 +56,25 @@
       </div>
     </div>
 
-    <div id="encounter-background" class="ascii-content" style="max-width:1280px;left:50%;transform: translate(-50%);">
-
+    <div>
+      <div id="encounter-background" class="ascii-content">
+      </div>
     </div>
 
+    <div id="village" class="grid-x" hidden>
+      <div class="cell small-6">
+        <div class="town-group">
+          <h6>Blacksmith</h6>
+
+        </div>
+      </div>
+      <div class="cell small-6">
+        <div class="town-group">
+          <h6>Tavern</h6>
+
+        </div>
+      </div>
+    </div>
 
     <div id="units-area">
       <div style="height:100%;max-width:1280px;margin:0 auto;">
@@ -385,6 +404,8 @@
   <script src="assets/javascripts/globals/statistics.js"></script>
   <script src="assets/javascripts/globals/unit_engine.js"></script>
   <script src="assets/javascripts/globals/user_interface.js"></script>
+  <script src="assets/javascripts/globals/background_ui.js"></script>
+  <script src="assets/javascripts/globals/town_ui.js"></script>
 
   <script src="assets/javascripts/levels/database.js"></script>
   <script src="assets/javascripts/levels/doodads.js"></script>

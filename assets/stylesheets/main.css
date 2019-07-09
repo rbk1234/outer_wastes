@@ -5,7 +5,9 @@ sass assets/stylesheets/main.scss assets/stylesheets/main.css
 
 */
 body {
-  font-family: "Roboto Condensed", sans-serif; }
+  font-family: "Roboto Condensed", sans-serif;
+  color: #fbf5ef;
+  background: #08141e; }
 
 .no-margin {
   margin: 0; }
@@ -13,19 +15,32 @@ body {
 .no-bottom-margin {
   margin-bottom: 0; }
 
-.log-paragraph {
+#top-bar {
+  position: fixed;
+  top: 0;
+  height: 1.5rem;
+  width: 100%;
+  background: #0f2a3f;
+  border-bottom: 1px solid #4e495f; }
+
+#main-content {
+  margin-top: 1.5rem;
   margin-bottom: 0; }
+  #main-content.bottom-bar-showing {
+    margin-bottom: 10rem; }
 
-.log-container {
-  overflow-y: scroll; }
+#bottom-bar {
+  position: fixed;
+  bottom: 0;
+  height: 10rem;
+  width: 100%;
+  display: none;
+  background: #20394f; }
+  #bottom-bar.bottom-bar-showing {
+    display: block; }
 
-#base-log {
-  height: 200px; }
-
-html,
-body {
-  height: 100%;
-  margin: 0; }
+.restricted-width {
+  margin: 0 auto; }
 
 #body-content {
   display: flex;
@@ -62,6 +77,7 @@ body {
     #body-content #player-and-target-area table tr td {
       vertical-align: top; }
   #body-content #bottom-bar {
+    display: none;
     height: 10rem;
     background: #272744; }
     #body-content #bottom-bar .bottom-section {
@@ -69,6 +85,14 @@ body {
       justify-content: center;
       flex: 1;
       padding: 0.5rem; }
+
+.town-group {
+  background: #272744;
+  color: white;
+  margin: 1rem;
+  padding: 0.5rem;
+  min-height: 5rem;
+  border-radius: 0.313rem; }
 
 .bottom-container {
   margin: 0.5rem;
@@ -99,12 +123,7 @@ body {
     height: 2rem; }
 
 #encounter-background {
-  overflow: hidden;
-  position: absolute;
-  width: 100%;
-  opacity: 0.5;
-  color: white;
-  bottom: 10rem; }
+  line-height: 1em; }
   #encounter-background .green {
     color: #00ff00; }
   #encounter-background .brown {
@@ -119,10 +138,14 @@ body {
     color: darkorange; }
   #encounter-background .beige {
     color: #ffcc99; }
+  #encounter-background .yellow {
+    color: #cccc00; }
   #encounter-background .white {
     color: white; }
   #encounter-background .grey {
-    color: #666699; }
+    color: #8c8c8c; }
+  #encounter-background .blue {
+    color: #404fcc; }
   #encounter-background .red {
     color: #cb4154; }
   #encounter-background .darkblue {
@@ -207,7 +230,7 @@ body {
 .inventory div {
   height: 2.5rem;
   width: 2.5rem;
-  background: #0f2a3f;
+  background: #20394f;
   border-radius: 0.313rem;
   border: 1px solid #aaa; }
 
