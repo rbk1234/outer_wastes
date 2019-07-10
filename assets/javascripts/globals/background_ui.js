@@ -20,6 +20,7 @@
             var self = this;
 
             this.$background = $('#background-art');
+            this.$overlay = $('#background-overlay');
 
             $('.restricted-width').css('width', BACKGROUND_WIDTH);
 
@@ -35,15 +36,14 @@
 
         },
 
-        // TODO Can remove this later. This was a way to do scrolling background
-        //var totalOffset = 0;
-        //Game.Clock.setInterval('UserInterface_backgroundScroll', function(iterations, period) {
-        //    totalOffset += (4 * period * iterations);
-        //
-        //    self.drawBackground('forest', totalOffset);
-        //}, 1.0 / 3);
+        // should be called after drawBackground to attach click handlers
+        registerHandler: function(key, handler) {
+            this._registeredHandlers[key] = handler;
+        },
 
         drawBackground: function(key) {
+            this._resetOverlay();
+
             var bgRecord = Game.Levels.Backgrounds[key];
             if (!bgRecord) {
                 this._lastBackgroundKey = null;
@@ -88,10 +88,13 @@
             }
 
             this.$background.html(background.join('\n'));
+
+            this._attachMouseHandlers();
         },
 
         _addDoodadToBackground: function(doodad, startingR, startingC, background) {
             var image = doodad.image;
+            this._setupMouseover(doodad.mouseover, startingR, startingC);
 
             for (var r = 0, numRows = image.length; r < numRows; r++) {
                 if ((startingR - numRows + r) >= 0) {
@@ -100,14 +103,71 @@
                         // Important! If no color, nothing will be drawn. This way, even an 'empty' space (no character)
                         //            can still block a doodad behind it
                         if (!doodad.fills || doodad.fills[r][c] !== ' ') {
-                            var color = doodad.fills ? doodad.colors[doodad.fills[r][c]] : '';
-                            background[startingR - numRows + r][startingC + c] = "<span class='"+color+"'>"+row[c]+"</span>";
+                            var classes = '';
+                            if (doodad.fills && doodad.colors[doodad.fills[r][c]]) {
+                                classes += doodad.colors[doodad.fills[r][c]]
+                            }
+                            if (doodad.mouseover) {
+                                classes += (' hoverable ' + doodad.mouseover.klass);
+                            }
+                            if (classes.length) {
+                                background[startingR - numRows + r][startingC + c] = "<span class='"+classes+"'>"+row[c]+"</span>";
+                            }
+                            else {
+                                background[startingR - numRows + r][startingC + c] = row[c];
+                            }
                         }
                     }
                 }
             }
         },
 
+        _resetOverlay: function() {
+            this.$overlay.empty();
+            this._mouseovers = [];
+            this._registeredHandlers = {};
+        },
+
+        _setupMouseover: function(data, row, col) {
+            if (data) {
+                var $overlay = $('<span/>', {
+                    css: {
+                        top: (row - data.offset[1] - 1) * FONT_SIZE,
+                        left: (col - LEFT_OFFSET + data.offset[0]) * FONT_WIDTH
+                    },
+                    class: data.klass,
+                    html: data.label
+                });
+                console.log($overlay);
+
+                this.$overlay.append($overlay);
+
+                this._mouseovers.push($.extend({}, data, { $overlay: $overlay }));
+            }
+        },
+
+        _attachMouseHandlers: function() {
+            var self = this;
+
+            this._mouseovers.forEach(function(data) {
+                var $background = self.$background.add(self.$overlay);
+
+                $background.off('mouseenter', '.'+data.klass).on('mouseenter', '.'+data.klass, function() {
+                    data.$overlay.show();
+                });
+                $background.off('mouseout', '.'+data.klass).on('mouseout', '.'+data.klass, function() {
+                    data.$overlay.hide();
+                });
+                $background.off('click', '.'+data.klass).on('click', '.'+data.klass, function() {
+                    if (self._registeredHandlers[data.handler]) {
+                        self._registeredHandlers[data.handler]();
+                    }
+                    else {
+                        console.warn('No handler found for: ', data.handler);
+                    }
+                });
+            });
+        },
 
 
     };

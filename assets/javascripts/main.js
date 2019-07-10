@@ -36,12 +36,16 @@
         Game.UnitEngine.stopEngine();
         Game.CombatUI.closeUI();
 
-        Game.BackgroundUI.drawBackground('town', 0)
+        Game.BackgroundUI.drawBackground('town');
+        Game.BackgroundUI.registerHandler('village.gate', function() {
+            console.log('leave town!');
+            loadQuest();
+        });
     }
 
     function loadQuest() {
         // -------- Background
-        Game.BackgroundUI.drawBackground('woods', 0);
+        Game.BackgroundUI.drawBackground('woods');
 
         // -------- UnitEngine
         Game.UnitEngine.loadEngine();

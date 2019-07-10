@@ -15,17 +15,17 @@ GATE / DRAWBRIDGE
  |     |           |   _ |
 
    bbb               bbb
-  b   b             b   b
- b     b           b     b
-b       b         b       b
-g w   w ggggggggggg w   w g
-ggggggggg g g g g ggggggggg
- ggggggg   ggggg   ggggggg
- ggggggg gg     gg ggggggg
- gggggggg         gggggggg
- ggggggg           ggggggg
- ggggggg           ggggggg
- ggggggg           ggggggg
+  bbbbb             bbbbb
+ bbbbbbb           bbbbbbb
+bbbbbbbbb         bbbbbbbbb
+ggwgggwgggggggggggggwgggwgg
+ggggggggggggggggggggggggggg
+ ggggggggggggggggggggggggg
+ gggggggggg.....gggggggggg
+ gggggggg.........gggggggg
+ ggggggg...........ggggggg
+ ggggggg...........ggggggg
+ ggggggg...........ggggggg
 
 
 WALL

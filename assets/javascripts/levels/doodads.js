@@ -158,7 +158,6 @@
                 '                                                                                                                             ',
                 '                                            T        r                                                T                      ',
                 '         T                                                                                                                 ',
-                '                                                                                                                             ',
                 //' w                w                w                w                w                w                w                w     ',
                 //'                                                                                                                             ',
             ]
@@ -204,23 +203,37 @@
             ],
             fills: [
                 '   bbb               bbb',
-                '  b   b             b   b',
-                ' b     b           b     b',
-                'b       b         b       b',
-                'g w   w ggggggggggg w   w g',
-                'ggggggggg g g g g ggggggggg',
-                ' ggggggg   ggggg   ggggggg',
-                ' ggggggg gg     gg ggggggg',
-                ' gggggggg         gggggggg',
-                ' ggggggg           ggggggg',
-                ' ggggggg           ggggggg',
-                ' ggggggg           ggggggg'
+                '  bbbbb             bbbbb',
+                ' bbbbbbb           bbbbbbb',
+                'bbbbbbbbb         bbbbbbbbb',
+                'ggwgggwgggggggggggggwgggwgg',
+                'ggggggggggggggggggggggggggg',
+                ' ggggggggggggggggggggggggg',
+                ' gggggggggg.....gggggggggg',
+                ' gggggggg.........gggggggg',
+                ' ggggggg...........ggggggg',
+                ' ggggggg...........ggggggg',
+                ' ggggggg...........ggggggg',
             ],
             colors: {
                 w: 'grey', // or white
                 g: 'grey',
                 b: 'grey' // or blue
-            }
+            },
+            mouseover: {
+                label: '  The  \n Gates',
+                offset: [10,3],
+                handler: 'village.gate',
+                klass: 'gate'
+            },
+            //overlays: [
+            //    {
+            //        overlay: 'Venture\n  Out  ',
+            //        offset: [10,3],
+            //        trigger: 'mouseover',
+            //        onClick: 'village.gate'
+            //    }
+            //]
         },
         wall: {
             image: [
@@ -254,7 +267,13 @@
                 ' |  | ┌┬┐   __ __   ┌┬┐ |',
                 ' |  | └┴┘  |  |  |  └┴┘ |',
                 ' |  |      | ·|· |      |'
-            ]
+            ],
+            mouseover: {
+                label: 'Tavern',
+                offset: [11,-1],
+                handler: 'village.tavern',
+                klass: 'tavern'
+            }
         },
         chapel: {
             image: [
@@ -268,7 +287,13 @@
                 '||  ___  ||    |',
                 '||  | |  ||    |',
                 '||  | |  ||    |',
-            ]
+            ],
+            mouseover: {
+                label: 'Chapel',
+                offset: [3,-1],
+                handler: 'village.chapel',
+                klass: 'chapel'
+            }
         },
         blacksmith: {
             image: [
@@ -288,9 +313,9 @@
                 '   rggggrrrrrrrr',
                 '  rrggggrrrrrrrrr',
                 ' rrrrrrrrrsrrrrrrr',
-                'rrrrgoog  sxx  s s',
-                'sxx       sxx  s s',
-                'sxx  BBBB',
+                'rrrrgoog..sxx..s.s',
+                'sxx.......sxx..s.s',
+                'sxx..BBBB',
                 '      BBB'
             ],
             colors: {
@@ -300,6 +325,12 @@
                 //B: 'grey',
                 //o: 'orange',
                 //x: 'white'
+            },
+            mouseover: {
+                label: 'Blacksmith',
+                offset: [10,1],
+                handler: 'village.blacksmith',
+                klass: 'blacksmith'
             }
         },
         alchemyLab: {
@@ -313,7 +344,13 @@
                 ' // _ /  ___ \\',
                 '//   /   |·| |',
                 '||=  |   |·| |'
-            ]
+            ],
+            mouseover: {
+                label: 'Alchemy Lab',
+                offset: [1,-1],
+                handler: 'village.alchemy',
+                klass: 'alchemy'
+            }
         },
         huntersLodge: {
             image: [
@@ -325,7 +362,13 @@
                 '//T¯¯¯¯//¯¯¯¯¯|.--¯¯--.|¯T\\\\',
                 ' ||    ||     |  /¯¯\\  | ||',
                 ' ||    ||     |  |  |  | ||'
-            ]
+            ],
+            mouseover: {
+                label: "Hunter's Lodge",
+                offset: [8,-1],
+                handler: 'village.lodge',
+                klass: 'lodge'
+            }
         },
         rightHouse1: {
             image: [

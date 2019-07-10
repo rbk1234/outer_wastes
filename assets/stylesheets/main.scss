@@ -108,6 +108,23 @@ $bottom-bar-height: 10rem;
 
   #background-art {
     line-height: 1em;
+
+    .hoverable {
+      cursor: pointer;
+    }
+  }
+  #background-overlay {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%);
+
+    span {
+      position: absolute;
+      display: none; // will be shown on hover
+      cursor: pointer;
+    }
+
   }
 }
 
@@ -444,9 +461,9 @@ body.combat-ui {
 
 
 #center-area {
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%);
+  //position: absolute;
+  //left: 50%;
+  //transform: translate(-50%);
 
   .ascii-content {
     // center horizontally:

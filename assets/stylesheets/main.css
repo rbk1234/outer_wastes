@@ -35,6 +35,17 @@ body {
           right: 0; }
   #main-content #background-art {
     line-height: 1em; }
+    #main-content #background-art .hoverable {
+      cursor: pointer; }
+  #main-content #background-overlay {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%); }
+    #main-content #background-overlay span {
+      position: absolute;
+      display: none;
+      cursor: pointer; }
 
 #bottom-bar {
   position: fixed;
@@ -215,20 +226,16 @@ body.combat-ui #bottom-bar {
   font-size: 1em;
   white-space: pre; }
 
-#center-area {
+#center-area .ascii-content {
   position: absolute;
   left: 50%;
-  transform: translate(-50%); }
-  #center-area .ascii-content {
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%);
-    font-size: 0.5rem;
-    top: 0;
-    padding: 0.5rem 1rem;
-    background: transparent;
-    font-weight: bold;
-    border-radius: 0.313rem; }
+  transform: translate(-50%);
+  font-size: 0.5rem;
+  top: 0;
+  padding: 0.5rem 1rem;
+  background: transparent;
+  font-weight: bold;
+  border-radius: 0.313rem; }
 
 #ability-tooltip {
   position: absolute;
