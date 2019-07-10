@@ -289,7 +289,7 @@
             }
 
             if (Game.Util.roundForComparison(this.health) > 0) {
-                //this.health -= amount;
+                this.health -= amount;
             }
 
             if (Game.Util.roundForComparison(this.health) <= 0) {

@@ -13,6 +13,8 @@
     var FONT_WIDTH = FONT_SIZE * 0.6; // for monospace font, the width is 60% of the height
     var BACKGROUND_WIDTH = MAX_COLUMNS * FONT_WIDTH;
 
+    var INVIS_CHAR = '.';
+
     var BackgroundUI = function() {};
 
     BackgroundUI.prototype = {
@@ -100,9 +102,17 @@
                 if ((startingR - numRows + r) >= 0) {
                     var row = image[r];
                     for (var c = 0, numCols = row.length; c < numCols; c++) {
-                        // Important! If no color, nothing will be drawn. This way, even an 'empty' space (no character)
-                        //            can still block a doodad behind it
-                        if (!doodad.fills || doodad.fills[r][c] !== ' ') {
+                        var shouldFill = false;
+                        if (doodad.fills) {
+                            // Important! If no color, nothing will be drawn. This way, even an 'empty' space (no character)
+                            //            can still block a doodad behind it
+                            shouldFill = doodad.fills[r][c] !== ' ';
+                        }
+                        else {
+                            shouldFill = row[c] !== ' ';
+                        }
+
+                        if (shouldFill) {
                             var classes = '';
                             if (doodad.fills && doodad.colors[doodad.fills[r][c]]) {
                                 classes += doodad.colors[doodad.fills[r][c]]
@@ -110,11 +120,16 @@
                             if (doodad.mouseover) {
                                 classes += (' hoverable ' + doodad.mouseover.klass);
                             }
+                            var char = row[c];
+                            if (doodad.fills && doodad.fills[r][c] === INVIS_CHAR) {
+                                char = background[startingR - numRows + r][startingC + c]; // "invis", so make it same as original char
+                            }
+
                             if (classes.length) {
-                                background[startingR - numRows + r][startingC + c] = "<span class='"+classes+"'>"+row[c]+"</span>";
+                                background[startingR - numRows + r][startingC + c] = "<span class='"+classes+"'>"+char+"</span>";
                             }
                             else {
-                                background[startingR - numRows + r][startingC + c] = row[c];
+                                background[startingR - numRows + r][startingC + c] = char;
                             }
                         }
                     }
@@ -138,7 +153,6 @@
                     class: data.klass,
                     html: data.label
                 });
-                console.log($overlay);
 
                 this.$overlay.append($overlay);
 

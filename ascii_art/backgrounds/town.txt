@@ -27,6 +27,34 @@ ggggggggggggggggggggggggggg
  ggggggg...........ggggggg
  ggggggg...........ggggggg
 
+GATE (CLOSED)
+
+   ___               ___
+  /   \             /   \
+ /     \           /     \
+/       \         /       \
+| ╬   ╬ |---------| ╬   ╬ |
+[-------] ∩ ∩ ∩ ∩ [-------]
+ |     |   .---.   |   - |
+ | |   | .'┼ ┼ ┼'. |     |
+ |   - |/┼ ┼ ┼ ┼ ┼\|     |
+ |     | ┼ ┼ ┼ ┼ ┼ | ]   |
+ |  _  | ┼ ┼ ┼ ┼ ┼ |     |
+ |     | ┼ ┼ ┼ ┼ ┼ |   _ |
+
+   bbb               bbb
+  bbbbb             bbbbb
+ bbbbbbb           bbbbbbb
+bbbbbbbbb         bbbbbbbbb
+ggwgggwgggggggggggggwgggwgg
+ggggggggggggggggggggggggggg
+ ggggggggggggggggggggggggg
+ gggggggggglllllgggggggggg
+ gggggggglllllllllgggggggg
+ ggggggglllllllllllggggggg
+ ggggggglllllllllllggggggg
+ ggggggglllllllllllggggggg
+
 
 WALL
 
@@ -60,8 +88,6 @@ TAVERN
  | |· |         | |
 
 
-        (
-          )
         ___
        /___\
    ____|___|__________
@@ -71,6 +97,16 @@ TAVERN
  |  | ┌┬┐   __ __   ┌┬┐ |
  |  | └┴┘  |  |  |  └┴┘ |
  |  |      | ·|· |      |
+
+        xxx
+       xxxxx
+   xxxxxxxxxxxxxxxxxxx
+  xxxxxxxxxxxxxxxxxxxxx
+ xxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxx
+ xxxxxxxxxxxxxxxxxxxxxxxx
+ xxxxxxxxxxxxxxxxxxxxxxxx
+ xxxxxxxxxxxxxxxxxxxxxxxx
 
 
 CHAPEL
@@ -85,6 +121,18 @@ CHAPEL
 ||  ___  ||    |
 ||  | |  ||    |
 ||  | |  ||    |
+
+
+     xxxxxx
+    xxxxxxxx
+   xxxxxxxxxx
+  xxxxxxxxxxxx
+ xxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxx
 
 
 BLACKSMITH
@@ -135,6 +183,17 @@ ALCHEMY LAB
  // _ /  ___ \
 //   /   |·| |
 ||=  |   |·| |
+
+
+        xxx
+    x    x
+   xxxxxxxx
+   xxxxxxxx
+   xxxxxxxxx
+  xxxxxxxxxxx
+ xxxxxxxxxxxxx
+xxxxxxxxxxxxxx
+xxxxxxxxxxxxxx
 
 
 HOUSE (RIGHT, V1)
@@ -189,6 +248,14 @@ HOUSE (LEFT, V1)
  | ┌┐ | [X] |
  | ││ |     |
 
+   xxxxxxxx
+  xxxxxxxxxx
+ xxxxxxxxxxxx
+xxxxxxxxxxxxxx
+ xxxxxxxxxxxx
+ xxxxxxxxxxxx
+ xxxxxxxxxxxx
+
 
 HUNTER LODGE
 
@@ -201,6 +268,15 @@ HUNTER LODGE
 //T¯¯¯¯//¯¯¯¯¯|.--¯¯--.|¯T\\
  ||    ||     |  /¯¯\  | ||
  ||    ||     |  |  |  | ||
+
+    xx            xx
+    xxxxxxxxxxxxxxxxxxxx
+   xxxxxxxxxxxxxxxxxxxxxx
+  xxxxxxxxxxxxxxxxxxxxxxxx
+ xxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ xxxxxxxxxxxxxxxxxxxxxxxxxx
+ xxxxxxxxxxxxxxxxxxxxxxxxxx
 
 
 

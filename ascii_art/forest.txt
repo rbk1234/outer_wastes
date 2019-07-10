@@ -192,10 +192,20 @@ g gbgg gg
   b b b
 
 
+ ^
+/|\
+/|\
 
+ g
+gbg
+gbg
 
+ ^
+/^\
+/|\
 
-
-
+ g
+ggg
+gbg
 
 
