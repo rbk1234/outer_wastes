@@ -4,10 +4,20 @@
 sass assets/stylesheets/main.scss assets/stylesheets/main.css
 
 */
+/* ------------------------------------------------- Overall fonts / backgroud -------------------------------------- */
 body {
-  font-family: "Roboto Condensed", sans-serif;
+  font-family: monospace, monospace;
   color: #fbf5ef;
   background: #08141e; }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: monospace, monospace;
+  letter-spacing: 1px; }
+
+a {
+  color: #f2d3ab; }
+  a:hover {
+    color: #c69fa5; }
 
 /* ------------------------------------------------- Layout --------------------------------------------------------- */
 #top-bar {
@@ -34,18 +44,43 @@ body {
           left: 0;
           right: 0; }
   #main-content #background-art {
-    line-height: 1em; }
+    line-height: 1em;
+    z-index: 1; }
     #main-content #background-art .hoverable {
       cursor: pointer; }
   #main-content #background-overlay {
     position: absolute;
     top: 0;
     left: 50%;
-    transform: translate(-50%); }
+    transform: translate(-50%);
+    z-index: 2; }
     #main-content #background-overlay span {
       position: absolute;
       display: none;
       cursor: pointer; }
+  #main-content #popup-container {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%);
+    z-index: 3; }
+    #main-content #popup-container #building-popup {
+      position: absolute;
+      height: 60vh;
+      width: 40%;
+      padding: 0.5rem;
+      top: 5rem; }
+      #main-content #popup-container #building-popup.left-aligned {
+        left: 1rem; }
+      #main-content #popup-container #building-popup.right-aligned {
+        right: 1rem; }
+      #main-content #popup-container #building-popup .header {
+        height: 10%; }
+      #main-content #popup-container #building-popup .inner-content {
+        overflow-y: scroll;
+        height: 70%; }
+      #main-content #popup-container #building-popup .footer {
+        height: 20%; }
 
 #bottom-bar {
   position: fixed;
@@ -68,6 +103,22 @@ body.combat-ui #bottom-bar {
 .restricted-width {
   margin: 0 auto; }
 
+/* ------------------------------------------------- Scrollbars ----------------------------------------------------- */
+::-webkit-scrollbar {
+  width: 12px;
+  background-color: #888; }
+
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #888; }
+
+::-webkit-scrollbar-thumb {
+  border-radius: 12px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #555;
+  border: 2px solid transparent;
+  background-clip: content-box; }
+
 /* ------------------------------------------------- Color Scheme --------------------------------------------------- */
 #top-bar {
   background: #0d2b45;
@@ -82,12 +133,13 @@ body.combat-ui #bottom-bar {
     background: #203c56;
     border: 1px solid #544e68; }
 
-.town-group {
-  background: #272744;
-  margin: 1rem;
-  padding: 0.5rem;
-  min-height: 5rem;
-  border-radius: 0.313rem; }
+#building-popup {
+  border: 1px solid #f2d3ab;
+  background: #20394f; }
+  #building-popup .header {
+    color: #f2d3ab; }
+  #building-popup .inner-content {
+    background: #0f2a3f; }
 
 #background-art .green {
   color: #00ff00; }
@@ -544,34 +596,58 @@ body.combat-ui #bottom-bar {
     color: black;
     font-size: 0.75rem; }
 
-.action-bar-button, .effect {
+.inner-content .item:not(:last-child) {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5); }
+
+.item {
+  font-size: 0.875rem;
+  margin: 0 0.5rem;
+  padding: 0.5rem 0; }
+  .item .item-icon {
+    margin-right: 0.4rem; }
+  .item.unlearned {
+    opacity: 0.5; }
+
+.item-icon {
+  width: 3rem;
+  height: 3rem;
+  border: 1px solid #fbf5ef;
+  border-radius: 0.313rem;
+  background: #08141e;
+  padding: 0.1rem; }
+
+.action-bar-button, .effect, .item-icon {
   /*    icons:    */
   /*    backgrounds:    */ }
-  .action-bar-button.hand-bandage:before, .effect.hand-bandage:before {
+  .action-bar-button.hand-bandage:before, .effect.hand-bandage:before, .item-icon.hand-bandage:before {
     content: url("icons/hand-bandage.svg"); }
-  .action-bar-button.healing:before, .effect.healing:before {
+  .action-bar-button.healing:before, .effect.healing:before, .item-icon.healing:before {
     content: url("icons/healing.svg"); }
-  .action-bar-button.shield:before, .effect.shield:before {
+  .action-bar-button.shield:before, .effect.shield:before, .item-icon.shield:before {
     content: url("icons/shield.svg"); }
-  .action-bar-button.mighty-force:before, .effect.mighty-force:before {
+  .action-bar-button.mighty-force:before, .effect.mighty-force:before, .item-icon.mighty-force:before {
     content: url("icons/mighty-force.svg"); }
-  .action-bar-button.splashy-stream:before, .effect.splashy-stream:before {
+  .action-bar-button.splashy-stream:before, .effect.splashy-stream:before, .item-icon.splashy-stream:before {
     content: url("icons/splashy-stream.svg"); }
-  .action-bar-button.angel-outfit:before, .effect.angel-outfit:before {
+  .action-bar-button.angel-outfit:before, .effect.angel-outfit:before, .item-icon.angel-outfit:before {
     content: url("icons/angel-outfit.svg"); }
-  .action-bar-button.explosion-rays:before, .effect.explosion-rays:before {
+  .action-bar-button.explosion-rays:before, .effect.explosion-rays:before, .item-icon.explosion-rays:before {
     content: url("icons/explosion-rays.svg"); }
-  .action-bar-button.acorn:before, .effect.acorn:before {
+  .action-bar-button.acorn:before, .effect.acorn:before, .item-icon.acorn:before {
     content: url("icons/acorn.svg"); }
-  .action-bar-button.lotus-flower:before, .effect.lotus-flower:before {
+  .action-bar-button.lotus-flower:before, .effect.lotus-flower:before, .item-icon.lotus-flower:before {
     content: url("icons/lotus-flower.svg"); }
-  .action-bar-button.light-thorny-triskelion:before, .effect.light-thorny-triskelion:before {
+  .action-bar-button.light-thorny-triskelion:before, .effect.light-thorny-triskelion:before, .item-icon.light-thorny-triskelion:before {
     content: url("icons/light-thorny-triskelion.svg"); }
-  .action-bar-button.fairy:before, .effect.fairy:before {
+  .action-bar-button.fairy:before, .effect.fairy:before, .item-icon.fairy:before {
     content: url("icons/fairy.svg"); }
-  .action-bar-button.flowers:before, .effect.flowers:before {
+  .action-bar-button.flowers:before, .effect.flowers:before, .item-icon.flowers:before {
     content: url("icons/flowers.svg"); }
-  .action-bar-button.blank, .effect.blank {
+  .action-bar-button.sword-brandish:before, .effect.sword-brandish:before, .item-icon.sword-brandish:before {
+    content: url("icons/white/sword-brandish.svg"); }
+  .action-bar-button.viking-shield:before, .effect.viking-shield:before, .item-icon.viking-shield:before {
+    content: url("icons/white/viking-shield.svg"); }
+  .action-bar-button.blank, .effect.blank, .item-icon.blank {
     background: #373737;
     /* Old browsers */
     background: -moz-linear-gradient(top, #373737 0%, #2c2c2c 44%, #212121 100%);
@@ -580,38 +656,38 @@ body.combat-ui #bottom-bar {
     /* Chrome10-25,Safari5.1-6 */
     background: linear-gradient(to bottom, #373737 0%, #2c2c2c 44%, #212121 100%);
     /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */ }
-  .action-bar-button.green-blue, .effect.green-blue {
+  .action-bar-button.green-blue, .effect.green-blue, .item-icon.green-blue {
     background: radial-gradient(circle farthest-corner at 10% 20%, #1ef05f 0%, #1428e1 90%); }
-  .action-bar-button.pink, .effect.pink {
+  .action-bar-button.pink, .effect.pink, .item-icon.pink {
     background: linear-gradient(110.4deg, #fbcb9f 36%, #f489e9 82.4%); }
-  .action-bar-button.sunny, .effect.sunny {
+  .action-bar-button.sunny, .effect.sunny, .item-icon.sunny {
     background: radial-gradient(circle farthest-corner at 10% 20%, #fddd00 0%, #f06b05 90%); }
-  .action-bar-button.yellow, .effect.yellow {
+  .action-bar-button.yellow, .effect.yellow, .item-icon.yellow {
     background: radial-gradient(circle farthest-corner at 10% 20%, #ffc87c 0%, #fcfb79 90%); }
-  .action-bar-button.beige, .effect.beige {
+  .action-bar-button.beige, .effect.beige, .item-icon.beige {
     background: radial-gradient(circle farthest-corner at 8.2% 19.3%, #d0b6b1 0%, #edc392 90.1%); }
-  .action-bar-button.purple-blue, .effect.purple-blue {
+  .action-bar-button.purple-blue, .effect.purple-blue, .item-icon.purple-blue {
     background: radial-gradient(circle farthest-corner at 3.6% 26.5%, #6a13fd 0.1%, #1286f2 90%); }
-  .action-bar-button.opal, .effect.opal {
+  .action-bar-button.opal, .effect.opal, .item-icon.opal {
     background: radial-gradient(circle 253px at 12.6% 77.9%, #ddffd6 0.3%, #d6fefe 90.5%); }
-  .action-bar-button.grey, .effect.grey {
+  .action-bar-button.grey, .effect.grey, .item-icon.grey {
     background: radial-gradient(circle farthest-corner at 10% 20%, #5e7b8f 0%, #acc0cd 90%); }
-  .action-bar-button.black-red-yellow, .effect.black-red-yellow {
+  .action-bar-button.black-red-yellow, .effect.black-red-yellow, .item-icon.black-red-yellow {
     background: linear-gradient(108.5deg, #1e3b5e 4%, #fd1d3e 49.3%, #ffe05e 96%); }
-  .action-bar-button.purple-opal, .effect.purple-opal {
+  .action-bar-button.purple-opal, .effect.purple-opal, .item-icon.purple-opal {
     background: radial-gradient(circle farthest-corner at 10.6% 23.3%, #baa2fc 0%, #b0f8f2 72.4%); }
-  .action-bar-button.green-white, .effect.green-white {
+  .action-bar-button.green-white, .effect.green-white, .item-icon.green-white {
     background-image: radial-gradient(circle farthest-corner at 73.4% 82.3%, #255e17, #f6fdd5 90%); }
-  .action-bar-button.rainbow, .effect.rainbow {
+  .action-bar-button.rainbow, .effect.rainbow, .item-icon.rainbow {
     background: linear-gradient(111.1deg, #e93500 11.3%, #c813d3 37.6%, #328ea2 76.6%, #278aff 113%); }
-  .action-bar-button.green-red, .effect.green-red {
+  .action-bar-button.green-red, .effect.green-red, .item-icon.green-red {
     background-image: radial-gradient(circle farthest-corner at 15.4% 10.2%, #9ee49e 0%, #ff5050 90%); }
-  .action-bar-button.brown, .effect.brown {
+  .action-bar-button.brown, .effect.brown, .item-icon.brown {
     background-image: radial-gradient(circle farthest-corner at 73.4% 82.3%, #996633 0%, #d9b38c 90%); }
-  .action-bar-button.forest, .effect.forest {
+  .action-bar-button.forest, .effect.forest, .item-icon.forest {
     background: linear-gradient(to top, #6c493e, #58e585);
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ }
-  .action-bar-button.dracula, .effect.dracula {
+  .action-bar-button.dracula, .effect.dracula, .item-icon.dracula {
     background: #DC2424;
     /* fallback for old browsers */
     background: -webkit-linear-gradient(to top, #4A569D, #DC2424);
@@ -689,5 +765,9 @@ a[disabled] {
 
 .no-focus-outline:focus {
   outline: none; }
+
+.button.mini {
+  margin: 0;
+  padding: 0.1rem 0.5rem; }
 
 /*# sourceMappingURL=main.css.map */

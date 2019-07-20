@@ -32,62 +32,16 @@
     Game.Log.logMessage('Initializing 2...');
     Game.Log.logMessage('Initializing 3...');
 
-    function loadTown() {
-        Game.UnitEngine.stopEngine();
-        Game.CombatUI.closeUI();
-
-        Game.BackgroundUI.drawBackground('town');
-        Game.BackgroundUI.registerHandler('village.gate', function() {
-            console.log('leave town!');
-            loadQuest();
-        });
-    }
-
-    function loadQuest() {
-        // -------- Background
-        Game.BackgroundUI.drawBackground('woods');
-
-        // -------- UnitEngine
-        Game.UnitEngine.loadEngine();
-
-        var crusader = new Game.Units.Unit('crusader', {teamId: Game.Constants.teamIds.player});
-        Game.UnitEngine.addUnit(crusader);
-        crusader.equipAbility('special', new Game.Abilities.Ability('blessedShield'));
-
-        var brewmaster = new Game.Units.Unit('brewmaster', {teamId: Game.Constants.teamIds.player});
-        Game.UnitEngine.addUnit(brewmaster);
-        brewmaster.equipAbility('special', new Game.Abilities.Ability('backstab'));
-
-        var swashbuckler = new Game.Units.Unit('swashbuckler', {teamId: Game.Constants.teamIds.player});
-        Game.UnitEngine.addUnit(swashbuckler);
-        swashbuckler.equipAbility('special', new Game.Abilities.Ability('backstab'));
-
-        var smuggler = new Game.Units.Unit('smuggler', {teamId: Game.Constants.teamIds.player});
-        Game.UnitEngine.addUnit(smuggler);
-        smuggler.equipAbility('special', new Game.Abilities.Ability('backstab'));
-
-        var cleric = new Game.Units.Unit('cleric', { teamId: Game.Constants.teamIds.player });
-        Game.UnitEngine.addUnit(cleric);
-        cleric.equipAbility('special', new Game.Abilities.Ability('holyNova'));
-
-        // -------- CombatUI
-        Game.CombatUI.loadUI();
-
-
-        //Game.CombatUI.loadMap('nightvale');
-        //Game.CombatUI.showMiniMap();
-    }
-
     Game.Clock.run();
 
-    loadTown();
+    Game.TownUI.loadTown();
 
-    Game.Keyboard.registerKey([81], function() { // q
-        loadQuest();
-    });
-    Game.Keyboard.registerKey([87], function() { // w
-        loadTown();
-    });
+    //Game.Keyboard.registerKey([81], function() { // q
+    //    loadQuest();
+    //});
+    //Game.Keyboard.registerKey([87], function() { // w
+    //    loadTown();
+    //});
     Game.Keyboard.registerKey([69], function() { // e
         Game.UnitEngine.loadTile(new Game.UI.Tile('woods'));
     });

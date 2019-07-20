@@ -53,6 +53,7 @@
 
 <div id="main-content">
   <div id="background-art" class="ascii-content restricted-width "></div>
+
   <div id="background-overlay" class="ascii-content restricted-width"></div>
 
   <div id="units-area" class="restricted-width ">
@@ -137,7 +138,47 @@
     <!--</div>-->
   </div>
 
+  <div id="popup-container" class="restricted-width">
+    <div id="building-popup" class="right-aligned ui-popup" hidden>
+    <!--<div id="building-popup" class="right-aligned ui-popup" >-->
+      <div class="header">
+        <table class="no-rows no-spacing">
+          <tbody>
+          <tr>
+            <td><h6 class="no-bottom-margin popup-title"></h6></td>
+            <td class="nostretch"><a class="fa fa-fw fa-times close-popup"></a></td>
+            <!--<td class="nostretch"><a class="ui-popup" style="font-weight:bold;">×</a></td>-->
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="inner-content item-list"></div>
+      <div class="footer">
+      </div>
+    </div>
+  </div>
+</div>
 
+<div id="item-template" hidden>
+  <div class="item">
+    <table class="no-rows no-spacing">
+      <tbody>
+      <tr>
+        <td rowspan="2" class="nostretch">
+          <div class="item-icon"></div>
+        </td>
+        <td><b class="item-name"></b></td>
+        <td class="nostretch">
+          <a class="button mini item-purchase">Buy</a>
+          <em class="item-requirements"></em>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" class="item-cost"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <div id="bottom-bar">
