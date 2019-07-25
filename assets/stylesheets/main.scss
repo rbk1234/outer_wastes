@@ -119,6 +119,10 @@ $bottom-bar-height: 10rem;
           left: 0;
           right: 0;
         }
+
+        #ally-frames {
+          text-align: right;
+        }
       }
     }
   }
@@ -152,8 +156,63 @@ $bottom-bar-height: 10rem;
     transform: translate(-50%);
     z-index: 3;
 
-    #building-popup {
+    .ui-popup {
       position: absolute;
+    }
+
+    #team-selector {
+      //height: 80vh;
+      width: 80%;
+      left: 50%;
+      transform: translate(-50%);
+
+      top: 5rem;
+
+      .header {
+        padding: 0.5rem;
+      }
+
+      .team-table {
+        td {
+          text-align: center;
+          vertical-align: top;
+          padding-left: 2rem;
+          padding-right: 2rem;
+
+          .slot-title {
+            font-size: 0.75rem;
+          }
+
+          .party-slot {
+            text-align: left;
+            height: 10rem;
+            background: $nyx8-black;
+            border: 1px solid $nyx8-gold;
+            position: relative;
+            margin-bottom: 0.5rem;
+
+            .ascii-content {
+              position: absolute;
+              overflow: visible;
+              bottom: 0.5rem;
+              line-height: 1.25;
+            }
+          }
+
+          .unit-stats {
+            margin-top: 0.5rem;
+            text-align: left;
+          }
+        }
+      }
+
+      .footer {
+        padding: 1rem;
+      }
+    }
+
+    #building-popup {
+      //position: absolute;
 
       height: 60vh;
       width: 40%;
@@ -261,7 +320,7 @@ body.combat-ui {
   }
 
 }
-#building-popup {
+#building-popup, #team-selector {
   border: 1px solid $gold;
   background: $nyx8-blue;
 
@@ -389,6 +448,7 @@ body.combat-ui {
   //width: 20%;
   padding: 0.1rem;
   height: 100%;
+  text-align: left;
 
   .flex-col {
     display: flex;
@@ -1460,7 +1520,12 @@ a[disabled] {
   padding: 0.1rem 0.5rem;
 }
 
-
+select {
+  font-size: 0.75rem;
+  padding: 0 1.5rem 0 0.5rem;
+  height: 1.75rem;
+  font-family: "Roboto Condensed", sans-serif;
+}
 
 
 // todo can delete this later:

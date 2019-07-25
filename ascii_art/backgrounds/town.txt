@@ -90,20 +90,20 @@ TAVERN
 
         ___
        /___\
-   ____|___|__________
-  /  /                \
- /  /    /     \   \   \
-/__/____________________\
+   ____|___|___________
+  /  /                 \
+ /  /    /     \   \    \
+/__/_____________________\
  |  | ┌┬┐   __ __   ┌┬┐ |
  |  | └┴┘  |  |  |  └┴┘ |
  |  |      | ·|· |      |
 
         xxx
        xxxxx
-   xxxxxxxxxxxxxxxxxxx
-  xxxxxxxxxxxxxxxxxxxxx
- xxxxxxxxxxxxxxxxxxxxxxx
-xxxxxxxxxxxxxxxxxxxxxxxxx
+   xxxxxxxxxxxxxxxxxxxx
+  xxxxxxxxxxxxxxxxxxxxxx
+ xxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxx
  xxxxxxxxxxxxxxxxxxxxxxxx
  xxxxxxxxxxxxxxxxxxxxxxxx
  xxxxxxxxxxxxxxxxxxxxxxxx

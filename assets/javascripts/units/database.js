@@ -18,7 +18,7 @@
                 maxHealth: 180,
                 manaRegen: 10,
                 attackSpeed: 0.7,
-                attackDamage: 15
+                attackDamage: 20
             }
         },
         smuggler: {

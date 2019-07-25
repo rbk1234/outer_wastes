@@ -452,7 +452,7 @@
             // image (only draw if it has changed)
             var newImage = unit.image();
             if (newImage !== frame.lastImage) {
-                this._paintImage(newImage, frame.$unitImage, unit.imageOffset(), '#f6d6bd');
+                Game.Util.paintImage(newImage, frame.$unitImage, unit.imageOffset(), '#f6d6bd');
                 frame.lastImage = newImage;
             }
 
@@ -460,7 +460,7 @@
             Game.Util.iterateObject(frame.effects, function(effectId, effectUi) {
                 var newImage = effectUi.effect.image();
                 if (newImage && newImage !== effectUi.lastImage) {
-                    self._paintImage(newImage, effectUi.$animation, unit.imageOffset() + effectUi.effect.imageOffset(), effectUi.effect.imageColor());
+                    Game.Util.paintImage(newImage, effectUi.$animation, unit.imageOffset() + effectUi.effect.imageOffset(), effectUi.effect.imageColor());
                     effectUi.lastImage = newImage;
                 }
             });
@@ -487,17 +487,6 @@
                 frame.$manaBarText.html(Game.Util.round(unit.mana) + '/' + Game.Util.round(unit.maxMana()));
             }
 
-        },
-
-        _paintImage: function(image, $pre, offset, color) {
-            $pre.empty();
-
-            $pre.css('color', color);
-
-            image.forEach(function(imageRow) {
-                var offsetSpaces = offset >= 0 ? ' '.repeat(offset) : '';
-                $('<span>'+offsetSpaces+imageRow+'</span><br>').appendTo($pre);
-            });
         },
 
         createFloatingText: function(unit, sourceUnit, text, textClass, delay) {
@@ -650,7 +639,7 @@
         },
 
         setCenterImage: function(image) {
-            this._paintImage(image, this._$centerImage, 0, 'white');
+            Game.Util.paintImage(image, this._$centerImage, 0, 'white');
             this._$centerImage.show();
         },
         clearCenterImage: function() {

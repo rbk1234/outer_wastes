@@ -14,6 +14,7 @@
     Game.UnitEngine.init();
     Game.CombatUI.init();
     Game.TownUI.init();
+    Game.TeamBuilderUI.init();
 
     Game.Clock.setInterval(
         'debug',

@@ -250,7 +250,7 @@
             mouseover: {
                 //label: '  The  \n Woods',
                 //offset: [10,3],
-                label: 'The Woods',
+                label: 'The Gates',
                 offset: [9,-1],
                 handler: 'village.gate',
                 klass: 'gate'
@@ -289,10 +289,10 @@
             image: [
                 '        ___',
                 '       /___\\',
-                '   ____|___|__________',
-                '  /  /                \\',
-                ' /  /    /     \\   \\   \\',
-                '/__/____________________\\',
+                '   ____|___|___________',
+                '  /  /                 \\',
+                ' /  /    /     \\   \\    \\',
+                '/__/_____________________\\',
                 ' |  | ┌┬┐   __ __   ┌┬┐ |',
                 ' |  | └┴┘  |  |  |  └┴┘ |',
                 ' |  |      | ·|· |      |'
@@ -300,10 +300,10 @@
             fills: [
                 '        xxx',
                 '       xxxxx',
-                '   xxxxxxxxxxxxxxxxxxx',
-                '  xxxxxxxxxxxxxxxxxxxxx',
-                ' xxxxxxxxxxxxxxxxxxxxxxx',
-                'xxxxxxxxxxxxxxxxxxxxxxxxx',
+                '   xxxxxxxxxxxxxxxxxxxx',
+                '  xxxxxxxxxxxxxxxxxxxxxx',
+                ' xxxxxxxxxxxxxxxxxxxxxxxx',
+                'xxxxxxxxxxxxxxxxxxxxxxxxxx',
                 ' xxxxxxxxxxxxxxxxxxxxxxxx',
                 ' xxxxxxxxxxxxxxxxxxxxxxxx',
                 ' xxxxxxxxxxxxxxxxxxxxxxxx'

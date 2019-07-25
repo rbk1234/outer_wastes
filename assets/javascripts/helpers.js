@@ -37,6 +37,16 @@
 
     var ENABLE_ERRORS = false;
 
+    Game.Util.paintImage = function(image, $pre, offset, color) {
+        $pre.empty();
+
+        $pre.css('color', color);
+
+        image.forEach(function(imageRow) {
+            var offsetSpaces = offset >= 0 ? ' '.repeat(offset) : '';
+            $('<span>'+offsetSpaces+imageRow+'</span><br>').appendTo($pre);
+        });
+    };
 
     Game.Util.initStats = function(obj) {
         Game.Util.iterateObject(obj.stats, function(key, baseValue) {
