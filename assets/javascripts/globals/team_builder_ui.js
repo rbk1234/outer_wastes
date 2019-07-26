@@ -8,6 +8,10 @@
 
     var MAX_TEAM_SIZE = 5; // note: don't change this without updating UnitEngine too
 
+
+    var UNLOCKED_CLASSES = ['swashbuckler', 'brewmaster', 'cleric'];
+    var AVAILABLE_SLOTS = 5;
+
     var TeamBuilderUI = function() {};
 
     TeamBuilderUI.prototype = {
@@ -41,8 +45,6 @@
             var $tr = this.$teamSelector.find('.team-table').find('tr');
             $tr.empty();
 
-            var UNLOCKED_CLASSES = ['swashbuckler', 'brewmaster', 'cleric'];
-            var AVAILABLE_SLOTS = 5;
 
             for (var i = 0; i < MAX_TEAM_SIZE; i++) {
                 var $td = $('<td></td>', {
@@ -182,7 +184,7 @@
                     abilityKey = 'backstab';
                     break;
                 case 'cleric':
-                    abilityKey = 'holyNova';
+                    abilityKey = 'holyLight';
                     break;
                 default:
                     console.warn('No ability for unit: '+unit.dbKey);

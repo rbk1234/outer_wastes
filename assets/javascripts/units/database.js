@@ -7,8 +7,8 @@
             name: 'Cleric',
             stats: {
                 maxHealth: 120,
-                manaRegen: 7,
-                attackSpeed: 0.7,
+                manaRegen: 10,
+                attackSpeed: 0,
                 attackDamage: 5
             }
         },
@@ -16,8 +16,8 @@
             name: 'Swashbuckler',
             stats: {
                 maxHealth: 180,
-                manaRegen: 10,
-                attackSpeed: 0.7,
+                manaRegen: 5,
+                attackSpeed: 0.5,
                 attackDamage: 20
             }
         },
@@ -26,7 +26,7 @@
             stats: {
                 maxHealth: 150,
                 manaRegen: 10,
-                attackSpeed: 0.7,
+                attackSpeed: 0.5,
                 attackDamage: 15
             }
         },
@@ -42,7 +42,8 @@
             name: 'Brewmaster',
             stats: {
                 maxHealth: 350,
-                attackSpeed: 0.5,
+                manaRegen: 5,
+                attackSpeed: 0.3,
                 attackDamage: 25
             }
         },

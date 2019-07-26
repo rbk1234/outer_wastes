@@ -330,6 +330,10 @@
         },
 
         _incrementAttack: function(seconds) {
+            if (this.attackSpeed.value() === 0) {
+                return;
+            }
+
             this._attackTimer -= seconds;
             if (Game.Util.roundForComparison(this._attackTimer) <= 0) {
                 if (this.attack()) {
@@ -356,7 +360,7 @@
                 //console.log(this.name + ' attacked ' + target.name + ' for ' + this.attackDamage.value());
                 target.takeDamage(this.attackDamage.value(), this);
 
-                this.addMana(10);
+                //this.addMana(10);
 
                 return true;
             }
@@ -678,7 +682,7 @@
         },
 
         enterCombat: function() {
-            //this.manaRegen.override = false;
+            this.manaRegen.override = false;
         },
         leaveCombat: function() {
             this.manaRegen.override = 0;

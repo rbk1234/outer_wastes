@@ -129,7 +129,7 @@
         _highestHealthEnemy: function() {
             var target = null;
             this.caster.enemies().forEach(function(unit) {
-                if (!target || unit.health > target.health) {
+                if (!unit.isDead() && (!target || unit.health > target.health)) {
                     target = unit;
                 }
             });
@@ -138,7 +138,7 @@
         _lowestHealthAlly: function() {
             var target = null;
             this.caster.allies().forEach(function(unit) {
-                if (unit.percentHealth() < 100 &&
+                if (!unit.isDead() && unit.percentHealth() < 100 &&
                     (!target || unit.percentHealth() < target.percentHealth())) {
                     target = unit;
                 }
