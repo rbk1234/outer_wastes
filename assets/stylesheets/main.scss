@@ -107,6 +107,8 @@ $bottom-bar-height: 10rem;
   #units-area {
     display: none; // will be shown by combat-ui
 
+    z-index: 2;
+
     table {
       height: 100%;
 
@@ -276,6 +278,8 @@ body.combat-ui {
 .restricted-width {
   margin: 0 auto; // center horizontally
   // Note: width will be set in background_ui.js
+
+  position: relative;
 }
 
 
@@ -630,7 +634,7 @@ body.combat-ui {
 
 #ability-tooltip {
   position: absolute;
-  bottom: 1rem;
+  bottom: calc(1rem + #{$bottom-bar-height});
   right: 1rem;
 
   border-radius: 0.25rem;
@@ -1087,9 +1091,24 @@ body.combat-ui {
 
 
 
+#player-cast-bar {
+  height: 1rem;
+  font-size: 0.75rem;
+  line-height: 1;
 
+  width: 19.5rem; // (button * num_buttons + button_margin * num_spaces) 3.5 * 5 + 0.5 * 4
+  margin: 0 auto;
+}
 
 // -------------------------------------------------------- Abilities/effects
+#ability-bar {
+  margin-top: 0.5rem;
+  height: 3.5rem;
+
+  .action-bar-button {
+    vertical-align: top;
+  }
+}
 #spellbook-tooltip {
   position: absolute;
   border-radius: 0.25rem;
@@ -1281,44 +1300,44 @@ body.combat-ui {
   //    Size and preset: dimensions -> 128px
 
   &.hand-bandage:before {
-    content: url('icons/hand-bandage.svg');
+    content: url('icons/black/hand-bandage.svg');
   }
   &.healing:before {
-    content: url('icons/healing.svg');
+    content: url('icons/black/healing.svg');
   }
   &.shield:before {
-    content: url('icons/shield.svg');
+    content: url('icons/black/shield.svg');
   }
   &.mighty-force:before {
-    content: url('icons/mighty-force.svg');
+    content: url('icons/black/mighty-force.svg');
   }
   &.splashy-stream:before {
-    content: url('icons/splashy-stream.svg');
+    content: url('icons/black/splashy-stream.svg');
   }
   &.angel-outfit:before {
-    content: url('icons/angel-outfit.svg');
+    content: url('icons/black/angel-outfit.svg');
   }
   &.explosion-rays:before {
-    content: url('icons/explosion-rays.svg');
+    content: url('icons/black/explosion-rays.svg');
 
     //content: '';
-    //background-image: url('icons/explosion-rays.svg');
+    //background-image: url('icons/black/explosion-rays.svg');
   }
 
   &.acorn:before {
-    content: url('icons/acorn.svg');
+    content: url('icons/black/acorn.svg');
   }
   &.lotus-flower:before {
-    content: url('icons/lotus-flower.svg');
+    content: url('icons/black/lotus-flower.svg');
   }
   &.light-thorny-triskelion:before {
-    content: url('icons/light-thorny-triskelion.svg');
+    content: url('icons/black/light-thorny-triskelion.svg');
   }
   &.fairy:before {
-    content: url('icons/fairy.svg');
+    content: url('icons/black/fairy.svg');
   }
   &.flowers:before {
-    content: url('icons/flowers.svg');
+    content: url('icons/black/flowers.svg');
   }
   // todo vine-flower instead?
 

@@ -63,7 +63,7 @@
                 self._refreshDetailedFrames();
                 self._refreshUnitFrames();
                 //self._refreshPlayerBars();
-                //self._refreshAbilityBar();
+                self._refreshAbilityBar();
                 self._refreshAbilityTooltip();
 
                 self.updateTimers(iterations * period);
@@ -156,10 +156,11 @@
             $pre.appendTo(frame.$portrait);
 
             // load existing effects:
-            this._removeAllEffectsInFrame(this._targetFrame);
-            Game.Util.iterateObject(unit.effects(), function(effectId, effect) {
-                self._addEffectToFrame(self._targetFrame, effect);
-            });
+            // todo not putting effects in detailed frames anymore
+            //this._removeAllEffectsInFrame(this._targetFrame);
+            //Game.Util.iterateObject(unit.effects(), function(effectId, effect) {
+            //    self._addEffectToFrame(self._targetFrame, effect);
+            //});
 
             // TODO Load current cast
 
@@ -171,7 +172,8 @@
         _clearDetailedFrame: function(frame) {
             frame.$frame.invisible();
 
-            this._removeAllEffectsInFrame(frame);
+            // todo not putting effects in detailed frames anymore
+            //this._removeAllEffectsInFrame(frame);
 
             // todo stop updates
         },
@@ -204,6 +206,9 @@
                 frame.$manaBarProgress.css('width', manaPercent);
                 frame.$manaBarText.html(Game.Util.round(unit.mana) + '/' + Game.Util.round(unit.maxMana()));
             }
+
+            // todo not putting effects in detailed frames anymore
+
         },
 
 
@@ -800,23 +805,23 @@
 
             // Esc key (cancel cast)
             Game.Keyboard.registerKey(27, function() {
-                //if (Game.Player.isCasting()) {
-                //    Game.Player.cancelCast('Interrupted');
-                //}
-                //else {
+                if (Game.Player.isCasting()) {
+                    Game.Player.cancelCast('Interrupted');
+                }
+                else {
                     self.clearTarget();
-                //}
+                }
             });
 
             // alt key (self cast modifier)
-            //Game.Keyboard.registerKey(18, function() {
-            //    // With this here we can immediately update ability target requirements as soon as alt is pressed
-            //    self.overrideTargetUnit(Game.Player);
-            //}, function() {
-            //    // Note: Can't depend on catching this (e.g. hold alt then switch to another window)
-            //    //       So we also clear override if altKey is not pressed during actual ability click
-            //    self.clearTargetOverride();
-            //});
+            Game.Keyboard.registerKey(18, function() {
+                // With this here we can immediately update ability target requirements as soon as alt is pressed
+                self.overrideTargetUnit(Game.Player);
+            }, function() {
+                // Note: Can't depend on catching this (e.g. hold alt then switch to another window)
+                //       So we also clear override if altKey is not pressed during actual ability click
+                self.clearTargetOverride();
+            });
 
             var $abilityTooltip = $('#ability-tooltip');
             this._abilityTooltip = {
@@ -844,7 +849,7 @@
 
         equipAbility: function(ability, index) {
             this._assignAbilityToBar(ability, index);
-            this._assignAbilityToEqBar(ability, index);
+            //this._assignAbilityToEqBar(ability, index);
         },
 
         _assignAbilityToBar: function(ability, index) {
@@ -870,7 +875,7 @@
                 if (self._targetedUnitOverride && !evt.altKey) {
                     self.clearTargetOverride(); // Backup catch - in case alt key was released in other window
                 }
-                //Game.Player.castAbility(ability, self.targetedUnit());
+                Game.Player.castAbility(ability, self.targetedUnit());
             }
 
             var keyCode = this._keyCodeForAbilityIndex(index);
@@ -898,7 +903,7 @@
 
         unequipAbility: function(ability, index) {
             this._removeAbilityFromBar(ability, index);
-            this._removeAbilityFromEqBar(ability, index);
+            //this._removeAbilityFromEqBar(ability, index);
         },
 
         _removeAbilityFromBar: function(ability, index) {
@@ -917,15 +922,15 @@
         },
 
         // Note: ability cooldown timers are handled separately
-        //_refreshAbilityBar: function() {
-        //    var self = this;
-        //
-        //    // refreshes if buttons disabled or not based on mana
-        //    Game.Util.iterateObject(this._abilityButtons, function(abilityId, buttonData) {
-        //        var ability = buttonData.ability;
-        //        self._toggleAbilityManaReq(ability, !Game.Player.hasManaForAbility(ability));
-        //    });
-        //},
+        _refreshAbilityBar: function() {
+            var self = this;
+
+            // refreshes if buttons disabled or not based on mana
+            Game.Util.iterateObject(this._abilityButtons, function(abilityId, buttonData) {
+                var ability = buttonData.ability;
+                self._toggleAbilityManaReq(ability, !Game.Player.hasManaForAbility(ability));
+            });
+        },
         
         _refreshAbilityTargets: function() {
             var self = this;
@@ -1216,6 +1221,7 @@
 
         _assignAbilityToEqBar: function(ability, index) {
             var self = this;
+            console.log('assign', ability);
 
             var $buttonContainer = this._$equippedAbilities.find('.button-container:not(#equipped-ability-template):eq('+(index)+')');
             var $button = $buttonContainer.find('.action-bar-button');
@@ -1296,15 +1302,33 @@
             if (castLength !== 0) {
                 // Has cast time; show cast bar
                 this._startCastBar(unit, ability.name, castLength);
+                if (unit.id === Game.Player.id) {
+                    this._toggleAbilityCasting(ability, true);
+                }
+            }
+            else {
+                // Instant cast; briefly highlight ability if player even though it was instant cast
+                if (unit.id === Game.Player.id) {
+                    this._toggleAbilityCasting(ability, true);
+                    window.setTimeout(function() {
+                        self._toggleAbilityCasting(ability, false);
+                    }, HIGHLIGHT_INSTANT_DURATION);
+                }
             }
         },
 
         cancelCast: function(unit, ability, message) {
             this._cancelCastBar(unit, message);
+            if (unit.id === Game.Player.id) {
+                this._toggleAbilityCasting(ability, false);
+            }
         },
 
         finishCast: function(unit, ability) {
             this._completeCastBar(unit);
+            if (unit.id === Game.Player.id) {
+                this._toggleAbilityCasting(ability, false);
+            }
         },
 
         _startCastBar: function(unit, text, castLength) {
@@ -1327,7 +1351,8 @@
                 frame.$castBar.animate({opacity: 1}, 0);
             }
 
-            startCastBar(this._getUnitFrame(unit));
+            startCastBar(unit.id === Game.Player.id ? this._castBarFrame : this._getUnitFrame(unit));
+            //startCastBar(this._getUnitFrame(unit));
         },
 
         _completeCastBar: function(unit) {
@@ -1343,7 +1368,8 @@
                 frame.$castBar.animate({ opacity: 0 }, 500);
             }
 
-            completeCastBar(this._getUnitFrame(unit));
+            completeCastBar(unit.id === Game.Player.id ? this._castBarFrame : this._getUnitFrame(unit));
+            //completeCastBar(this._getUnitFrame(unit));
         },
 
         _cancelCastBar: function(unit, message) {
@@ -1360,7 +1386,8 @@
                 frame.$castBar.animate({ opacity: 0 }, 500);
             }
 
-            cancelCastBar(this._getUnitFrame(unit));
+            cancelCastBar(unit.id === Game.Player.id ? this._castBarFrame : this._getUnitFrame(unit));
+            //cancelCastBar(this._getUnitFrame(unit));
         },
 
         _castBarClockKey: function(unit, frame) {

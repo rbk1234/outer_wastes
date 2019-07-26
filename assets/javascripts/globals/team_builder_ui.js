@@ -121,6 +121,14 @@
             var self = this;
             var frame = this.unitFrames[i];
 
+            if (i === MAX_TEAM_SIZE - 1) {
+                self.units[i] = Game.Player;
+                frame.$select.prop('disabled', true).val(Game.Player.dbKey);
+                Game.Util.paintImage(Game.Player.animations.idle.image, frame.$image, Game.Player.imageOffset());
+                self._displayUnitStats(Game.Player, frame.$stats);
+                return;
+            }
+
             frame.$select.off('change').on('change', function() {
                 var unit = new Game.Units.Unit($(this).val(), {teamId: Game.Constants.teamIds.player});
                 self.units[i] = unit;
@@ -165,15 +173,18 @@
             Game.UnitEngine.loadEngine();
 
             this.units.forEach(function(unit) {
-                self._equipAbility(unit);
+                if (unit.id !== Game.Player.id) {
+                    self._equipSpecialAbility(unit);
+                }
                 Game.UnitEngine.addUnit(unit);
             });
+            Game.Player.addMana(Game.Player.maxMana());
 
             // -------- CombatUI
             Game.CombatUI.loadUI();
         },
 
-        _equipAbility: function(unit) {
+        _equipSpecialAbility: function(unit) {
             var abilityKey;
 
             switch(unit.dbKey) {

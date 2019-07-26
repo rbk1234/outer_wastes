@@ -4,6 +4,8 @@
 
     $(document).foundation();
 
+    Game.Player = new Game.Units.Unit('cleric', {teamId: Game.Constants.teamIds.player});
+
     Game.Settings.init();
     Game.Clock.init();
     Game.Log.init($('#log'));
@@ -15,6 +17,9 @@
     Game.CombatUI.init();
     Game.TownUI.init();
     Game.TeamBuilderUI.init();
+
+    Game.Player.equipAbility(0, new Game.Abilities.Ability('holyLight'));
+    Game.Player.equipAbility(1, new Game.Abilities.Ability('renew'));
 
     Game.Clock.setInterval(
         'debug',

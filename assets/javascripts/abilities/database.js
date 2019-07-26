@@ -27,9 +27,9 @@
             },
             targetingAI: 'lowestHealthAlly',
             stats: {
-                manaCost: 35,
+                manaCost: 50,
                 cooldown: 0,
-                castTime: 0,
+                castTime: 1,
 
                 healBase: 75,
                 healSpellPowerScaling: 1

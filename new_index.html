@@ -186,6 +186,7 @@
     </div>
 
   </div>
+
 </div>
 
 <div id="item-template" hidden>
@@ -301,7 +302,19 @@
       </div>
       <div class="cell small-4">
         <div class="bottom-container">
-          <div style="margin:0.5rem;">Loot!</div>
+          <button id="ability-button-template" class="action-bar-button blank">
+            <span class="hotkey"></span>
+            <canvas class="cooldown-status"></canvas>
+          </button>
+          <div id="ability-bar" class="bottom-section" style="text-align:center;"></div>
+
+          <div style="margin:0.5rem 1.5rem 0.5rem 1.5rem;">
+            <div id="player-cast-bar" class="bar cast-bar" style="opacity: 0;">
+              <div class="bar-layer background" style="width: 100%;"></div>
+              <div class="bar-layer cast-progress" style="width: 100%;"></div>
+              <div class="bar-layer bar-text" style="width: 100%;"></div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="cell small-4">
@@ -310,6 +323,31 @@
         </div>
       </div>
     </div>
+
+    <div id="ability-tooltip" class="ability-tooltip" hidden>
+      <table class="no-rows no-spacing">
+        <tbody>
+        <tr>
+          <td colspan="2" class="name"></td>
+        </tr>
+        <tr>
+          <td colspan="2" class="mana-cost"></td>
+        </tr>
+        <tr>
+          <td class="cast-time"></td>
+          <td class="cooldown text-right"></td>
+        </tr>
+        <tr>
+          <td colspan="2" class="cooldown-remaining"></td>
+        </tr>
+        <tr>
+          <td colspan="2" class="description"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+
 
   </div>
 </div>

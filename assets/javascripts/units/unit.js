@@ -94,7 +94,7 @@
             //this.equippedAbilities().forEach(function(ability) {
             //    ability.update(seconds);
             //});
-            if (Game.UnitEngine.inCombat() && this.maxMana() && this.mana >= this.maxMana()) {
+            if (this.id !== Game.Player.id && Game.UnitEngine.inCombat() && this.maxMana() && this.mana >= this.maxMana()) {
                 this.castAbility(this.ability('special'), this.ability('special').autoTarget());
             }
 
@@ -240,6 +240,10 @@
             }
         },
         maxMana: function() {
+            if (this.id === Game.Player.id) {
+                return 300;
+            }
+
             var specialAbility = this.ability('special');
             if (specialAbility) {
                 return specialAbility.manaCost.value();
@@ -389,6 +393,9 @@
             ability.equip(this);
 
             // todo update CombatUI
+            if (this.id === Game.Player.id) {
+                Game.CombatUI.equipAbility(ability, key);
+            }
         },
         unequipAbility: function(key) {
             var ability = this.ability(key);
@@ -397,9 +404,31 @@
                 this._abilities[key] = null;
 
                 // todo update CombatUI
+                if (this.id === Game.Player.id) {
+                    Game.CombatUI.unequipAbility(ability, key);
+                }
             }
         },
 
+        equippedAbilities: function(includeNulls) {
+            var self = this;
+
+            return Object.values(this._abilities);
+
+            //var abilities = this._equippedAbilityIds.map(function(abilityId) {
+            //    return self.ability(abilityId);
+            //});
+            //
+            //if (includeNulls) {
+            //    return abilities;
+            //}
+            //else {
+            //    // filter out nulls/undefined
+            //    return abilities.filter(function(ability) {
+            //        return !!ability;
+            //    });
+            //}
+        },
 
 
 
@@ -536,10 +565,10 @@
             Game.CombatUI.startCast(this, this._castAbility);
 
             // start global cooldown
-            //if (this._castAbility.onGlobalCooldown) {
-            //    this._globalCooldown = GLOBAL_COOLDOWN;
-            //    this._updateAllAbilityCooldowns(); // propagate global cooldown to all abilities
-            //}
+            if (this._castAbility.onGlobalCooldown) {
+                this._globalCooldown = GLOBAL_COOLDOWN;
+                this._updateAllAbilityCooldowns(); // propagate global cooldown to all abilities
+            }
 
             return true;
         },
@@ -555,7 +584,7 @@
             //Game.CombatUI.cancelCastBar(message);
             Game.CombatUI.cancelCast(this, this._castAbility, message);
 
-            //this._updateAllAbilityCooldowns(); // since global cd was undone, have to sync ability cooldowns
+            this._updateAllAbilityCooldowns(); // since global cd was undone, have to sync ability cooldowns
         },
 
         isCasting: function(ability) {
@@ -631,42 +660,42 @@
                 //Game.CombatUI.completeCastBar();
                 Game.CombatUI.finishCast(this, this._castAbility);
             }
-            //this._updateAbilityCooldown(this._castAbility);
+            this._updateAbilityCooldown(this._castAbility);
 
             this._startCastAnimation();
         },
 
-        //_updateAllAbilityCooldowns: function() {
-        //    var self = this;
-        //
-        //    this.equippedAbilities().forEach(function(ability) {
-        //        self._updateAbilityCooldown(ability);
-        //    });
-        //},
+        _updateAllAbilityCooldowns: function() {
+            var self = this;
+
+            this.equippedAbilities().forEach(function(ability) {
+                self._updateAbilityCooldown(ability);
+            });
+        },
 
         // shows the ability cooling down in the UI
-        //_updateAbilityCooldown: function(ability) {
-        //    if (this.id !== Game.Player.id) {
-        //        return; // only need to do this for player
-        //    }
-        //
-        //    var totalCooldown, elapsed;
-        //
-        //    if (!ability.onGlobalCooldown ||
-        //        this._globalCooldown === null ||
-        //        ability.remainingCooldown() > this._globalCooldown) {
-        //        // show ability cooldown
-        //        totalCooldown = ability.cooldown.value();
-        //        elapsed = totalCooldown - ability.remainingCooldown();
-        //        Game.CombatUI.startCooldown(ability, totalCooldown, elapsed);
-        //    }
-        //    else {
-        //        // show global cooldown
-        //        totalCooldown = GLOBAL_COOLDOWN;
-        //        elapsed = totalCooldown - this._globalCooldown;
-        //        Game.CombatUI.startCooldown(ability, totalCooldown, elapsed);
-        //    }
-        //},
+        _updateAbilityCooldown: function(ability) {
+            if (this.id !== Game.Player.id) {
+                return; // only need to do this for player
+            }
+
+            var totalCooldown, elapsed;
+
+            if (!ability.onGlobalCooldown ||
+                this._globalCooldown === null ||
+                ability.remainingCooldown() > this._globalCooldown) {
+                // show ability cooldown
+                totalCooldown = ability.cooldown.value();
+                elapsed = totalCooldown - ability.remainingCooldown();
+                Game.CombatUI.startCooldown(ability, totalCooldown, elapsed);
+            }
+            else {
+                // show global cooldown
+                totalCooldown = GLOBAL_COOLDOWN;
+                elapsed = totalCooldown - this._globalCooldown;
+                Game.CombatUI.startCooldown(ability, totalCooldown, elapsed);
+            }
+        },
 
 
 
