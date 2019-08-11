@@ -797,8 +797,7 @@
             this._$abilityButtonTemplate = $('#ability-button-template');
 
             for (var i = 0; i < Game.Constants.numPlayerAbilities; i++) {
-                var $button = this._createAbilityButton(i);
-                $button.appendTo(this._$abilityBar);
+                this._createAbilityButton(i).appendTo(this._$abilityBar);
             }
 
             this._abilityButtons = {}; // ability -> { $button: $button, timer: CooldownTimer, ability: ability }

@@ -9,7 +9,7 @@
     var MAX_TEAM_SIZE = 5; // note: don't change this without updating UnitEngine too
 
 
-    var UNLOCKED_CLASSES = ['swashbuckler', 'brewmaster', 'cleric'];
+    var UNLOCKED_CLASSES = ['swashbuckler', 'brewmaster', 'cleric', 'smuggler', 'crusader'];
     var AVAILABLE_SLOTS = 5;
 
     var TeamBuilderUI = function() {};
@@ -196,6 +196,12 @@
                     break;
                 case 'cleric':
                     abilityKey = 'holyLight';
+                    break;
+                case 'smuggler':
+                    abilityKey = 'backstab';
+                    break;
+                case 'crusader':
+                    abilityKey = 'backstab';
                     break;
                 default:
                     console.warn('No ability for unit: '+unit.dbKey);

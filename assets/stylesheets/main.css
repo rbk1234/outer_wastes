@@ -543,8 +543,7 @@ body.combat-ui #bottom-bar {
   margin: 0 auto; }
 
 #ability-bar {
-  margin-top: 0.5rem;
-  height: 3.5rem; }
+  margin-top: 0.5rem; }
   #ability-bar .action-bar-button {
     vertical-align: top; }
 
