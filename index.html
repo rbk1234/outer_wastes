@@ -28,56 +28,37 @@
 </head>
 
 <body class="">
-  <!--[if lte IE 9]>
-    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
-  <![endif]-->
+<!--[if lte IE 9]>
+<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+<![endif]-->
 
 
-
-
-  <div id="body-content" style="background: #558ebd;">
-
-    <div id="header-bar" class="show-for-large">
-      <div class="grid-x">
-        <div class="cell auto">
-          &nbsp;
-          <span id="gold-value">0</span> gold
-        </div>
-        <div class="cell shrink">
-          FPS: <span id="fps"></span>&emsp;&mdash;&emsp;
-          Time: <span id="total-time"></span>&emsp;&mdash;&emsp;
-          Memory: <span id="memory"></span>
-        </div>
+<div id="top-bar">
+  <div class="restricted-width">
+    <div class="grid-x">
+      <div class="cell auto">
+        <span id="zone-name"></span>
+      </div>
+      <div class="cell auto" style="color:#444;">
+        FPS: <span id="fps"></span>&emsp;&mdash;&emsp;
+        Time: <span id="total-time"></span>&emsp;&mdash;&emsp;
+        Memory: <span id="memory"></span>
+      </div>
+      <div class="cell shrink">
+        <span id="gold-value">0</span> gold
       </div>
     </div>
-    <div id="subheader-bar">
-      <div class="text-center">
-        <span id="level-info"></span>
-      </div>
-    </div>
+  </div>
+</div>
 
-    <div>
-      <div id="encounter-background" class="ascii-content">
-      </div>
-    </div>
+<div id="main-content">
+  <div id="background-art" class="ascii-content restricted-width "></div>
 
-    <div id="village" class="grid-x" hidden>
-      <div class="cell small-6">
-        <div class="town-group">
-          <h6>Blacksmith</h6>
+  <div id="background-overlay" class="ascii-content restricted-width"></div>
 
-        </div>
-      </div>
-      <div class="cell small-6">
-        <div class="town-group">
-          <h6>Tavern</h6>
+  <div id="center-area" class="ascii-content"></div>
 
-        </div>
-      </div>
-    </div>
-
-    <div id="units-area">
-      <div style="height:100%;max-width:1280px;margin:0 auto;">
+  <div id="units-area" class="restricted-width ">
 
       <div id="unit-frame-template" class="unit-frame">
         <div class="flex-col">
@@ -111,44 +92,19 @@
         </div>
       </div>
 
-      <div id="center-area"><div class="ascii-content"></div></div>
 
       <table class="no-rows no-spacing">
         <tbody>
         <tr>
-          <td width="45%" class="relative-container">
+          <td width="48%" class="relative-container">
             <div id="ally-frames"></div>
           </td>
-          <td width="5%" class="relative-container"></td>
-          <td width="50%" class="relative-container">
+          <td width="4%" class="relative-container"></td>
+          <td width="48%" class="relative-container">
             <div id="enemy-frames" style="opacity:0;"></div>
 
-            <div id="mini-map" style="opacity:0;padding:0 2rem;">
-              <div class="ascii-content">
-                <table class="no-rows no-spacing">
-                  <tbody>
-                  <tr>
-                    <td width="33%"></td>
-                    <td width="33%" class="text-center"><div>↑<br><button class="button north-button move-on-click"><span class="tile-name"></span></button></div></td>
-                    <td width="33%" class="text-right"></td>
-                  </tr>
-                  <tr>
-                    <td><div>← <button class="button west-button move-on-click"><span class="tile-name"></span></button></div></td>
-                    <td class="text-center"><div><br><br><span class="current-tile tile-name"></span><br><br><br></div></td>
-                    <td class="text-right"><div><button class="button east-button move-on-click"><span class="tile-name"></span></button> →</div></td>
-                  </tr>
-                  <tr>
-                    <td></td>
-                    <td class="text-center"><div><button class="button south-button move-on-click"><span class="tile-name"></span></button><br>↓</div></td>
-                    <td class="text-right"></td>
-                  </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
             <div id="loot-table" style="opacity:0;">
-              
+
             </div>
 
           </td>
@@ -156,205 +112,198 @@
         </tbody>
       </table>
 
+    <!--</div>-->
+  </div>
+
+  <div id="popup-container" class="restricted-width">
+    <div id="building-popup" class="right-aligned ui-popup" hidden>
+      <div class="header">
+        <table class="no-rows no-spacing">
+          <tbody>
+          <tr>
+            <td><h6 class="no-bottom-margin popup-title"></h6></td>
+            <td class="nostretch"><a class="fa fa-fw fa-times close-popup"></a></td>
+            <!--<td class="nostretch"><a class="ui-popup" style="font-weight:bold;">×</a></td>-->
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="inner-content item-list"></div>
+      <div class="footer">
       </div>
     </div>
 
-
-
-    <div id="bottom-bar">
-      <div class="grid-x" style="max-width: 1280px; margin: 0 auto;">
-        <div class="cell small-4">
-          <div class="bottom-container">
-            <div id="target-frame">
-              <table class="no-rows tight-spacing">
-                <tbody>
-                <tr>
-                  <td>
-
-                    <table class="no-rows no-spacing" style="margin-bottom:0.75rem;">
-                      <tbody>
-                      <tr>
-                        <td class="nostretch">
-                          <div class="portrait" style="margin-right:0.5rem;"></div>
-                        </td>
-                        <td>
-                          <div class="formal-name">Rinley</div>
-                          <div class="name" style="font-size:0.875rem;"></div>
-                        </td>
-                      </tr>
-                      </tbody>
-                    </table>
-
-                    <table class="no-rows bottom-spacing" style="font-size: 0.875rem;">
-                      <tbody>
-                      <tr>
-                        <td class="nostretch">Health&emsp;</td>
-                        <td>
-                          <div class="bar health-bar">
-                            <div class="bar-layer background red" style="width: 100%;"></div>
-                            <div class="bar-layer shield" style="width: 0;"></div>
-                            <div class="bar-layer health" style="width: 100%;"></div>
-                            <div class="bar-layer bar-text" style="width: 100%;"></div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="nostretch">Mana&emsp;</td>
-                        <td>
-                          <div class="bar mana-bar">
-                            <div class="bar-layer background" style="width: 100%;"></div>
-                            <div class="bar-layer mana" style="width: 100%;"></div>
-                            <div class="bar-layer bar-text" style="width: 100%;"></div>
-                          </div>
-                        </td>
-                      </tr>
-                      <!--<tr>-->
-                        <!--<td class="nostretch">Threat&emsp;</td>-->
-                        <!--<td>10%</td>-->
-                      <!--</tr>-->
-                      <!--<tr>-->
-                      <!--<td colspan="2"><a>View all stats</a></td>-->
-                      <!--</tr>-->
-                      </tbody>
-                    </table>
-
-
-                  </td>
-                  <td class="nostretch">
-                    <table class="no-rows inventory">
-                      <tbody>
-                      <tr>
-                        <td><div></div></td>
-                        <td><div></div></td>
-                      </tr>
-                      <tr>
-                        <td><div></div></td>
-                        <td><div></div></td>
-                      </tr>
-                      <tr>
-                        <td><div></div></td>
-                        <td><div></div></td>
-                      </tr>
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
-
-
-
-
-            </div>
-          </div>
-
-        </div>
-        <div class="cell small-4">
-          <div class="bottom-container">
-            Loot!
-          </div>
-        </div>
-        <div class="cell small-4">
-          <div class="bottom-container">
-            Text!
-          </div>
-        </div>
+    <div id="team-selector" class="ui-popup" hidden>
+      <div class="header">
+        <table class="no-rows no-spacing">
+          <tbody>
+          <tr>
+            <td><h6 class="no-bottom-margin">Gather Your Party</h6></td>
+            <td class="nostretch"><a class="fa fa-fw fa-times close-popup"></a></td>
+            <!--<td class="nostretch"><a class="ui-popup" style="font-weight:bold;">×</a></td>-->
+          </tr>
+          </tbody>
+        </table>
       </div>
+      <div class="inner-content">
+
+        <table class="no-rows team-table">
+          <tbody>
+          <tr>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer text-right">
+        <a class="button" id="start-quest">Embark <span class="fa fa-fw fa-angle-right"></span></a>
+      </div>
+
+
     </div>
-
-
-
-
-
 
   </div>
 
-  <div class="reveal large" id="world-map-modal" data-reveal data-animation-in=" fast" data-animation-out=" fast">
-    <button class="close-button" data-close aria-label="Close reveal" type="button">
-      <span aria-hidden="true">&times;</span>
-    </button>
+</div>
 
-    <div class="ascii-content"></div>
+<div id="item-template" hidden>
+  <div class="item">
+    <table class="no-rows no-spacing">
+      <tbody>
+      <tr>
+        <td rowspan="2" class="nostretch">
+          <div class="item-icon"></div>
+        </td>
+        <td><b class="item-name"></b></td>
+        <td class="nostretch">
+          <a class="button mini item-purchase">Buy</a>
+          <em class="item-requirements"></em>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" class="item-cost"></td>
+      </tr>
+      </tbody>
+    </table>
   </div>
+</div>
 
-  <div class="reveal large" id="map-modal" data-reveal data-animation-in=" fast" data-animation-out=" fast">
-    <button class="close-button" data-close aria-label="Close reveal" type="button">
-      <span aria-hidden="true">&times;</span>
-    </button>
-    <div class="text-center">
-      <h4 class="map-name"></h4>
-    </div>
-    <div>
-      <div class="ascii-content"></div>
-    </div>
-    <br>
-    <div>
-      Move Speed: 1 Square
-    </div>
-  </div>
-
-
-  <div class="reveal large" id="abilities-modal" data-reveal data-animation-in="slide-in-down fast" data-animation-out="slide-out-up fast" >
-    <button class="close-button" data-close aria-label="Close reveal" type="button">
-      <span aria-hidden="true">&times;</span>
-    </button>
-
+<div id="bottom-bar">
+  <div class="restricted-width">
     <div class="grid-x">
       <div class="cell small-4">
-        <h6 class="text-center">Ability Slots</h6>
-        <div id="equipped-abilities">
-          <div id="equipped-ability-template" class="button-container">
-            <div class="button-container-inner">
-              <div class="text-center">
-                <button class="action-bar-button blank">
-                  <span class="hotkey"></span>
-                </button>
-              </div>
-              <span class="name"></span>
+        <div class="bottom-container">
+          <div id="target-frame">
+            <table class="no-rows tight-spacing">
+              <tbody>
+              <tr>
+                <td>
+
+                  <table class="no-rows no-spacing" style="margin-bottom:0.75rem;">
+                    <tbody>
+                    <tr>
+                      <td class="nostretch">
+                        <div class="portrait" style="margin-right:0.5rem;"></div>
+                      </td>
+                      <td>
+                        <div class="formal-name">Rinley</div>
+                        <div class="name" style="font-size:0.875rem;"></div>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+
+                  <table class="no-rows bottom-spacing" style="font-size: 0.875rem;">
+                    <tbody>
+                    <tr>
+                      <td class="nostretch">Health&emsp;</td>
+                      <td>
+                        <div class="bar health-bar">
+                          <div class="bar-layer background red" style="width: 100%;"></div>
+                          <div class="bar-layer shield" style="width: 0;"></div>
+                          <div class="bar-layer health" style="width: 100%;"></div>
+                          <div class="bar-layer bar-text" style="width: 100%;"></div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="nostretch">Mana&emsp;</td>
+                      <td>
+                        <div class="bar mana-bar">
+                          <div class="bar-layer background" style="width: 100%;"></div>
+                          <div class="bar-layer mana" style="width: 100%;"></div>
+                          <div class="bar-layer bar-text" style="width: 100%;"></div>
+                        </div>
+                      </td>
+                    </tr>
+                    <!--<tr>-->
+                    <!--<td class="nostretch">Threat&emsp;</td>-->
+                    <!--<td>10%</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                    <!--<td colspan="2"><a>View all stats</a></td>-->
+                    <!--</tr>-->
+                    </tbody>
+                  </table>
+
+
+                </td>
+                <td class="nostretch">
+                  <table class="no-rows inventory">
+                    <tbody>
+                    <tr>
+                      <td><div></div></td>
+                      <td><div></div></td>
+                    </tr>
+                    <tr>
+                      <td><div></div></td>
+                      <td><div></div></td>
+                    </tr>
+                    <tr>
+                      <td><div></div></td>
+                      <td><div></div></td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+
+
+
+
+          </div>
+        </div>
+
+      </div>
+      <div class="cell small-4">
+        <div class="bottom-container">
+          <button id="ability-button-template" class="action-bar-button blank">
+            <span class="hotkey"></span>
+            <canvas class="cooldown-status"></canvas>
+          </button>
+          <div id="ability-bar" class="bottom-section" style="text-align:center;"></div>
+
+          <div style="margin:0.5rem 1.5rem 0.5rem 1.5rem;">
+            <div id="player-cast-bar" class="bar cast-bar" style="opacity: 0;">
+              <div class="bar-layer background" style="width: 100%;"></div>
+              <div class="bar-layer cast-progress" style="width: 100%;"></div>
+              <div class="bar-layer bar-text" style="width: 100%;"></div>
             </div>
           </div>
         </div>
       </div>
-      <div class="cell small-7 end">
-        <h6></h6>
-        <div id="spellbook">
-          <div class="page-navigation">
-            <button class="button turn-page-left">
-              <span class="fa fa-fw fa-arrow-left"></span>
-            </button>
-            <!--<a class="fa fa-fw fa-arrow-left turn-page-left"></a>-->
-            &nbsp;<span class="current-page"></span>&nbsp;
-            <button class="button turn-page-right">
-              <span class="fa fa-fw fa-arrow-right"></span>
-            </button>
-            <!--<a class="fa fa-fw fa-arrow-right turn-page-right"></a>-->
-            <br><br>
+      <div class="cell small-4">
+        <div class="bottom-container">
+          <div id="combat-log">
+
           </div>
-          <table class="no-rows tight-spacing">
-            <tbody id="spellbook-tbody">
-            <tr id="spellbook-row-template">
-              <td id="spellbook-ability-template" class="button-container">
-                <div class="button-container-inner">
-                  <div class="text-center">
-                    <button class="action-bar-button blank"></button>
-                  </div>
-                  <span class="name"></span>
-                </div>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="instructions text-center">
-          <br>
-          <br>
-          <br>
-          Select an ability slot
         </div>
       </div>
     </div>
 
-    <div id="spellbook-tooltip" class="ability-tooltip" hidden>
+    <div id="ability-tooltip" class="ability-tooltip" hidden>
       <table class="no-rows no-spacing">
         <tbody>
         <tr>
@@ -368,6 +317,9 @@
           <td class="cooldown text-right"></td>
         </tr>
         <tr>
+          <td colspan="2" class="cooldown-remaining"></td>
+        </tr>
+        <tr>
           <td colspan="2" class="description"></td>
         </tr>
         </tbody>
@@ -375,68 +327,72 @@
     </div>
 
 
+
   </div>
+</div>
 
-  <!-- Plugins -->
-  <script src="vendor/javascripts/modernizr-3.6.0.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-  <script>window.jQuery || document.write('<script src="vendor/javascripts/jquery-3.3.1.min.js"><\/script>')</script>
-  <script src="vendor/javascripts/what-input.js"></script>
-  <script src="vendor/javascripts/foundation.js"></script>
-  <script src="vendor/javascripts/jquery.toast.min.js"></script>
 
-  <!-- Namespace needs to come first, then constants -->
-  <script src="assets/javascripts/namespace.js"></script>
 
-  <!-- Rest of the javascript files here (main.js has to be last)-->
-  <script src="assets/javascripts/abilities/ability.js"></script>
-  <script src="assets/javascripts/abilities/database.js"></script>
+<!-- Plugins -->
+<script src="vendor/javascripts/modernizr-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="vendor/javascripts/jquery-3.3.1.min.js"><\/script>')</script>
+<script src="vendor/javascripts/what-input.js"></script>
+<script src="vendor/javascripts/foundation.js"></script>
+<script src="vendor/javascripts/jquery.toast.min.js"></script>
 
-  <script src="assets/javascripts/effects/animations.js"></script>
-  <script src="assets/javascripts/effects/effect.js"></script>
+<!-- Namespace needs to come first, then constants -->
+<script src="assets/javascripts/namespace.js"></script>
 
-  <script src="assets/javascripts/globals/clock.js"></script>
-  <script src="assets/javascripts/globals/constants.js"></script>
-  <script src="assets/javascripts/globals/keyboard.js"></script>
-  <script src="assets/javascripts/user_interface/log.js"></script>
-  <script src="assets/javascripts/globals/resource_engine.js"></script>
-  <script src="assets/javascripts/globals/settings.js"></script>
-  <script src="assets/javascripts/globals/statistics.js"></script>
-  <script src="assets/javascripts/globals/unit_engine.js"></script>
-  <script src="assets/javascripts/globals/combat_ui.js"></script>
-  <script src="assets/javascripts/globals/background_ui.js"></script>
-  <script src="assets/javascripts/globals/town_ui.js"></script>
+<!-- Rest of the javascript files here (main.js has to be last)-->
+<script src="assets/javascripts/abilities/ability.js"></script>
+<script src="assets/javascripts/abilities/database.js"></script>
 
-  <script src="assets/javascripts/zones/database.js"></script>
-  <script src="assets/javascripts/user_interface/backgrounds.js"></script>
-  <script src="assets/javascripts/zones/zone.js"></script>
+<script src="assets/javascripts/effects/animations.js"></script>
+<script src="assets/javascripts/effects/effect.js"></script>
 
-  <script src="assets/javascripts/maps/database.js"></script>
-  <script src="assets/javascripts/maps/map.js"></script>
+<script src="assets/javascripts/globals/clock.js"></script>
+<script src="assets/javascripts/globals/constants.js"></script>
+<script src="assets/javascripts/globals/keyboard.js"></script>
+<script src="assets/javascripts/globals/resource_engine.js"></script>
+<script src="assets/javascripts/globals/settings.js"></script>
+<script src="assets/javascripts/globals/statistics.js"></script>
+<script src="assets/javascripts/globals/unit_engine.js"></script>
+<script src="assets/javascripts/globals/combat_ui.js"></script>
+<script src="assets/javascripts/globals/background_ui.js"></script>
+<script src="assets/javascripts/globals/team_builder_ui.js"></script>
+<script src="assets/javascripts/globals/town_ui.js"></script>
 
-  <script src="assets/javascripts/encounters/database.js"></script>
-  <script src="assets/javascripts/encounters/ai.js"></script>
-  <script src="assets/javascripts/encounters/encounter.js"></script>
-  <script src="assets/javascripts/encounters/enemy_encounter.js"></script><!-- Subclass of encounter.js; needs to come after -->
+<script src="assets/javascripts/zones/database.js"></script>
+<script src="assets/javascripts/zones/zone.js"></script>
 
-  <script src="assets/javascripts/units/animations.js"></script>
-  <script src="assets/javascripts/units/database.js"></script>
-  <script src="assets/javascripts/units/unit.js"></script>
+<script src="assets/javascripts/maps/database.js"></script>
+<script src="assets/javascripts/maps/map.js"></script>
 
-  <script src="assets/javascripts/user_interface/map.js"></script>
+<script src="assets/javascripts/encounters/database.js"></script>
+<script src="assets/javascripts/encounters/ai.js"></script>
+<script src="assets/javascripts/encounters/encounter.js"></script>
+<script src="assets/javascripts/encounters/enemy_encounter.js"></script><!-- Subclass of encounter.js; needs to come after -->
 
-  <script src="assets/javascripts/canvas.js"></script>
-  <script src="assets/javascripts/helpers.js"></script>
+<script src="assets/javascripts/units/animations.js"></script>
+<script src="assets/javascripts/units/database.js"></script>
+<script src="assets/javascripts/units/unit.js"></script>
 
-  <!-- Keep main last. Only function that actually starts running things -->
-  <script src="assets/javascripts/main.js"></script>
+<script src="assets/javascripts/user_interface/backgrounds.js"></script>
+<script src="assets/javascripts/user_interface/log.js"></script>
 
-  <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
-  <script>
-    window.ga = function () { ga.q.push(arguments) }; ga.q = []; ga.l = +new Date;
-    ga('create', 'UA-XXXXX-Y', 'auto'); ga('send', 'pageview')
-  </script>
-  <script src="https://www.google-analytics.com/analytics.js" async defer></script>
+<script src="assets/javascripts/canvas.js"></script>
+<script src="assets/javascripts/helpers.js"></script>
+
+<!-- Keep main last. Only function that actually starts running things -->
+<script src="assets/javascripts/main.js"></script>
+
+<!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
+<script>
+  window.ga = function () { ga.q.push(arguments) }; ga.q = []; ga.l = +new Date;
+  ga('create', 'UA-XXXXX-Y', 'auto'); ga('send', 'pageview')
+</script>
+<script src="https://www.google-analytics.com/analytics.js" async defer></script>
 </body>
 
 </html>
