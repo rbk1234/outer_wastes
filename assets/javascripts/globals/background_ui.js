@@ -38,6 +38,10 @@
 
         },
 
+        setZoneName: function(name) {
+            $('#zone-name').html(name);
+        },
+
         // should be called after drawBackground to attach click handlers
         registerHandler: function(key, handler) {
             this._registeredHandlers[key] = handler;
@@ -46,7 +50,7 @@
         drawBackground: function(key) {
             this._resetOverlay();
 
-            var bgRecord = Game.Levels.Backgrounds[key];
+            var bgRecord = Game.UI.Backgrounds[key];
             if (!bgRecord) {
                 this._lastBackgroundKey = null;
                 this.$background.empty();
@@ -75,7 +79,7 @@
                     if (row[c] && row[c] !== ' ') {
                         var doodadKey = bgRecord.doodads[row[c]];
                         if (doodadKey) {
-                            this._addDoodadToBackground(Game.Levels.Doodads[doodadKey], r, c, background);
+                            this._addDoodadToBackground(Game.UI.Doodads[doodadKey], r, c, background);
                         }
                         else {
                             background[r][c] = row[c];

@@ -2,7 +2,9 @@
 (function($) {
     'use strict';
 
-    var DEFAULTS = {};
+    var DEFAULTS = {
+        goldReward: 0
+    };
 
     var currentId = 1;
 
@@ -25,6 +27,10 @@
 
         load: function() {
             Game.CombatUI.newEncounterLoaded(this);
+        },
+
+        finish: function() {
+
         }
 
     };

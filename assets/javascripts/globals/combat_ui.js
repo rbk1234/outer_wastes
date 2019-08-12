@@ -48,6 +48,7 @@
             this._initPlayerBars();
             this._initEffects();
             this._initLevelUI();
+            this._initLog();
 
             this._initWorldMap();
             Game.Timers.addTimerSupport(this);
@@ -78,7 +79,7 @@
 
             // show unit frames
 
-            this.loadTeam(Game.Constants.teamIds.player);
+            //this.loadTeam(Game.Constants.teamIds.player);
 
             this.clearTarget();
 
@@ -588,6 +589,10 @@
         },
 
         unitDied: function(unit) {
+            if (unit.teamId === Game.Constants.teamIds.player) {
+                this.logMessage(unit.name + ' has died.', 'yellow');
+            }
+
             this._refreshAbilityTargets();
         },
 
@@ -600,29 +605,13 @@
         // ----------------------------------------------------- Level UI
 
         _initLevelUI: function() {
-            this._$encounterHeader = $('#encounter-header');
-            this._$encounterInfo = $('#encounter-info');
-            this._$currentTile = $('#current-tile-desc');
-            this._$standardInfo = this._$encounterHeader.find('.standard-info');
-
-            this._$encounterHeader.find('.restart').off('click').on('click', function(evt) {
-                location.reload();
-            });
-
             this._$enemyFrames = $('#enemy-frames');
-            this._$centerImage = $('#center-area').find('.ascii-content');
+            this._$centerImage = $('#center-area');
             this.clearCenterImage();
-
-            this._map = null;
-            this._$miniMap = $('#mini-map');
-
-            this._$standardInfo.show();
-            this._$fullMapButton = this._$encounterHeader.find('.full-map-button');
         },
 
         newEncounterLoaded: function(encounter) {
-            //this._map.loadTileDescription(this._$currentTile);
-            //this._$encounterInfo.html(encounter.description);
+            this.logMessage(encounter.description);
 
             if (Game.UnitEngine.isComputerTeamAlive()) {
                 this._$enemyFrames.stop().animate({opacity: 1}, 1000);
@@ -631,12 +620,10 @@
 
         encounterComplete: function() {
             this._$enemyFrames.stop().animate({opacity: 0}, 2000);
-            this._map.exploreCurrentTile();
         },
 
         encounterFailed: function() {
-            this._$standardInfo.hide();
-            $('.game-over').show();
+            //$('.game-over').show();
         },
 
         encounterStarted: function() {
@@ -651,23 +638,18 @@
             this._$centerImage.hide();
         },
 
-        loadMap: function(mapKey) {
-            this._map = new Game.UI.Map(mapKey);
-            this._map.loadModalHtml($('#map-modal'));
-        },
 
-        showMiniMap: function() {
-            this._map.loadTileDescription(this._$currentTile);
-            this._$encounterInfo.html('Choose your path...');
-            this._map.loadMiniMapHtml(this._$miniMap.find('.ascii-content'));
-            this._$miniMap.stop().animate({opacity: 1}, 500);
-            this._$fullMapButton.show();
-        },
-        hideMiniMap: function() {
-            this._$miniMap.stop().animate({opacity: 0}, 100);
-            this._$fullMapButton.hide();
-        },
+        // ----------------------------------------------------- Combat text
 
+        _initLog: function() {
+            this._combatLog = new Game.UI.Log($('#combat-log'), {});
+        },
+        logMessage: function(message, klass) {
+            this._combatLog.logMessage(message, klass);
+        },
+        clearLog: function() {
+            this._combatLog.clear();
+        },
 
 
 

@@ -2,7 +2,7 @@
 (function ($) {
     'use strict';
 
-    Game.namespace('Levels').Backgrounds = {
+    Game.namespace('UI').Backgrounds = {
         darkGrove: {
             doodads: { S: 'sky1', d: 'deadTree', t: 'deadTree2', g: 'grass' },
             layout: [
@@ -190,7 +190,7 @@
         }
     };
 
-    Game.namespace('Levels').Doodads = {
+    Game.namespace('UI').Doodads = {
         moon: {
             image: [
                 ' ,-,',
@@ -848,7 +848,7 @@
     };
 
 
-    Game.namespace('Levels').Centerpieces = {
+    Game.namespace('UI').Centerpieces = {
         battle: {
             image: [
                 ' _                 _',

@@ -8,7 +8,6 @@
 
     Game.Settings.init();
     Game.Clock.init();
-    Game.Log.init($('#log'));
     Game.Keyboard.init();
     Game.ResourceEngine.init();
     Game.Statistics.init();
@@ -30,13 +29,12 @@
             $('#fps').text(fps);
             $('#total-time').text(total);
             $('#memory').text(Game.Util.roundToDecimal(Game.Util.getMemoryUsage(), 4) + 'MB');
+
+            //Game.CombatUI.logMessage('Time is: ' + total);
         },
         1
     );
 
-    Game.Log.logMessage('Initializing 1...');
-    Game.Log.logMessage('Initializing 2...');
-    Game.Log.logMessage('Initializing 3...');
 
     Game.Clock.run();
 
@@ -48,9 +46,6 @@
     //Game.Keyboard.registerKey([87], function() { // w
     //    loadTown();
     //});
-    Game.Keyboard.registerKey([69], function() { // e
-        Game.UnitEngine.loadTile(new Game.UI.Tile('woods'));
-    });
     //Game.Keyboard.registerKey([82], function() { // r
     //
     //});

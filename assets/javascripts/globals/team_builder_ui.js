@@ -165,23 +165,28 @@
             var self = this;
 
             this.closeTeamSelector();
-
-            // -------- Background
-            Game.BackgroundUI.drawBackground('woods');
-
-            // -------- UnitEngine
-            Game.UnitEngine.loadEngine();
-
             this.units.forEach(function(unit) {
                 if (unit.id !== Game.Player.id) {
                     self._equipSpecialAbility(unit);
                 }
-                Game.UnitEngine.addUnit(unit);
             });
             Game.Player.addMana(Game.Player.maxMana());
 
-            // -------- CombatUI
+            // load zone
+            Game.CurrentZone = new Game.Zones.Zone('woods', {});
+
+            // load engine/ui
+            Game.UnitEngine.loadEngine();
             Game.CombatUI.loadUI();
+
+            // load player team
+            this.units.forEach(function(unit) {
+                Game.UnitEngine.addUnit(unit);
+            });
+            Game.CombatUI.loadTeam(Game.Constants.teamIds.player);
+
+            // load first enemy team
+            Game.CurrentZone.loadNextEncounter();
         },
 
         _equipSpecialAbility: function(unit) {

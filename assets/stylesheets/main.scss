@@ -610,23 +610,35 @@ body.combat-ui {
   //left: 50%;
   //transform: translate(-50%);
 
-  .ascii-content {
-    // center horizontally:
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%);
+  // center horizontally:
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
 
-    font-size: 0.5rem;
-    top: 0;
-    padding: 0.5rem 1rem;
-    background: $center-area-bg;
-    font-weight: bold;
-    //border: 1px solid #4f1818;
-    border-radius: 0.313rem;
-  }
+  font-size: 0.5rem;
+  top: 0;
+  padding: 0.5rem 1rem;
+  background: $center-area-bg;
+  font-weight: bold;
+  //border: 1px solid #4f1818;
+  border-radius: 0.313rem;
 }
 
+#combat-log {
+  padding: 0.5rem;
+  height: 100%;
+  overflow-y: scroll;
 
+  p {
+    //padding: 0 0.5rem;
+    margin-bottom: 0;
+    font-size: 0.875rem;
+
+    &.yellow {
+      color: #ffff00;
+    }
+  }
+}
 
 
 // -------------------------------------------------------- Ability tooltip
@@ -689,19 +701,19 @@ body.combat-ui {
 }
 
 
-.game-over {
-  border-radius: 0.313rem;
-  background: $navigation-menu;
-  padding: 0.5rem;
-
-  .skull {
-    height: 3rem;
-    width: 3rem;
-  }
-  .skull:before {
-    content: url('icons/skull-crack.svg');
-  }
-}
+//.game-over {
+//  border-radius: 0.313rem;
+//  background: $navigation-menu;
+//  padding: 0.5rem;
+//
+//  .skull {
+//    height: 3rem;
+//    width: 3rem;
+//  }
+//  .skull:before {
+//    content: url('icons/skull-crack.svg');
+//  }
+//}
 
 
 

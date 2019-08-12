@@ -31,6 +31,15 @@
             });
         },
 
+        finish: function() {
+            Game.Encounters.Encounter.prototype.finish.apply(this, arguments);
+
+            if (this.goldReward) {
+                Game.CombatUI.logMessage('You loot ' + this.goldReward + ' gold.', 'yellow');
+            }
+            // todo item loot
+        },
+
         _loadEnemies: function() {
             this.enemies.forEach(function(enemyDbKey) {
                 var unit = new Game.Units.Unit(enemyDbKey, {teamId: Game.Constants.teamIds.computer});

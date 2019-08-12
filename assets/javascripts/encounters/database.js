@@ -5,7 +5,8 @@
     Game.namespace('Encounters').Database = {
         forest_wolves: {
             description: 'A pack of wolves is inhabiting the area.',
-            enemies: ['wolf', 'wolf', 'wolf', 'wolf']
+            enemies: ['wolf', 'wolf', 'wolf', 'wolf'],
+            goldReward: 5
         },
         forest_direWolf: {
             description: 'A dire wolf is stalking the area.',

@@ -40,6 +40,7 @@
             Game.CombatUI.closeUI();
 
             Game.BackgroundUI.drawBackground('town');
+            Game.BackgroundUI.setZoneName('The Village');
 
             // Register handlers:
             this.$popupContainer.off('click', '.close-popup').on('click', '.close-popup', function(evt) {

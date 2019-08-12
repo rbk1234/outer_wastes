@@ -315,7 +315,7 @@ body.combat-ui #bottom-bar {
   font-size: 1em;
   white-space: pre; }
 
-#center-area .ascii-content {
+#center-area {
   position: absolute;
   left: 50%;
   transform: translate(-50%);
@@ -325,6 +325,16 @@ body.combat-ui #bottom-bar {
   background: transparent;
   font-weight: bold;
   border-radius: 0.313rem; }
+
+#combat-log {
+  padding: 0.5rem;
+  height: 100%;
+  overflow-y: scroll; }
+  #combat-log p {
+    margin-bottom: 0;
+    font-size: 0.875rem; }
+    #combat-log p.yellow {
+      color: #ffff00; }
 
 #ability-tooltip {
   position: absolute;
@@ -354,16 +364,6 @@ body.combat-ui #bottom-bar {
   color: white;
   flex: 0 1 auto;
   text-align: center; }
-
-.game-over {
-  border-radius: 0.313rem;
-  background: #4e495f;
-  padding: 0.5rem; }
-  .game-over .skull {
-    height: 3rem;
-    width: 3rem; }
-  .game-over .skull:before {
-    content: url("icons/skull-crack.svg"); }
 
 .combat-text {
   position: absolute;
