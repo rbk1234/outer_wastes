@@ -63,6 +63,7 @@
       <div id="unit-frame-template" class="unit-frame">
         <div class="flex-col">
           <div class="combat-text-area"></div>
+          <!--<div class="name-area"><span class="name-text"></span></div>-->
           <div class="clickable-area">
             <div class="click-target"></div>
             <div class="image">
@@ -191,7 +192,7 @@
 <div id="bottom-bar">
   <div class="restricted-width">
     <div class="grid-x">
-      <div class="cell small-4">
+      <div class="cell small-2" style="display:none;">
         <div class="bottom-container">
           <div id="target-frame">
             <table class="no-rows tight-spacing">
@@ -216,7 +217,7 @@
                   <table class="no-rows bottom-spacing" style="font-size: 0.875rem;">
                     <tbody>
                     <tr>
-                      <td class="nostretch">Health&emsp;</td>
+                      <!--<td class="nostretch">Health&emsp;</td>-->
                       <td>
                         <div class="bar health-bar">
                           <div class="bar-layer background red" style="width: 100%;"></div>
@@ -227,7 +228,7 @@
                       </td>
                     </tr>
                     <tr>
-                      <td class="nostretch">Mana&emsp;</td>
+                      <!--<td class="nostretch">Mana&emsp;</td>-->
                       <td>
                         <div class="bar mana-bar">
                           <div class="bar-layer background" style="width: 100%;"></div>
@@ -236,35 +237,10 @@
                         </div>
                       </td>
                     </tr>
-                    <!--<tr>-->
-                    <!--<td class="nostretch">Threat&emsp;</td>-->
-                    <!--<td>10%</td>-->
-                    <!--</tr>-->
-                    <!--<tr>-->
-                    <!--<td colspan="2"><a>View all stats</a></td>-->
-                    <!--</tr>-->
                     </tbody>
                   </table>
 
 
-                </td>
-                <td class="nostretch">
-                  <table class="no-rows inventory">
-                    <tbody>
-                    <tr>
-                      <td><div></div></td>
-                      <td><div></div></td>
-                    </tr>
-                    <tr>
-                      <td><div></div></td>
-                      <td><div></div></td>
-                    </tr>
-                    <tr>
-                      <td><div></div></td>
-                      <td><div></div></td>
-                    </tr>
-                    </tbody>
-                  </table>
                 </td>
               </tr>
               </tbody>
@@ -277,7 +253,7 @@
         </div>
 
       </div>
-      <div class="cell small-4">
+      <div class="cell small-6">
         <div class="bottom-container">
           <button id="ability-button-template" class="action-bar-button blank">
             <span class="hotkey"></span>
@@ -285,16 +261,27 @@
           </button>
           <div id="ability-bar" class="bottom-section" style="text-align:center;"></div>
 
-          <div style="margin:0.5rem 1.5rem 0.5rem 1.5rem;">
-            <div id="player-cast-bar" class="bar cast-bar" style="opacity: 0;">
-              <div class="bar-layer background" style="width: 100%;"></div>
-              <div class="bar-layer cast-progress" style="width: 100%;"></div>
-              <div class="bar-layer bar-text" style="width: 100%;"></div>
+          <div id="player-frame">
+            <div style="margin:0.5rem 1.5rem 0.5rem 1.5rem;">
+              <div id="player-mana-bar" class="bar mana-bar">
+                <div class="bar-layer background" style="width: 100%;"></div>
+                <div class="bar-layer mana" style="width: 100%;"></div>
+                <div class="bar-layer bar-text" style="width: 100%;"></div>
+              </div>
             </div>
+
+            <div style="margin:0.5rem 1.5rem 0.5rem 1.5rem;">
+              <div id="player-cast-bar" class="bar cast-bar" style="opacity: 0;">
+                <div class="bar-layer background" style="width: 100%;"></div>
+                <div class="bar-layer cast-progress" style="width: 100%;"></div>
+                <div class="bar-layer bar-text" style="width: 100%;"></div>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
-      <div class="cell small-4">
+      <div class="cell small-6">
         <div class="bottom-container">
           <div id="combat-log">
 

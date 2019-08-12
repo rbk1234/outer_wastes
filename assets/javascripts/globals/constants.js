@@ -7,7 +7,7 @@
             player: 1,
             computer: 2
         },
-        numPlayerAbilities: 5
+        numPlayerAbilities: 8
     };
 
     Object.freeze(Game.Constants);

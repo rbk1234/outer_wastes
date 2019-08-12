@@ -57,8 +57,6 @@
             this._isDead = false;
 
             this._initStartingAbilities();
-
-            this.leaveCombat();
         },
 
         update: function(seconds) {
@@ -230,13 +228,13 @@
                 return;
             }
 
-            if (Game.Util.roundForComparison(amount) < 0) {
-                console.warn('Cannot add a negative energy amount: use consumeMana function.');
-                return;
-            }
             this.mana += amount;
+
             if (this.mana >= this.maxMana()) {
                 this.mana = this.maxMana();
+            }
+            if (Game.Util.roundForComparison(this.mana) <= 0) {
+                this.mana = 0;
             }
         },
         maxMana: function() {
@@ -714,7 +712,10 @@
             this.manaRegen.override = false;
         },
         leaveCombat: function() {
-            this.manaRegen.override = 0;
+            //this.manaRegen.override = 0;
+            if (this.id !== Game.Player.id) {
+                this.manaRegen.override = -20;
+            }
         },
 
 
@@ -725,6 +726,7 @@
 
             if (!this._isDead) {
                 this.health = 0;
+                this.mana = 0;
 
                 $(this).trigger('unit:beforeDeath');
 

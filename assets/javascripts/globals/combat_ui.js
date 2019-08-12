@@ -61,6 +61,7 @@
 
             Game.Clock.setInterval(CLOCK_KEY, function(iterations, period) {
                 // Only draw once (no matter how many iterations)
+                self._refreshManaBar();
                 self._refreshDetailedFrames();
                 self._refreshUnitFrames();
                 //self._refreshPlayerBars();
@@ -82,6 +83,7 @@
             //this.loadTeam(Game.Constants.teamIds.player);
 
             this.clearTarget();
+            this.clearLog();
 
             this._startClock();
         },
@@ -105,6 +107,8 @@
 
         _initDetailedFrames: function() {
             this._playerFrame = this._createDetailedFrame($('#player-frame'), 'player');
+            this._playerFrame.$frame.visible(); // always visible
+
             this._targetFrame = this._createDetailedFrame($('#target-frame'), 'target');
         },
         _createDetailedFrame: function($frame, frameType) {
@@ -177,6 +181,11 @@
             //this._removeAllEffectsInFrame(frame);
 
             // todo stop updates
+        },
+        _refreshManaBar: function() {
+            var manaPercent = Game.Player.percentMana() + '%';
+            this._playerFrame.$manaBarProgress.css('width', manaPercent);
+            this._playerFrame.$manaBarText.html(Game.Util.round(Game.Player.mana) + '/' + Game.Util.round(Game.Player.maxMana()));
         },
         _refreshDetailedFrames: function() {
             this._refreshDetailedFrame(this._targetFrame, this.selectedUnit());
@@ -271,7 +280,7 @@
                 animations: {},
 
                 $frame: $frame,
-                $name: $frame.find('.name'),
+                $nameText: $frame.find('.name-text'),
 
                 $combatTextArea: $frame.find('.combat-text-area'),
                 $clickableArea: $frame.find('.clickable-area'),
@@ -553,7 +562,8 @@
 
         clearTarget: function() {
             this._targetedUnit = null;
-            $('.clickable-area').removeClass('targeted');
+            $('.unit-frame .clickable-area').removeClass('targeted');
+            //$('.unit-frame .name-text').empty();
 
             this._clearDetailedFrame(this._targetFrame);
 
@@ -563,10 +573,12 @@
         targetUnit: function(unit) {
             // Remove targeting circle from any old target. Note: Not calling clearTarget for small performance gain
             this._targetedUnit = unit;
-            $('.clickable-area').removeClass('targeted');
+            $('.unit-frame .clickable-area').removeClass('targeted');
+            //$('.unit-frame .name-text').empty();
 
             // Add targeting circle to new target
             this._getUnitFrame(unit).$clickableArea.addClass('targeted');
+            //this._getUnitFrame(unit).$nameText.html(unit.name);
 
             this._loadDetailedFrame(this._targetFrame, unit);
 

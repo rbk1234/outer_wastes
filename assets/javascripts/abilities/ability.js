@@ -61,7 +61,7 @@
 
             // Standard events
             this.$eventHandler.on('ability:castComplete', /**@this {Ability}*/ function(evt, target) {
-                this.caster.consumeMana(this.manaCost.value());
+                this.caster.addMana(-1 * this.manaCost.value());
                 this._remainingCooldown = this.cooldown.value();
             });
 

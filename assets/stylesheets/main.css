@@ -204,7 +204,7 @@ body.combat-ui #bottom-bar {
 #background-art .darkblue {
   color: #a8ccd7; }
 
-#player-frame .portrait, #target-frame .portrait {
+#target-frame .portrait {
   height: 3rem;
   width: 3rem;
   background: #20394f;
@@ -215,15 +215,15 @@ body.combat-ui #bottom-bar {
   line-height: 1.25;
   padding-left: 0.65rem;
   padding-top: 0.35rem; }
-#player-frame .non-portrait, #target-frame .non-portrait {
+#target-frame .non-portrait {
   flex: 1 1 auto;
   padding: 0.5rem; }
-  #player-frame .non-portrait .name, #target-frame .non-portrait .name {
+  #target-frame .non-portrait .name {
     color: white;
     text-align: center; }
-  #player-frame .non-portrait .health-bar, #player-frame .non-portrait .mana-bar, #target-frame .non-portrait .health-bar, #target-frame .non-portrait .mana-bar {
+  #target-frame .non-portrait .health-bar, #target-frame .non-portrait .mana-bar {
     margin-bottom: 0.25rem; }
-  #player-frame .non-portrait .effects-area, #target-frame .non-portrait .effects-area {
+  #target-frame .non-portrait .effects-area {
     height: 2rem; }
 
 #unit-frame-template {
@@ -239,6 +239,12 @@ body.combat-ui #bottom-bar {
     flex-flow: column;
     height: 100%;
     justify-content: flex-end; }
+    .unit-frame .flex-col .name-area {
+      height: 1rem;
+      font-size: 0.8rem;
+      text-align: center; }
+      .unit-frame .flex-col .name-area .name-text {
+        background: #08141e; }
     .unit-frame .flex-col .combat-text-area {
       position: relative;
       height: 3rem; }
@@ -535,12 +541,12 @@ body.combat-ui #bottom-bar {
   .bar.cast-bar .bar-layer.bar-text {
     text-align: center; }
 
-#player-cast-bar {
-  height: 1rem;
-  font-size: 0.75rem;
-  line-height: 1;
+#player-cast-bar, #player-mana-bar {
+  height: 1.35rem;
+  font-size: 0.85rem;
+  line-height: 1.4;
   width: 19.5rem;
-  margin: 0 auto; }
+  margin-left: 0.2rem; }
 
 #ability-bar {
   margin-top: 0.5rem; }

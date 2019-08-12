@@ -18,10 +18,16 @@
             this._currentEncounter = null;
             this._inCombat = false;
 
+            this._running = true;
             this._startClock();
         },
 
         stopEngine: function() {
+            // TODO HACK
+            // Stopping the clock isn't enough to stop the engine; if the tab was in the background, the _update loop
+            // could run many times in a single interval. So we have a secondary _running attribute that can be used
+            // to stop the engine even within the _update loop.
+            this._running = false;
             this._stopClock();
         },
 
@@ -65,6 +71,7 @@
                 this._teams[unit.teamId] = [];
             }
             this._teams[unit.teamId].push(unit);
+            unit.leaveCombat();
         },
 
         clearTeam: function(teamId) {
@@ -219,6 +226,10 @@
 
         _update: function(seconds) {
             var self = this;
+            
+            if (!this._running) {
+                return;
+            }
 
             if (Object.keys(this._teams).length === 0) {
                 return; // waiting on a team to be loaded
@@ -231,7 +242,7 @@
                 // todo wait then clear teams?
                 //self.clearTeam(Game.Constants.teamIds.computer);
 
-                this._stopClock();
+                this.stopEngine();
             }
             if (this.inCombat() && !this.isComputerTeamAlive()) {
                 Game.CurrentEncounter.finish();

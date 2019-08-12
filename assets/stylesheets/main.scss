@@ -397,7 +397,7 @@ body.combat-ui {
 
 // -------------------------------------------------------- Detailed frames (one for player, one for target)
 
-#player-frame, #target-frame {
+#target-frame {
   //display: flex;
   //flex-flow: row;
   
@@ -460,6 +460,16 @@ body.combat-ui {
     height: 100%;
     
     justify-content: flex-end;
+
+    .name-area {
+      height: 1rem;
+      font-size: 0.8rem;
+      text-align: center;
+
+      .name-text {
+        background: $nyx8-black;
+      }
+    }
 
     .combat-text-area {
       position: relative;
@@ -1103,13 +1113,14 @@ body.combat-ui {
 
 
 
-#player-cast-bar {
-  height: 1rem;
-  font-size: 0.75rem;
-  line-height: 1;
+#player-cast-bar, #player-mana-bar {
+  height: 1.35rem;
+  font-size: 0.85rem;
+  line-height: 1.4;
 
   width: 19.5rem; // (button * num_buttons + button_margin * num_spaces) 3.5 * 5 + 0.5 * 4
-  margin: 0 auto;
+  //margin: 0 auto;
+  margin-left: 0.2rem;
 }
 
 // -------------------------------------------------------- Abilities/effects
