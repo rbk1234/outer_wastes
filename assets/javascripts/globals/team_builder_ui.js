@@ -121,7 +121,7 @@
             var self = this;
             var frame = this.unitFrames[i];
 
-            if (i === MAX_TEAM_SIZE - 1) {
+            if (i === AVAILABLE_SLOTS - 1) {
                 self.units[i] = Game.Player;
                 frame.$select.prop('disabled', true).val(Game.Player.dbKey);
                 Game.Util.paintImage(Game.Player.animations.idle.image, frame.$image, Game.Player.imageOffset());

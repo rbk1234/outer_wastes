@@ -204,27 +204,33 @@ body.combat-ui #bottom-bar {
 #background-art .darkblue {
   color: #a8ccd7; }
 
-#target-frame .portrait {
-  height: 3rem;
-  width: 3rem;
-  background: #20394f;
-  border-radius: 30%;
-  border: 1px solid black;
-  color: white;
-  font-size: 0.875rem;
-  line-height: 1.25;
-  padding-left: 0.65rem;
-  padding-top: 0.35rem; }
-#target-frame .non-portrait {
-  flex: 1 1 auto;
-  padding: 0.5rem; }
-  #target-frame .non-portrait .name {
-    color: white;
-    text-align: center; }
-  #target-frame .non-portrait .health-bar, #target-frame .non-portrait .mana-bar {
-    margin-bottom: 0.25rem; }
-  #target-frame .non-portrait .effects-area {
-    height: 2rem; }
+#target-frame-container {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%);
+  z-index: 3; }
+  #target-frame-container #target-frame {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    width: 250px;
+    background: #08141e;
+    border: 1px solid #4e495f; }
+    #target-frame-container #target-frame .portrait {
+      height: 3.75rem;
+      width: 3.75rem;
+      background: #20394f;
+      border-radius: 30%;
+      border: 1px solid black;
+      color: white;
+      font-size: 1.1rem;
+      line-height: 1.25;
+      padding-left: 0.85rem;
+      padding-top: 0.35rem;
+      margin-right: 0.5rem; }
+    #target-frame-container #target-frame .bar {
+      margin-bottom: 0.25rem; }
 
 #unit-frame-template {
   display: none; }
@@ -511,7 +517,9 @@ body.combat-ui #bottom-bar {
 .bar {
   position: relative;
   overflow: hidden;
-  height: 1.5rem;
+  height: 1.35rem;
+  font-size: 0.85rem;
+  line-height: 1.4;
   border: 1px solid #111;
   border-radius: 0.1rem; }
   .bar .bar-layer {
@@ -542,11 +550,8 @@ body.combat-ui #bottom-bar {
     text-align: center; }
 
 #player-cast-bar, #player-mana-bar {
-  height: 1.35rem;
-  font-size: 0.85rem;
-  line-height: 1.4;
   width: 19.5rem;
-  margin-left: 0.2rem; }
+  margin: 0 auto; }
 
 #ability-bar {
   margin-top: 0.5rem; }
