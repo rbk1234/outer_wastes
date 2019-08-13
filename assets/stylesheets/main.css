@@ -124,6 +124,11 @@ a {
       top: 5rem;
       left: 50%;
       transform: translate(-50%); }
+      #main-content #popup-container #world-map .ascii-content {
+        overflow-y: scroll;
+        height: calc(100% - 1.5rem);
+        overflow-x: hidden;
+        line-height: 1; }
 
 #bottom-bar {
   position: fixed;

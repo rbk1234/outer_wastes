@@ -17,11 +17,6 @@
 
             this.$map = $('#world-map');
 
-            this.$map.find('#start-quest').off('click').on('click', function(evt) {
-                evt.preventDefault();
-                self._startQuest();
-            });
-
             // Start clock
             Game.Clock.setInterval(CLOCK_KEY, function(iterations, period) {
 
@@ -31,20 +26,36 @@
         },
 
         openMap: function() {
-            this.$map.show();
+            var self = this;
+
+            //var world = new Game.Maps.Map('world');
+            //this.$map.find('.ascii-content').html(world.display.join('\n'));
+
+            //this.$map.show();
+
+            Game.BackgroundUI.drawBackground('world');
+            Game.BackgroundUI.setZoneName('The World');
+
+            Game.BackgroundUI.registerHandler('world.village', function() {
+                Game.TownUI.loadTown();
+            });
+            Game.BackgroundUI.registerHandler('world.woods', function() {
+                self._startQuest('woods');
+            });
+
         },
 
         closeMap: function() {
-            this.$map.hide();
+            //this.$map.hide();
         },
 
-        _startQuest: function() {
+        _startQuest: function(zone) {
             this.closeMap();
 
             Game.UnitEngine.loadEngine();
             Game.CombatUI.loadUI();
 
-            Game.CurrentZone = new Game.Zones.Zone('woods', {});
+            Game.CurrentZone = new Game.Zones.Zone(zone, {});
 
             // load player team
             Game.TeamBuilderUI.currentTeam().forEach(function(unit) {

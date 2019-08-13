@@ -246,11 +246,18 @@ $bottom-bar-height: 10rem;
 
     #world-map {
       height: 80vh;
-      width: 80%;
+      width: 80%; // note: this makes a width of 94 characters for map
 
       top: 5rem;
       left: 50%;
       transform: translate(-50%);
+
+      .ascii-content {
+        overflow-y: scroll;
+        height: calc(100% - 1.5rem);
+        overflow-x: hidden;
+        line-height: 1;
+      }
     }
   }
 }

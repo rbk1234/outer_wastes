@@ -42,6 +42,8 @@
             $('#zone-name').html(name);
         },
 
+        // todo when to clear handlers
+
         // should be called after drawBackground to attach click handlers
         registerHandler: function(key, handler) {
             this._registeredHandlers[key] = handler;

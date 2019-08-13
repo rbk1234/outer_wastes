@@ -92,11 +92,6 @@
                     Game.Util.paintImage(['   LOCKED', '', '', ''], $image);
                 }
             }
-
-            //this.$teamSelector.find('#start-quest').off('click').on('click', function(evt) {
-            //    evt.preventDefault();
-            //    self._startQuest();
-            //});
         },
 
         _appendTitle: function(i, $td) {
