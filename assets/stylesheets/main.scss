@@ -94,6 +94,10 @@ $bottom-bar-height: 10rem;
   width:100%;
 
   z-index: 2;
+
+  a {
+    margin: 0 1rem;
+  }
 }
 
 #main-content {
@@ -156,7 +160,7 @@ $bottom-bar-height: 10rem;
     top: 0;
     left: 50%;
     transform: translate(-50%);
-    z-index: 3;
+    z-index: 4;
 
     .ui-popup {
       position: absolute;
@@ -214,8 +218,6 @@ $bottom-bar-height: 10rem;
     }
 
     #building-popup {
-      //position: absolute;
-
       height: 60vh;
       width: 40%;
       padding: 0.5rem;
@@ -240,6 +242,15 @@ $bottom-bar-height: 10rem;
       .footer {
         height: 20%;
       }
+    }
+
+    #world-map {
+      height: 80vh;
+      width: 80%;
+
+      top: 5rem;
+      left: 50%;
+      transform: translate(-50%);
     }
   }
 }
@@ -324,7 +335,7 @@ body.combat-ui {
   }
 
 }
-#building-popup, #team-selector {
+#building-popup, #team-selector, #world-map {
   border: 1px solid $gold;
   background: $nyx8-blue;
 
@@ -340,6 +351,7 @@ body.combat-ui {
 
   }
 }
+
 
 
 

@@ -25,6 +25,7 @@
 
             Game.BackgroundUI.drawBackground(this.background);
             Game.BackgroundUI.setZoneName(this.name);
+            Game.CombatUI.logMessage('You have entered ' + this.name + '.', 'yellow');
         },
 
         loadNextEncounter: function() {

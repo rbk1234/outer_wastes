@@ -33,6 +33,10 @@
             //    self.updateTimers(iterations * period);
             //}, 1.0 / UPDATES_PER_SECOND);
 
+            $('#toggle-party').off('click').on('click', function() {
+                //Game.TownUI.closeAllPopups();
+                self.toggleTeamSelector();
+            })
         },
 
         // TODO Call this after new classes unlocked?
@@ -89,10 +93,10 @@
                 }
             }
 
-            this.$teamSelector.find('#start-quest').off('click').on('click', function(evt) {
-                evt.preventDefault();
-                self._startQuest();
-            });
+            //this.$teamSelector.find('#start-quest').off('click').on('click', function(evt) {
+            //    evt.preventDefault();
+            //    self._startQuest();
+            //});
         },
 
         _appendTitle: function(i, $td) {
@@ -135,6 +139,10 @@
 
                 Game.Util.paintImage(unit.animations.idle.image, frame.$image, unit.imageOffset());
                 self._displayUnitStats(unit, frame.$stats);
+
+                if (unit.id !== Game.Player.id) {
+                    self._equipSpecialAbility(unit);
+                }
             }).trigger('change');
         },
 
@@ -154,42 +162,51 @@
             }).appendTo($stats);
         },
 
+        toggleTeamSelector: function() {
+            this.$teamSelector.toggle();
+        },
         openTeamSelector: function() {
             this.$teamSelector.show();
         },
         closeTeamSelector: function() {
             this.$teamSelector.hide();
         },
-
-        _startQuest: function() {
-            var self = this;
-
-            this.closeTeamSelector();
-            this.units.forEach(function(unit) {
-                if (unit.id !== Game.Player.id) {
-                    self._equipSpecialAbility(unit);
-                }
-            });
-            Game.Player.addMana(Game.Player.maxMana());
-
-            // load zone
-            Game.CurrentZone = new Game.Zones.Zone('woods', {});
-
-            // load engine/ui
-            Game.UnitEngine.loadEngine();
-            Game.CombatUI.loadUI();
-
-            // load player team
-            this.units.forEach(function(unit) {
-                Game.UnitEngine.addUnit(unit);
-            });
-            Game.CombatUI.loadTeam(Game.Constants.teamIds.player);
-
-            // load first enemy team
-            Game.CurrentZone.loadNextEncounter();
+        currentTeam: function() {
+            return this.units;
         },
 
+        //_startQuest: function() {
+        //    var self = this;
+        //
+        //    this.closeTeamSelector();
+        //    this.units.forEach(function(unit) {
+        //        if (unit.id !== Game.Player.id) {
+        //            self._equipSpecialAbility(unit);
+        //        }
+        //    });
+        //    Game.Player.addMana(Game.Player.maxMana());
+        //
+        //
+        //    // load engine/ui
+        //    Game.UnitEngine.loadEngine();
+        //    Game.CombatUI.loadUI();
+        //
+        //    // load zone
+        //    Game.CurrentZone = new Game.Zones.Zone('woods', {});
+        //
+        //    // load player team
+        //    this.units.forEach(function(unit) {
+        //        Game.UnitEngine.addUnit(unit);
+        //    });
+        //    Game.CombatUI.loadTeam(Game.Constants.teamIds.player);
+        //
+        //    // load first enemy team
+        //    Game.CurrentZone.loadNextEncounter();
+        //},
+
         _equipSpecialAbility: function(unit) {
+            // todo let player pick ability... for now just assigns it
+
             var abilityKey;
 
             switch(unit.dbKey) {

@@ -26,6 +26,8 @@ a {
   height: 1.5rem;
   width: 100%;
   z-index: 2; }
+  #top-bar a {
+    margin: 0 1rem; }
 
 #main-content {
   margin-top: 1.5rem;
@@ -66,7 +68,7 @@ a {
     top: 0;
     left: 50%;
     transform: translate(-50%);
-    z-index: 3; }
+    z-index: 4; }
     #main-content #popup-container .ui-popup {
       position: absolute; }
     #main-content #popup-container #team-selector {
@@ -116,6 +118,12 @@ a {
         height: 70%; }
       #main-content #popup-container #building-popup .footer {
         height: 20%; }
+    #main-content #popup-container #world-map {
+      height: 80vh;
+      width: 80%;
+      top: 5rem;
+      left: 50%;
+      transform: translate(-50%); }
 
 #bottom-bar {
   position: fixed;
@@ -169,12 +177,12 @@ body.combat-ui #bottom-bar {
     background: #203c56;
     border: 1px solid #544e68; }
 
-#building-popup, #team-selector {
+#building-popup, #team-selector, #world-map {
   border: 1px solid #f2d3ab;
   background: #20394f; }
-  #building-popup .header, #team-selector .header {
+  #building-popup .header, #team-selector .header, #world-map .header {
     color: #f2d3ab; }
-  #building-popup .inner-content, #team-selector .inner-content {
+  #building-popup .inner-content, #team-selector .inner-content, #world-map .inner-content {
     background: #0f2a3f; }
 
 #background-art .green {

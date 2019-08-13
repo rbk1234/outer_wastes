@@ -16,9 +16,11 @@
     Game.CombatUI.init();
     Game.TownUI.init();
     Game.TeamBuilderUI.init();
+    Game.WorldMapUI.init();
 
     Game.Player.equipAbility(0, new Game.Abilities.Ability('holyLight'));
     Game.Player.equipAbility(1, new Game.Abilities.Ability('renew'));
+
 
     Game.Clock.setInterval(
         'debug',

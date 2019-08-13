@@ -66,11 +66,17 @@
             }, 2000);
         },
 
+        // Adding unit to the game. Make sure
         addUnit: function(unit) {
             if (!this._teams[unit.teamId]) {
                 this._teams[unit.teamId] = [];
             }
             this._teams[unit.teamId].push(unit);
+
+            if (unit.id === Game.Player.id) {
+                Game.Player.addMana(Game.Player.maxMana());
+            }
+            // todo remove debuffs / set health full?
             unit.leaveCombat();
         },
 

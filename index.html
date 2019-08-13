@@ -35,17 +35,26 @@
 
 <div id="top-bar">
   <div class="restricted-width">
+
     <div class="grid-x">
-      <div class="cell auto">
+      <div class="cell small-4 ">
+        |<a id="toggle-party">Party</a>|<a id="open-spellbook">Spellbook</a>|<a id="open-bags">Bag</a>|
+      </div>
+
+      <div class="cell small-4 text-center">
+        <!--<a class="button">Party</a>-->
         <span id="zone-name"></span>
       </div>
-      <div class="cell auto" style="color:#444;">
-        FPS: <span id="fps"></span>&emsp;&mdash;&emsp;
-        Time: <span id="total-time"></span>&emsp;&mdash;&emsp;
-        Memory: <span id="memory"></span>
-      </div>
-      <div class="cell shrink">
-        <span id="gold-value">0</span> gold
+
+      <!--<div class="cell small-6" style="color:#444;">-->
+        <!--FPS: <span id="fps"></span>&emsp;&mdash;&emsp;-->
+        <!--Time: <span id="total-time"></span>&emsp;&mdash;&emsp;-->
+        <!--Memory: <span id="memory"></span>-->
+      <!--</div>-->
+      <div class="cell small-4 text-right">
+        <!--<span id="gold-value">0</span> gold-->
+
+        |<a>Settings</a>|
       </div>
     </div>
   </div>
@@ -139,7 +148,7 @@
         <table class="no-rows no-spacing">
           <tbody>
           <tr>
-            <td><h6 class="no-bottom-margin">Gather Your Party</h6></td>
+            <td><h6 class="no-bottom-margin">Your Party</h6></td>
             <td class="nostretch"><a class="fa fa-fw fa-times close-popup"></a></td>
             <!--<td class="nostretch"><a class="ui-popup" style="font-weight:bold;">×</a></td>-->
           </tr>
@@ -157,10 +166,29 @@
       </div>
 
       <div class="footer text-right">
-        <a class="button" id="start-quest">Embark <span class="fa fa-fw fa-angle-right"></span></a>
+        <!--<a class="button" id="start-quest">Embark <span class="fa fa-fw fa-angle-right"></span></a>-->
       </div>
 
 
+    </div>
+
+    <div id="world-map" class="ui-popup" hidden>
+      <div class="header">
+        <table class="no-rows no-spacing">
+          <tbody>
+          <tr>
+            <td><h6 class="no-bottom-margin">The World</h6></td>
+            <td class="nostretch"><a class="fa fa-fw fa-times close-popup"></a></td>
+          </tr>
+          </tbody>
+        </table>
+
+      </div>
+
+      <br>
+      <br>
+      <br>
+      <a id="start-quest">Enter The Woods</a>
     </div>
 
   </div>
@@ -329,6 +357,7 @@
 <script src="assets/javascripts/globals/background_ui.js"></script>
 <script src="assets/javascripts/globals/team_builder_ui.js"></script>
 <script src="assets/javascripts/globals/town_ui.js"></script>
+<script src="assets/javascripts/globals/world_map_ui.js"></script>
 
 <script src="assets/javascripts/zones/database.js"></script>
 <script src="assets/javascripts/zones/zone.js"></script>

@@ -93,6 +93,8 @@
 
             // hide unit frames
 
+            this.clearTarget();
+
             // stop clock
             this._stopClock();
         },

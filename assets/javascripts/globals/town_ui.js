@@ -50,13 +50,18 @@
             });
 
             Game.BackgroundUI.registerHandler('village.gate', function() {
-                self._startQuest();
+                self.closeAllPopups();
+                Game.WorldMapUI.openMap();
             });
 
             Game.BackgroundUI.registerHandler('village.blacksmith', function() {
                 self._openBlacksmith();
             });
 
+        },
+
+        closeAllPopups: function() {
+            this.$popupContainer.find('.ui-popup').hide();
         },
 
         _openBlacksmith: function() {
@@ -101,40 +106,6 @@
 
             this.$buildingPopup.find('.item-list').append($item);
         },
-
-        // TODO Move this somewhere else
-        _startQuest: function() {
-            Game.TeamBuilderUI.openTeamSelector();
-
-            //// -------- Background
-            //Game.BackgroundUI.drawBackground('woods');
-            //
-            //// -------- UnitEngine
-            //Game.UnitEngine.loadEngine();
-            //
-            //var crusader = new Game.Units.Unit('crusader', {teamId: Game.Constants.teamIds.player});
-            //Game.UnitEngine.addUnit(crusader);
-            //crusader.equipAbility('special', new Game.Abilities.Ability('blessedShield'));
-            //
-            //var brewmaster = new Game.Units.Unit('brewmaster', {teamId: Game.Constants.teamIds.player});
-            //Game.UnitEngine.addUnit(brewmaster);
-            //brewmaster.equipAbility('special', new Game.Abilities.Ability('backstab'));
-            //
-            //var swashbuckler = new Game.Units.Unit('swashbuckler', {teamId: Game.Constants.teamIds.player});
-            //Game.UnitEngine.addUnit(swashbuckler);
-            //swashbuckler.equipAbility('special', new Game.Abilities.Ability('backstab'));
-            //
-            //var smuggler = new Game.Units.Unit('smuggler', {teamId: Game.Constants.teamIds.player});
-            //Game.UnitEngine.addUnit(smuggler);
-            //smuggler.equipAbility('special', new Game.Abilities.Ability('backstab'));
-            //
-            //var cleric = new Game.Units.Unit('cleric', { teamId: Game.Constants.teamIds.player });
-            //Game.UnitEngine.addUnit(cleric);
-            //cleric.equipAbility('special', new Game.Abilities.Ability('holyNova'));
-            //
-            //// -------- CombatUI
-            //Game.CombatUI.loadUI();
-        }
 
 
     };
