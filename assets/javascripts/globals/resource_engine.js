@@ -27,6 +27,27 @@
             }, 1.0 / UPDATES_PER_SECOND);
         },
 
+        saveData: function() {
+            var data = {};
+
+            Game.Util.iterateObject(this._resources, function(key, resourceData) {
+                data[key] = resourceData.amount;
+            });
+
+            return data;
+        },
+        loadData: function(data) {
+            if (data === undefined) {
+                return;
+            }
+
+            Game.Util.iterateObject(this._resources, function(key, resourceData) {
+                if (data[key] !== undefined) {
+                    resourceData.amount = data[key];
+                }
+            });
+        },
+
         _incrementResouces: function(seconds) {
             Game.Util.iterateObject(this._resources, function(key, resource) {
                 resource.amount += resource.rate * seconds;

@@ -33,16 +33,19 @@
         },
 
         // Register a function to be called every x seconds.
-        // The fn will be called with parameters: (iterations, period)
-        //   iterations = number of iterations elapsed
-        //   period = length (in seconds) of each iteration
-        setInterval: function(key, fn, seconds) {
+        //   @param key: Unique key for the interval. Can be used to clear the interval later.
+        //   @param fn: function to be called periodically with parameters: (iterations, period)
+        //     iterations: number of iterations elapsed
+        //     period: length (in seconds) of each iteration
+        //   @param seconds: Number of seconds between intervals
+        //   @param skipFirstInterval: If false, fn is called immediately (time zero). If true, this first call is skipped.
+        setInterval: function(key, fn, seconds, skipFirstInterval) {
             var period = seconds * 1000.0;
 
             this.periodicFns[key] = {
                 fn: fn,
                 period: period,
-                current: period
+                current: skipFirstInterval ? 0 : period
             };
         },
 
@@ -88,6 +91,7 @@
                         iterations += 1;
                         periodicFn.current -= periodicFn.period;
                     }
+                    //console.log('calling function: ', key);
                     periodicFn.fn(iterations, periodicFn.period / 1000.0); // call function - convert period back to seconds
                 }
             });

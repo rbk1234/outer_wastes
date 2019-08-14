@@ -18,6 +18,9 @@
     Game.TeamBuilderUI.init();
     Game.WorldMapUI.init();
 
+    Game.Saving.init();
+    Game.Saving.load();
+
     Game.Player.equipAbility(0, new Game.Abilities.Ability('holyLight'));
     Game.Player.equipAbility(1, new Game.Abilities.Ability('renew'));
 

@@ -28,16 +28,11 @@
 
             $('.restricted-width').css('width', BACKGROUND_WIDTH);
 
-            Game.Timers.addTimerSupport(this);
-
-            // Start clock
-            Game.Clock.setInterval(CLOCK_KEY, function(iterations, period) {
-                // Only draw once (no matter how many iterations)
-                //self._refreshUI();
-
-                self.updateTimers(iterations * period);
-            }, 1.0 / UPDATES_PER_SECOND);
-
+            //Game.Timers.addTimerSupport(this);
+            //
+            //Game.Clock.setInterval(CLOCK_KEY, function(iterations, period) {
+            //    self.updateTimers(iterations * period);
+            //}, 1.0 / UPDATES_PER_SECOND);
         },
 
         setZoneName: function(name) {
