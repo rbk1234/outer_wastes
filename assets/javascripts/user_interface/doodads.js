@@ -25,68 +25,78 @@ Game.namespace('UI').Doodads = {
         image: [
             '       /\\__/\\',
             '  /|===||++||===|\\',
-            ' /|     __       |\\',
-            '/| _   /__\\       |\\',
-            '| /_\\  |__|     _  |',
-            '| |_|          /_\\ |',
-            '|              |_| |',
-            '|    _    _   _    |',
-            '|\\  /_\\  /_\\ /_\\  /|',
-            ' |\\ |_|  |_| |_| /|',
+            ' /|/=\\ __   /_\\  |\\',
+            '/| _- /__\\  |_| _ |\\',
+            '| /_\\ |__| /_\\ /_\\ |',
+            '| |_|__   _|_|_|_| |',
+            '|\\  /_^\\ /_\\ /_\\  /|',
+            ' |\\ |_H| |_| |_| /|',
             '  |==============|',
         ],
         fills: [
             '       wwwwww',
-            '  wwwwwwwwwwwwwwww',
-            ' wwwwwwwwwwwwwwwwww',
-            'wwwwwwwwwwwwwwwwwwww',
-            'wwwwwwwwwwwwwwwwwwww',
-            'wwwwwwwwwwwwwwwwwwww',
-            'wwwwwwwwwwwwwwwwwwww',
-            'wwwwwwwwwwwwwwwwwwww',
-            'wwwwwwwwwwwwwwwwwwww',
-            ' wwwwwwwwwwwwwwwwww',
+            '  wwwwwwwggwwwwwww',
+            ' wwhhhhhhhhhhhhhhww',
+            'wwhhhhhhhhhhhhhhhhww',
+            'whhhhhhhhhhhhhhhhhhw',
+            'whhhhhhhhhhhhhhhhhhw',
+            'wwhhhhhhhhhhhhhhhhww',
+            ' wwhhhhhhhhhhhhhhww',
             '  wwwwwwwwwwwwwwww',
         ],
-        colors: {},
+        colors: {
+
+        },
         mouseover: {
             label: '  The\nVillage',
-            offset: [6,5],
+            offset: [6,4],
             handler: 'world.village',
-            klass: 'village'
+            klass: 'village',
+            bordered: true
         }
     },
     woods: {
         image: [
-            '                           ',
-            '                           ',
-            '                           ',
-            '                           ',
-            '                           ',
-            '                           ',
-            '                           ',
-            '                           ',
-            '                           ',
+            '...................................',
+            '...................................',
+            '...................................',
+            '...................................',
+            '...................................',
+            '...................................',
+            '...................................',
+            '...................................',
+            '...................................',
+            '...................................',
+            '...................................',
         ],
-        fills: [
-            '   ......................  ',
-            '   ......................  ',
-            '   ......................  ',
-            '   ......................  ',
-            '   ......................  ',
-            '   ......................  ',
-            '   ......................  ',
-            '   ......................  ',
-            '   ......................  ',
-        ],
-        colors: {
-            n: 'none'
-        },
+        invisible: true,
         mouseover: {
             label: 'The Woods',
-            offset: [8,8],
+            offset: [14,4],
             handler: 'world.woods',
-            klass: 'woods'
+            klass: 'woods',
+            bordered: true
+        }
+    },
+    glade: {
+        image: [
+            '..............................................',
+            '..............................................',
+            '..............................................',
+            '..............................................',
+            '................................................',
+            '.................................................',
+            '...................................................',
+            '...................................................',
+            '...................................................',
+        ],
+        invisible: true,
+        mouseover: {
+            label: 'The Cursed Glade',
+            offset: [14,4],
+            handler: 'world.glade',
+            klass: 'glade',
+            bordered: true
         }
     },
 
@@ -613,14 +623,19 @@ Game.namespace('UI').Doodads = {
         image: [
             ' __+',
             '////\\',
-            '|__||',
+            '|__||'
         ],
-        //fills: [
-        //
-        //],
-        //colors: {
-        //
-        //}
+        fills: [
+            ' www',
+            'wwwww',
+            'wwwww'
+        ],
+        mouseover: {
+            label: 'The Chapel',
+            offset: [-2,-1],
+            handler: 'world.chapel',
+            klass: 'chapel'
+        }
     },
     cave: {
         image: [

@@ -42,6 +42,9 @@
             Game.BackgroundUI.registerHandler('world.woods', function() {
                 self._startQuest('woods');
             });
+            Game.BackgroundUI.registerHandler('world.glade', function() {
+                self._startQuest('cursedGlade');
+            });
 
         },
 

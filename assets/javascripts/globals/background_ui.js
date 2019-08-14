@@ -15,6 +15,8 @@
 
     var INVIS_CHAR = '.';
 
+    var BORDER_SIZE = 5; // should match .bordered class
+
     var BackgroundUI = function() {};
 
     BackgroundUI.prototype = {
@@ -102,6 +104,14 @@
 
         _addDoodadToBackground: function(doodad, startingR, startingC, background) {
             var image = doodad.image;
+
+            if (doodad.invisible) {
+                doodad.fills = doodad.image;
+            }
+            if (!doodad.colors) {
+                doodad.colors = {};
+            }
+
             this._setupMouseover(doodad.mouseover, startingR, startingC);
 
             for (var r = 0, numRows = image.length; r < numRows; r++) {
@@ -151,12 +161,14 @@
 
         _setupMouseover: function(data, row, col) {
             if (data) {
+                var borderSpacing = data.bordered ? BORDER_SIZE : 0;
+
                 var $overlay = $('<span/>', {
                     css: {
-                        top: (row - data.offset[1] - 1) * FONT_SIZE,
-                        left: (col - LEFT_OFFSET + data.offset[0]) * FONT_WIDTH
+                        top: (row - data.offset[1] - 1) * FONT_SIZE - borderSpacing,
+                        left: (col - LEFT_OFFSET + data.offset[0]) * FONT_WIDTH - borderSpacing
                     },
-                    class: data.klass,
+                    class: 'overlay-text' + ' ' + data.klass + ' ' + (data.bordered ? 'bordered' : ''),
                     html: data.label
                 });
 

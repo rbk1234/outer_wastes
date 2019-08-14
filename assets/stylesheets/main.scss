@@ -148,10 +148,17 @@ $bottom-bar-height: 10rem;
     transform: translate(-50%);
     z-index: 2;
 
-    span {
+    span.overlay-text {
       position: absolute;
       display: none; // will be shown on hover
       cursor: pointer;
+
+      line-height: 1.1;
+      background: $nyx8-black;
+
+      &.bordered {
+        border: 5px solid $nyx8-black; // note: 5px should match constant in background_ui.js
+      }
     }
 
   }

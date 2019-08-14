@@ -1,28 +1,25 @@
 
 THE VILLAGE
 
+
        /\__/\
   /|===||++||===|\
- /|     __       |\
-/| _   /__\       |\
-| /_\  |__|     _  |
-| |_|          /_\ |
-|              |_| |
-|    _    _   _    |
-|\  /_\  /_\ /_\  /|
- |\ |_|  |_| |_| /|
+ /|/=\ __   /_\  |\
+/| _- /__\  |_| _ |\
+| /_\ |__| /_\ /_\ |
+| |_|__   _|_|_|_| |
+|\  /_^\ /_\ /_\  /|
+ |\ |_H| |_| |_| /|
   |==============|
 
        wwwwww
-  wwwwwwwwwwwwwwww
- wwwwwwwwwwwwwwwwww
-wwwwwwwwwwwwwwwwwwww
-wwwwwwwwwwwwwwwwwwww
-wwwwwwwwwwwwwwwwwwww
-wwwwwwwwwwwwwwwwwwww
-wwwwwwwwwwwwwwwwwwww
-wwwwwwwwwwwwwwwwwwww
- wwwwwwwwwwwwwwwwww
+  wwwwwwwggwwwwwww
+ wwhhhhhhhhhhhhhhww
+wwhhhhhhhhhhhhhhhhww
+whhhhhhhhhhhhhhhhhhw
+whhhhhhhhhhhhhhhhhhw
+wwhhhhhhhhhhhhhhhhww
+ wwhhhhhhhhhhhhhhww
   wwwwwwwwwwwwwwww
 
 

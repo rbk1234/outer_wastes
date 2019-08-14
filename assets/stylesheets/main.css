@@ -59,10 +59,14 @@ a {
     left: 50%;
     transform: translate(-50%);
     z-index: 2; }
-    #main-content #background-overlay span {
+    #main-content #background-overlay span.overlay-text {
       position: absolute;
       display: none;
-      cursor: pointer; }
+      cursor: pointer;
+      line-height: 1.1;
+      background: #08141e; }
+      #main-content #background-overlay span.overlay-text.bordered {
+        border: 5px solid #08141e; }
   #main-content #popup-container {
     position: fixed;
     top: 0;
