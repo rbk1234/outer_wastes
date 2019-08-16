@@ -75,38 +75,38 @@ a {
     z-index: 4; }
     #main-content #popup-container .ui-popup {
       position: absolute; }
-    #main-content #popup-container #team-selector {
+    #main-content #popup-container #party-selector {
       width: 80%;
       left: 50%;
       transform: translate(-50%);
       top: 5rem; }
-      #main-content #popup-container #team-selector .header {
+      #main-content #popup-container #party-selector .header {
         padding: 0.5rem; }
-      #main-content #popup-container #team-selector .team-table td {
+      #main-content #popup-container #party-selector .party-table td {
         text-align: center;
         vertical-align: top;
         padding-left: 2rem;
         padding-right: 2rem; }
-        #main-content #popup-container #team-selector .team-table td .slot-title {
+        #main-content #popup-container #party-selector .party-table td .slot-title {
           font-size: 0.75rem; }
-        #main-content #popup-container #team-selector .team-table td .static-unit-name {
+        #main-content #popup-container #party-selector .party-table td .static-unit-name {
           height: 1.75rem; }
-        #main-content #popup-container #team-selector .team-table td .party-slot {
+        #main-content #popup-container #party-selector .party-table td .party-slot {
           text-align: left;
           height: 10rem;
           background: #08141e;
           border: 1px solid #c3a38a;
           position: relative;
           margin-bottom: 0.5rem; }
-          #main-content #popup-container #team-selector .team-table td .party-slot .ascii-content {
+          #main-content #popup-container #party-selector .party-table td .party-slot .ascii-content {
             position: absolute;
             overflow: visible;
             bottom: 0.5rem;
             line-height: 1.25; }
-        #main-content #popup-container #team-selector .team-table td .unit-stats {
+        #main-content #popup-container #party-selector .party-table td .unit-stats {
           margin-top: 0.5rem;
           text-align: left; }
-      #main-content #popup-container #team-selector .footer {
+      #main-content #popup-container #party-selector .footer {
         padding: 1rem; }
     #main-content #popup-container #building-popup {
       height: 60vh;
@@ -188,12 +188,12 @@ body.combat-ui #bottom-bar {
     background: #203c56;
     border: 1px solid #544e68; }
 
-#building-popup, #team-selector, #world-map {
+#building-popup, #party-selector, #world-map {
   border: 1px solid #f2d3ab;
   background: #20394f; }
-  #building-popup .header, #team-selector .header, #world-map .header {
+  #building-popup .header, #party-selector .header, #world-map .header {
     color: #f2d3ab; }
-  #building-popup .inner-content, #team-selector .inner-content, #world-map .inner-content {
+  #building-popup .inner-content, #party-selector .inner-content, #world-map .inner-content {
     background: #0f2a3f; }
 
 #background-art .green {

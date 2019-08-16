@@ -16,7 +16,7 @@
     Game.UnitEngine.init();
     Game.CombatUI.init();
     Game.TownUI.init();
-    Game.TeamBuilderUI.init();
+    Game.PartyUI.init();
     Game.WorldMapUI.init();
 
     Game.Saving.init();
@@ -24,7 +24,6 @@
 
     Game.Player.equipAbility(0, new Game.Abilities.Ability('holyLight'));
     Game.Player.equipAbility(1, new Game.Abilities.Ability('renew'));
-    //Game.TeamBuilderUI.addToRoster(Game.Player);
 
     Game.Clock.setInterval(
         'debug',

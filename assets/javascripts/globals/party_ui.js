@@ -1,14 +1,14 @@
-/* TeamBuilderUI is a Singleton */
+/* PartyUI is a Singleton */
 
 (function($) {
     'use strict';
 
-    var MAX_TEAM_SIZE = 5; // Note: Don't change this without updating UnitEngine too
-    var MAX_FOLLOWERS = MAX_TEAM_SIZE - 1;
+    var MAX_PARTY_SIZE = 5; // Note: Don't change this without updating UnitEngine too
+    var MAX_FOLLOWERS = MAX_PARTY_SIZE - 1;
 
-    var TeamBuilderUI = function() {};
+    var PartyUI = function() {};
 
-    TeamBuilderUI.prototype = {
+    PartyUI.prototype = {
         init: function() {
             var self = this;
 
@@ -16,11 +16,11 @@
             this._followers = Game.Util.createArray(MAX_FOLLOWERS, null);
 
             this.$popupContainer = $('#popup-container');
-            this.$teamSelector = $('#team-selector');
+            this.$partySelector = $('#party-selector');
 
             $('#toggle-party').off('click').on('click', function() {
                 //Game.TownUI.closeAllPopups();
-                self.toggleTeamSelector();
+                self.togglePartySelector();
             });
 
             this.refreshUI();
@@ -70,7 +70,7 @@
         refreshUI: function() {
             $('.party-unlocked').toggle(this._roster.length > 0);
 
-            this._setupTeamSelector();
+            this._setupPartySelector();
         },
 
         addToRoster: function(unit) {
@@ -96,10 +96,10 @@
             return ids.indexOf(id);
         },
 
-        _setupTeamSelector: function() {
+        _setupPartySelector: function() {
             var self = this;
 
-            var $tr = this.$teamSelector.find('.team-table').find('tr');
+            var $tr = this.$partySelector.find('.party-table').find('tr');
             $tr.empty();
 
             var i, slot;
@@ -125,7 +125,7 @@
             i++;
 
             // create locked slots
-            for (i; i < MAX_TEAM_SIZE; i++) {
+            for (i; i < MAX_PARTY_SIZE; i++) {
                 slot = this._createPartySlot($tr, i);
                 Game.Util.paintImage(['   LOCKED', '', '', ''], slot.$image);
             }
@@ -133,7 +133,7 @@
 
         _createPartySlot: function($tr, i) {
             var $td = $('<td></td>', {
-                width: (100 / MAX_TEAM_SIZE) + '%'
+                width: (100 / MAX_PARTY_SIZE) + '%'
             }).prependTo($tr);
 
             this._appendTitle(i, $td);
@@ -203,16 +203,16 @@
             slot.$select = $select;
         },
 
-        currentTeam: function() {
+        currentParty: function() {
             // get rid of empty slots
-            var team = this._followers.filter(function(unit) {
+            var party = this._followers.filter(function(unit) {
                 return !!unit;
             });
 
             // append Player
-            team.push(Game.Player);
+            party.push(Game.Player);
 
-            return team;
+            return party;
         },
 
         _appendTitle: function(i, $td) {
@@ -222,7 +222,7 @@
                     class: 'slot-title text-right'
                 }).appendTo($td);
             }
-            else if(i === MAX_TEAM_SIZE - 1) {
+            else if(i === MAX_PARTY_SIZE - 1) {
                 $('<div></div>', {
                     html: 'Backline',
                     class: 'slot-title text-left'
@@ -255,8 +255,8 @@
             }
         },
 
-        toggleTeamSelector: function() {
-            this.$teamSelector.toggle();
+        togglePartySelector: function() {
+            this.$partySelector.toggle();
         },
 
         _equipSpecialAbility: function(unit) {
@@ -289,7 +289,7 @@
 
     };
 
-    Game.TeamBuilderUI = new TeamBuilderUI();
+    Game.PartyUI = new PartyUI();
 
 
 }(jQuery));

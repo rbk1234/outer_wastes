@@ -21,7 +21,7 @@
 
             // Save all classes
             data.resourceEngine = Game.ResourceEngine.saveData();
-            data.teamBuilder = Game.TeamBuilderUI.saveData();
+            data.party = Game.PartyUI.saveData();
             // todo all the other classes
 
             // Bundle and save to localStorage
@@ -40,7 +40,7 @@
 
             // Load all classes
             Game.ResourceEngine.loadData(data.resourceEngine);
-            Game.TeamBuilderUI.loadData(data.teamBuilder);
+            Game.PartyUI.loadData(data.party);
             // todo all the other classes
 
             // Success message

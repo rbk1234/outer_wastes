@@ -61,7 +61,7 @@
             Game.CurrentZone = new Game.Zones.Zone(zone, {});
 
             // load player team
-            Game.TeamBuilderUI.currentTeam().forEach(function(unit) {
+            Game.PartyUI.currentParty().forEach(function(unit) {
                 Game.UnitEngine.addUnit(unit);
             });
             Game.CombatUI.loadTeam(Game.Constants.teamIds.player);

@@ -173,7 +173,7 @@ $bottom-bar-height: 10rem;
       position: absolute;
     }
 
-    #team-selector {
+    #party-selector {
       //height: 80vh;
       width: 80%;
       left: 50%;
@@ -185,7 +185,7 @@ $bottom-bar-height: 10rem;
         padding: 0.5rem;
       }
 
-      .team-table {
+      .party-table {
         td {
           text-align: center;
           vertical-align: top;
@@ -353,7 +353,7 @@ body.combat-ui {
   }
 
 }
-#building-popup, #team-selector, #world-map {
+#building-popup, #party-selector, #world-map {
   border: 1px solid $gold;
   background: $nyx8-blue;
 
