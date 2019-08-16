@@ -73,11 +73,7 @@
             }
             this._teams[unit.teamId].push(unit);
 
-            if (unit.id === Game.Player.id) {
-                Game.Player.addMana(Game.Player.maxMana());
-            }
-            // todo remove debuffs / set health full?
-            unit.leaveCombat();
+            unit.reset();
         },
 
         clearTeam: function(teamId) {

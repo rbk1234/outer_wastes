@@ -37,8 +37,10 @@
   <div class="restricted-width">
 
     <div class="grid-x">
-      <div class="cell small-4 ">
-        |<a id="toggle-party">Party</a>|<a id="open-spellbook">Spellbook</a>|<a id="open-bags">Bag</a>|
+      <div class="cell small-4" style="display:flex;">
+        <span class="party-unlocked" hidden><a id="toggle-party">Party</a></span>
+        <span class="spellbook-unlocked" hidden>|<a id="toggle-spellbook">Spellbook</a></span>
+        <span class="bags-unlocked" hidden>|<a id="toggle-bags">Bag</a></span>
       </div>
 
       <div class="cell small-4 text-center">
@@ -52,9 +54,7 @@
         <!--Memory: <span id="memory"></span>-->
       <!--</div>-->
       <div class="cell small-4 text-right">
-        <span id="gold-value">0</span> gold
-
-        |<a>Settings</a>|
+        <span id="gold-value">0</span> gold |<a id="toggle-settings">Settings</a>
       </div>
     </div>
   </div>
@@ -148,7 +148,7 @@
         <table class="no-rows no-spacing">
           <tbody>
           <tr>
-            <td><h6 class="no-bottom-margin">Your Party</h6></td>
+            <td><h6 class="no-bottom-margin">Assemble Your Party</h6></td>
             <td class="nostretch"><a class="fa fa-fw fa-times close-popup"></a></td>
             <!--<td class="nostretch"><a class="ui-popup" style="font-weight:bold;">×</a></td>-->
           </tr>

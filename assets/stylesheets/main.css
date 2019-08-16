@@ -89,6 +89,8 @@ a {
         padding-right: 2rem; }
         #main-content #popup-container #team-selector .team-table td .slot-title {
           font-size: 0.75rem; }
+        #main-content #popup-container #team-selector .team-table td .static-unit-name {
+          height: 1.75rem; }
         #main-content #popup-container #team-selector .team-table td .party-slot {
           text-align: left;
           height: 10rem;

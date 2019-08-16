@@ -6,7 +6,7 @@
 
     var LOCAL_STORAGE_KEY = 'save';
     var CLOCK_KEY = 'Saving';
-    var AUTO_SAVE_MINUTES = 1;
+    var AUTO_SAVE_INTERVAL = 0.1; // in minutes
 
     var Saving = function() {};
 
@@ -21,6 +21,7 @@
 
             // Save all classes
             data.resourceEngine = Game.ResourceEngine.saveData();
+            data.teamBuilder = Game.TeamBuilderUI.saveData();
             // todo all the other classes
 
             // Bundle and save to localStorage
@@ -39,6 +40,7 @@
 
             // Load all classes
             Game.ResourceEngine.loadData(data.resourceEngine);
+            Game.TeamBuilderUI.loadData(data.teamBuilder);
             // todo all the other classes
 
             // Success message
@@ -54,7 +56,7 @@
 
             Game.Clock.setInterval(CLOCK_KEY, function(iterations, period) {
                 self.save();
-            }, 10.0 * AUTO_SAVE_MINUTES, true);
+            }, 60.0 * AUTO_SAVE_INTERVAL, true);
         },
 
         turnOffAutoSave: function() {

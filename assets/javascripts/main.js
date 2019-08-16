@@ -4,6 +4,7 @@
 
     $(document).foundation();
 
+    // Create Player early due to references to Game.Player.id
     Game.Player = new Game.Units.Unit('cleric', {teamId: Game.Constants.teamIds.player});
 
     Game.Settings.init();
@@ -23,7 +24,7 @@
 
     Game.Player.equipAbility(0, new Game.Abilities.Ability('holyLight'));
     Game.Player.equipAbility(1, new Game.Abilities.Ability('renew'));
-
+    //Game.TeamBuilderUI.addToRoster(Game.Player);
 
     Game.Clock.setInterval(
         'debug',

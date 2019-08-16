@@ -37,26 +37,30 @@
             $.extend(true, this.animations, Game.Units.Animations[dbKey]);
             Game.Util.initStats(this);
 
-            // init internals
-            this.health = this.maxHealth.value();
-            //this.mana = this.maxMana.value();
-            this.mana = 0;
-
-            this._attackTimer = 0;
-            //this._attackTimer = Math.random() * 0.5; // remaining time until next attack. Initialize with random wait
-            this._castAnimProgress = 0;
-
             this._effects = {};
-
-            this._castProgress = null;
             this._abilities = {};
-            this._equippedAbilityIds = Game.Util.createArray(Game.Constants.numPlayerAbilities, null);
-
-            this._globalCooldown = null;
-
-            this._isDead = false;
+            //this._equippedAbilityIds = Game.Util.createArray(Game.Constants.numPlayerAbilities, null);
 
             this._initStartingAbilities();
+        },
+
+        // resurrects, sets health full, mana zero, removes effects, etc.
+        reset: function() {
+            this.health = this.maxHealth.value();
+            this.mana = (this.id === Game.Player.id ? this.maxMana() : 0);
+
+            //this._attackTimer = 0;
+            this._attackTimer = Math.random() * 0.5; // remaining time until next attack. Initialize with random wait
+
+            this._castProgress = null;
+            this._globalCooldown = null;
+
+            this.removeAllEffects();
+
+            this._globalCooldown = null;
+            this._isDead = false;
+
+            this.leaveCombat();
         },
 
         update: function(seconds) {
@@ -156,6 +160,14 @@
                 delete this._effects[effect.id];
                 Game.CombatUI.removeEffect(this, effect);
             }
+        },
+
+        removeAllEffects: function() {
+            var self = this;
+
+            Game.Util.iterateObject(this._effects, function(effectId, effect) {
+                self.removeEffect(effect);
+            });
         },
 
         // if a caster already has casted an effect on this unit, return that effect
@@ -738,10 +750,7 @@
                 this._isDead = true;
                 this.cancelCast();
 
-                // remove all effects
-                Game.Util.iterateObject(this._effects, function(id, effect) {
-                    self.removeEffect(effect);
-                });
+                this.removeAllEffects();
 
                 Game.CombatUI.unitDied(this);
             }

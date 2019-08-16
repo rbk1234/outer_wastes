@@ -3,14 +3,8 @@
 (function($) {
     'use strict';
 
-    //var UPDATES_PER_SECOND = 1;
-    //var CLOCK_KEY = 'TeamBuilderUI';
-
-    var MAX_TEAM_SIZE = 5; // note: don't change this without updating UnitEngine too
-
-
-    var UNLOCKED_CLASSES = ['swashbuckler', 'brewmaster', 'cleric', 'smuggler', 'crusader'];
-    var AVAILABLE_SLOTS = 5;
+    var MAX_TEAM_SIZE = 5; // Note: Don't change this without updating UnitEngine too
+    var MAX_FOLLOWERS = MAX_TEAM_SIZE - 1;
 
     var TeamBuilderUI = function() {};
 
@@ -18,80 +12,207 @@
         init: function() {
             var self = this;
 
+            this._roster = []; // all units available to the player
+            this._followers = Game.Util.createArray(MAX_FOLLOWERS, null);
+
             this.$popupContainer = $('#popup-container');
             this.$teamSelector = $('#team-selector');
-
-            this.setupTeamSelector();
-
-            //Game.Timers.addTimerSupport(this);
-            //
-            // Start clock
-            //Game.Clock.setInterval(CLOCK_KEY, function(iterations, period) {
-            //    // Only draw once (no matter how many iterations)
-            //    self._refreshUI();
-            //
-            //    self.updateTimers(iterations * period);
-            //}, 1.0 / UPDATES_PER_SECOND);
 
             $('#toggle-party').off('click').on('click', function() {
                 //Game.TownUI.closeAllPopups();
                 self.toggleTeamSelector();
-            })
+            });
+
+            this.refreshUI();
         },
 
-        // TODO Call this after new classes unlocked?
-        setupTeamSelector: function() {
+        _numFollowerSlots: function() {
+            return Math.min(this._roster.length, MAX_FOLLOWERS);
+        },
+
+        saveData: function() {
             var self = this;
 
-            this.unitFrames = [];
-            this.units = [];
+            var state = {
+                roster: this._roster.map(function(unit) {
+                    return {
+                        dbKey: unit.dbKey,
+                        followerIndex: self._followerIndex(unit.id)
+                    };
+                })
+            };
+
+            return state;
+        },
+
+        loadData: function(data) {
+            var self = this;
+
+            if (data === undefined) {
+                return;
+            }
+            //console.log('loadData: ',data);
+
+            data.roster.forEach(function(rosterData) {
+                var unit = new Game.Units.Unit(rosterData.dbKey, {teamId: Game.Constants.teamIds.player});
+
+                if (rosterData.followerIndex != -1) {
+                    self._followers[rosterData.followerIndex] = unit;
+                }
+
+                self.addToRoster(unit);
+            });
+
+            this.refreshUI();
+        },
+
+        // refresh all UI according to current state
+        refreshUI: function() {
+            $('.party-unlocked').toggle(this._roster.length > 0);
+
+            this._setupTeamSelector();
+        },
+
+        addToRoster: function(unit) {
+            //var unit = new Game.Units.Unit(unitDbKey, {teamId: Game.Constants.teamIds.player});
+            this._roster.push(unit);
+
+            this._equipSpecialAbility(unit);
+
+            this.refreshUI();
+        },
+
+        _rosterUnit: function(id) {
+            var matchingUnit = this._roster.filter(function(unit) {
+                return unit.id === id;
+            })[0];
+
+            return matchingUnit || null;
+        },
+        _followerIndex: function(id) {
+            var ids = this._followers.map(function(unit) {
+                return unit ? unit.id : null;
+            });
+            return ids.indexOf(id);
+        },
+
+        _setupTeamSelector: function() {
+            var self = this;
 
             var $tr = this.$teamSelector.find('.team-table').find('tr');
             $tr.empty();
 
+            var i, slot;
+            this._partySlots = [];
 
-            for (var i = 0; i < MAX_TEAM_SIZE; i++) {
-                var $td = $('<td></td>', {
-                    width: (100 / MAX_TEAM_SIZE) + '%'
-                }).prependTo($tr);
+            // create follower slots
+            for (i = 0; i < this._numFollowerSlots(); i++) {
+                slot = this._createPartySlot($tr, i);
+                self._setupFollowerSelector(i);
+            }
 
-                this._appendTitle(i, $td);
-                var $partySlot = $('<div></div>', {
-                    class: 'party-slot'
-                }).appendTo($td);
-                var $image = $('<div></div>', {
-                    class: 'ascii-content'
-                }).appendTo($partySlot);
+            // create player slot
+            slot = this._createPartySlot($tr, i);
+            $('<div></div>', {
+                class: 'static-unit-name',
+                html: Game.Player.name
+            }).appendTo(slot.$td);
+            var $stats = $('<div></div>', {
+                class: 'unit-stats'
+            }).appendTo(slot.$td);
+            Game.Util.paintImage(Game.Player.animations.idle.image, slot.$image, Game.Player.imageOffset());
+            self._displayUnitStats(Game.Player, $stats);
+            i++;
 
-                if (i < AVAILABLE_SLOTS) {
-                    var $select = $('<select></select>', {
-                        class: 'unit-select'
-                    }).appendTo($td);
+            // create locked slots
+            for (i; i < MAX_TEAM_SIZE; i++) {
+                slot = this._createPartySlot($tr, i);
+                Game.Util.paintImage(['   LOCKED', '', '', ''], slot.$image);
+            }
+        },
 
-                    UNLOCKED_CLASSES.forEach(function(klass) {
-                        var dbRecord = Game.Units.Database[klass];
-                        $('<option></option>', {
-                            html: dbRecord.name,
-                            value: klass
-                        }).appendTo($select);
-                    });
+        _createPartySlot: function($tr, i) {
+            var $td = $('<td></td>', {
+                width: (100 / MAX_TEAM_SIZE) + '%'
+            }).prependTo($tr);
 
-                    var $stats = $('<div></div>', {
-                        class: 'unit-stats'
-                    }).appendTo($td);
+            this._appendTitle(i, $td);
+            var $partySlot = $('<div></div>', {
+                class: 'party-slot'
+            }).appendTo($td);
+            var $image = $('<div></div>', {
+                class: 'ascii-content'
+            }).appendTo($partySlot);
 
-                    this.unitFrames.push({
-                        $image: $image,
-                        $select: $select,
-                        $stats: $stats
-                    });
+            this._partySlots[i] = {
+                $td: $td,
+                $partySlot: $partySlot,
+                $image: $image
+            };
 
-                    this._setupUnitSelect(i);
+            return this._partySlots[i];
+        },
+
+        _setupFollowerSelector: function(i) {
+            var self = this;
+
+            var slot = this._partySlots[i];
+
+            var $select = $('<select></select>', {
+                class: 'unit-select'
+            }).appendTo(slot.$td);
+
+            $('<option></option>', {
+                html: 'None',
+                value: ''
+            }).appendTo($select);
+
+            // todo sort by name
+            this._roster.forEach(function(unit) {
+                $('<option></option>', {
+                    html: unit.name,
+                    value: unit.id
+                }).appendTo($select);
+            });
+
+            var $stats = $('<div></div>', {
+                class: 'unit-stats'
+            }).appendTo(slot.$td);
+
+            $select.off('change').on('change', function() {
+                var unit = self._rosterUnit(parseInt($(this).val()));
+
+                if (unit) {
+                    // if unit was in a different slot, empty that slot
+                    var oldIndex = self._followerIndex(unit.id);
+                    if (oldIndex !== -1 && oldIndex !== i) {
+                        self._partySlots[oldIndex].$select.val('').trigger('change');
+                    }
+
+                    Game.Util.paintImage(unit.animations.idle.image, slot.$image, unit.imageOffset());
+                    self._displayUnitStats(unit, $stats);
                 }
                 else {
-                    Game.Util.paintImage(['   LOCKED', '', '', ''], $image);
+                    Game.Util.paintImage(['    ', '', '', ''], slot.$image);
+                    self._displayUnitStats(null, $stats);
                 }
-            }
+
+                self._followers[i] = unit;
+            }).val(this._followers[i] ? this._followers[i].id : '').trigger('change'); // initial value
+
+            slot.$select = $select;
+        },
+
+        currentTeam: function() {
+            // get rid of empty slots
+            var team = this._followers.filter(function(unit) {
+                return !!unit;
+            });
+
+            // append Player
+            team.push(Game.Player);
+
+            return team;
         },
 
         _appendTitle: function(i, $td) {
@@ -112,92 +233,31 @@
                     html: '&nbsp;',
                     class: 'slot-title'
                 }).appendTo($td);
-
             }
-        },
-
-        _setupUnitSelect: function(i) {
-            var self = this;
-            var frame = this.unitFrames[i];
-
-            if (i === AVAILABLE_SLOTS - 1) {
-                self.units[i] = Game.Player;
-                frame.$select.prop('disabled', true).val(Game.Player.dbKey);
-                Game.Util.paintImage(Game.Player.animations.idle.image, frame.$image, Game.Player.imageOffset());
-                self._displayUnitStats(Game.Player, frame.$stats);
-                return;
-            }
-
-            frame.$select.off('change').on('change', function() {
-                var unit = new Game.Units.Unit($(this).val(), {teamId: Game.Constants.teamIds.player});
-                self.units[i] = unit;
-
-                Game.Util.paintImage(unit.animations.idle.image, frame.$image, unit.imageOffset());
-                self._displayUnitStats(unit, frame.$stats);
-
-                if (unit.id !== Game.Player.id) {
-                    self._equipSpecialAbility(unit);
-                }
-            }).trigger('change');
         },
 
         _displayUnitStats: function(unit, $stats) {
             $stats.empty();
-            $('<div></div>', {
-                html: 'HP: ' + unit.maxHealth.value()
-            }).appendTo($stats);
-            $('<div></div>', {
-                html: 'ATK: ' + unit.attackDamage.value()
-            }).appendTo($stats);
-            $('<div></div>', {
-                html: 'SPD: ' + unit.attackSpeed.value()
-            }).appendTo($stats);
-            $('<div></div>', {
-                html: 'DPS: ' + (unit.attackDamage.value() * unit.attackSpeed.value())
-            }).appendTo($stats);
+
+            if (unit) {
+                $('<div></div>', {
+                    html: 'HP: ' + unit.maxHealth.value()
+                }).appendTo($stats);
+                $('<div></div>', {
+                    html: 'ATK: ' + unit.attackDamage.value()
+                }).appendTo($stats);
+                $('<div></div>', {
+                    html: 'SPD: ' + unit.attackSpeed.value()
+                }).appendTo($stats);
+                $('<div></div>', {
+                    html: 'DPS: ' + (unit.attackDamage.value() * unit.attackSpeed.value())
+                }).appendTo($stats);
+            }
         },
 
         toggleTeamSelector: function() {
             this.$teamSelector.toggle();
         },
-        openTeamSelector: function() {
-            this.$teamSelector.show();
-        },
-        closeTeamSelector: function() {
-            this.$teamSelector.hide();
-        },
-        currentTeam: function() {
-            return this.units;
-        },
-
-        //_startQuest: function() {
-        //    var self = this;
-        //
-        //    this.closeTeamSelector();
-        //    this.units.forEach(function(unit) {
-        //        if (unit.id !== Game.Player.id) {
-        //            self._equipSpecialAbility(unit);
-        //        }
-        //    });
-        //    Game.Player.addMana(Game.Player.maxMana());
-        //
-        //
-        //    // load engine/ui
-        //    Game.UnitEngine.loadEngine();
-        //    Game.CombatUI.loadUI();
-        //
-        //    // load zone
-        //    Game.CurrentZone = new Game.Zones.Zone('woods', {});
-        //
-        //    // load player team
-        //    this.units.forEach(function(unit) {
-        //        Game.UnitEngine.addUnit(unit);
-        //    });
-        //    Game.CombatUI.loadTeam(Game.Constants.teamIds.player);
-        //
-        //    // load first enemy team
-        //    Game.CurrentZone.loadNextEncounter();
-        //},
 
         _equipSpecialAbility: function(unit) {
             // todo let player pick ability... for now just assigns it
