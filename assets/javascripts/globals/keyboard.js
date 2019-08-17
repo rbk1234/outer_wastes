@@ -44,6 +44,7 @@
 
         // keyCodes can be an array or a single keyCode
         // each keyCode can be an int (representing the keyCode), or an object if modifiers are needed (e.g. {keyCode: 9, shiftKey: true})
+        // javascript keycodes can be found here: https://keycode.info/
         registerKey: function(keyCodes, onKeydown, onKeyup) {
             var self = this;
             if (!Array.isArray(keyCodes)) {

@@ -860,7 +860,7 @@
 
             this._$retreatButton = this._$abilityButtonTemplate.clone();
             this._$retreatButton.removeAttr('id');
-            this._$retreatButton.find('.hotkey').html(''); // todo hotkey?
+            this._$retreatButton.find('.hotkey').html('R'); // todo constant
 
             this._$retreatButton.appendTo($('#special-buttons'));
 
@@ -868,11 +868,18 @@
             this._$retreatButton.addClass('flying-flag');
             this._$retreatButton.addClass('purple-opal'); // todo dark background
 
-            this._$retreatButton.off('click').on('click', function(evt) {
+            function retreat() {
                 if (Game.UnitEngine.canRetreat()) {
                     Game.TownUI.loadTown();
                 }
+            }
+            this._$retreatButton.off('click').on('click', function(evt) {
+                retreat();
             });
+            Game.Keyboard.registerKey(82, function(evt) { // 82 => R
+                retreat();
+            });
+
             this._$retreatButton.off('mouseenter').on('mouseenter', function(evt) {
                 self._showMiscTooltip('Retreat', "Return to the village and keep what you've found. Cannot retreat in combat.");
             });
