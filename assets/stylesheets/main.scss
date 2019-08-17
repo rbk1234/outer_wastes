@@ -171,15 +171,24 @@ $bottom-bar-height: 10rem;
 
     .ui-popup {
       position: absolute;
-    }
-
-    #party-selector {
-      //height: 80vh;
-      width: 80%;
       left: 50%;
       transform: translate(-50%);
 
+      width: 40%;
       top: 5rem;
+      padding: 0.5rem;
+
+      &.left-aligned {
+        left: 1rem;
+      }
+      &.right-aligned {
+        right: 1rem;
+      }
+
+    }
+
+    #party-selector {
+      width: 80%;
 
       .header {
         padding: 0.5rem;
@@ -231,15 +240,7 @@ $bottom-bar-height: 10rem;
     #building-popup {
       height: 60vh;
       width: 40%;
-      padding: 0.5rem;
-      top: 5rem;
 
-      &.left-aligned {
-        left: 1rem;
-      }
-      &.right-aligned {
-        right: 1rem;
-      }
 
       .header {
         height: 10%;
@@ -259,15 +260,19 @@ $bottom-bar-height: 10rem;
       height: 80vh;
       width: 80%; // note: this makes a width of 94 characters for map
 
-      top: 5rem;
-      left: 50%;
-      transform: translate(-50%);
-
       .ascii-content {
         overflow-y: scroll;
         height: calc(100% - 1.5rem);
         overflow-x: hidden;
         line-height: 1;
+      }
+    }
+
+    #return-to-town {
+      text-align: center;
+
+      .inner-content {
+        padding: 1rem;
       }
     }
   }
@@ -353,7 +358,7 @@ body.combat-ui {
   }
 
 }
-#building-popup, #party-selector, #world-map {
+.ui-popup {
   border: 1px solid $gold;
   background: $nyx8-blue;
 

@@ -138,7 +138,7 @@ Game.namespace('UI').Doodads = {
         mouseover: {
             //label: '  The  \n Woods',
             //offset: [10,3],
-            label: 'Venture Out',
+            label: 'Village Gate',
             offset: [8,-1],
             handler: 'village.gate',
             klass: 'gate'

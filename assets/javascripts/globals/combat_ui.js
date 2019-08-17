@@ -639,6 +639,8 @@
         encounterFailed: function() {
             //$('.game-over').show();
             this.logMessage('Your party has perished...', 'yellow'); // todo "You keep your loot"?
+
+            Game.TownUI.toggleReturnToTown(true);
         },
 
         encounterStarted: function() {

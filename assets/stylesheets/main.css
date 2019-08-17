@@ -74,12 +74,18 @@ a {
     transform: translate(-50%);
     z-index: 4; }
     #main-content #popup-container .ui-popup {
-      position: absolute; }
-    #main-content #popup-container #party-selector {
-      width: 80%;
+      position: absolute;
       left: 50%;
       transform: translate(-50%);
-      top: 5rem; }
+      width: 40%;
+      top: 5rem;
+      padding: 0.5rem; }
+      #main-content #popup-container .ui-popup.left-aligned {
+        left: 1rem; }
+      #main-content #popup-container .ui-popup.right-aligned {
+        right: 1rem; }
+    #main-content #popup-container #party-selector {
+      width: 80%; }
       #main-content #popup-container #party-selector .header {
         padding: 0.5rem; }
       #main-content #popup-container #party-selector .party-table td {
@@ -110,13 +116,7 @@ a {
         padding: 1rem; }
     #main-content #popup-container #building-popup {
       height: 60vh;
-      width: 40%;
-      padding: 0.5rem;
-      top: 5rem; }
-      #main-content #popup-container #building-popup.left-aligned {
-        left: 1rem; }
-      #main-content #popup-container #building-popup.right-aligned {
-        right: 1rem; }
+      width: 40%; }
       #main-content #popup-container #building-popup .header {
         height: 10%; }
       #main-content #popup-container #building-popup .inner-content {
@@ -126,15 +126,16 @@ a {
         height: 20%; }
     #main-content #popup-container #world-map {
       height: 80vh;
-      width: 80%;
-      top: 5rem;
-      left: 50%;
-      transform: translate(-50%); }
+      width: 80%; }
       #main-content #popup-container #world-map .ascii-content {
         overflow-y: scroll;
         height: calc(100% - 1.5rem);
         overflow-x: hidden;
         line-height: 1; }
+    #main-content #popup-container #return-to-town {
+      text-align: center; }
+      #main-content #popup-container #return-to-town .inner-content {
+        padding: 1rem; }
 
 #bottom-bar {
   position: fixed;
@@ -188,12 +189,12 @@ body.combat-ui #bottom-bar {
     background: #203c56;
     border: 1px solid #544e68; }
 
-#building-popup, #party-selector, #world-map {
+.ui-popup {
   border: 1px solid #f2d3ab;
   background: #20394f; }
-  #building-popup .header, #party-selector .header, #world-map .header {
+  .ui-popup .header {
     color: #f2d3ab; }
-  #building-popup .inner-content, #party-selector .inner-content, #world-map .inner-content {
+  .ui-popup .inner-content {
     background: #0f2a3f; }
 
 #background-art .green {

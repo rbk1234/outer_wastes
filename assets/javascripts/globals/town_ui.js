@@ -16,6 +16,9 @@
             this.$gold = $('#gold-value');
             this.$popupContainer = $('#popup-container');
             this.$buildingPopup = $('#building-popup');
+            this.$returnToTown = $('#return-to-town');
+
+            this._setupReturnToTown();
 
             Game.Timers.addTimerSupport(this);
 
@@ -107,6 +110,19 @@
             this.$buildingPopup.find('.item-list').append($item);
         },
 
+        toggleReturnToTown: function(show) {
+            this.$returnToTown.toggle(show);
+        },
+
+        _setupReturnToTown: function() {
+            var self = this;
+
+            this.$returnToTown.find('.go-to-village').off('click').on('click', function(evt) {
+                evt.preventDefault();
+                self.toggleReturnToTown(false);
+                self.loadTown();
+            })
+        }
 
     };
 
