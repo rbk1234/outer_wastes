@@ -383,7 +383,51 @@ Game.namespace('UI').Doodads = {
             ' |     |    |',
             ' | ┌─┐ | [] |',
             ' | │·│ |    |'
-        ]
+        ],
+        fills: [
+            '        yy',
+            '   yyyyyyyy',
+            '  ybbbyyyyyy',
+            ' ybbbbbyyyyyy',
+            'ybbbbbbbyyyyyy',
+            ' wwwwwwwwwwww',
+            ' wwXXXwwwddww',
+            ' wwwwwwwwddww'
+        ],
+        mouseover: {
+            label: "Locked House",
+            offset: [2,-1],
+            handler: 'village.locked2',
+            klass: 'locked2'
+        }
+    },
+    swordsmanHouse: {
+        image: [
+            '        __',
+            '   _____││_',
+            '  / | \\ \'\' \\',
+            ' /─┬┴┬─\\  \\ \\',
+            '/__|_|__\\____\\',
+            ' |     |    |',
+            ' | ┌─┐ | [] |',
+            ' | │·│ |    |'
+        ],
+        fills: [
+            '        yy',
+            '   yyyyyyyy',
+            '  ybbbyyyyyy',
+            ' ybbbbbyyyyyy',
+            'ybbbbbbbyyyyyy',
+            ' wwwwwwwwwwww',
+            ' wwXXXwwwddww',
+            ' wwwwwwwwddww'
+        ],
+        mouseover: {
+            label: "Swordsman's\n   House",
+            offset: [2,-1],
+            handler: 'village.swordsman',
+            klass: 'swordsman'
+        }
     },
     leftHouse1: {
         image: [
@@ -404,7 +448,38 @@ Game.namespace('UI').Doodads = {
             ' xxxxxxxxxxxx',
             ' xxxxxxxxxxxx'
         ],
-        colors: {}
+        mouseover: {
+            label: "Villager House",
+            offset: [0,-1],
+            handler: 'village.villager1',
+            klass: 'villager1'
+        }
+    },
+    leftHouse2: {
+        image: [
+            '   ________',
+            '  /    / | \\',
+            ' / /  /─┬┴┬─\\',
+            '/____/__|_|__\\',
+            ' |    |     |',
+            ' | ┌┐ | [X] |',
+            ' | ││ |     |',
+        ],
+        fills: [
+            '   xxxxxxxx',
+            '  xxxxxxxxxx',
+            ' xxxxxxxxxxxx',
+            'xxxxxxxxxxxxxx',
+            ' xxxxxxxxxxxx',
+            ' xxxxxxxxxxxx',
+            ' xxxxxxxxxxxx'
+        ],
+        mouseover: {
+            label: "Locked House",
+            offset: [0,-1],
+            handler: 'village.locked1',
+            klass: 'locked1'
+        }
     },
     road: {
         image: [

@@ -167,7 +167,7 @@
 
         town: {
             doodads: { S: 'sky1', g: 'gate',w: 'wall', t: 'tavern', c: 'chapel', b: 'blacksmith', a: 'alchemyLab',
-                L: 'huntersLodge', h: 'rightHouse1', j: 'rightHouse2', k: 'rightHouse3', l: 'leftHouse1', r: 'road',
+                L: 'huntersLodge', h: 'rightHouse1', j: 'rightHouse2', k: 'rightHouse3', s: 'swordsmanHouse', l: 'leftHouse1', v: 'leftHouse2', r: 'road',
                 T: 'tree', f: 'farTree', F: 'farTree2'  },
             layout: [
                 //'     X                                                                                                                      X',
@@ -206,13 +206,13 @@
                 '                                                                                                                             ',
                 '                                                                                                    c                        ',
                 '                                                                                                                             ',
-                '                                                                                  k                              T           ',
+                '                                                                                  s                              T           ',
                 '                                                                                                                             ',
                 '                                                                                                                             ',
                 '  T                                                                                                                          ',
                 '                               t                                                                                        T    ',
                 '                                                                                                                             ',
-                '           l                                                                                    j                            ',
+                '           v                                                                                    j                            ',
                 '                                                                                                                             ',
                 '                                                                                                                             ',
                 '                                                                                                                             ',

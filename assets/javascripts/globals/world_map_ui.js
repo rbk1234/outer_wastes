@@ -37,7 +37,7 @@
             Game.BackgroundUI.setZoneName('The World');
 
             Game.BackgroundUI.registerHandler('world.village', function() {
-                Game.TownUI.loadTown();
+                Game.TownUI.enterTown();
             });
             Game.BackgroundUI.registerHandler('world.woods', function() {
                 self._startQuest('woods');

@@ -180,9 +180,13 @@ $bottom-bar-height: 10rem;
 
       &.left-aligned {
         left: 1rem;
+        right: auto;
+        transform: none;
       }
       &.right-aligned {
         right: 1rem;
+        left: auto;
+        transform: none;
       }
 
     }
@@ -247,6 +251,7 @@ $bottom-bar-height: 10rem;
       }
 
       .inner-content {
+        padding: 0.5rem;
         overflow-y: scroll;
         height: 70%;
       }
@@ -1315,16 +1320,23 @@ body.combat-ui {
 }
 
 .inner-content {
+  .item:first-child {
+    padding: 0 0 0.5rem 0;
+  }
+  .item:not(:first-child) {
+    padding: 0.5rem 0;
+  }
   .item:not(:last-child) {
     border-bottom: 1px solid rgba(255,255,255,0.5);
+  }
+
+  .accept-quest {
+    margin-top: 1rem;
   }
 }
 .item {
   font-size:0.875rem;
   //border:1px solid #555;
-  margin:0 0.5rem;
-  padding:0.5rem 0;
-
 
   .item-icon {
     margin-right: 0.4rem;

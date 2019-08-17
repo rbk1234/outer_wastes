@@ -72,7 +72,12 @@
             if (keyData.ctrlKey) {
                 string += 'ctrl_';
             }
-            // todo alt?
+            if (keyData.altKey) {
+                string += 'alt_';
+            }
+            if (keyData.metaKey) {
+                string += 'meta_';
+            }
             return string + keyData.keyCode
         }
 

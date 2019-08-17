@@ -21,7 +21,9 @@
 
             // Save all classes
             data.resourceEngine = Game.ResourceEngine.saveData();
+            data.quests = Game.Quests.saveData();
             data.party = Game.PartyUI.saveData();
+            data.town = Game.TownUI.saveData();
             // todo all the other classes
 
             // Bundle and save to localStorage
@@ -40,7 +42,9 @@
 
             // Load all classes
             Game.ResourceEngine.loadData(data.resourceEngine);
+            Game.Quests.loadData(data.quests);
             Game.PartyUI.loadData(data.party);
+            Game.TownUI.loadData(data.town);
             // todo all the other classes
 
             // Success message

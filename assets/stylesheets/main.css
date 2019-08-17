@@ -81,9 +81,13 @@ a {
       top: 5rem;
       padding: 0.5rem; }
       #main-content #popup-container .ui-popup.left-aligned {
-        left: 1rem; }
+        left: 1rem;
+        right: auto;
+        transform: none; }
       #main-content #popup-container .ui-popup.right-aligned {
-        right: 1rem; }
+        right: 1rem;
+        left: auto;
+        transform: none; }
     #main-content #popup-container #party-selector {
       width: 80%; }
       #main-content #popup-container #party-selector .header {
@@ -120,6 +124,7 @@ a {
       #main-content #popup-container #building-popup .header {
         height: 10%; }
       #main-content #popup-container #building-popup .inner-content {
+        padding: 0.5rem;
         overflow-y: scroll;
         height: 70%; }
       #main-content #popup-container #building-popup .footer {
@@ -675,13 +680,17 @@ body.combat-ui #bottom-bar {
     color: black;
     font-size: 0.75rem; }
 
+.inner-content .item:first-child {
+  padding: 0 0 0.5rem 0; }
+.inner-content .item:not(:first-child) {
+  padding: 0.5rem 0; }
 .inner-content .item:not(:last-child) {
   border-bottom: 1px solid rgba(255, 255, 255, 0.5); }
+.inner-content .accept-quest {
+  margin-top: 1rem; }
 
 .item {
-  font-size: 0.875rem;
-  margin: 0 0.5rem;
-  padding: 0.5rem 0; }
+  font-size: 0.875rem; }
   .item .item-icon {
     margin-right: 0.4rem; }
   .item.unlearned {

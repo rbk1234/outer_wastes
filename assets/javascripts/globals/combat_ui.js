@@ -88,6 +88,8 @@
             this.clearCenterImage();
 
             this._startClock();
+
+            this._combatUILoaded = true;
         },
 
         closeUI: function() {
@@ -100,6 +102,8 @@
 
             // stop clock
             this._stopClock();
+
+            this._combatUILoaded = false;
         },
 
         _toggleBottomBar: function(show) {
@@ -869,8 +873,8 @@
             this._$retreatButton.addClass('purple-opal'); // todo dark background
 
             function retreat() {
-                if (Game.UnitEngine.canRetreat()) {
-                    Game.TownUI.loadTown();
+                if (self._combatUILoaded && Game.UnitEngine.canRetreat()) {
+                    Game.TownUI.enterTown();
                 }
             }
             this._$retreatButton.off('click').on('click', function(evt) {

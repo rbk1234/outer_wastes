@@ -75,6 +75,11 @@
 
         addToRoster: function(unit) {
             //var unit = new Game.Units.Unit(unitDbKey, {teamId: Game.Constants.teamIds.player});
+            if (this._findRosterByKey(unit.dbKey)) {
+                console.error('Unit "', unit.dbKey, '" is already part of the roster.');
+                return;
+            }
+
             this._roster.push(unit);
 
             this._equipSpecialAbility(unit);
@@ -82,9 +87,16 @@
             this.refreshUI();
         },
 
-        _rosterUnit: function(id) {
+        _findRosterById: function(id) {
             var matchingUnit = this._roster.filter(function(unit) {
                 return unit.id === id;
+            })[0];
+
+            return matchingUnit || null;
+        },
+        _findRosterByKey: function(key) {
+            var matchingUnit = this._roster.filter(function(unit) {
+                return unit.dbKey === key;
             })[0];
 
             return matchingUnit || null;
@@ -117,11 +129,11 @@
                 class: 'static-unit-name',
                 html: Game.Player.name
             }).appendTo(slot.$td);
-            var $stats = $('<div></div>', {
+            slot.$stats = $('<div></div>', {
                 class: 'unit-stats'
             }).appendTo(slot.$td);
             Game.Util.paintImage(Game.Player.animations.idle.image, slot.$image, Game.Player.imageOffset());
-            self._displayUnitStats(Game.Player, $stats);
+            self._displayUnitStats(Game.Player, slot.$stats);
             i++;
 
             // create locked slots
@@ -158,49 +170,54 @@
 
             var slot = this._partySlots[i];
 
-            var $select = $('<select></select>', {
+            slot.$select = $('<select></select>', {
                 class: 'unit-select'
             }).appendTo(slot.$td);
 
             $('<option></option>', {
                 html: 'None',
                 value: ''
-            }).appendTo($select);
+            }).appendTo(slot.$select);
 
             // todo sort by name
             this._roster.forEach(function(unit) {
                 $('<option></option>', {
                     html: unit.name,
                     value: unit.id
-                }).appendTo($select);
+                }).appendTo(slot.$select);
             });
 
-            var $stats = $('<div></div>', {
+            slot.$stats = $('<div></div>', {
                 class: 'unit-stats'
             }).appendTo(slot.$td);
 
-            $select.off('change').on('change', function() {
-                var unit = self._rosterUnit(parseInt($(this).val()));
-
-                if (unit) {
-                    // if unit was in a different slot, empty that slot
-                    var oldIndex = self._followerIndex(unit.id);
-                    if (oldIndex !== -1 && oldIndex !== i) {
-                        self._partySlots[oldIndex].$select.val('').trigger('change');
-                    }
-
-                    Game.Util.paintImage(unit.animations.idle.image, slot.$image, unit.imageOffset());
-                    self._displayUnitStats(unit, $stats);
-                }
-                else {
-                    Game.Util.paintImage(['    ', '', '', ''], slot.$image);
-                    self._displayUnitStats(null, $stats);
-                }
-
-                self._followers[i] = unit;
+            slot.$select.off('change').on('change', function() {
+                self.assignUnitToSlot(parseInt($(this).val()), i);
             }).val(this._followers[i] ? this._followers[i].id : '').trigger('change'); // initial value
+        },
 
-            slot.$select = $select;
+        assignUnitToSlot: function(unitId, index) {
+            var unit = this._findRosterById(unitId);
+            var slot = this._partySlots[index];
+
+            if (unit) {
+                // if unit was in a different slot, empty that slot
+                var oldIndex = this._followerIndex(unit.id);
+                if (oldIndex !== -1 && oldIndex !== index) {
+                    this._partySlots[oldIndex].$select.val('').trigger('change');
+                }
+
+                slot.$select.val(unit.id);
+                Game.Util.paintImage(unit.animations.idle.image, slot.$image, unit.imageOffset());
+                this._displayUnitStats(unit, slot.$stats);
+            }
+            else {
+                slot.$select.val('');
+                Game.Util.paintImage(['    ', '', '', ''], slot.$image);
+                this._displayUnitStats(null, slot.$stats);
+            }
+
+            this._followers[index] = unit;
         },
 
         currentParty: function() {

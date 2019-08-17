@@ -18,6 +18,7 @@
     Game.TownUI.init();
     Game.PartyUI.init();
     Game.WorldMapUI.init();
+    Game.Quests.init();
 
     Game.Saving.init();
     Game.Saving.load();
@@ -43,20 +44,6 @@
 
     Game.Clock.run();
 
-    Game.TownUI.loadTown();
-
-    //Game.Keyboard.registerKey([81], function() { // q
-    //    loadQuest();
-    //});
-    //Game.Keyboard.registerKey([87], function() { // w
-    //    loadTown();
-    //});
-    //Game.Keyboard.registerKey([82], function() { // r
-    //
-    //});
-    //Game.Keyboard.registerKey([84], function() { // t
-    //
-    //});
-
+    Game.TownUI.enterTown();
 
 })(jQuery);

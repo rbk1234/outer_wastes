@@ -32,11 +32,27 @@
 
         },
 
+        saveData: function() {
+            //var self = this;
+
+            return {}; // todo
+        },
+
+        loadData: function(data) {
+            var self = this;
+
+            if (data === undefined) {
+                return;
+            }
+
+            // todo
+        },
+
         _refreshUI: function() {
             this.$gold.html(Game.ResourceEngine.getAmount('gold'));
         },
 
-        loadTown: function() {
+        enterTown: function() {
             var self = this;
 
             Game.UnitEngine.stopEngine();
@@ -60,6 +76,16 @@
             Game.BackgroundUI.registerHandler('village.blacksmith', function() {
                 self._openBlacksmith();
             });
+            Game.BackgroundUI.registerHandler('village.swordsman', function() {
+                self._openSwordsman();
+            });
+            Game.BackgroundUI.registerHandler('village.villager1', function() {
+                var villager1Text = "&quot;The darkness... it's lasted far too long.&quot;<br><br>" +
+                    "The villager gestures at the sky then begins to close his door.<br><br>" +
+                    "&quot;Best stay in the village.&quot;" +
+                    "";
+                self._openVillager('right-aligned', villager1Text);
+            });
 
         },
 
@@ -67,10 +93,61 @@
             this.$popupContainer.find('.ui-popup').hide();
         },
 
+        _openSwordsman: function() {
+            var self = this;
+
+            this.$buildingPopup.removeClass('right-aligned left-aligned').addClass('left-aligned');
+            this.$buildingPopup.find('.popup-title').html("Swordsman's House");
+
+            var $innerContent = this._clearInnerContent();
+            var text;
+
+            if (Game.Quests.canAcceptQuest('magicSword')) {
+                text = "&quot;I lost my magic sword inside of a cave north of here. I'll accompany you if you help me find it.&quot;";;
+                $innerContent.html(text);
+
+                var $div = $('<div></div>', {
+                    class: 'text-center'
+                }).appendTo($innerContent);
+
+                var $a = $('<a></a>', {
+                    html: 'Accept Quest',
+                    class: 'button accept-quest'
+                }).appendTo($div);
+
+                $a.off('click').on('click', function(evt) {
+                    evt.preventDefault();
+
+                    Game.Quests.acceptQuest('magicSword');
+                    self._openSwordsman();
+                });
+            }
+            else if (Game.Quests.isOnQuest('magicSword')) {
+                text = "&quot;We can leave the village through the northern gate.&quot;";;
+                $innerContent.html(text);
+            }
+            else if (Game.Quests.completedQuest('magicSword')) {
+
+            }
+
+            this.$buildingPopup.show();
+        },
+
+        _openVillager: function(alignment, text) {
+            this.$buildingPopup.removeClass('right-aligned left-aligned').addClass(alignment);
+            this.$buildingPopup.find('.popup-title').html("Villager House");
+
+            var $innerContent = this._clearInnerContent();
+            $innerContent.html(text);
+
+            this.$buildingPopup.show();
+        },
+
         _openBlacksmith: function() {
+            this.$buildingPopup.removeClass('right-aligned left-aligned').addClass('right-aligned');
             this.$buildingPopup.find('.popup-title').html('Blacksmith');
 
-            this._clearItemList();
+            this._clearInnerContent();
 
             this._listItem({
                 icon: 'sword-brandish',
@@ -92,8 +169,8 @@
             this.$buildingPopup.show();
         },
 
-        _clearItemList: function() {
-            this.$buildingPopup.find('.item-list').empty();
+        _clearInnerContent: function() {
+            return this.$buildingPopup.find('.item-list').empty();
         },
         _listItem: function(item) {
             var $template = $('#item-template').find('.item');
@@ -120,7 +197,7 @@
             this.$returnToTown.find('.go-to-village').off('click').on('click', function(evt) {
                 evt.preventDefault();
                 self.toggleReturnToTown(false);
-                self.loadTown();
+                self.enterTown();
             })
         }
 

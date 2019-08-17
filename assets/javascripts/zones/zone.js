@@ -31,7 +31,7 @@
         loadNextEncounter: function() {
             if (this._encountersCleared >= this.encounters.length) {
                 // todo loot
-                Game.TownUI.loadTown();
+                Game.TownUI.enterTown();
             }
             else {
                 Game.UnitEngine.loadEncounterByDbKey(this.encounters[this._encountersCleared]);
