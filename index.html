@@ -189,7 +189,8 @@
 
       </div>
       <div class="inner-content">
-        Your party has been killed.<br><br>
+        Your party has been killed.<br>
+        <small>Items gathered on this quest have been lost.</small><br><br>
         <a class="button go-to-village">Return to the village</a>
       </div>
     </div>
@@ -270,26 +271,43 @@
             <span class="hotkey"></span>
             <canvas class="cooldown-status"></canvas>
           </button>
-          <div id="ability-bar" class="bottom-section" style="text-align:center;"></div>
 
-          <div id="player-frame">
-            <div style="margin:0.5rem 1.5rem 0.5rem 1.5rem;">
-              <div id="player-mana-bar" class="bar mana-bar">
-                <div class="bar-layer background" style="width: 100%;"></div>
-                <div class="bar-layer mana" style="width: 100%;"></div>
-                <div class="bar-layer bar-text" style="width: 100%;"></div>
-              </div>
-            </div>
+          <table class="no-rows no-spacing">
+            <tbody>
+            <tr>
+              <td class="nostretch">
+                <div id="ability-bar"></div>
+              </td>
+              <td class="text-right">
+                <div id="special-buttons"></div>
+              </td>
+            </tr>
+            <tr>
+              <td class="nostretch">
+                <div id="player-frame">
+                  <div style="margin-bottom:0.5rem;">
+                    <div id="player-mana-bar" class="bar mana-bar">
+                      <div class="bar-layer background" style="width: 100%;"></div>
+                      <div class="bar-layer mana" style="width: 100%;"></div>
+                      <div class="bar-layer bar-text" style="width: 100%;"></div>
+                    </div>
+                  </div>
 
-            <div style="margin:0.5rem 1.5rem 0.5rem 1.5rem;">
-              <div id="player-cast-bar" class="bar cast-bar" style="opacity: 0;">
-                <div class="bar-layer background" style="width: 100%;"></div>
-                <div class="bar-layer cast-progress" style="width: 100%;"></div>
-                <div class="bar-layer bar-text" style="width: 100%;"></div>
-              </div>
-            </div>
+                  <div style="margin-bottom:0.5rem;">
+                    <div id="player-cast-bar" class="bar cast-bar" style="opacity: 0;">
+                      <div class="bar-layer background" style="width: 100%;"></div>
+                      <div class="bar-layer cast-progress" style="width: 100%;"></div>
+                      <div class="bar-layer bar-text" style="width: 100%;"></div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td class="text-right"></td>
+            </tr>
+            </tbody>
+          </table>
 
-          </div>
+
         </div>
       </div>
       <div class="cell small-6">
@@ -324,6 +342,18 @@
       </table>
     </div>
 
+    <div id="misc-tooltip" class="ability-tooltip" hidden>
+      <table class="no-rows no-spacing">
+        <tbody>
+        <tr>
+          <td colspan="2" class="name"></td>
+        </tr>
+        <tr>
+          <td colspan="2" class="description"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
 
 
   </div>

@@ -368,7 +368,7 @@ body.combat-ui #bottom-bar {
     #combat-log p.yellow {
       color: #ffff00; }
 
-#ability-tooltip {
+#ability-tooltip, #misc-tooltip {
   position: absolute;
   bottom: calc(1rem + 10rem);
   right: 1rem;
@@ -569,13 +569,12 @@ body.combat-ui #bottom-bar {
   .bar.cast-bar .bar-layer.bar-text {
     text-align: center; }
 
-#player-cast-bar, #player-mana-bar {
-  width: 19.5rem;
-  margin: 0 auto; }
+#player-frame {
+  margin: 0 0.5rem; }
 
-#ability-bar {
-  margin-top: 0.5rem; }
-  #ability-bar .action-bar-button {
+#ability-bar, #special-buttons {
+  margin: 0.5rem 0.25rem; }
+  #ability-bar .action-bar-button, #special-buttons .action-bar-button {
     vertical-align: top; }
 
 #spellbook-tooltip {
@@ -723,6 +722,8 @@ body.combat-ui #bottom-bar {
     content: url("icons/black/fairy.svg"); }
   .action-bar-button.flowers:before, .effect.flowers:before, .item-icon.flowers:before {
     content: url("icons/black/flowers.svg"); }
+  .action-bar-button.flying-flag:before, .effect.flying-flag:before, .item-icon.flying-flag:before {
+    content: url("icons/black/flying-flag.svg"); }
   .action-bar-button.sword-brandish:before, .effect.sword-brandish:before, .item-icon.sword-brandish:before {
     content: url("icons/white/sword-brandish.svg"); }
   .action-bar-button.viking-shield:before, .effect.viking-shield:before, .item-icon.viking-shield:before {

@@ -132,7 +132,6 @@
                 this._onTimeout();
                 this._onTimeout = null; // clear timeout so it can only trigger once
             }
-
         },
 
         expired: function() {
@@ -155,6 +154,9 @@
                     delete obj._timers[timerId];
                 }
             });
+        };
+        obj.clearTimers = function() {
+            obj._timers = {};
         };
     };
 

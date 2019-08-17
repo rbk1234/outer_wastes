@@ -16,7 +16,7 @@
         loadEngine: function() {
             this._teams = {}; // team id -> [Units on that team]
             this._currentEncounter = null;
-            this._inCombat = false;
+            this.leaveCombat();
 
             this._running = true;
             this._startClock();
@@ -52,6 +52,7 @@
 
         },
         _stopClock: function() {
+            this.clearTimers();
             Game.Clock.clearInterval(CLOCK_KEY);
         },
 
@@ -206,6 +207,9 @@
             return this.unitsForTeam(teamId).some(function(unit) {
                 return !unit.isDead();
             });
+        },
+        canRetreat: function() {
+            return !this.inCombat() && this.isPlayerTeamAlive();
         },
 
         countdownToEncounter: function() {

@@ -685,7 +685,7 @@ body.combat-ui {
 // -------------------------------------------------------- Ability tooltip
 
 
-#ability-tooltip {
+#ability-tooltip, #misc-tooltip {
   position: absolute;
   bottom: calc(1rem + #{$bottom-bar-height});
   right: 1rem;
@@ -1144,21 +1144,23 @@ body.combat-ui {
 
 
 
-
+#player-frame {
+  margin: 0 0.5rem;
+}
 
 #player-cast-bar, #player-mana-bar {
   //height: 1.35rem;
   //font-size: 0.85rem;
   //line-height: 1.4;
 
-  width: 19.5rem; // (button * num_buttons + button_margin * num_spaces) 3.5 * 5 + 0.5 * 4
-  margin: 0 auto;
+  //width: 19.5rem; // (button * num_buttons + button_margin * num_spaces) 3.5 * 5 + 0.5 * 4
+  //margin: 0 auto;
   //margin-left: 0.2rem;
 }
 
 // -------------------------------------------------------- Abilities/effects
-#ability-bar {
-  margin-top: 0.5rem;
+#ability-bar, #special-buttons {
+  margin: 0.5rem 0.25rem;
 
   .action-bar-button {
     vertical-align: top;
@@ -1354,6 +1356,11 @@ body.combat-ui {
   //    Foreground: make max size, then possibly shrink. Most are shrunk twice
   //    Size and preset: dimensions -> 128px
 
+  // NEW:
+  //    Background: none
+  //    Foreground: make max size, then shrink twice
+  //    Size and preset: 64px
+
   &.hand-bandage:before {
     content: url('icons/black/hand-bandage.svg');
   }
@@ -1395,6 +1402,11 @@ body.combat-ui {
     content: url('icons/black/flowers.svg');
   }
   // todo vine-flower instead?
+
+  &.flying-flag:before {
+    //content: url('icons/white/flying-flag.svg');
+    content: url('icons/black/flying-flag.svg');
+  }
 
   &.sword-brandish:before {
     content: url('icons/white/sword-brandish.svg');

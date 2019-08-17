@@ -67,6 +67,7 @@
                 //self._refreshPlayerBars();
                 self._refreshAbilityBar();
                 self._refreshAbilityTooltip();
+                self._refreshRetreatButton();
 
                 self.updateTimers(iterations * period);
             }, 1.0 / UPDATES_PER_SECOND);
@@ -84,6 +85,7 @@
 
             this.clearTarget();
             this.clearLog();
+            this.clearCenterImage();
 
             this._startClock();
         },
@@ -94,6 +96,7 @@
             // hide unit frames
 
             this.clearTarget();
+            this.clearCenterImage();
 
             // stop clock
             this._stopClock();
@@ -621,7 +624,6 @@
         _initLevelUI: function() {
             this._$enemyFrames = $('#enemy-frames');
             this._$centerImage = $('#center-area');
-            this.clearCenterImage();
         },
 
         newEncounterLoaded: function(encounter) {
@@ -799,6 +801,8 @@
                 this._createAbilityButton(i).appendTo(this._$abilityBar);
             }
 
+            this._createRetreatButton();
+
             this._abilityButtons = {}; // ability -> { $button: $button, timer: CooldownTimer, ability: ability }
 
             // Esc key (cancel cast)
@@ -833,17 +837,53 @@
                 $description: $abilityTooltip.find('.description')
             };
 
+            var $miscTooltip = $('#misc-tooltip');
+            this._miscTooltip = {
+                $tip: $miscTooltip,
+                $name: $miscTooltip.find('.name'),
+                $description: $miscTooltip.find('.description')
+            };
+
             this._initAbilitiesPage();
         },
 
         _createAbilityButton: function(index) {
             var $button = this._$abilityButtonTemplate.clone();
             $button.removeAttr('id');
-
             $button.find('.hotkey').html(index + 1);
 
             return $button;
         },
+
+        _createRetreatButton: function() {
+            var self = this;
+
+            this._$retreatButton = this._$abilityButtonTemplate.clone();
+            this._$retreatButton.removeAttr('id');
+            this._$retreatButton.find('.hotkey').html(''); // todo hotkey?
+
+            this._$retreatButton.appendTo($('#special-buttons'));
+
+            this._$retreatButton.removeClass('blank');
+            this._$retreatButton.addClass('flying-flag');
+            this._$retreatButton.addClass('purple-opal'); // todo dark background
+
+            this._$retreatButton.off('click').on('click', function(evt) {
+                if (Game.UnitEngine.canRetreat()) {
+                    Game.TownUI.loadTown();
+                }
+            });
+            this._$retreatButton.off('mouseenter').on('mouseenter', function(evt) {
+                self._showMiscTooltip('Retreat', "Return to the village and keep what you've found. Cannot retreat in combat.");
+            });
+            this._$retreatButton.off('mouseleave').on('mouseleave', function(evt) {
+                self._hideMiscTooltip();
+            });
+        },
+        _refreshRetreatButton: function() {
+            this._$retreatButton.toggleClass('not-enough-mana', !Game.UnitEngine.canRetreat());
+        },
+
 
         equipAbility: function(ability, index) {
             this._assignAbilityToBar(ability, index);
@@ -975,7 +1015,20 @@
             this._abilityButtons[ability.id].$button.toggleClass('invalid-target', invalidTarget);
         },
 
+        _showMiscTooltip: function(title, message) {
+            this._hideAbilityTooltip();
+
+            this._miscTooltip.$name.html(title);
+            this._miscTooltip.$description.html(message);
+            this._miscTooltip.$tip.show();
+        },
+        _hideMiscTooltip: function() {
+            this._miscTooltip.$tip.hide();
+        },
+
         _showAbilityTooltip: function(ability) {
+            this._hideMiscTooltip();
+
             this._abilityTooltip.ability = ability;
             this._refreshAbilityTooltip();
             this._abilityTooltip.$tip.show();
