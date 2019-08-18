@@ -251,7 +251,7 @@
         },
         maxMana: function() {
             if (this.id === Game.Player.id) {
-                return 300;
+                return 300; // TODO Max mana
             }
 
             var specialAbility = this.ability('special');

@@ -22,6 +22,7 @@
             // Save all classes
             data.resourceEngine = Game.ResourceEngine.saveData();
             data.quests = Game.Quests.saveData();
+            data.spellbook = Game.Spellbook.saveData();
             data.party = Game.PartyUI.saveData();
             data.town = Game.TownUI.saveData();
             // todo all the other classes
@@ -43,6 +44,7 @@
             // Load all classes
             Game.ResourceEngine.loadData(data.resourceEngine);
             Game.Quests.loadData(data.quests);
+            Game.Spellbook.loadData(data.spellbook);
             Game.PartyUI.loadData(data.party);
             Game.TownUI.loadData(data.town);
             // todo all the other classes

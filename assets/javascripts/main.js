@@ -19,12 +19,13 @@
     Game.PartyUI.init();
     Game.WorldMapUI.init();
     Game.Quests.init();
+    Game.Spellbook.init();
 
     Game.Saving.init();
     Game.Saving.load();
 
-    Game.Player.equipAbility(0, new Game.Abilities.Ability('holyLight'));
-    Game.Player.equipAbility(1, new Game.Abilities.Ability('renew'));
+    //Game.Spellbook.learnSpell('holyLight');
+    //Game.Spellbook.learnSpell('renew');
 
     Game.Clock.setInterval(
         'debug',

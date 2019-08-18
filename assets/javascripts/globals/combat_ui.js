@@ -87,6 +87,9 @@
             this.clearLog();
             this.clearCenterImage();
 
+            this._$abilityBar.toggle(Game.Spellbook.shouldShowSpellbar());
+            this._playerFrame.$frame.visibilityToggle(Game.Spellbook.shouldShowSpellbar());
+
             this._startClock();
 
             this._combatUILoaded = true;
@@ -116,8 +119,6 @@
 
         _initDetailedFrames: function() {
             this._playerFrame = this._createDetailedFrame($('#player-frame'), 'player');
-            this._playerFrame.$frame.visible(); // always visible
-
             this._targetFrame = this._createDetailedFrame($('#target-frame'), 'target');
         },
         _createDetailedFrame: function($frame, frameType) {
