@@ -27,6 +27,8 @@
             data.town = Game.TownUI.saveData();
             // todo all the other classes
 
+            data.misc = this.miscData || {};
+
             // Bundle and save to localStorage
             data.savedAt = Date.now();
             localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data));
@@ -49,6 +51,8 @@
             Game.TownUI.loadData(data.town);
             // todo all the other classes
 
+            this.miscData = data.misc || {};
+
             // Success message
             console.log('Game loaded. Last save was:', (data.savedAt ? new Date(data.savedAt) : '(Unknown)'));
         },
@@ -67,6 +71,23 @@
 
         turnOffAutoSave: function() {
             Game.Clock.clearInterval(CLOCK_KEY);
+        },
+
+
+        saveMiscData: function(group, key, value) {
+            if (!this.miscData[group]) {
+                this.miscData[group] = {};
+            }
+
+            this.miscData[group][key] = value;
+        },
+
+        readMiscData: function(group, key) {
+            if (!this.miscData[group]) {
+                return undefined;
+            }
+
+            return this.miscData[group][key];
         }
 
     };

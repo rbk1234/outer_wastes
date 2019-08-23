@@ -27,7 +27,7 @@
         },
 
         _numFollowerSlots: function() {
-            return Math.min(this._roster.length, MAX_FOLLOWERS);
+            return Math.min(this.rosterSize(), MAX_FOLLOWERS);
         },
 
         saveData: function() {
@@ -68,7 +68,7 @@
 
         // refresh all UI according to current state
         refreshUI: function() {
-            $('.party-unlocked').toggle(this._roster.length > 0);
+            $('.party-unlocked').toggle(this.rosterSize() > 0);
 
             this._setupPartySelector();
         },
@@ -85,6 +85,10 @@
             this._equipSpecialAbility(unit);
 
             this.refreshUI();
+        },
+
+        rosterSize: function() {
+            return this._roster.length;
         },
 
         _findRosterById: function(id) {

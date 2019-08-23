@@ -3,7 +3,7 @@
     'use strict';
 
     Game.namespace('UI').Backgrounds = {
-        world: {
+        world_original: {
             doodads: {
                 V: 'village',
                 t: 'farTree', T: 'farTree2', w: 'woods', c: 'cathedral',
@@ -12,7 +12,7 @@
                 R: 'river', G: 'blackGate'
             },
             layout: [
-                '                                                                                                                            X',
+                '                                                                                                                             ',
                 '                                                                                                                             ',
                 '                                                                                                                             ',
                 '                                                                                                                             ',
@@ -52,6 +52,59 @@
                 '      T                      t                                                                                               ',
                 '                 T     t                                                                                                     ',
                 '             t             t     T    T   R                                                                                  '
+            ]
+        },
+
+        world: {
+            doodads: {
+                G: 'graveyard',
+                V: 'village',
+                t: 'farTree', T: 'farTree2', w: 'woods', c: 'cathedral', C: 'cave',
+                g: 'glade', d: 'farDeadTree', D: 'farDeadTree2', f: 'farDeadTree3', F: 'farDeadTree4',
+                n: 'mountain1', m: 'mountain2', N: 'mountain3', M: 'mountain4', W: 'mountain5',
+                R: 'river', b: 'blackGate'
+            },
+            layout: [
+                '                                                                                                                            X',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '        N                                                                                                                    ',
+                '                 W             M     N                                                                                       ',
+                '     N     M        m    N         m    W      M                                                                             ',
+                '         N             N    M            C          W     M                                                                  ',
+                '    n             T             t                               N                                                            ',
+                '      T      t       t     t         T        t  M                                                                           ',
+                '         t                               t              W                                                                    ',
+                '    t          G       T         t    T      T   t                W                                                          ',
+                '                             t            t          N        M                                                              ',
+                '   T     c          t     t       T                   t                                                                      ',
+                '     t                        t                T           M      M     N                                                    ',
+                '              t        T                t            t        n               M                                              ',
+                '                  t        T     t                T      t         W                                                         ',
+                '       T    t         t                                                 N     n                M            W                ',
+                '               t                   t                   t                                          M              N           ',
+                '          T        t        t                               T             M       b         N   m       M                    ',
+                '                                T                                             n                                     W        ',
+                '      t        t      T                                  t                                 n        M          n        M    ',
+                '      w     T     d         t                                                                                                ',
+                '              d        t                                                                                                n    ',
+                '       f            D      t    T   V                                                                              M         ',
+                '                             t                                                                                               ',
+                '             f           d                                                                                                   ',
+                '     d           D                  t      t    T                                                                            ',
+                '         d           d         T        t                                                                                    ',
+                '                f       D                     T                                                                              ',
+                '                              d   D                                                                                          ',
+                '     d    f        d                     F                                                                                   ',
+                '                           F          d                                                                                      ',
+                '    D           D                  f                                                                                         ',
+                '                         d     D                                                                                             ',
+                '         f          D                   d                                                                                    ',
+                '   D                    f            d                                                                                       ',
+                '      d       d              F                                                                                               ',
+                '                 F     d                                                                                                     ',
+                'g            D             f     D    f   R                                                                                  '
             ]
         },
 

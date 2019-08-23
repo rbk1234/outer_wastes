@@ -15,8 +15,6 @@
 
             Game.Timers.addTimerSupport(this);
 
-            this.$map = $('#world-map');
-
             // Start clock
             Game.Clock.setInterval(CLOCK_KEY, function(iterations, period) {
 
@@ -34,7 +32,7 @@
             //this.$map.show();
 
             Game.BackgroundUI.drawBackground('world');
-            Game.BackgroundUI.setZoneName('The World');
+            Game.BackgroundUI.setZoneName('Map of the World');
 
             Game.BackgroundUI.registerHandler('world.village', function() {
                 Game.TownUI.enterTown();

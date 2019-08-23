@@ -6,12 +6,13 @@
         teamId: null,
         animations: {
             width: 1, // how many frame spaces to occupy
-            offset: 0 // how far of a left-indent
+            offset: 0, // how far of a left-indent
+            dead: { image: [''] }
         },
         stats: {
             maxHealth: 1,
             manaRegen: null,
-            attackSpeed: 1,
+            attackSpeed: 0,
             attackDamage: 0,
             reward: 0,
             threat: 0.6, // takes 60% of the attacks coming to the unit; 50% are sent to units behind
@@ -50,7 +51,7 @@
             this.mana = (this.id === Game.Player.id ? this.maxMana() : 0);
 
             //this._attackTimer = 0;
-            this._attackTimer = Math.random() * 0.5; // remaining time until next attack. Initialize with random wait
+            this._attackTimer = Math.random() * 0.75; // remaining time until next attack. Initialize with random wait
 
             this._castProgress = null;
             this._globalCooldown = null;

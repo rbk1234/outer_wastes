@@ -2,7 +2,12 @@
 (function($) {
     'use strict';
 
-    var DEFAULTS = {};
+    var DEFAULTS = {
+        name: 'Unknown',
+        groups: [],
+        uniqueEncounters: [],
+        background: ''
+    };
 
     var currentId = 1;
 
@@ -21,7 +26,8 @@
             $.extend(true, this, DEFAULTS, Game.Zones.Database[dbKey], config);
             Game.Util.initStats(this);
 
-            this._encountersCleared = 0;
+            this.encounterIndex = 0;
+            this._clearedKeys = [];
 
             Game.BackgroundUI.drawBackground(this.background);
             Game.BackgroundUI.setZoneName(this.name);
@@ -29,19 +35,60 @@
         },
 
         loadNextEncounter: function() {
-            if (this._encountersCleared >= this.encounters.length) {
-                // todo loot
-                Game.TownUI.enterTown();
-            }
-            else {
-                Game.UnitEngine.loadEncounterByDbKey(this.encounters[this._encountersCleared]);
-                //Game.UnitEngine.loadEncounterByDbKey(Game.Util.randomFromArray(this.encounters));
+            var i, len;
+
+            // Check for unique encounter
+            for (i = 0, len = this.uniqueEncounters.length; i < len; i++) {
+                var encounterData = this.uniqueEncounters[i];
+                if (this.encounterIndex === encounterData.index &&
+                    !Game.Saving.readMiscData('uniqueEncounters', encounterData.encounter)) {
+
+                    Game.UnitEngine.loadEncounterByDbKey(encounterData.encounter);
+                    return;
+                }
             }
 
+            // Else pull random encounter from group
+            var maxIndexForGroup = 0;
+            for (i = 0, len = this.groups.length; i < len; i++) {
+                var group = this.groups[i];
+                maxIndexForGroup += group.amount;
+                if (this.encounterIndex < maxIndexForGroup) {
+                    var availableEncounters = Game.Util.arrayDifference(group.encounters, this._clearedKeys);
+                    Game.UnitEngine.loadEncounterByDbKey(Game.Util.randomFromArray(availableEncounters));
+                    return;
+                }
+            }
+
+            // zone complete:
+            // todo zone loot
+            Game.TownUI.enterTown();
         },
 
-        encounterComplete: function() {
-            this._encountersCleared += 1;
+        totalEncounters: function() {
+            var count = 0;
+
+            for (var i = 0; i < this.groups.length; i++) {
+                var group = this.groups[i];
+                count += group.amount;
+            }
+
+            return count;
+        },
+
+        encounterComplete: function(encounter) {
+            this.encounterIndex += 1;
+            this._clearedKeys.push(encounter.dbKey);
+
+            if (Game.Util.inArray(encounter.dbKey, this._uniqueEncounterKeys())) {
+                Game.Saving.saveMiscData('uniqueEncounters', encounter.dbKey, true);
+            }
+        },
+
+        _uniqueEncounterKeys: function() {
+            return this.uniqueEncounters.map(function(encounterData) {
+                return encounterData.encounter;
+            });
         }
 
     };

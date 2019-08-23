@@ -50,7 +50,6 @@
             this._initLevelUI();
             this._initLog();
 
-            this._initWorldMap();
             Game.Timers.addTimerSupport(this);
         },
 
@@ -580,6 +579,12 @@
             this._refreshAbilityTargets();
         },
 
+        _clearTargetIfEnemy: function() {
+            if (this.selectedUnit() && this.selectedUnit().teamId === Game.Constants.teamIds.computer) {
+                this.clearTarget();
+            }
+        },
+
         targetUnit: function(unit) {
             // Remove targeting circle from any old target. Note: Not calling clearTarget for small performance gain
             this._targetedUnit = unit;
@@ -632,20 +637,28 @@
         },
 
         newEncounterLoaded: function(encounter) {
-            this.logMessage(encounter.description);
+            var encounterIndex =
+                '[Encounter ' +
+                (Game.CurrentZone.encounterIndex + 1) +
+                '/' +
+                Game.CurrentZone.totalEncounters() +
+                ']';
+            this.logMessage(encounterIndex + ' ' + encounter.description);
+            this._clearTargetIfEnemy();
 
             if (Game.UnitEngine.isComputerTeamAlive()) {
                 this._$enemyFrames.stop().animate({opacity: 1}, 1000);
             }
         },
 
-        encounterComplete: function() {
+        encounterComplete: function(encounter) {
+            this._clearTargetIfEnemy();
             this._$enemyFrames.stop().animate({opacity: 0}, 2000);
         },
 
         encounterFailed: function() {
             //$('.game-over').show();
-            this.logMessage('Your party has perished...', 'yellow'); // todo "You keep your loot"?
+            this.logMessage('Your party has been killed.', 'yellow'); // todo "You keep your loot"?
 
             Game.TownUI.toggleReturnToTown(true);
         },
@@ -1074,12 +1087,6 @@
             this._abilityTooltip.$description.html(ability.description());
         },
 
-
-        _initWorldMap: function() {
-            this._$worldMapModal = $('#world-map-modal');
-            var world = new Game.Maps.Map('world');
-            this._$worldMapModal.find('.ascii-content').html(world.display.join('\n'));
-        },
 
 
         _initAbilitiesPage: function() {

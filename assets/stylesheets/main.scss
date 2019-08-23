@@ -261,18 +261,6 @@ $bottom-bar-height: 10rem;
       }
     }
 
-    #world-map {
-      height: 80vh;
-      width: 80%; // note: this makes a width of 94 characters for map
-
-      .ascii-content {
-        overflow-y: scroll;
-        height: calc(100% - 1.5rem);
-        overflow-x: hidden;
-        line-height: 1;
-      }
-    }
-
     #return-to-town {
       text-align: center;
 
@@ -426,6 +414,9 @@ body.combat-ui {
   .black {
 
   }
+  .purple {
+    color: mediumpurple;
+  }
   .darkblue {
     color: #a8ccd7;
   }
@@ -577,7 +568,8 @@ body.combat-ui {
         }
       }
 
-      $level-height: 17px;
+      //$level-height: 17px;
+      $level-height: 0;
 
       .bar.health-bar {
         height: 0.75rem;
@@ -882,18 +874,6 @@ body.combat-ui {
   font-size: 0.875rem;
 }
 
-#world-map-modal {
-  height: 90vh;
-  background: $main-content-bg;
-  color: white;
-  //font-size: 0.875rem;
-
-  .ascii-content {
-    font-size: 0.75rem;
-    line-height: 1;
-    height: 100%;
-  }
-}
 
 
 #mini-map {

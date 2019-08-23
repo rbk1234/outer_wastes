@@ -252,8 +252,8 @@
             }
             if (this.inCombat() && !this.isComputerTeamAlive()) {
                 Game.CurrentEncounter.finish();
-                Game.CurrentZone.encounterComplete();
-                Game.CombatUI.encounterComplete();
+                Game.CurrentZone.encounterComplete(Game.CurrentEncounter);
+                Game.CombatUI.encounterComplete(Game.CurrentEncounter);
                 this.leaveCombat();
                 this.setTimeout(function() {
                     self.clearTeam(Game.Constants.teamIds.computer);

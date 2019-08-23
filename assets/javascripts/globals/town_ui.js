@@ -70,7 +70,15 @@
 
             Game.BackgroundUI.registerHandler('village.gate', function() {
                 self.closeAllPopups();
-                Game.WorldMapUI.openMap();
+
+                if (Game.PartyUI.rosterSize() > 0) {
+                    Game.WorldMapUI.openMap();
+                }
+                else {
+                    self._openText('The Village Gate', 'right-aligned',
+                        "The guardsman stops you from leaving.<br><br>" +
+                        "&quot;It's too dangerous to venture outside the walls alone.&quot;");
+                }
             });
 
             Game.BackgroundUI.registerHandler('village.blacksmith', function() {
@@ -79,13 +87,13 @@
             Game.BackgroundUI.registerHandler('village.swordsman', function() {
                 self._openSwordsman();
             });
-            Game.BackgroundUI.registerHandler('village.villager1', function() {
-                var villager1Text = "&quot;The darkness... it's lasted far too long.&quot;<br><br>" +
-                    "The villager gestures at the sky then begins to close his door.<br><br>" +
-                    "&quot;Best stay in the village.&quot;" +
-                    "";
-                self._openVillager('right-aligned', villager1Text);
-            });
+            //Game.BackgroundUI.registerHandler('village.villager1', function() {
+            //    var villager1Text = "&quot;The darkness... it's lasted far too long.&quot;<br><br>" +
+            //        "The villager gestures at the sky then begins to close his door.<br><br>" +
+            //        "&quot;Best stay in the village.&quot;" +
+            //        "";
+            //    self._openText('Villager House', 'right-aligned', villager1Text);
+            //});
 
         },
 
@@ -133,9 +141,9 @@
             this.$buildingPopup.show();
         },
 
-        _openVillager: function(alignment, text) {
+        _openText: function(title, alignment, text) {
             this.$buildingPopup.removeClass('right-aligned left-aligned').addClass(alignment);
-            this.$buildingPopup.find('.popup-title').html("Villager House");
+            this.$buildingPopup.find('.popup-title').html(title);
 
             var $innerContent = this._clearInnerContent();
             $innerContent.html(text);

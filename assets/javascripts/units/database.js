@@ -8,8 +8,8 @@
             stats: {
                 maxHealth: 120,
                 manaRegen: 10,
-                attackSpeed: 0,
-                attackDamage: 5
+                attackSpeed: 0.3,
+                attackDamage: 10
             }
         },
         swashbuckler: {
@@ -57,6 +57,72 @@
         },
 
 
+
+        boar: {
+            name: 'Boar',
+            stats: {
+                maxHealth: 100,
+                attackSpeed: 0.5,
+                attackDamage: 10
+            }
+        },
+        mushroom: {
+            name: 'Mushroom',
+            stats: {
+                maxHealth: 50
+            }
+        },
+        wolf: {
+            name: 'Wolf',
+            stats: {
+                maxHealth: 110,
+                attackSpeed: 0.8,
+                attackDamage: 8
+            }
+        },
+        cub: {
+            name: 'Bear Cub',
+            stats: {
+                maxHealth: 50,
+                attackSpeed: 0.6,
+                attackDamage: 5
+            }
+        },
+
+        copper: {
+            name: 'Copper Vein',
+            stats: {
+                maxHealth: 100
+            }
+        },
+        forestGoblin: {
+            name: 'Forest Goblin',
+            stats: {
+                maxHealth: 130,
+                attackSpeed: 0.8,
+                attackDamage: 15
+            },
+            //abilityKeys: ['explosiveTrap']
+        },
+        quillFiend: {
+            name: 'Quill Fiend',
+            stats: {
+                maxHealth: 130,
+                attackSpeed: 0.7,
+                attackDamage: 16
+            }
+        },
+        direWolf: {
+            name: 'Dire Wolf',
+            stats: {
+                maxHealth: 220,
+                attackSpeed: 1.0,
+                attackDamage: 25,
+                reward: 20
+            }
+        },
+
+
         oozeling: {
             name: 'Oozeling',
             stats: {
@@ -64,24 +130,6 @@
                 attackSpeed: 0.6,
                 attackDamage: 20,
                 reward: 50
-            }
-        },
-        wolf: {
-            name: 'Wolf',
-            stats: {
-                maxHealth: 350,
-                attackSpeed: 0.8,
-                attackDamage: 12,
-                reward: 10
-            }
-        },
-        direWolf: {
-            name: 'Dire Wolf',
-            stats: {
-                maxHealth: 1100,
-                attackSpeed: 1.0,
-                attackDamage: 25,
-                reward: 20
             }
         },
         spider: {
@@ -94,16 +142,6 @@
                 reward: 20
             },
             abilityKeys: ['webWrap']
-        },
-        forestGoblin: {
-            name: 'Forest Goblin',
-            stats: {
-                maxHealth: 700,
-                attackSpeed: 0.8,
-                attackDamage: 15,
-                reward: 20
-            },
-            abilityKeys: ['iceTrap', 'explosiveTrap']
         },
         bear: {
             name: 'Grizzly Bear',
