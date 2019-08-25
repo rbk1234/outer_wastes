@@ -30,7 +30,9 @@
             ],
             background: 'crypt',
             onFinish: function() {
-                Game.Quests.quest('crypt').fulfill();
+                if (Game.Quests.quest('crypt').canFulfill()) {
+                    Game.Quests.quest('crypt').fulfill();
+                }
             }
         },
 

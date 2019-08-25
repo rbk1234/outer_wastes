@@ -20,6 +20,7 @@
     Game.WorldMapUI.init();
     Game.Quests.init();
     Game.Spellbook.init();
+    Game.InventoryUI.init();
 
     Game.Saving.init();
     Game.Saving.load();

@@ -96,7 +96,7 @@
         world_old: {
             doodads: {
                 V: 'village',
-                t: 'farTree', T: 'farTree2', w: 'woods', c: 'cathedral',
+                t: 'farTree', T: 'farTree2', w: 'woods', c: 'abbey',
                 g: 'glade', d: 'farDeadTree', D: 'farDeadTree2', f: 'farDeadTree3', F: 'farDeadTree4',
                 n: 'mountain1', m: 'mountain2', N: 'mountain3', M: 'mountain4', W: 'mountain5',
                 R: 'river', G: 'blackGate'
@@ -149,7 +149,7 @@
             doodads: {
                 G: 'graveyard',
                 V: 'village',
-                t: 'farTree', T: 'farTree2', w: 'woods', c: 'cathedral', C: 'cave',
+                t: 'farTree', T: 'farTree2', w: 'woods', c: 'abbeySmall', C: 'cave',
                 g: 'glade', d: 'farDeadTree', D: 'farDeadTree2', f: 'farDeadTree3', F: 'farDeadTree4',
                 n: 'mountain1', m: 'mountain2', N: 'mountain3', M: 'mountain4', W: 'mountain5',
                 R: 'river', b: 'blackGate'

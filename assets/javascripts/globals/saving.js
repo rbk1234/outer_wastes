@@ -26,6 +26,8 @@
             data.spellbook = Game.Spellbook.saveData();
             data.party = Game.PartyUI.saveData();
             data.town = Game.TownUI.saveData();
+            data.world = Game.WorldMapUI.saveData();
+            data.inventory = Game.InventoryUI.saveData();
             // todo all the other classes
 
             data.misc = this.miscData || {};
@@ -54,6 +56,8 @@
             Game.Spellbook.loadData(data.spellbook);
             Game.PartyUI.loadData(data.party);
             Game.TownUI.loadData(data.town);
+            Game.WorldMapUI.loadData(data.world);
+            Game.InventoryUI.loadData(data.inventory);
             // todo all the other classes
 
             this.miscData = data.misc || {};

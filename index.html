@@ -38,9 +38,10 @@
 
     <div class="grid-x">
       <div class="cell small-4" style="display:flex;">
+        <span class="inventory-unlocked" hidden><a id="toggle-inventory">Inventory</a></span>
+        <span class="map-unlocked" hidden><a id="toggle-map">Map</a></span>
         <span class="party-unlocked" hidden><a id="toggle-party">Party</a></span>
-        <span class="spellbook-unlocked" hidden>|<a id="toggle-spellbook">Spellbook</a></span>
-        <span class="bags-unlocked" hidden>|<a id="toggle-bags">Bag</a></span>
+        <span class="spellbook-unlocked" hidden><a id="toggle-spellbook">Spellbook</a></span>
       </div>
 
       <div class="cell small-4 text-center">
@@ -209,6 +210,22 @@
             </tbody>
           </table>
         </div>
+      </div>
+    </div>
+
+    <div id="inventory" class="ui-popup" hidden>
+      <div class="header">
+        <table class="no-rows no-spacing">
+          <tbody>
+          <tr>
+            <td><h6 class="no-bottom-margin popup-title">Inventory</h6></td>
+            <td class="nostretch"><a class="fa fa-fw fa-times close-popup"></a></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="inner-content">
+
       </div>
     </div>
 
@@ -400,6 +417,7 @@
 <script src="assets/javascripts/globals/constants.js"></script>
 <script src="assets/javascripts/globals/keyboard.js"></script>
 <script src="assets/javascripts/globals/resource_engine.js"></script>
+<script src="assets/javascripts/globals/inventory_ui.js"></script>
 <script src="assets/javascripts/globals/saving.js"></script>
 <script src="assets/javascripts/globals/settings.js"></script>
 <script src="assets/javascripts/globals/statistics.js"></script>

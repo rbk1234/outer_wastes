@@ -6,10 +6,14 @@
 
         crypt: {
             name: "The Woodland Scrolls",
+            startDialog: "The creatures of the forest have been growing violent. " +
+                "I feel a great darkness on our horizon." +
+                "<br><br>" +
+                "Fetch the woodland scrolls from the abbey crypt, I need to research further.",
             completeDialog:
                 "The priest reads through the scrolls and then starts an incantation.<br><br>" +
                 "As he speaks, the surrounding earth quickly withers and darkens.<br><br>" +
-                "&quot;It is as I feared. You must head east to the town of Greyfare, tell our findings to the archbishop.",
+                "&quot;It is as I feared.&quot;",
             onAccept: function() {
                 // unlock crypt
             },
@@ -26,6 +30,22 @@
             },
             onComplete: function() {
                 Game.Spellbook.learnSpell('holyLight');
+            }
+        },
+
+        journeyToTown: {
+            name: 'Journey to Greyfare',
+            startDialog: "You must head east to the town of Greyfare, tell our findings to the archbishop.",
+            fulfillDialog: "I've marked the town on this map. You'll need to venture through the woods.",
+            completeDialog: "TODO",
+            onAccept: function() {
+                // todo unlock map
+                // todo unlock woods
+                //
+                Game.WorldMapUI.unlock();
+            },
+            onComplete: function() {
+
             }
         },
 

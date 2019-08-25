@@ -6,6 +6,8 @@
 
     var DEFAULTS = {
         name: 'Unnamed Quest',
+        startDialog: 'No dialog available',
+        fulfillDialog: 'No dialog available',
         completeDialog: 'No dialog available',
         state: 'unstarted', // default state is unstarted (use state:locked to prevent immediate start)
         onUnlock: function() { /* do nothing */ },

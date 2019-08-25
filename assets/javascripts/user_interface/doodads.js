@@ -1006,7 +1006,7 @@ Game.namespace('UI').Doodads = {
             l: 'lightbrown'
         }
     },
-    cathedral: {
+    abbeySmall: {
         image: [
             ' __+',
             '////\\',
@@ -1020,8 +1020,8 @@ Game.namespace('UI').Doodads = {
         mouseover: {
             label: 'The Abbey',
             offset: [-2,-1],
-            handler: 'world.chapel',
-            klass: 'chapel'
+            handler: 'world.abbey',
+            klass: 'abbey'
         }
     },
     graveyard: {

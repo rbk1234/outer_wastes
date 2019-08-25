@@ -124,12 +124,7 @@
             var text;
 
             if (Game.Quests.quest('crypt').canStart()) {
-                text = "The creatures of the forest have been growing violent. " +
-                    //"I fear a darkness coming." +
-                    "I feel a great darkness on our horizon." +
-                    "<br><br>" +
-                    "Fetch the woodland scrolls from the abbey crypt, I need to research further.";
-                this._showPopup("Father Dermont", 'left-aligned', text);
+                this._showPopup("Father Dermont", 'left-aligned', '');
                 this._showQuestAccept('crypt', function() {
                     self.closeAllPopups();
                     self.loadAbbey(); // Refresh background since can click crypt now
@@ -139,7 +134,7 @@
                 this._showPopup("Father Dermont", 'left-aligned', "Hurry! We need the scrolls from the crypt.");
             }
             else if (Game.Quests.quest('crypt').canComplete() || Game.Quests.quest('bookOfHolyLight').canComplete()) {
-                this._showPopup("Father Dermont",'left-aligned', "Quickly, show me what you've found.");
+                this._showPopup("Father Dermont",'left-aligned', "What is it you've found?");
 
                 if (Game.Quests.quest('crypt').canComplete()) {
                     this._showQuestTurnin('crypt', function() {
@@ -153,11 +148,10 @@
                 }
             }
             else {
-                // todo unlock map
-                // todo unlock woods
-                //
-                this._showPopup("Father Dermont",'left-aligned', "I've marked Greyfare on your map.<br><br>" +
-                    "Keep a wary eye, these woods grow more dangerous by the day.");
+                this._showPopup("Father Dermont", 'left-aligned', '');
+                this._showQuestAccept('journeyToTown', function() {
+                    self._showQuestFulfill('journeyToTown');
+                });
             }
 
             this.$largePopup.show();
@@ -171,13 +165,51 @@
 
             var $innerContent = this.$largePopup.find('.inner-content');
             $innerContent.empty();
-
             $innerContent.html(text);
+
+            var $footer = this.$largePopup.find('.footer');
+            $footer.empty();
 
             this.$largePopup.show();
         },
-        _showQuestTurnin: function(questKey, onComplete) {
+        _showQuestAccept: function(questKey, onAccept) {
             var $innerContent = this.$largePopup.find('.inner-content');
+            var $footer = this.$largePopup.find('.footer');
+
+            var quest = Game.Quests.quest(questKey);
+
+            $innerContent.empty();
+            $innerContent.html(quest.startDialog);
+
+            $footer.empty();
+            var $a = $('<a></a>', {
+                html: 'Accept Quest',
+                class: 'button accept-quest'
+            }).appendTo($footer);
+
+            $a.off('click').on('click', function(evt) {
+                evt.preventDefault();
+                quest.start();
+                onAccept();
+            });
+        },
+        _showQuestFulfill: function(questKey) {
+            var $innerContent = this.$largePopup.find('.inner-content');
+            var $footer = this.$largePopup.find('.footer');
+
+            var quest = Game.Quests.quest(questKey);
+
+            $innerContent.empty();
+            $innerContent.html(quest.fulfillDialog);
+
+            $footer.empty();
+        },
+        _showQuestTurnin: function(questKey, onComplete) {
+            var self = this;
+
+            var $innerContent = this.$largePopup.find('.inner-content');
+            var $footer = this.$largePopup.find('.footer');
+
             var quest = Game.Quests.quest(questKey);
 
             var $finalize = $('<a></a>', {
@@ -185,40 +217,27 @@
                 class: 'finalize-quest'
             }).appendTo($innerContent);
 
+            $footer.empty();
+
             $finalize.off('click').on('click', function(evt) {
                 evt.preventDefault();
 
                 $innerContent.empty();
                 $innerContent.html(quest.completeDialog);
+
+                self.$largePopup.find('.popup-title').html(quest.name);
+
+                $footer.empty();
                 var $complete = $('<a></a>', {
                     html: 'Complete Quest',
-                    class: 'complete-quest'
-                }).appendTo($innerContent);
+                    class: 'button complete-quest'
+                }).appendTo($footer);
 
                 $complete.off('click').on('click', function(evt2) {
                     evt2.preventDefault();
                     quest.complete();
                     onComplete();
                 });
-            });
-        },
-        _showQuestAccept: function(questKey, onAccept) {
-            var $innerContent = this.$largePopup.find('.inner-content');
-            var quest = Game.Quests.quest(questKey);
-
-            var $div = $('<div></div>', {
-                class: 'text-center'
-            }).appendTo($innerContent);
-
-            var $a = $('<a></a>', {
-                html: 'Accept Quest',
-                class: 'button accept-quest'
-            }).appendTo($div);
-
-            $a.off('click').on('click', function(evt) {
-                evt.preventDefault();
-                quest.start();
-                onAccept();
             });
         },
 

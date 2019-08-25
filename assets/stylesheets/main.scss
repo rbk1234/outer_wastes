@@ -257,6 +257,7 @@ $bottom-bar-height: 10rem;
       }
 
       .footer {
+        padding: 0.5rem;
         height: 20%;
       }
     }
@@ -277,6 +278,18 @@ $bottom-bar-height: 10rem;
         .settings-key {
           color: $nyx8-brown;
         }
+      }
+    }
+
+    #inventory {
+      height: 60vh;
+      width: 60%;
+
+      .inner-content {
+        padding: 1rem;
+
+        height: 90%;
+        overflow-y: scroll;
       }
     }
   }
@@ -1321,16 +1334,18 @@ body.combat-ui {
     border-bottom: 1px solid rgba(255,255,255,0.5);
   }
 
-  .accept-quest {
-    margin-top: 1rem;
-  }
   .finalize-quest {
     display: block;
     margin-top: 1rem;
   }
-  .complete-quest {
+}
+.footer {
+  .accept-quest, .complete-quest {
     display: block;
-    margin-top: 1rem;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%);
+    margin-top: 0.5rem;
   }
 }
 .item {

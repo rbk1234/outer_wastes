@@ -15,12 +15,55 @@
 
             Game.Timers.addTimerSupport(this);
 
+            this._setupToggle();
+            this.unlocked = false;
+
             // Start clock
             Game.Clock.setInterval(CLOCK_KEY, function(iterations, period) {
 
                 self.updateTimers(iterations * period);
             }, 1.0 / UPDATES_PER_SECOND);
 
+            this.refreshUI();
+        },
+
+        saveData: function() {
+            //var self = this;
+
+            return {
+                unlocked: this.unlocked
+            };
+        },
+
+        loadData: function(data) {
+            var self = this;
+
+            if (data === undefined) {
+                return;
+            }
+
+            this.unlocked = data.unlocked;
+
+            this.refreshUI();
+        },
+
+        _setupToggle: function() {
+            var self = this;
+
+            $('#toggle-map').off('click').on('click', function(evt) {
+                evt.preventDefault();
+
+                self.openMap();
+            });
+        },
+
+        refreshUI: function() {
+            $('.map-unlocked').toggle(!!this.unlocked);
+        },
+
+        unlock: function() {
+            this.unlocked = true;
+            this.refreshUI();
         },
 
         openMap: function() {
@@ -34,8 +77,8 @@
             Game.BackgroundUI.drawBackground('world');
             Game.BackgroundUI.setZoneName('Map of the World');
 
-            Game.BackgroundUI.registerHandler('world.village', function() {
-                Game.AbbeyUI.enterTown();
+            Game.BackgroundUI.registerHandler('world.abbey', function() {
+                Game.TownUI.loadAbbey();
             });
             Game.BackgroundUI.registerHandler('world.village', function() {
                 Game.TownUI.enterTown();

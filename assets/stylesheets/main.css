@@ -128,6 +128,7 @@ a {
         overflow-y: scroll;
         height: 70%; }
       #main-content #popup-container #large-popup .footer {
+        padding: 0.5rem;
         height: 20%; }
     #main-content #popup-container #return-to-town {
       text-align: center; }
@@ -137,6 +138,13 @@ a {
       padding: 0.5rem; }
       #main-content #popup-container #settings .inner-content .settings-key {
         color: #997577; }
+    #main-content #popup-container #inventory {
+      height: 60vh;
+      width: 60%; }
+      #main-content #popup-container #inventory .inner-content {
+        padding: 1rem;
+        height: 90%;
+        overflow-y: scroll; }
 
 #bottom-bar {
   position: fixed;
@@ -675,14 +683,16 @@ body.combat-ui #bottom-bar {
   padding: 0.5rem 0; }
 .inner-content .item:not(:last-child) {
   border-bottom: 1px solid rgba(255, 255, 255, 0.5); }
-.inner-content .accept-quest {
-  margin-top: 1rem; }
 .inner-content .finalize-quest {
   display: block;
   margin-top: 1rem; }
-.inner-content .complete-quest {
+
+.footer .accept-quest, .footer .complete-quest {
   display: block;
-  margin-top: 1rem; }
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%);
+  margin-top: 0.5rem; }
 
 .item {
   font-size: 0.875rem; }
