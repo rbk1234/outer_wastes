@@ -3,6 +3,29 @@
     'use strict';
 
     Game.namespace('Encounters').Database = {
+
+        cobwebs: {
+            description: 'You enter a room full of cobwebs.',
+            enemies: ['cobweb', 'cobweb', 'cobweb']
+        },
+        spider: {
+            description: 'A giant spider blocks your path.',
+            enemies: ['spider', 'cobweb']
+        },
+        bookshelf: {
+            description: 'You find a dusty bookshelf.',
+            enemies: ['cobweb', 'bookshelf']
+        },
+        rat: {
+            description: 'A diseased rat attacks you.',
+            enemies: ['rat']
+        },
+        desk: {
+            description: 'You find a desk covered in scrolls.',
+            enemies: ['desk']
+        },
+
+
         mushrooms: {
             description: 'You find a patch of wild mushrooms.',
             enemies: ['mushroom', 'mushroom', 'mushroom'],

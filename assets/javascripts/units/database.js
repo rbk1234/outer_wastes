@@ -8,7 +8,7 @@
             stats: {
                 maxHealth: 120,
                 manaRegen: 10,
-                attackSpeed: 0.3,
+                attackSpeed: 0.6,
                 attackDamage: 10
             }
         },
@@ -57,6 +57,34 @@
         },
 
 
+        cobweb: {
+            name: 'Cobweb',
+            stats: {
+                maxHealth: 40
+            }
+        },
+        spider: {
+            name: 'Spider',
+            stats: {
+                maxHealth: 50,
+                attackSpeed: 0.7,
+                attackDamage: 4
+            }
+        },
+        bookshelf: {
+            name: 'Dusty Bookshelf',
+            stats: {
+                maxHealth: 10
+            }
+        },
+        rat: {
+            name: 'Giant Rat',
+            stats: {
+                maxHealth: 75,
+                attackSpeed: 0.8,
+                attackDamage: 7
+            }
+        },
 
         boar: {
             name: 'Boar',
@@ -132,17 +160,17 @@
                 reward: 50
             }
         },
-        spider: {
-            name: 'Spider',
-            stats: {
-                maxHealth: 250,
-                manaRegen: 10,
-                attackSpeed: 1.2,
-                attackDamage: 3,
-                reward: 20
-            },
-            abilityKeys: ['webWrap']
-        },
+        //spider: {
+        //    name: 'Spider',
+        //    stats: {
+        //        maxHealth: 250,
+        //        manaRegen: 10,
+        //        attackSpeed: 1.2,
+        //        attackDamage: 3,
+        //        reward: 20
+        //    },
+        //    abilityKeys: ['webWrap']
+        //},
         bear: {
             name: 'Grizzly Bear',
             stats: {

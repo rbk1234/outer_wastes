@@ -819,7 +819,7 @@
                 this._createAbilityButton(i).appendTo(this._$abilityBar);
             }
 
-            this._createRetreatButton();
+            //this._createRetreatButton();
 
             this._abilityButtons = {}; // ability -> { $button: $button, timer: CooldownTimer, ability: ability }
 
@@ -906,7 +906,7 @@
             });
         },
         _refreshRetreatButton: function() {
-            this._$retreatButton.toggleClass('not-enough-mana', !Game.UnitEngine.canRetreat());
+            //this._$retreatButton.toggleClass('not-enough-mana', !Game.UnitEngine.canRetreat());
         },
 
 

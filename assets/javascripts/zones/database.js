@@ -3,6 +3,34 @@
     'use strict';
 
     Game.namespace('Zones').Database = {
+
+        crypt: {
+            name: 'The Crypt',
+            groups: [
+                {
+                    amount: 1,
+                    encounters: ['cobwebs']
+                },
+                {
+                    amount: 1,
+                    encounters: ['spider']
+                },
+                {
+                    amount: 1,
+                    encounters: ['bookshelf']
+                },
+                {
+                    amount: 1,
+                    encounters: ['rat']
+                },
+                {
+                    amount: 1,
+                    encounters: ['desk']
+                }
+            ],
+            background: 'crypt'
+        },
+
         woods: {
             name: 'The Woods',
             groups: [

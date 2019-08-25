@@ -131,6 +131,7 @@
                 this._showPopup("Father Dermont", 'left-aligned', text);
                 this._showQuestAccept(function() {
                     Game.Quests.acceptQuest('crypt');
+                    self.closeAllPopups();
                     self.loadAbbey(); // Refresh background since can click crypt now
                 });
             }
@@ -171,7 +172,6 @@
             $a.off('click').on('click', function(evt) {
                 evt.preventDefault();
 
-                console.log('my accept');
                 onAccept();
             });
         },

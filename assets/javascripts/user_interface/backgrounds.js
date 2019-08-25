@@ -54,6 +54,44 @@
                 }
             }
         },
+        crypt: {
+            doodads: {
+                c: 'cryptCeiling', f: 'cryptFloor', a: 'cryptArch'
+            },
+            layout: [
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                'c                                                                                                                            ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '     a                                   a                                   a                                   a           ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                'f                                                                                                                            ',
+
+            ],
+            requirements: {
+                crypt: function() {
+                    return Game.Quests.isOnQuest('crypt') || Game.Quests.completedQuest('crypt');
+                }
+            }
+        },
 
         world_old: {
             doodads: {
@@ -203,7 +241,7 @@
 
 
         woods: {
-            doodads: { S: 'sky1', t: 'tree', g: 'grass' },
+            doodads: { S: 'sky1', t: 'bigTree', T: 'bigTree2', g: 'grass' },
             layout: [
                 '                                                                                                                             ',
                 '                                                                                                                             ',
@@ -222,18 +260,18 @@
                 '                                                                                                                             ',
                 '                                                                                                                             ',
                 '                                                                                                                             ',
-                '                t                                                                                                      t     ',
-                '        t                             t                           t                                t                         ',
-                '                    t                                    t                      t      t                                     ',
-                't                            t            t                               t                                     t            ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '            T                                                                                                                ',
+                '                                                                  t                                         t                 ',
+                '                    t                                    t                             t                                     ',
+                't                                         t                               t                                     t            ',
 
-                '                                                             g                                                              g',
+                '                                 T                           g                                                              g',
                 '       g                           g                                                                       g                 ',
                 '                                                                                           g                                 ',
                 '                         g                               g                        gg              g                          ',
-                '                                                             g                                                            g  ',
-                '                                                             g                                                            g  ',
-                '    g       gg                                                                            g                                  ',
                 '                                        g                                                           g                        ',
                 '                   g                               g               g    g              g                                     ',
             ]
