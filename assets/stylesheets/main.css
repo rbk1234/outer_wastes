@@ -677,6 +677,12 @@ body.combat-ui #bottom-bar {
   border-bottom: 1px solid rgba(255, 255, 255, 0.5); }
 .inner-content .accept-quest {
   margin-top: 1rem; }
+.inner-content .finalize-quest {
+  display: block;
+  margin-top: 1rem; }
+.inner-content .complete-quest {
+  display: block;
+  margin-top: 1rem; }
 
 .item {
   font-size: 0.875rem; }

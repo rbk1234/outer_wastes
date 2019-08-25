@@ -17,7 +17,9 @@
             reward: 0,
             threat: 0.6, // takes 60% of the attacks coming to the unit; 50% are sent to units behind
 
-            spellPower: 20
+            spellPower: 20,
+
+            questObject: false // if true, target cannot be damaged (can be interacted with at end of encounteR)
         },
         abilityKeys: []
     };

@@ -123,24 +123,41 @@
 
             var text;
 
-            if (Game.Quests.canAcceptQuest('crypt')) {
+            if (Game.Quests.quest('crypt').canStart()) {
                 text = "The creatures of the forest have been growing violent. " +
-                    "I fear some darkness has cursed this land." +
+                    //"I fear a darkness coming." +
+                    "I feel a great darkness on our horizon." +
                     "<br><br>" +
                     "Fetch the woodland scrolls from the abbey crypt, I need to research further.";
                 this._showPopup("Father Dermont", 'left-aligned', text);
-                this._showQuestAccept(function() {
-                    Game.Quests.acceptQuest('crypt');
+                this._showQuestAccept('crypt', function() {
                     self.closeAllPopups();
                     self.loadAbbey(); // Refresh background since can click crypt now
                 });
             }
-            else if (Game.Quests.isOnQuest('crypt')) {
-                text = "Hurry! We need the scrolls from the crypt.";
-                this._showPopup("Father Dermont", 'left-aligned', text);
+            else if (Game.Quests.quest('crypt').canFulfill()) {
+                this._showPopup("Father Dermont", 'left-aligned', "Hurry! We need the scrolls from the crypt.");
+            }
+            else if (Game.Quests.quest('crypt').canComplete() || Game.Quests.quest('bookOfHolyLight').canComplete()) {
+                this._showPopup("Father Dermont",'left-aligned', "Quickly, show me what you've found.");
+
+                if (Game.Quests.quest('crypt').canComplete()) {
+                    this._showQuestTurnin('crypt', function() {
+                        self._fatherDialog();
+                    });
+                }
+                if (Game.Quests.quest('bookOfHolyLight').canComplete()) {
+                    this._showQuestTurnin('bookOfHolyLight', function() {
+                        self._fatherDialog();
+                    });
+                }
             }
             else {
-                // show 2 quests
+                // todo unlock map
+                // todo unlock woods
+                //
+                this._showPopup("Father Dermont",'left-aligned', "I've marked Greyfare on your map.<br><br>" +
+                    "Keep a wary eye, these woods grow more dangerous by the day.");
             }
 
             this.$largePopup.show();
@@ -159,10 +176,39 @@
 
             this.$largePopup.show();
         },
-        _showQuestAccept: function(onAccept) {
+        _showQuestTurnin: function(questKey, onComplete) {
+            var $innerContent = this.$largePopup.find('.inner-content');
+            var quest = Game.Quests.quest(questKey);
+
+            var $finalize = $('<a></a>', {
+                html: quest.name,
+                class: 'finalize-quest'
+            }).appendTo($innerContent);
+
+            $finalize.off('click').on('click', function(evt) {
+                evt.preventDefault();
+
+                $innerContent.empty();
+                $innerContent.html(quest.completeDialog);
+                var $complete = $('<a></a>', {
+                    html: 'Complete Quest',
+                    class: 'complete-quest'
+                }).appendTo($innerContent);
+
+                $complete.off('click').on('click', function(evt2) {
+                    evt2.preventDefault();
+                    quest.complete();
+                    onComplete();
+                });
+            });
+        },
+        _showQuestAccept: function(questKey, onAccept) {
+            var $innerContent = this.$largePopup.find('.inner-content');
+            var quest = Game.Quests.quest(questKey);
+
             var $div = $('<div></div>', {
                 class: 'text-center'
-            }).appendTo(this.$largePopup.find('.inner-content'));
+            }).appendTo($innerContent);
 
             var $a = $('<a></a>', {
                 html: 'Accept Quest',
@@ -171,7 +217,7 @@
 
             $a.off('click').on('click', function(evt) {
                 evt.preventDefault();
-
+                quest.start();
                 onAccept();
             });
         },

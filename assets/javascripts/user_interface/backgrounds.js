@@ -50,7 +50,7 @@
             ],
             requirements: {
                 crypt: function() {
-                    return Game.Quests.isOnQuest('crypt') || Game.Quests.completedQuest('crypt');
+                    return Game.Quests.quest('crypt').hasBeenStarted();
                 }
             }
         },
@@ -88,7 +88,7 @@
             ],
             requirements: {
                 crypt: function() {
-                    return Game.Quests.isOnQuest('crypt') || Game.Quests.completedQuest('crypt');
+                    return Game.Quests.quest('crypt').hasBeenStarted();
                 }
             }
         },

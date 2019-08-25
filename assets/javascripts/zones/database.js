@@ -23,12 +23,15 @@
                     amount: 1,
                     encounters: ['rat']
                 },
-                {
-                    amount: 1,
-                    encounters: ['desk']
-                }
+                //{
+                //    amount: 1,
+                //    encounters: ['desk']
+                //}
             ],
-            background: 'crypt'
+            background: 'crypt',
+            onFinish: function() {
+                Game.Quests.quest('crypt').fulfill();
+            }
         },
 
         woods: {

@@ -38,6 +38,14 @@
                 Game.CombatUI.logMessage('You loot ' + this.goldReward + ' gold.', 'yellow');
             }
             // todo item loot
+
+            if (this.onFinish) {
+                this.onFinish();
+            }
+            else {
+                Game.UnitEngine.standardEncounterFinish();
+            }
+
         },
 
         _loadEnemies: function() {

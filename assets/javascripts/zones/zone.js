@@ -6,7 +6,8 @@
         name: 'Unknown',
         groups: [],
         uniqueEncounters: [],
-        background: ''
+        background: '',
+        onFinish: null
     };
 
     var currentId = 1;
@@ -23,8 +24,10 @@
         _init: function(dbKey, config) {
             this.dbKey = dbKey;
             this.id = currentId++;
+            this.$eventHandler = $(this);
             $.extend(true, this, DEFAULTS, Game.Zones.Database[dbKey], config);
             Game.Util.initStats(this);
+            Game.Util.initEvents(this);
 
             this.encounterIndex = 0;
             this._clearedKeys = [];
@@ -62,7 +65,10 @@
 
             // zone complete:
             // todo zone loot
-            Game.TownUI.enterTown();
+            if (this.onFinish) {
+                this.onFinish();
+            }
+            Game.TownUI.loadAbbey();
         },
 
         totalEncounters: function() {

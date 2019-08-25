@@ -3,7 +3,8 @@
     'use strict';
 
     var DEFAULTS = {
-        goldReward: 0
+        goldReward: 0,
+        onFinish: null
     };
 
     var currentId = 1;

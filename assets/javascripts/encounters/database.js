@@ -14,7 +14,33 @@
         },
         bookshelf: {
             description: 'You find a dusty bookshelf.',
-            enemies: ['cobweb', 'bookshelf']
+            enemies: ['cobweb', 'bookshelf'],
+            onFinish: function() {
+                Game.UnitEngine.setTimeout(function() {
+                    Game.CombatUI.logMessage('You search the bookshelf for the scrolls...', 'yellow');
+                }, 1000);
+                if (Game.Quests.quest('bookOfHolyLight').canStart()) {
+                    Game.UnitEngine.setTimeout(function() {
+                        Game.CombatUI.logMessage('No scrolls here, but there is a strange glowing book...', 'yellow');
+                    }, 5000);
+                    Game.UnitEngine.setTimeout(function() {
+                        Game.CombatUI.logMessage('You pickup the book.', 'yellow');
+                        Game.Quests.quest('bookOfHolyLight').start();
+                        Game.Quests.quest('bookOfHolyLight').fulfill();
+                    }, 7000);
+                    Game.UnitEngine.setTimeout(function() {
+                        Game.UnitEngine.standardEncounterFinish();
+                    }, 8000);
+                }
+                else {
+                    Game.UnitEngine.setTimeout(function() {
+                        Game.CombatUI.logMessage("You don't find anything useful.", 'yellow');
+                    }, 5000);
+                    Game.UnitEngine.setTimeout(function() {
+                        Game.UnitEngine.standardEncounterFinish();
+                    }, 7000);
+                }
+            }
         },
         rat: {
             description: 'An enormous rat scurries out of the darkness.',

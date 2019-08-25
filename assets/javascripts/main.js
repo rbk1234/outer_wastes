@@ -24,6 +24,8 @@
     Game.Saving.init();
     Game.Saving.load();
 
+    //Game.Quests.quest('crypt').unlock();
+
     //Game.Spellbook.learnSpell('holyLight');
     //Game.Spellbook.learnSpell('renew');
 

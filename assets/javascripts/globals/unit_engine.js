@@ -104,6 +104,10 @@
                     continue;
                 }
 
+                if (unit.questObject.value()) {
+                    continue;
+                }
+
                 if (Math.random() < unit.threat.value()) {
                     return unit;
                 }
@@ -205,7 +209,7 @@
         },
         _isTeamAlive: function(teamId) {
             return this.unitsForTeam(teamId).some(function(unit) {
-                return !unit.isDead();
+                return !unit.isDead() && !unit.questObject.value();
             });
         },
         canRetreat: function() {
@@ -251,14 +255,9 @@
                 this.stopEngine();
             }
             if (this.inCombat() && !this.isComputerTeamAlive()) {
-                Game.CurrentEncounter.finish();
-                Game.CurrentZone.encounterComplete(Game.CurrentEncounter);
-                Game.CombatUI.encounterComplete(Game.CurrentEncounter);
                 this.leaveCombat();
-                this.setTimeout(function() {
-                    self.clearTeam(Game.Constants.teamIds.computer);
-                    Game.CurrentZone.loadNextEncounter();
-                }, 2000);
+
+                Game.CurrentEncounter.finish();
             }
 
             Game.Util.iterateObject(this._teams, function(teamId, units) {
@@ -272,8 +271,18 @@
             }
 
             this.updateTimers(seconds);
-        }
+        },
 
+        standardEncounterFinish: function() {
+            var self = this;
+
+            Game.CurrentZone.encounterComplete(Game.CurrentEncounter);
+            Game.CombatUI.encounterComplete(Game.CurrentEncounter);
+            this.setTimeout(function() {
+                self.clearTeam(Game.Constants.teamIds.computer);
+                Game.CurrentZone.loadNextEncounter();
+            }, 2000);
+        }
     };
 
     Game.UnitEngine = new UnitEngine();

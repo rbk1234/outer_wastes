@@ -74,7 +74,8 @@
         bookshelf: {
             name: 'Dusty Bookshelf',
             stats: {
-                maxHealth: 10
+                maxHealth: 10,
+                questObject: true
             }
         },
         rat: {

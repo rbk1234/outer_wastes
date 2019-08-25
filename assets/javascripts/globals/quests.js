@@ -3,20 +3,21 @@
 (function($) {
     'use strict';
 
-    var ACCEPTED = 'accepted';
-    var COMPLETED = 'completed';
-
     var Quests = function() {};
 
     Quests.prototype = {
         init: function() {
-            var self = this;
-
-            this._quests = {};
+            this._quests = {}; // dbKey -> Quest object
         },
 
         saveData: function() {
-            return this._quests;
+            var data = {};
+
+            Game.Util.iterateObject(this._quests, function(dbKey, quest) {
+                data[dbKey] = quest.state;
+            });
+
+            return data;
         },
 
         loadData: function(data) {
@@ -26,46 +27,19 @@
                 return;
             }
 
-            this._quests = data;
+            Game.Util.iterateObject(data, function(dbKey, state) {
+                self.quest(dbKey).state = state;
+            });
         },
 
-        acceptQuest: function(dbKey) {
-            if (this.isOnQuest(dbKey)) {
-                console.error('Cannot accept quest. You are already on the quest: ', dbKey);
-                return;
-            }
-            if (this.completedQuest(dbKey)) {
-                console.error('Cannot accept quest. You have already completed the quest: ', dbKey);
-                return;
+        quest: function(dbKey) {
+            if (!this._quests[dbKey]) {
+                this._quests[dbKey] = new Game.Quests.Quest(dbKey);
             }
 
-            var quest = new Game.Quests.Quest(dbKey);
-            quest.accept();
-            this._quests[dbKey] = ACCEPTED;
+            return this._quests[dbKey];
         },
 
-        completeQuest: function(dbKey) {
-            if (!this.isOnQuest(dbKey)) {
-                console.error('Cannot complete quest. You have not begun the quest: ', dbKey);
-                return;
-            }
-
-            var quest = new Game.Quests.Quest(dbKey);
-            quest.complete();
-            this._quests[dbKey] = COMPLETED;
-        },
-
-        canAcceptQuest: function(dbKey) {
-            return this._quests[dbKey] === undefined;
-        },
-
-        isOnQuest: function(dbKey) {
-            return this._quests[dbKey] === ACCEPTED;
-        },
-
-        completedQuest: function(dbKey) {
-            return this._quests[dbKey] === COMPLETED;
-        }
     };
 
     Game.Quests = new Quests();
