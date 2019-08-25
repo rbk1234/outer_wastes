@@ -78,6 +78,50 @@
     };
 
 
+    Game.Util.formatDate = function(date, patternStr) {
+        function twoDigitPad(num) {
+            return num < 10 ? "0" + num : num;
+        }
+
+        if (!patternStr) {
+            patternStr = 'N/d/yyyy';
+        }
+        var day = date.getDate(),
+            month = date.getMonth(),
+            year = date.getFullYear(),
+            hour = date.getHours(),
+            minute = date.getMinutes(),
+            second = date.getSeconds(),
+            miliseconds = date.getMilliseconds(),
+            h = hour % 12,
+            hh = twoDigitPad(h),
+            HH = twoDigitPad(hour),
+            mm = twoDigitPad(minute),
+            ss = twoDigitPad(second),
+            aaa = hour < 12 ? 'AM' : 'PM',
+            dd = twoDigitPad(day),
+            N = month + 1,
+            NN = twoDigitPad(N),
+            yyyy = year + "",
+            yy = yyyy.substr(2, 2)
+            ;
+        // checks to see if month name will be used
+        patternStr = patternStr
+            .replace('hh', hh).replace('h', h)
+            .replace('HH', HH).replace('H', hour)
+            .replace('mm', mm).replace('m', minute)
+            .replace('ss', ss).replace('s', second)
+            .replace('S', miliseconds)
+            .replace('dd', dd).replace('d', day)
+
+            .replace('yyyy', yyyy)
+            .replace('yy', yy)
+            .replace('aaa', aaa);
+        patternStr = patternStr
+            .replace('NN', NN)
+            .replace('N', N);
+        return patternStr;
+    };
 
     Game.Util.toast = function(text) {
         if (!ENABLE_ERRORS) {

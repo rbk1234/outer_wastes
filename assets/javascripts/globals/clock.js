@@ -32,6 +32,20 @@
             this.periodicFns = {}; // functions to call periodically
         },
 
+        saveData: function() {
+            return {
+                total: this.total
+            };
+        },
+
+        loadData: function(data) {
+            if (data === undefined) {
+                return;
+            }
+
+            this.total = data.total;
+        },
+
         // Register a function to be called every x seconds.
         //   @param key: Unique key for the interval. Can be used to clear the interval later.
         //   @param fn: function to be called periodically with parameters: (iterations, period)

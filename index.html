@@ -54,7 +54,8 @@
         <!--Memory: <span id="memory"></span>-->
       <!--</div>-->
       <div class="cell small-4 text-right">
-        <span id="gold-value">0</span> gold |<a id="toggle-settings">Settings</a>
+        <!--<span id="gold-value">0</span> gold |-->
+        <a id="toggle-settings">Settings</a>
       </div>
     </div>
   </div>
@@ -174,6 +175,40 @@
         Your party has been killed.<br>
         <small>Items gathered on this quest have been lost.</small><br><br>
         <a class="button go-to-village">Return to the village</a>
+      </div>
+    </div>
+
+    <div id="settings" class="ui-popup" hidden>
+      <div class="header">
+        <table class="no-rows no-spacing">
+          <tbody>
+          <tr>
+            <td><h6 class="no-bottom-margin popup-title">Settings</h6></td>
+            <td class="nostretch"><a class="fa fa-fw fa-times close-popup"></a></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="inner-content">
+        <div>
+          <span class="settings-key">Time elapsed:</span> <span id="total-time"></span><br>
+          <span class="settings-key">Last saved:</span> <span id="last-saved-at"></span><br>
+          <span class="settings-key">Auto save every:</span> <span id="auto-save-every"></span> minute
+        </div>
+        <div style="margin-top:1rem;">
+          <table class="no-rows no-spacing">
+            <tbody>
+            <tr>
+              <td width="50%" class="text-center">
+                <a class="button" id="clear-save">Reset Game</a>
+              </td>
+              <td width="50%" class="text-center">
+                <a class="button" id="save-now">Save Now</a>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
 

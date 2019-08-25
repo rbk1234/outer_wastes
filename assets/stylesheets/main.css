@@ -133,6 +133,10 @@ a {
       text-align: center; }
       #main-content #popup-container #return-to-town .inner-content {
         padding: 1rem; }
+    #main-content #popup-container #settings .inner-content {
+      padding: 0.5rem; }
+      #main-content #popup-container #settings .inner-content .settings-key {
+        color: #997577; }
 
 #bottom-bar {
   position: fixed;

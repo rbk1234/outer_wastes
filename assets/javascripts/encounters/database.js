@@ -17,7 +17,7 @@
             enemies: ['cobweb', 'bookshelf']
         },
         rat: {
-            description: 'A diseased rat attacks you.',
+            description: 'An enormous rat scurries out of the darkness.',
             enemies: ['rat']
         },
         desk: {

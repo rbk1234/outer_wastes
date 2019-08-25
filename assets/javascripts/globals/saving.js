@@ -6,7 +6,6 @@
 
     var LOCAL_STORAGE_KEY = 'save';
     var CLOCK_KEY = 'Saving';
-    var AUTO_SAVE_INTERVAL = 0.1; // in minutes
 
     var Saving = function() {};
 
@@ -20,6 +19,8 @@
             var data = {};
 
             // Save all classes
+            data.clock = Game.Clock.saveData();
+            data.settings = Game.Settings.saveData();
             data.resourceEngine = Game.ResourceEngine.saveData();
             data.quests = Game.Quests.saveData();
             data.spellbook = Game.Spellbook.saveData();
@@ -32,6 +33,8 @@
             // Bundle and save to localStorage
             data.savedAt = Date.now();
             localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data));
+
+            this.savedAt = data.savedAt;
             console.log('Game saved at:', new Date());
         },
 
@@ -44,6 +47,8 @@
             }
 
             // Load all classes
+            Game.Clock.loadData(data.clock);
+            Game.Settings.loadData(data.settings);
             Game.ResourceEngine.loadData(data.resourceEngine);
             Game.Quests.loadData(data.quests);
             Game.Spellbook.loadData(data.spellbook);
@@ -54,7 +59,8 @@
             this.miscData = data.misc || {};
 
             // Success message
-            console.log('Game loaded. Last save was:', (data.savedAt ? new Date(data.savedAt) : '(Unknown)'));
+            this.savedAt = data.savedAt;
+            console.log('Game loaded. Last save was:', (this.savedAt ? new Date(this.savedAt) : '(Unknown)'));
         },
 
         clear: function() {
@@ -66,7 +72,7 @@
 
             Game.Clock.setInterval(CLOCK_KEY, function(iterations, period) {
                 self.save();
-            }, 60.0 * AUTO_SAVE_INTERVAL, true);
+            }, 60.0 * Game.Settings.getSetting('autoSaveEvery'), true);
         },
 
         turnOffAutoSave: function() {

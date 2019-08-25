@@ -125,9 +125,9 @@
 
             if (Game.Quests.canAcceptQuest('crypt')) {
                 text = "The creatures of the forest have been growing violent. " +
-                    "I fear some spirit has cursed this land." +
+                    "I fear some darkness has cursed this land." +
                     "<br><br>" +
-                    "Fetch the woodland scrolls from the crypt, I need to research further.";
+                    "Fetch the woodland scrolls from the abbey crypt, I need to research further.";
                 this._showPopup("Father Dermont", 'left-aligned', text);
                 this._showQuestAccept(function() {
                     Game.Quests.acceptQuest('crypt');

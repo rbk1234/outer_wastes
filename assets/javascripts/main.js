@@ -27,20 +27,18 @@
     //Game.Spellbook.learnSpell('holyLight');
     //Game.Spellbook.learnSpell('renew');
 
-    Game.Clock.setInterval(
-        'debug',
-        function(/* iterations, period */) {
-            var fps = (1000 / Game.Clock.delta).toFixed(1);
-            var total = (Game.Clock.total / 1000).toFixed(0);
-
-            $('#fps').text(fps);
-            $('#total-time').text(total);
-            $('#memory').text(Game.Util.roundToDecimal(Game.Util.getMemoryUsage(), 4) + 'MB');
-
-            //Game.CombatUI.logMessage('Time is: ' + total);
-        },
-        1
-    );
+    //Game.Clock.setInterval(
+    //    'debug',
+    //    function(/* iterations, period */) {
+    //        var fps = (1000 / Game.Clock.delta).toFixed(1);
+    //        var total = (Game.Clock.total / 1000).toFixed(0);
+    //
+    //        $('#fps').text(fps);
+    //        $('#total-time').text(total);
+    //        $('#memory').text(Game.Util.roundToDecimal(Game.Util.getMemoryUsage(), 4) + 'MB');
+    //    },
+    //    1
+    //);
 
 
     Game.Clock.run();
