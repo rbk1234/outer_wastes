@@ -4,6 +4,16 @@
 
     Game.namespace('Quests').Database = {
 
+        crypt: {
+            name: "The Crypt",
+            onAccept: function() {
+                // unlock crypt
+            },
+            onComplete: function() {
+
+            }
+        },
+
         magicSword: {
             name: "The Magic Sword",
             onAccept: function() {

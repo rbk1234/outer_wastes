@@ -35,13 +35,16 @@
             Game.BackgroundUI.setZoneName('Map of the World');
 
             Game.BackgroundUI.registerHandler('world.village', function() {
+                Game.AbbeyUI.enterTown();
+            });
+            Game.BackgroundUI.registerHandler('world.village', function() {
                 Game.TownUI.enterTown();
             });
             Game.BackgroundUI.registerHandler('world.woods', function() {
-                self._startQuest('woods');
+                self.startZone('woods');
             });
             Game.BackgroundUI.registerHandler('world.glade', function() {
-                self._startQuest('cursedGlade');
+                self.startZone('cursedGlade');
             });
 
         },
@@ -50,7 +53,7 @@
             //this.$map.hide();
         },
 
-        _startQuest: function(zone) {
+        startZone: function(zone) {
             this.closeMap();
 
             Game.UnitEngine.loadEngine();

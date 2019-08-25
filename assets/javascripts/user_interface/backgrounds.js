@@ -3,7 +3,59 @@
     'use strict';
 
     Game.namespace('UI').Backgrounds = {
-        world_original: {
+        abbey: {
+            doodads: {
+                S: 'sky1', a: 'abbey', c: 'crypt', t: 'tree', B: 'bigTree', b: 'bigTree2', f: 'father'
+            },
+            layout: [
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                'S                                                                                                                            ',
+
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                 t                                                                        t                  ',
+                '                 t                                                                                                           ',
+                '                                                                                                                        t    ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                          B                                                  ',
+                '                                        B                                                   b                                ',
+                '                                                                                                                             ',
+                ' b                                       a                                                                                   ',
+                '                                                                                                                             ',
+                '                      B                                                                                                      ',
+                '                                                                                                           b                 ',
+                '          c                                                      f                                                           ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             '
+            ],
+            requirements: {
+                crypt: function() {
+                    return Game.Quests.isOnQuest('crypt') || Game.Quests.completedQuest('crypt');
+                }
+            }
+        },
+
+        world_old: {
             doodads: {
                 V: 'village',
                 t: 'farTree', T: 'farTree2', w: 'woods', c: 'cathedral',

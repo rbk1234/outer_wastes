@@ -15,8 +15,15 @@
 
             this.$gold = $('#gold-value');
             this.$popupContainer = $('#popup-container');
-            this.$buildingPopup = $('#building-popup');
+            this.$largePopup = $('#large-popup');
             this.$returnToTown = $('#return-to-town');
+
+            // Register handlers:
+            this.$popupContainer.off('click', '.close-popup').on('click', '.close-popup', function(evt) {
+                evt.preventDefault();
+
+                $(this).closest('.ui-popup').hide();
+            });
 
             this._setupReturnToTown();
 
@@ -52,6 +59,24 @@
             this.$gold.html(Game.ResourceEngine.getAmount('gold'));
         },
 
+        loadAbbey: function() {
+            var self = this;
+
+            Game.UnitEngine.stopEngine();
+            Game.CombatUI.closeUI();
+
+            Game.BackgroundUI.drawBackground('abbey');
+            Game.BackgroundUI.setZoneName('Westvale Abbey');
+
+            Game.BackgroundUI.registerHandler('abbey.father', function() {
+                self._fatherDialog();
+            });
+
+            Game.BackgroundUI.registerHandler('abbey.crypt', function() {
+                Game.WorldMapUI.startZone('crypt');
+            });
+        },
+
         enterTown: function() {
             var self = this;
 
@@ -60,13 +85,6 @@
 
             Game.BackgroundUI.drawBackground('town');
             Game.BackgroundUI.setZoneName('The Village');
-
-            // Register handlers:
-            this.$popupContainer.off('click', '.close-popup').on('click', '.close-popup', function(evt) {
-                evt.preventDefault();
-
-                $(this).closest('.ui-popup').hide();
-            });
 
             Game.BackgroundUI.registerHandler('village.gate', function() {
                 self.closeAllPopups();
@@ -94,18 +112,75 @@
             //        "";
             //    self._openText('Villager House', 'right-aligned', villager1Text);
             //});
-
         },
 
         closeAllPopups: function() {
             this.$popupContainer.find('.ui-popup').hide();
         },
 
+        _fatherDialog: function() {
+            var self = this;
+
+            var text;
+
+            if (Game.Quests.canAcceptQuest('crypt')) {
+                text = "The creatures of the forest have been growing violent. " +
+                    "I fear some spirit has cursed this land." +
+                    "<br><br>" +
+                    "Fetch the woodland scrolls from the crypt, I need to research further.";
+                this._showPopup("Father Dermont", 'left-aligned', text);
+                this._showQuestAccept(function() {
+                    Game.Quests.acceptQuest('crypt');
+                    self.loadAbbey(); // Refresh background since can click crypt now
+                });
+            }
+            else if (Game.Quests.isOnQuest('crypt')) {
+                text = "Hurry! We need the scrolls from the crypt.";
+                this._showPopup("Father Dermont", 'left-aligned', text);
+            }
+            else {
+                // show 2 quests
+            }
+
+            this.$largePopup.show();
+        },
+
+
+
+        _showPopup: function(title, alignment, text) {
+            this.$largePopup.removeClass('right-aligned left-aligned').addClass('left-aligned');
+            this.$largePopup.find('.popup-title').html(title);
+
+            var $innerContent = this.$largePopup.find('.inner-content');
+            $innerContent.empty();
+
+            $innerContent.html(text);
+
+            this.$largePopup.show();
+        },
+        _showQuestAccept: function(onAccept) {
+            var $div = $('<div></div>', {
+                class: 'text-center'
+            }).appendTo(this.$largePopup.find('.inner-content'));
+
+            var $a = $('<a></a>', {
+                html: 'Accept Quest',
+                class: 'button accept-quest'
+            }).appendTo($div);
+
+            $a.off('click').on('click', function(evt) {
+                evt.preventDefault();
+
+                console.log('my accept');
+                onAccept();
+            });
+        },
+
         _openSwordsman: function() {
             var self = this;
 
-            this.$buildingPopup.removeClass('right-aligned left-aligned').addClass('left-aligned');
-            this.$buildingPopup.find('.popup-title').html("Swordsman's House");
+            this.$largePopup.removeClass('right-aligned left-aligned').addClass('left-aligned');
+            this.$largePopup.find('.popup-title').html("Swordsman's House");
 
             var $innerContent = this._clearInnerContent();
             var text;
@@ -138,22 +213,22 @@
 
             }
 
-            this.$buildingPopup.show();
+            this.$largePopup.show();
         },
 
         _openText: function(title, alignment, text) {
-            this.$buildingPopup.removeClass('right-aligned left-aligned').addClass(alignment);
-            this.$buildingPopup.find('.popup-title').html(title);
+            this.$largePopup.removeClass('right-aligned left-aligned').addClass(alignment);
+            this.$largePopup.find('.popup-title').html(title);
 
             var $innerContent = this._clearInnerContent();
             $innerContent.html(text);
 
-            this.$buildingPopup.show();
+            this.$largePopup.show();
         },
 
         _openBlacksmith: function() {
-            this.$buildingPopup.removeClass('right-aligned left-aligned').addClass('right-aligned');
-            this.$buildingPopup.find('.popup-title').html('Blacksmith');
+            this.$largePopup.removeClass('right-aligned left-aligned').addClass('right-aligned');
+            this.$largePopup.find('.popup-title').html('Blacksmith');
 
             this._clearInnerContent();
 
@@ -174,11 +249,11 @@
                 requirements: 'Req. level 45'
             });
 
-            this.$buildingPopup.show();
+            this.$largePopup.show();
         },
 
         _clearInnerContent: function() {
-            return this.$buildingPopup.find('.item-list').empty();
+            return this.$largePopup.find('.inner-content').empty();
         },
         _listItem: function(item) {
             var $template = $('#item-template').find('.item');
@@ -192,7 +267,7 @@
             $item.find('.item-requirements').toggle(!item.learned).html(item.requirements);
             $item.find('.item-purchase').toggle(!!item.learned).html(item.purchase);
 
-            this.$buildingPopup.find('.item-list').append($item);
+            this.$largePopup.find('.inner-content').append($item);
         },
 
         toggleReturnToTown: function(show) {

@@ -39,7 +39,7 @@
             $('#zone-name').html(name);
         },
 
-        // todo when to clear handlers
+        // todo handlers are cleared during resetOverlay
 
         // should be called after drawBackground to attach click handlers
         registerHandler: function(key, handler) {
@@ -51,19 +51,13 @@
 
             var bgRecord = Game.UI.Backgrounds[key];
             if (!bgRecord) {
-                this._lastBackgroundKey = null;
                 this.$background.empty();
                 return;
             }
 
             var image = bgRecord.layout;
             var r, c, numRows = image.length, numCols;
-
-            // Only redraw the background if it's changed since last draw
-            if (key === this._lastBackgroundKey) {
-                return;
-            }
-            this._lastBackgroundKey = key;
+            var doodadReqs = bgRecord.requirements;
 
             // Set up an array to hold the characters
             var background = new Array(numRows);
@@ -78,7 +72,8 @@
                     if (row[c] && row[c] !== ' ') {
                         var doodadKey = bgRecord.doodads[row[c]];
                         if (doodadKey) {
-                            this._addDoodadToBackground(Game.UI.Doodads[doodadKey], r, c, background);
+                            var req = doodadReqs ? doodadReqs[doodadKey] : undefined;
+                            this._addDoodadToBackground(Game.UI.Doodads[doodadKey], r, c, background, req);
                         }
                         else {
                             background[r][c] = row[c];
@@ -97,8 +92,9 @@
             this._attachMouseHandlers();
         },
 
-        _addDoodadToBackground: function(doodad, startingR, startingC, background) {
+        _addDoodadToBackground: function(doodad, startingR, startingC, background, requirement) {
             var image = doodad.image;
+            var mouseover = doodad.mouseover;
 
             if (doodad.invisible) {
                 doodad.fills = doodad.image;
@@ -107,7 +103,12 @@
                 doodad.colors = {};
             }
 
-            this._setupMouseover(doodad.mouseover, startingR, startingC);
+            // If there's a requirement and you don't meet the requirement -> no mouseover
+            if (requirement && !requirement()) {
+                mouseover = null;
+            }
+
+            this._setupMouseover(mouseover, startingR, startingC);
 
             for (var r = 0, numRows = image.length; r < numRows; r++) {
                 if ((startingR - numRows + r) >= 0) {
@@ -128,8 +129,8 @@
                             if (doodad.fills && doodad.colors[doodad.fills[r][c]]) {
                                 classes += doodad.colors[doodad.fills[r][c]]
                             }
-                            if (doodad.mouseover) {
-                                classes += (' hoverable ' + doodad.mouseover.klass);
+                            if (mouseover) {
+                                classes += (' hoverable ' + mouseover.klass);
                             }
                             var char = row[c];
                             if (doodad.fills && doodad.fills[r][c] === INVIS_CHAR) {
