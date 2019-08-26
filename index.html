@@ -38,10 +38,12 @@
 
     <div class="grid-x">
       <div class="cell small-4" style="display:flex;">
-        <span class="inventory-unlocked" hidden><a id="toggle-inventory">Inventory</a></span>
-        <span class="map-unlocked" hidden><a id="toggle-map">Map</a></span>
-        <span class="party-unlocked" hidden><a id="toggle-party">Party</a></span>
-        <span class="spellbook-unlocked" hidden><a id="toggle-spellbook">Spellbook</a></span>
+        <div id="ui-tabs">
+          <span class="inventory-unlocked" hidden><a id="toggle-inventory">Inventory</a></span>
+          <span class="map-unlocked" hidden><a id="toggle-map">Map</a></span>
+          <span class="party-unlocked" hidden><a id="toggle-party">Party</a></span>
+          <span class="spellbook-unlocked" hidden><a id="toggle-spellbook">Spellbook</a></span>
+        </div>
       </div>
 
       <div class="cell small-4 text-center">
@@ -168,14 +170,17 @@
       </div>
     </div>
 
-    <div id="return-to-town" class="ui-popup" hidden>
+    <div id="end-of-zone" class="ui-popup" hidden>
       <div class="header">
 
       </div>
       <div class="inner-content">
-        Your party has been killed.<br>
-        <small>Items gathered on this quest have been lost.</small><br><br>
-        <a class="button go-to-village">Return to the village</a>
+        <span class="main-text"></span><br>
+        <small class="sub-text"></small><br><br>
+        <a class="button end-zone"></a>
+      </div>
+      <div class="footer">
+
       </div>
     </div>
 

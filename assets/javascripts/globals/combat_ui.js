@@ -77,6 +77,7 @@
 
         loadUI: function() {
             this._toggleBottomBar(true);
+            this._toggleUITabs(false);
 
             // show unit frames
 
@@ -96,6 +97,7 @@
 
         closeUI: function() {
             this._toggleBottomBar(false);
+            this._toggleUITabs(true);
 
             // hide unit frames
 
@@ -110,6 +112,9 @@
 
         _toggleBottomBar: function(show) {
             $('body').toggleClass('combat-ui', show);
+        },
+        _toggleUITabs: function(enable) {
+            $('#ui-tabs a').attr('disabled', !enable);
         },
 
 
@@ -660,7 +665,7 @@
             //$('.game-over').show();
             this.logMessage('Your party has been killed.', 'yellow'); // todo "You keep your loot"?
 
-            Game.TownUI.toggleReturnToTown(true);
+            Game.TownUI.zoneFailed();
         },
 
         encounterStarted: function() {

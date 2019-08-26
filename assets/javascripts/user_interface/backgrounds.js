@@ -147,12 +147,22 @@
 
         world: {
             doodads: {
-                G: 'graveyard',
                 V: 'village',
-                t: 'farTree', T: 'farTree2', w: 'woods', c: 'abbeySmall', C: 'cave',
+                t: 'farTree', T: 'farTree2', w: 'woods', a: 'abbeySmall', C: 'cave',
                 g: 'glade', d: 'farDeadTree', D: 'farDeadTree2', f: 'farDeadTree3', F: 'farDeadTree4',
                 n: 'mountain1', m: 'mountain2', N: 'mountain3', M: 'mountain4', W: 'mountain5',
                 R: 'river', b: 'blackGate'
+            },
+            requirements: {
+                village: function() {
+                    return Game.Quests.quest('journeyToTown').hasBeenFulfilled();
+                },
+                cave: function() {
+                    return Game.Quests.quest('journeyToTown').hasBeenFulfilled();
+                },
+                glade: function() {
+                    return Game.Quests.quest('journeyToTown').hasBeenFulfilled();
+                }
             },
             layout: [
                 '                                                                                                                            X',
@@ -166,9 +176,9 @@
                 '    n             T             t                               N                                                            ',
                 '      T      t       t     t         T        t  M                                                                           ',
                 '         t                               t              W                                                                    ',
-                '    t          G       T         t    T      T   t                W                                                          ',
-                '                             t            t          N        M                                                              ',
-                '   T     c          t     t       T                   t                                                                      ',
+                '    t                  T         t    T      T   t                W                                                          ',
+                '               T             t            t          N        M                                                              ',
+                '   T     a          t     t       T                   t                                                                      ',
                 '     t                        t                T           M      M     N                                                    ',
                 '              t        T                t            t        n               M                                              ',
                 '                  t        T     t                T      t         W                                                         ',

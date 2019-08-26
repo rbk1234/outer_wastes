@@ -69,6 +69,9 @@
         openMap: function() {
             var self = this;
 
+            Game.UnitEngine.stopEngine();
+            Game.CombatUI.closeUI();
+
             //var world = new Game.Maps.Map('world');
             //this.$map.find('.ascii-content').html(world.display.join('\n'));
 

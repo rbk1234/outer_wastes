@@ -16,7 +16,7 @@
             this.$gold = $('#gold-value');
             this.$popupContainer = $('#popup-container');
             this.$largePopup = $('#large-popup');
-            this.$returnToTown = $('#return-to-town');
+            this.$endOfZone = $('#end-of-zone');
 
             // Register handlers:
             this.$popupContainer.off('click', '.close-popup').on('click', '.close-popup', function(evt) {
@@ -24,8 +24,6 @@
 
                 $(this).closest('.ui-popup').hide();
             });
-
-            this._setupReturnToTown();
 
             Game.Timers.addTimerSupport(this);
 
@@ -42,7 +40,9 @@
         saveData: function() {
             //var self = this;
 
-            return {}; // todo
+            return {
+                home: this.home
+            };
         },
 
         loadData: function(data) {
@@ -52,11 +52,40 @@
                 return;
             }
 
-            // todo
+            this.home = data.home;
+
         },
 
         _refreshUI: function() {
             this.$gold.html(Game.ResourceEngine.getAmount('gold'));
+        },
+
+        // TODO Put this home stuff somewhere
+        loadHome: function() {
+            switch (this.home) {
+                case 'abbey':
+                    this.loadAbbey();
+                    break;
+                case 'town':
+                    this.enterTown();
+                    break;
+                default:
+                    this.loadAbbey();
+                    break;
+            }
+        },
+
+        homeName: function() {
+            switch (this.home) {
+                case 'abbey':
+                    return 'Westvale Abbey';
+                case 'town':
+                    return 'Greyfare';
+                    break;
+                default:
+                    return 'Westvale Abbey';
+                    break;
+            }
         },
 
         loadAbbey: function() {
@@ -75,6 +104,8 @@
             Game.BackgroundUI.registerHandler('abbey.crypt', function() {
                 Game.WorldMapUI.startZone('crypt');
             });
+
+            this.home = 'abbey';
         },
 
         enterTown: function() {
@@ -84,7 +115,7 @@
             Game.CombatUI.closeUI();
 
             Game.BackgroundUI.drawBackground('town');
-            Game.BackgroundUI.setZoneName('The Village');
+            Game.BackgroundUI.setZoneName('Greyfare');
 
             Game.BackgroundUI.registerHandler('village.gate', function() {
                 self.closeAllPopups();
@@ -93,7 +124,7 @@
                     Game.WorldMapUI.openMap();
                 }
                 else {
-                    self._openText('The Village Gate', 'right-aligned',
+                    self._openText('The Town Gate', 'right-aligned',
                         "The guardsman stops you from leaving.<br><br>" +
                         "&quot;It's too dangerous to venture outside the walls alone.&quot;");
                 }
@@ -112,6 +143,8 @@
             //        "";
             //    self._openText('Villager House', 'right-aligned', villager1Text);
             //});
+
+            this.home = 'town';
         },
 
         closeAllPopups: function() {
@@ -147,11 +180,15 @@
                     });
                 }
             }
-            else {
+            else if (Game.Quests.quest('journeyToTown').canStart()) {
                 this._showPopup("Father Dermont", 'left-aligned', '');
                 this._showQuestAccept('journeyToTown', function() {
                     self._showQuestFulfill('journeyToTown');
                 });
+            }
+            else {
+                this._showPopup("Father Dermont", 'left-aligned', '');
+                this._showQuestFulfill('journeyToTown');
             }
 
             this.$largePopup.show();
@@ -271,7 +308,7 @@
                 });
             }
             else if (Game.Quests.isOnQuest('magicSword')) {
-                text = "&quot;We can leave the village through the northern gate.&quot;";;
+                text = "&quot;We can leave town through the northern gate.&quot;";;
                 $innerContent.html(text);
             }
             else if (Game.Quests.completedQuest('magicSword')) {
@@ -335,18 +372,57 @@
             this.$largePopup.find('.inner-content').append($item);
         },
 
-        toggleReturnToTown: function(show) {
-            this.$returnToTown.toggle(show);
-        },
-
-        _setupReturnToTown: function() {
+        zoneFailed: function() {
             var self = this;
 
-            this.$returnToTown.find('.go-to-village').off('click').on('click', function(evt) {
+            this._showEndOfZone(
+                'Your party has been killed.',
+                'You keep any items gathered so far.',
+                'Return to ' + this.homeName(),
+                function() {
+                    self.loadHome();
+                }
+            )
+        },
+        zoneCompleted: function(zone) {
+            var self = this;
+
+            if (zone.returnHome) {
+                this._showEndOfZone(
+                    'You have cleared ' + zone.name + '.',
+                    '',
+                    'Return to ' + this.homeName(),
+                    function() {
+                        self.loadHome();
+                    }
+                )
+            }
+            else {
+                this._showEndOfZone(
+                    'You have cleared ' + zone.name + '.',
+                    '',
+                    'Return to the map',
+                    function() {
+                        Game.WorldMapUI.openMap();
+                    }
+                )
+
+            }
+        },
+
+        _showEndOfZone: function(mainText, subText, buttonText, onClick) {
+            var self = this;
+
+            this.$endOfZone.find('.main-text').html(mainText);
+            this.$endOfZone.find('.sub-text').html(subText);
+
+            this.$endOfZone.find('.end-zone').html(buttonText).off('click').on('click', function(evt) {
                 evt.preventDefault();
-                self.toggleReturnToTown(false);
-                self.enterTown();
-            })
+                onClick();
+                self.$endOfZone.hide();
+            });
+
+            this.$endOfZone.show();
         }
 
     };

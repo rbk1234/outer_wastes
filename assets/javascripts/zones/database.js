@@ -33,7 +33,8 @@
                 if (Game.Quests.quest('crypt').canFulfill()) {
                     Game.Quests.quest('crypt').fulfill();
                 }
-            }
+            },
+            returnHome: true
         },
 
         woods: {
@@ -69,7 +70,12 @@
             },
             //encounters: ['forest_wolves', 'forest_direWolf', 'forest_spiders', 'forest_goblins'],
             //numEncounters: 4,
-            background: 'woods'
+            background: 'woods',
+            onFinish: function() {
+                if (Game.Quests.quest('journeyToTown').canFulfill()) {
+                    Game.Quests.quest('journeyToTown').fulfill();
+                }
+            }
         },
 
         cursedGlade: {

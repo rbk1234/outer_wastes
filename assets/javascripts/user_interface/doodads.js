@@ -350,7 +350,7 @@ Game.namespace('UI').Doodads = {
 
         },
         mouseover: {
-            label: 'The City',
+            label: 'Greyfare',
             offset: [6,4],
             handler: 'world.village',
             klass: 'village',

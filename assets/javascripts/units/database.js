@@ -9,7 +9,7 @@
                 maxHealth: 120,
                 manaRegen: 10,
                 attackSpeed: 0.6,
-                attackDamage: 100
+                attackDamage: 1000
             }
         },
         swashbuckler: {

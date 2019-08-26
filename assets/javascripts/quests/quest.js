@@ -43,11 +43,14 @@
         canComplete: function() {
             return this.state === 'fulfilled';
         },
-        isCompleted: function() {
-            return this.state === 'completed';
-        },
         hasBeenStarted: function() {
-            return this.canFulfill() || this.canComplete() || this.isCompleted();
+            return this.canFulfill() || this.canComplete() || this.hasBeenCompleted();
+        },
+        hasBeenFulfilled: function() {
+            return this.canComplete() || this.hasBeenCompleted();
+        },
+        hasBeenCompleted: function() {
+            return this.state === 'completed';
         },
 
         unlock: function() {

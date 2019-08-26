@@ -67,12 +67,18 @@
         },
 
         _refreshSettings: function() {
-            var total = (Game.Clock.total / 1000).toFixed(0);
+            var totalSeconds = (Game.Clock.total / 1000).toFixed(0);
+            var hours = Math.floor(totalSeconds / (60 * 60));
+            totalSeconds = totalSeconds % (60 * 60);
+            var minutes = Math.floor(totalSeconds / 60);
+            totalSeconds = totalSeconds % 60;
+            var seconds = totalSeconds;
+
             var lastSave = Game.Saving.savedAt ?
                 Game.Util.formatDate(new Date(Game.Saving.savedAt), 'yyyy-NN-dd hh:mm:ss aaa') :
                 'Never';
 
-            $('#total-time').html(total);
+            $('#total-time').html(hours + 'h ' + minutes + 'm ' + seconds + 's');
             $('#last-saved-at').html(lastSave);
             $('#auto-save-every').html(Game.Settings.getSetting('autoSaveEvery'));
         },

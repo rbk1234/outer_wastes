@@ -7,7 +7,8 @@
         groups: [],
         uniqueEncounters: [],
         background: '',
-        onFinish: null
+        onFinish: null,
+        returnHome: false // if true, return home afterwards. if false, return to the map
     };
 
     var currentId = 1;
@@ -16,10 +17,6 @@
         this._init(dbKey, config);
     };
     Zone.prototype = {
-
-        _defaultConfig: {
-
-        },
 
         _init: function(dbKey, config) {
             this.dbKey = dbKey;
@@ -68,7 +65,7 @@
             if (this.onFinish) {
                 this.onFinish();
             }
-            Game.TownUI.loadAbbey();
+            Game.TownUI.zoneCompleted(this);
         },
 
         totalEncounters: function() {

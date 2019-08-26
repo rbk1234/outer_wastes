@@ -17,7 +17,7 @@
             enemies: ['cobweb', 'bookshelf'],
             onFinish: function() {
                 Game.UnitEngine.setTimeout(function() {
-                    Game.CombatUI.logMessage('You search the bookshelf for the scrolls...', 'yellow');
+                    Game.CombatUI.logMessage('You search the bookshelf...', 'yellow');
                 }, 1000);
                 if (Game.Quests.quest('bookOfHolyLight').canStart()) {
                     Game.UnitEngine.setTimeout(function() {
