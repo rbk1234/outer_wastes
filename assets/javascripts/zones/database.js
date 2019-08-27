@@ -23,16 +23,13 @@
                     amount: 1,
                     encounters: ['rat']
                 },
-                //{
-                //    amount: 1,
-                //    encounters: ['desk']
-                //}
+                {
+                    amount: 1,
+                    encounters: ['desk']
+                }
             ],
             background: 'crypt',
             onFinish: function() {
-                if (Game.Quests.quest('crypt').canFulfill()) {
-                    Game.Quests.quest('crypt').fulfill();
-                }
             },
             returnHome: true
         },

@@ -24,7 +24,7 @@
                         Game.CombatUI.logMessage('No scrolls here, but there is a strange glowing book...', 'yellow');
                     }, 5000);
                     Game.UnitEngine.setTimeout(function() {
-                        Game.CombatUI.logMessage('You pickup the book.', 'yellow');
+                        Game.CombatUI.logMessage('You pick up the book.', 'yellow');
                         Game.Quests.quest('bookOfHolyLight').start();
                         Game.Quests.quest('bookOfHolyLight').fulfill();
                     }, 7000);
@@ -47,8 +47,30 @@
             enemies: ['rat']
         },
         desk: {
-            description: 'You find a desk covered in scrolls.',
-            enemies: ['desk']
+            description: 'You find a old wooden desk.',
+            enemies: ['desk'],
+            onFinish: function() {
+                Game.UnitEngine.setTimeout(function() {
+                    Game.CombatUI.logMessage('You search the desk for items...', 'yellow');
+                }, 1000);
+
+                if (Game.Quests.quest('crypt').canFulfill()) {
+
+                    Game.UnitEngine.setTimeout(function() {
+                        Game.CombatUI.logMessage('You find some scrolls that look useful.', 'yellow');
+                        Game.Quests.quest('crypt').fulfill();
+                    }, 4000);
+                }
+                else {
+                    Game.UnitEngine.setTimeout(function() {
+                        Game.CombatUI.logMessage("Just some dusty candles.", 'yellow');
+                    }, 4000);
+                }
+
+                Game.UnitEngine.setTimeout(function() {
+                    Game.UnitEngine.standardEncounterFinish();
+                }, 7000);
+            }
         },
 
 

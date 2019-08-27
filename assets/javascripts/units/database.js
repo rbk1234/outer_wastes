@@ -86,6 +86,13 @@
                 attackDamage: 7
             }
         },
+        desk: {
+            name: 'Desk',
+            stats: {
+                maxHealth: 10,
+                questObject: true
+            }
+        },
 
         boar: {
             name: 'Boar',

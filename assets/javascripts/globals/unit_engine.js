@@ -217,6 +217,7 @@
         },
 
         countdownToEncounter: function() {
+            console.log('countdown')
             Game.CombatUI.setCenterImage(Game.UI.Centerpieces.three.image);
 
             this.setTimeout(function() {

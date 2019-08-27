@@ -651,9 +651,9 @@
             this.logMessage(encounterIndex + ' ' + encounter.description);
             this._clearTargetIfEnemy();
 
-            if (Game.UnitEngine.isComputerTeamAlive()) {
+            //if (Game.UnitEngine.isComputerTeamAlive()) {
                 this._$enemyFrames.stop().animate({opacity: 1}, 1000);
-            }
+            //}
         },
 
         encounterComplete: function(encounter) {
