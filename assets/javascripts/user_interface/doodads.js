@@ -35,50 +35,90 @@ Game.namespace('UI').Doodads = {
             '|______|  |        ||                                    ||                                    ||',
             '______|  ·\'',
             '_____|·\'',
-        ]
+        ],
+        fills: [
+            'BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
+            '             BBB   BB   BBB                        BBB   BB   BBB                        BBB   BB   BBB               BB',
+            'bbbbbbbbbbbbbbbbBBBBBBBBbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbBBBBBBBBbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbBBBBBBBBbbbbbbbbbbbbbbbbbbbb',
+            '   B              rBB                    g               BB                    g               BB',
+            '   B            rr BB          g                         BB      g                             BB      g',
+            '   B   g      rr ggBB                                    BB                                    BB',
+            '   B        rr gg  BB                                    BB           g                        BB            g',
+            '   Brrrrrrrr gg    BB                                    BB                                    BB   g',
+            '   r r  r  gg      BB                                    BB                                    BB',
+            '  rrggggggg        BB                                    BB                                    BB',
+            ' rrgggggggg        BB                                    BB                                    BB',
+            'rrggggggggg     g  BB                                    BB                                    BB',
+            'rgggggggggg        BB                                    BB                                    BB',
+            'gggggggggg',
+            'gggggggg',
+        ],
+        colors: {
+            B: 'darkbrown',
+            b: 'beige',
+            r: 'grey',
+            g: 'grey'
+        }
     },
     tavernTableLarge: {
         image: [
-            '                       ._.',
-            '                       |O|',
-            '.O ____________________/|\\____ O.',
-            '|\\_[]   _O          [] ` \' []_\\/|',
-            '|/_____|  \\,___________________\\|',
-            '|||\\   |__|-                 /|||',
-            ' ||    |  ||                  ||',
+            '                         ._.',
+            ' .                       |O|',
+            ' |O _____________________/|\\____   .',
+            ' |\\_[]          <>    [] ` \'    \\ O|',
+            ' |/     _O  ()            <>   []_/|',
+            ' /_____|  \\,______________________\\|',
+            '  ||   |__|-                   /|| |',
+            '  ||   |  ||                    ||',
         ],
+        fills: [
+            '                         ccc',
+            ' c                       cOc',
+            ' cO ttttttttttttttttttttt/|\\tttt   c',
+            ' c\\_bb          <>    bb ` \'    t Oc',
+            ' ct     cO  bb            <>   bb_/c',
+            ' ttttttccc\\,tttttttttttttttttttttttc',
+            '  tt   cccc-                   /tt c',
+            '  tt   c  c|                    tt',
+        ],
+        colors: {
+            c: 'grey',
+            t: 'darkbrown',
+            b: 'brown'
+        },
         advMouseovers: {
             area: [
-                '                       ZZZ',
-                '                       ZZZ',
-                'XXXX___________________ZZZ___AAAA',
-                'XXXX   YYYYY        [] ZZZ []AAAA',
-                'XXXX___YYYYY_________________AAAA',
-                'XXXX   YYYYY                 AAAA',
-                ' ||    YYYYY                  ||',
+                '                         CCC',
+                ' AAA                     CCC',
+                ' AAA_____________________CCC____ DDD',
+                ' AAAA]          <>    [] CCC    \\DDD',
+                ' AAAA  BBBBB()            <>   [DDDD',
+                ' /_____BBBBB____________________DDDD',
+                '  ||   BBBBB                   DDDDD',
+                '  ||   BBBBB                    ||',
             ],
             legend: {
-                X: {
+                A: {
                     label: 'Swordsman',
-                    offset: [-3,-1],
+                    offset: [-8,4],
                     handler: 'tavern_swordsman',
                     klass: 'tavern_swordsman'
                 },
-                Y: {
+                B: {
                     label: 'Drunk Patron',
                     offset: [4,-1],
                     handler: 'tavern_drunk',
                     klass: 'tavern_drunk'
                 },
-                Z: {
+                C: {
                     label: 'Merchant',
-                    offset: [21,7],
+                    offset: [23,7],
                     handler: 'tavern_merchant',
                     klass: 'tavern_merchant'
                 },
-                A: {
+                D: {
                     label: 'Drunk Patron',
-                    offset: [26,-1],
+                    offset: [28,-1],
                     handler: 'tavern_drunk2',
                     klass: 'tavern_drunk2'
                 }
@@ -90,28 +130,37 @@ Game.namespace('UI').Doodads = {
             '       ________',
             '  O  ·`   <> ·T',
             ' |\\·`[]    ·` |',
-            ' ·`¯<>   ·`',
+            ' ·`¯<>   ·`   |',
             'T-------T',
+            '|| |\\   |',
             '|       |',
         ],
-        //mouseover: {
-        //    label: 'Smuggler',
-        //    offset: [-4,-1],
-        //    handler: 'tavern_smuggler',
-        //    klass: 'smuggler',
-        //    bordered: false
-        //},
+        fills: [
+            '       tttttttt',
+            '  O  tt   <> tt',
+            ' c\\ttbb    tt t',
+            ' tt¯<>   tt   t',
+            'ttttttttt',
+            'tc c\\   t',
+            't       t',
+        ],
+        colors: {
+            c: 'grey',
+            t: 'darkbrown',
+            b: 'brown'
+        },
         advMouseovers: {
             area: [
                 '       ________',
-                ' XXX ·`   <> ·T',
-                ' XXXXXX   ·` |',
-                ' XXXXX   ·`',
-                'T-------T',
+                ' AAA ·`   <> ·T',
+                ' AAA`[]    ·` |',
+                ' AAA<>   ·`   |',
+                'TAAA----T',
+                '|AAAA   |',
                 '|       |',
             ],
             legend: {
-                X: {
+                A: {
                     label: 'Smuggler Davis',
                     offset: [-1,-1],
                     handler: 'tavern_smuggler',
@@ -125,11 +174,23 @@ Game.namespace('UI').Doodads = {
         image: [
             '. Õ  ♫',
             '|/ \\   ♫',
-            '|\\O=="§',
+            '|\\O=="#',
             '|\\\\\\  ',
             ' |/|\\,',
             '  `',
         ],
+        fills: [
+            'c Õ  ♫',
+            'c/ \\   ♫',
+            'c\\ggg"g',
+            'cc\\\\',
+            ' c/c\\,',
+            '  `',
+        ],
+        colors: {
+            c: 'grey',
+            g: 'brown'
+        },
         advMouseovers: {
             area: [
                 'AAAAAA',
@@ -156,14 +217,32 @@ Game.namespace('UI').Doodads = {
             '|_|',
             '|\\_\\',
             ' | |',
-        ]
+        ],
+        fills: [
+            'ccc',
+            'ccc',
+            'ccc',
+            'cccc',
+            ' ccc'
+        ],
+        colors: {
+            c: 'grey'
+        }
     },
     tavernRug: {
         image: [
             '  ,- ¯  ¯  ¯  ¯ .',
             '((  ( ((( )) ) ) )',
             ' ` - _ __   _  -',
-        ]
+        ],
+        fills: [
+            '  rrrrrrrrrrrrrrr',
+            'rrrrrrrrrrrrrrrrrr',
+            ' rrrrrrrrrrrrrrr'
+        ],
+        colors: {
+            r: 'darkred'
+        }
     },
     tavernBrewmaster: {
         image: [
@@ -176,6 +255,24 @@ Game.namespace('UI').Doodads = {
             '\\||¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯',
             ' \\|__|___|___|___|___|___|_',
         ],
+        fills: [
+            '                rrrrrrr',
+            '               rrrlrpprr',
+            '               rrr B rrr',
+            '         O_    r BBBB rr',
+            'wbb     / _\\   rBBBBBB r',
+            'wwbbbbbbbbbbbbbbbbbbbbbbbbb',
+            'wwwbbwbbbwbbbwbbbwbbbwbbbwb',
+            ' wwwwwwwwwwwwwwwwwwwwwwwwww',
+        ],
+        colors: {
+            b: 'beige',
+            w: 'darkbrown',
+            B: 'brown',
+            r: 'grey',
+            l: 'blue',
+            p: 'purple'
+        },
         advMouseovers: {
             area: [
                 '                _______',
@@ -205,7 +302,20 @@ Game.namespace('UI').Doodads = {
             ' |=|    ( ,     |-|',
             '/ _|   , / `)   |-=\\',
             '|==|  //, /\\(`\\ |=_|',
-        ]
+        ],
+        fills: [
+            ' gggggggggggggggggg',
+            ' gggggggggggggggggg',
+            ' gggggggggggggggggg',
+            ' ggg    o o     ggg',
+            'gggg   o o oo   gggg',
+            'gggg  bbo bbobb gggg',
+        ],
+        colors: {
+            g: 'grey',
+            o: 'orange',
+            b: 'brown'
+        }
     },
     tavernDoor: {
         image: [
@@ -218,14 +328,19 @@ Game.namespace('UI').Doodads = {
             '|  · ·  |',
         ],
         fills: [
-            'AAAAAAAAA',
-            'AAAAAAAAA',
-            'AAAAAAAAA',
-            'AAAAAAAAA',
-            'AAAAAAAAA',
-            'AAAAAAAAA',
-            'AAAAAAAAA',
+            'fffffffff',
+            'fiiiiiiif',
+            'fiiiiiggf',
+            'fiiiiiiif',
+            'fgiiiiiif',
+            'fiiiiiggf',
+            'fiiiiiiif',
         ],
+        colors: {
+            f: 'darkbrown',
+            g: 'grey',
+            i: 'brown'
+        },
         mouseover: {
             label: 'Tavern Door',
             offset: [-1,-1],
@@ -240,15 +355,35 @@ Game.namespace('UI').Doodads = {
             '  .-;-;.---.',
             ' (  (   ) ) )',
             '/\\`-``-`/\\---\\',
-        ]
+        ],
+        fills: [
+            '    gggbbbb',
+            '   gbbbgbbbb',
+            '  gggggbbbbb',
+            ' gbbgbbbgbbbb',
+            'ssggggggssssss'
+        ],
+        colors: {
+            b: 'brown',
+            g: 'brown',
+            s: 'grey'
+        }
     },
     tavernLamp: {
         image: [
-            '  )',
-            ' \\_/',
-            '  `',
-
-        ]
+            ' )',
+            '\\_/',
+            ' `',
+        ],
+        fills: [
+            ' o',
+            'www',
+            ' w',
+        ],
+        colors: {
+            o: 'orange',
+            w: 'grey'
+        }
     },
 
 

@@ -230,6 +230,8 @@ body.combat-ui #bottom-bar {
   color: #404fcc; }
 #background-art .red {
   color: #cb4154; }
+#background-art .darkred {
+  color: darkred; }
 #background-art .purple {
   color: mediumpurple; }
 #background-art .darkblue {
