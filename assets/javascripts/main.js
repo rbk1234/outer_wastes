@@ -46,6 +46,6 @@
 
     Game.Clock.run();
 
-    Game.TownUI.loadAbbey();
+    Game.TownUI.loadTavern();
 
 })(jQuery);

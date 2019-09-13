@@ -88,6 +88,16 @@
             }
         },
 
+        loadTavern: function() {
+            Game.UnitEngine.stopEngine();
+            Game.CombatUI.closeUI();
+
+            Game.BackgroundUI.drawBackground('tavernFirstFloor');
+            Game.BackgroundUI.setZoneName("Boar's Head Tavern");
+
+            this.home = 'tavern';
+        },
+
         loadAbbey: function() {
             var self = this;
 

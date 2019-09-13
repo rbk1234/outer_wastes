@@ -1,5 +1,265 @@
 
 Game.namespace('UI').Doodads = {
+    tavernSecondFloor: {
+        image: [
+            '                                   ·-·-=====================================-·-·',
+            '                                 ·\'·\'|                  | |           - | |  |`·`·',
+            '                               ·\'·\'  |                  | | =     _     | |  |  `·`·',
+            '                             ·\'·\'    |                  | |             | |  |    `·`·',
+            '                           ·\'·\'      |                  | |        =    | |  |      `·`·',
+            '                         ·\'·\'        |      _____       | |    -        | |  |        `·`·',
+            '                         | |         |    ·\' - -        | |      _      | |  |         | |',
+            '                         | |         |  ·\'    __________| | =        -= | |__|         | |',
+            '                         | |       ·\' ·\'   __/ /         \\|   __      _ |/    `·       | |',
+            '                         | |     ·\' ·\'  __/ / /                                 `·     | |',
+            '                         | |   ·|¯T¯T¯T¯T¯T¯T¯T¯|                                 `·   | |',
+            '                         | | ·\'                                                     `· | |',
+            '                         |_|\'                                                         `|_|',
+            '                        ·-·-===========================================================-·-·',
+        ]
+    },
+    tavernFirstFloor: {
+        image: [
+            '========================================================================================================================',
+            '             `·.   ||   .·`                        `·.   ||   .·`                        `·.   ||   .·`               `·',
+            '________________`·.||.·`______________________________`·.||.·`______________________________`·.||.·`____________________',
+            '   |              ·||                    =               ||                    =               ||',
+            '   |            ·\' ||          =                         ||      -                             ||      -',
+            '   |   =      ·\' _|||                                    ||                                    ||',
+            '   |        ·\' _|  ||                                    ||           =                        ||            =',
+            '   |______·\' _|    ||                                    ||                                    ||   ·',
+            '   / -  -  _|      ||                                    ||                                    ||',
+            '  /|______|        ||                                    ||                                    ||',
+            ' /|______||        ||                                    ||                                    ||',
+            '/|______| |     -  ||                                    ||                                    ||',
+            '|______|  |        ||                                    ||                                    ||',
+            '______|  ·\'',
+            '_____|·\'',
+        ]
+    },
+    tavernTableLarge: {
+        image: [
+            '                       ._.',
+            '                       |O|',
+            '.O ____________________/|\\____ O.',
+            '|\\_[]   _O          [] ` \' []_\\/|',
+            '|/_____|  \\,___________________\\|',
+            '|||\\   |__|-                 /|||',
+            ' ||    |  ||                  ||',
+        ],
+        advMouseovers: {
+            area: [
+                '                       ZZZ',
+                '                       ZZZ',
+                'XXXX___________________ZZZ___AAAA',
+                'XXXX   YYYYY        [] ZZZ []AAAA',
+                'XXXX___YYYYY_________________AAAA',
+                'XXXX   YYYYY                 AAAA',
+                ' ||    YYYYY                  ||',
+            ],
+            legend: {
+                X: {
+                    label: 'Swordsman',
+                    offset: [-3,-1],
+                    handler: 'tavern_swordsman',
+                    klass: 'tavern_swordsman'
+                },
+                Y: {
+                    label: 'Drunk Patron',
+                    offset: [4,-1],
+                    handler: 'tavern_drunk',
+                    klass: 'tavern_drunk'
+                },
+                Z: {
+                    label: 'Merchant',
+                    offset: [21,7],
+                    handler: 'tavern_merchant',
+                    klass: 'tavern_merchant'
+                },
+                A: {
+                    label: 'Drunk Patron',
+                    offset: [26,-1],
+                    handler: 'tavern_drunk2',
+                    klass: 'tavern_drunk2'
+                }
+            }
+        }
+    },
+    tavernTableSmall: {
+        image: [
+            '       ________',
+            '  O  ·`   <> ·T',
+            ' |\\·`[]    ·` |',
+            ' ·`¯<>   ·`',
+            'T-------T',
+            '|       |',
+        ],
+        //mouseover: {
+        //    label: 'Smuggler',
+        //    offset: [-4,-1],
+        //    handler: 'tavern_smuggler',
+        //    klass: 'smuggler',
+        //    bordered: false
+        //},
+        advMouseovers: {
+            area: [
+                '       ________',
+                ' XXX ·`   <> ·T',
+                ' XXXXXX   ·` |',
+                ' XXXXX   ·`',
+                'T-------T',
+                '|       |',
+            ],
+            legend: {
+                X: {
+                    label: 'Smuggler Davis',
+                    offset: [-1,-1],
+                    handler: 'tavern_smuggler',
+                    klass: 'tavern_smuggler'
+                    //requirement: function() {}
+                }
+            }
+        }
+    },
+    tavernBard: {
+        image: [
+            '. Õ  ♫',
+            '|/ \\   ♫',
+            '|\\O=="§',
+            '|\\\\\\  ',
+            ' |/|\\,',
+            '  `',
+        ],
+        advMouseovers: {
+            area: [
+                'AAAAAA',
+                'AAAAAAAA',
+                'AAAAAAA',
+                'AAAAAA',
+                ' AAAAA',
+                '  `'
+            ],
+            legend: {
+                A: {
+                    label: 'Bard',
+                    offset: [1,6],
+                    handler: 'tavern_bard',
+                    klass: 'bard'
+                }
+            }
+        }
+    },
+    tavernChair: {
+        image: [
+            '._.',
+            '| |',
+            '|_|',
+            '|\\_\\',
+            ' | |',
+        ]
+    },
+    tavernRug: {
+        image: [
+            '  ,- ¯  ¯  ¯  ¯ .',
+            '((  ( ((( )) ) ) )',
+            ' ` - _ __   _  -',
+        ]
+    },
+    tavernBrewmaster: {
+        image: [
+            '                _______',
+            '               |__U_[]_|',
+            '               |__ _ __|',
+            '         O_    | _(_) _|',
+            '|\\\\     / _\\   |(_)(_) |',
+            '||\\`-----------------------',
+            '\\||¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯',
+            ' \\|__|___|___|___|___|___|_',
+        ],
+        advMouseovers: {
+            area: [
+                '                _______',
+                '               |__U_[]_|',
+                '               |__ _ __|',
+                '        AAAA   | _(_) _|',
+                '|\\\\     AAAA   |(_)(_) |',
+                '||\\`----AAAA---------------',
+                '\\||¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯¯¯|¯',
+                ' \\|__|___|___|___|___|___|_',
+            ],
+            legend: {
+                A: {
+                    label: 'Brewmaster',
+                    offset: [5,5],
+                    handler: 'tavern_brewmaster',
+                    klass: 'tavern_brewmaster'
+                }
+            }
+        }
+    },
+    tavernFireplace: {
+        image: [
+            ' .________________.',
+            ' |-_¯ =  = ¯ _ - ¯|',
+            ' |-.------------._|',
+            ' |=|    ( ,     |-|',
+            '/ _|   , / `)   |-=\\',
+            '|==|  //, /\\(`\\ |=_|',
+        ]
+    },
+    tavernDoor: {
+        image: [
+            ',_______,',
+            '|  \' \'  |',
+            '|  · ·<<|',
+            '|  \' \'  |',
+            '|Ö · ·  |',
+            '|  \' \'<<|',
+            '|  · ·  |',
+        ],
+        fills: [
+            'AAAAAAAAA',
+            'AAAAAAAAA',
+            'AAAAAAAAA',
+            'AAAAAAAAA',
+            'AAAAAAAAA',
+            'AAAAAAAAA',
+            'AAAAAAAAA',
+        ],
+        mouseover: {
+            label: 'Tavern Door',
+            offset: [-1,-1],
+            handler: 'tavern_door',
+            klass: 'tavern_door'
+        }
+    },
+    tavernBarrels: {
+        image: [
+            '    .-.---.',
+            '   (   ) ) )',
+            '  .-;-;.---.',
+            ' (  (   ) ) )',
+            '/\\`-``-`/\\---\\',
+        ]
+    },
+    tavernLamp: {
+        image: [
+            '  )',
+            ' \\_/',
+            '  `',
+
+        ]
+    },
+
+
+
+
+
+
+
+
+
+
     moon: {
         image: [
             ' ,-,',

@@ -3,6 +3,52 @@
     'use strict';
 
     Game.namespace('UI').Backgrounds = {
+
+        tavernFirstFloor: {
+            doodads: {
+                t: 'tavernFirstFloor', l: 'tavernTableLarge', s: 'tavernTableSmall', r: 'tavernRug',
+                a: 'tavernBard', c: 'tavernChair',
+                b: 'tavernBrewmaster', d: 'tavernDoor', B: 'tavernBarrels', f: 'tavernFireplace', L: 'tavernLamp'
+            },
+            layout: [
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                            ',
+                '                            L                          L            L                      L                              ',
+                '                                                                                                                             ',
+                '                                  f                                           d                                             ',
+                '                                                                                                                               ',
+                '     t                                                                                              b                                 ',
+                '                                                                                                                           ',
+                '                                                                  c                                                        ',
+                '                                   r                   a                                                                    ',
+                '                                                                                                                                 ',
+                '                                                                                                                             ',
+                '            s                                                                                                                ',
+                '                                                                                                                             ',
+                '                                                  l                                                           B                ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+
+            ]
+        },
+
+
         abbey: {
             doodads: {
                 S: 'sky1', a: 'abbey', c: 'crypt', t: 'tree', B: 'bigTree', b: 'bigTree2', f: 'father'

@@ -57,7 +57,6 @@
 
             var image = bgRecord.layout;
             var r, c, numRows = image.length, numCols;
-            var doodadReqs = bgRecord.requirements;
 
             // Set up an array to hold the characters
             var background = new Array(numRows);
@@ -72,8 +71,7 @@
                     if (row[c] && row[c] !== ' ') {
                         var doodadKey = bgRecord.doodads[row[c]];
                         if (doodadKey) {
-                            var req = doodadReqs ? doodadReqs[doodadKey] : undefined;
-                            this._addDoodadToBackground(Game.UI.Doodads[doodadKey], r, c, background, req);
+                            this._addDoodadToBackground(Game.UI.Doodads[doodadKey], r, c, background);
                         }
                         else {
                             background[r][c] = row[c];
@@ -92,9 +90,10 @@
             this._attachMouseHandlers();
         },
 
-        _addDoodadToBackground: function(doodad, startingR, startingC, background, requirement) {
+        _addDoodadToBackground: function(doodad, startingR, startingC, background) {
+            var self = this;
+
             var image = doodad.image;
-            var mouseover = doodad.mouseover;
 
             if (doodad.invisible) {
                 doodad.fills = doodad.image;
@@ -103,12 +102,23 @@
                 doodad.colors = {};
             }
 
-            // If there's a requirement and you don't meet the requirement -> no mouseover
-            if (requirement && !requirement()) {
-                mouseover = null;
-            }
+            /*
+                Mouseouvers: TODO This needs a rework...
+                There are two types: simple and advanced:
+                    Simple:
+                    Advanced:
 
-            this._setupMouseover(mouseover, startingR, startingC);
+             */
+            var mouseover, advMouseover;
+            if (doodad.mouseover) {
+                mouseover = this._setupMouseover(doodad.mouseover, startingR, startingC);
+            }
+            else if (doodad.advMouseovers) {
+                advMouseover = {};
+                Game.Util.iterateObject(doodad.advMouseovers.legend, function(key, data) {
+                    advMouseover[key] = self._setupMouseover(data, startingR, startingC);
+                });
+            }
 
             for (var r = 0, numRows = image.length; r < numRows; r++) {
                 if ((startingR - numRows + r) >= 0) {
@@ -124,8 +134,14 @@
                             shouldFill = row[c] !== ' ';
                         }
 
+                        // If using adv, grab the mouseover data based on the area/legend
+                        if (doodad.advMouseovers) {
+                            mouseover = advMouseover[doodad.advMouseovers.area[r][c]];
+                        }
+
+                        var classes = '';
+
                         if (shouldFill) {
-                            var classes = '';
                             if (doodad.fills && doodad.colors[doodad.fills[r][c]]) {
                                 classes += doodad.colors[doodad.fills[r][c]]
                             }
@@ -144,6 +160,12 @@
                                 background[startingR - numRows + r][startingC + c] = char;
                             }
                         }
+                        else if (doodad.advMouseovers && mouseover) {
+                            // TODO HACK for advanced mouseover, even if the spot wasn't 'filled' want to do it
+                            classes += (' hoverable ' + mouseover.klass);
+                            char = background[startingR - numRows + r][startingC + c]; // "invis", so make it same as original char
+                            background[startingR - numRows + r][startingC + c] = "<span class='"+classes+"'>"+char+"</span>";
+                        }
                     }
                 }
             }
@@ -156,22 +178,31 @@
         },
 
         _setupMouseover: function(data, row, col) {
-            if (data) {
-                var borderSpacing = data.bordered ? BORDER_SIZE : 0;
-
-                var $overlay = $('<span/>', {
-                    css: {
-                        top: (row - data.offset[1] - 1) * FONT_SIZE - borderSpacing,
-                        left: (col - LEFT_OFFSET + data.offset[0]) * FONT_WIDTH - borderSpacing
-                    },
-                    class: 'overlay-text' + ' ' + data.klass + ' ' + (data.bordered ? 'bordered' : ''),
-                    html: data.label
-                });
-
-                this.$overlay.append($overlay);
-
-                this._mouseovers.push($.extend({}, data, { $overlay: $overlay }));
+            if (!data) {
+                return false;
             }
+
+            // If there's a requirement and you don't meet the requirement -> no mouseover
+            if (data.requirement && !data.requirement()) {
+                return false;
+            }
+
+            var borderSpacing = data.bordered ? BORDER_SIZE : 0;
+
+            var $overlay = $('<span/>', {
+                css: {
+                    top: (row - data.offset[1] - 1) * FONT_SIZE - borderSpacing,
+                    left: (col - LEFT_OFFSET + data.offset[0]) * FONT_WIDTH - borderSpacing
+                },
+                class: 'overlay-text' + ' ' + data.klass + ' ' + (data.bordered ? 'bordered' : ''),
+                html: data.label
+            });
+
+            this.$overlay.append($overlay);
+
+            this._mouseovers.push($.extend({}, data, { $overlay: $overlay }));
+
+            return data;
         },
 
         _attachMouseHandlers: function() {
