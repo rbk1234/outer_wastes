@@ -102,9 +102,9 @@ fiiiiiiif
  gggggggggggggggggg
  gggggggggggggggggg
  gggggggggggggggggg
- ggg    o o     ggg
-gggg   o o oo   gggg
-gggg  bbo bbobb gggg
+ gggooooooooooooggg
+ggggoooooooooooogggg
+ggggoobboobbobbogggg
 
 
 
@@ -235,14 +235,14 @@ cccc
  ccc
 
 
-. Õ  ♫
+.ƒO  ♫
 |/ \   ♫
 |\O=="§
 |\\\
  |/|\,
   `
 
-c Õ  ♫
+cƒO  ♫
 c/ \   ♫
 c\ggg"g
 cc\\

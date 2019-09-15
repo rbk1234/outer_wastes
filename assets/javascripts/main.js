@@ -21,6 +21,7 @@
     Game.Quests.init();
     Game.Spellbook.init();
     Game.InventoryUI.init();
+    Game.PopupUI.init();
 
     Game.Saving.init();
     Game.Saving.load();

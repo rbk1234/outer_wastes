@@ -2,14 +2,14 @@
 (function($) {
     'use strict';
 
-    // state: locked -> unstarted -> started -> fulfilled -> completed
+    // state: locked -> unlocked -> accepted -> fulfilled -> completed
 
     var DEFAULTS = {
         name: 'Unnamed Quest',
-        startDialog: 'No dialog available',
+        acceptDialog: 'No dialog available',
         fulfillDialog: 'No dialog available',
         completeDialog: 'No dialog available',
-        state: 'unstarted', // default state is unstarted (use state:locked to prevent immediate start)
+        state: 'unlocked', // default state is unlocked (use state:locked to prevent immediate accept)
         onUnlock: function() { /* do nothing */ },
         onAccept: function() { /* do nothing */ },
         onFulfill: function() { /* do nothing */ },
@@ -34,16 +34,16 @@
         canUnlock: function() {
             return this.state === 'locked';
         },
-        canStart: function() {
-            return this.state === 'unstarted';
+        canAccept: function() {
+            return this.state === 'unlocked';
         },
         canFulfill: function() {
-            return this.state === 'started';
+            return this.state === 'accepted';
         },
         canComplete: function() {
             return this.state === 'fulfilled';
         },
-        hasBeenStarted: function() {
+        hasBeenAccepted: function() {
             return this.canFulfill() || this.canComplete() || this.hasBeenCompleted();
         },
         hasBeenFulfilled: function() {
@@ -62,20 +62,20 @@
                 console.log('Unlocked quest: ', this.dbKey);
             }
 
-            this.state = 'unstarted';
+            this.state = 'unlocked';
             this.onUnlock();
         },
 
-        start: function() {
-            if (!this.canStart()) {
+        accept: function() {
+            if (!this.canAccept()) {
                 console.error('Cannot accept quest. Quest is: ', this.state);
                 return;
             }
             else {
-                console.log('Started quest: ', this.dbKey);
+                console.log('Accepted quest: ', this.dbKey);
             }
 
-            this.state = 'started';
+            this.state = 'accepted';
             this.onAccept();
         },
 

@@ -99,28 +99,28 @@ Game.namespace('UI').Doodads = {
             ],
             legend: {
                 A: {
-                    label: 'Swordsman',
-                    offset: [-8,4],
+                    label: 'Brom',
+                    offset: [1,7],
                     handler: 'tavern_swordsman',
                     klass: 'tavern_swordsman'
                 },
                 B: {
-                    label: 'Drunk Patron',
-                    offset: [4,-1],
+                    label: 'Charles',
+                    offset: [6,-1],
                     handler: 'tavern_drunk',
                     klass: 'tavern_drunk'
                 },
                 C: {
-                    label: 'Merchant',
+                    label: 'Francis',
                     offset: [23,7],
                     handler: 'tavern_merchant',
                     klass: 'tavern_merchant'
                 },
                 D: {
-                    label: 'Drunk Patron',
-                    offset: [28,-1],
-                    handler: 'tavern_drunk2',
-                    klass: 'tavern_drunk2'
+                    label: 'Thomas',
+                    offset: [30,-1],
+                    handler: 'tavern_villager',
+                    klass: 'tavern_villager'
                 }
             }
         }
@@ -161,10 +161,10 @@ Game.namespace('UI').Doodads = {
             ],
             legend: {
                 A: {
-                    label: 'Smuggler Davis',
-                    offset: [-1,-1],
-                    handler: 'tavern_smuggler',
-                    klass: 'tavern_smuggler'
+                    label: 'Edmund',
+                    offset: [0,-1],
+                    handler: 'tavern_cartographer',
+                    klass: 'tavern_cartographer'
                     //requirement: function() {}
                 }
             }
@@ -172,7 +172,7 @@ Game.namespace('UI').Doodads = {
     },
     tavernBard: {
         image: [
-            '. Õ  ♫',
+            '.ƒO  ♫',
             '|/ \\   ♫',
             '|\\O=="#',
             '|\\\\\\  ',
@@ -180,7 +180,7 @@ Game.namespace('UI').Doodads = {
             '  `',
         ],
         fills: [
-            'c Õ  ♫',
+            'cƒO  ♫',
             'c/ \\   ♫',
             'c\\ggg"g',
             'cc\\\\',
@@ -202,8 +202,8 @@ Game.namespace('UI').Doodads = {
             ],
             legend: {
                 A: {
-                    label: 'Bard',
-                    offset: [1,6],
+                    label: 'Arabella',
+                    offset: [0,6],
                     handler: 'tavern_bard',
                     klass: 'bard'
                 }
@@ -286,8 +286,8 @@ Game.namespace('UI').Doodads = {
             ],
             legend: {
                 A: {
-                    label: 'Brewmaster',
-                    offset: [5,5],
+                    label: 'John',
+                    offset: [8,5],
                     handler: 'tavern_brewmaster',
                     klass: 'tavern_brewmaster'
                 }
@@ -307,14 +307,20 @@ Game.namespace('UI').Doodads = {
             ' gggggggggggggggggg',
             ' gggggggggggggggggg',
             ' gggggggggggggggggg',
-            ' ggg    o o     ggg',
-            'gggg   o o oo   gggg',
-            'gggg  bbo bbobb gggg',
+            ' gggooooooooooooggg',
+            'ggggoooooooooooogggg',
+            'ggggoobboobbobbogggg',
         ],
         colors: {
             g: 'grey',
             o: 'orange',
             b: 'brown'
+        },
+        mouseover: {
+            label: 'Fireplace',
+            offset: [6,-1],
+            handler: 'tavern_fireplace',
+            klass: 'tavern_fireplace'
         }
     },
     tavernDoor: {

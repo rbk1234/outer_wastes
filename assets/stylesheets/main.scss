@@ -191,6 +191,26 @@ $bottom-bar-height: 10rem;
 
     }
 
+    #dialog-popup {
+      // height/width set manually
+      transform: none;
+
+      .header {
+        height: 1.5rem;
+      }
+      .inner-content {
+        padding: 0.5rem;
+        //overflow-y: scroll;
+
+        height: calc(100% - 1.5rem);
+
+        a {
+          display: block;
+          margin-top: 0.25rem;
+        }
+      }
+    }
+
     #party-selector {
       width: 80%;
 
@@ -380,7 +400,7 @@ body.combat-ui {
   background: $nyx8-blue;
 
   .header {
-    color: $gold;
+    //color: $gold;
   }
 
   .inner-content {

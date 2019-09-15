@@ -57,7 +57,7 @@
         <!--Memory: <span id="memory"></span>-->
       <!--</div>-->
       <div class="cell small-4 text-right">
-        <!--<span id="gold-value">0</span> gold |-->
+        <span id="gold-value">0</span> gold |
         <a id="toggle-settings">Settings</a>
       </div>
     </div>
@@ -128,6 +128,21 @@
   </div>
 
   <div id="popup-container" class="restricted-width">
+
+    <div id="dialog-popup" class="ui-popup" hidden>
+      <div class="header">
+        <table class="no-rows no-spacing">
+          <tbody>
+          <tr>
+            <td><h6 class="no-bottom-margin popup-title"></h6></td>
+            <td class="nostretch"><a class="fa fa-fw fa-times close-popup"></a></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="inner-content"></div>
+    </div>
+
     <div id="large-popup" class="ui-popup" hidden>
       <div class="header">
         <table class="no-rows no-spacing">
@@ -434,6 +449,7 @@
 <script src="assets/javascripts/globals/quests.js"></script>
 <script src="assets/javascripts/globals/town_ui.js"></script>
 <script src="assets/javascripts/globals/world_map_ui.js"></script>
+<script src="assets/javascripts/globals/popup_ui.js"></script>
 
 <script src="assets/javascripts/zones/database.js"></script>
 <script src="assets/javascripts/zones/zone.js"></script>
@@ -455,6 +471,7 @@
 
 <script src="assets/javascripts/user_interface/backgrounds.js"></script>
 <script src="assets/javascripts/user_interface/centerpieces.js"></script>
+<script src="assets/javascripts/user_interface/dialogs.js"></script>
 <script src="assets/javascripts/user_interface/doodads.js"></script>
 <script src="assets/javascripts/user_interface/log.js"></script>
 

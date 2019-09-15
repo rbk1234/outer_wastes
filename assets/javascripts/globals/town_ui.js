@@ -14,16 +14,17 @@
             var self = this;
 
             this.$gold = $('#gold-value');
-            this.$popupContainer = $('#popup-container');
-            this.$largePopup = $('#large-popup');
-            this.$endOfZone = $('#end-of-zone');
+            //this.$popupContainer = $('#popup-container');
+            //this.$largePopup = $('#large-popup');
+            //this.$endOfZone = $('#end-of-zone');
+            //this.$dialog = $('#dialog-popup');
 
             // Register handlers:
-            this.$popupContainer.off('click', '.close-popup').on('click', '.close-popup', function(evt) {
-                evt.preventDefault();
-
-                $(this).closest('.ui-popup').hide();
-            });
+            //this.$popupContainer.off('click', '.close-popup').on('click', '.close-popup', function(evt) {
+            //    evt.preventDefault();
+            //
+            //    $(this).closest('.ui-popup').hide();
+            //});
 
             Game.Timers.addTimerSupport(this);
 
@@ -89,6 +90,8 @@
         },
 
         loadTavern: function() {
+            var self = this;
+
             Game.UnitEngine.stopEngine();
             Game.CombatUI.closeUI();
 
@@ -96,6 +99,37 @@
             Game.BackgroundUI.setZoneName("Boar's Head Tavern");
 
             this.home = 'tavern';
+
+            Game.BackgroundUI.registerHandler('tavern_brewmaster', function() {
+                Game.PopupUI.showDialog('tavern_brewmaster');
+            });
+            Game.BackgroundUI.registerHandler('tavern_swordsman', function() {
+                if (Game.Quests.quest('swordsman').canAccept()) {
+                    Game.PopupUI.showDialog('tavern_swordsman_1');
+                }
+                else {
+                    Game.PopupUI.showDialog('tavern_swordsman_3');
+                }
+            });
+            Game.BackgroundUI.registerHandler('tavern_bard', function() {
+                Game.PopupUI.showDialog('tavern_bard');
+            });
+            Game.BackgroundUI.registerHandler('tavern_merchant', function() {
+                Game.PopupUI.showDialog('tavern_merchant');
+            });
+            Game.BackgroundUI.registerHandler('tavern_drunk', function() {
+                Game.PopupUI.showDialog('tavern_drunk');
+            });
+            Game.BackgroundUI.registerHandler('tavern_villager', function() {
+                Game.PopupUI.showDialog('tavern_villager');
+            });
+            Game.BackgroundUI.registerHandler('tavern_fireplace', function() {
+                Game.PopupUI.showDialog('tavern_fireplace');
+            });
+            Game.BackgroundUI.registerHandler('tavern_cartographer', function() {
+                Game.PopupUI.showDialog('tavern_cartographer');
+            });
+
         },
 
         loadAbbey: function() {
@@ -204,7 +238,55 @@
             this.$largePopup.show();
         },
 
+        closeAllDialogs: function() {
+            this.$popupContainer.find('.ui-popup').hide();
+        },
+        isDialogOpen: function(id) {
+            return this.$dialog.data('id') === id && this.$dialog.is(':visible');
+        },
 
+
+        // dimensions: { height, width }
+        // position: { top, left, right, bottom }
+        _showDialog: function(id, position, dimensions, title, text, options) {
+            options = Game.Util.defaultFor(options, []);
+
+            if (this.isDialogOpen(id)) {
+                this.closeAllDialogs();
+                return;
+            }
+            else {
+                this.closeAllDialogs();
+            }
+
+            this.$dialog
+                .data('id', id)
+                .css('top', position.top === undefined ? 'auto' : position.top)
+                .css('right', position.right === undefined ? 'auto' : position.right)
+                .css('bottom', position.bottom === undefined ? 'auto' : position.bottom)
+                .css('left', position.left === undefined ? 'auto' : position.left)
+                .css('height', dimensions.height === undefined ? 'auto' : dimensions.height)
+                .css('width', dimensions.width === undefined ? '30%' : dimensions.width);
+
+            this.$dialog.find('.popup-title').html(title);
+            var $innerContent = this.$dialog.find('.inner-content');
+            $innerContent.empty();
+            $innerContent.html(text);
+
+            options.forEach(function(option) {
+                var $a = $('<a></a>', {
+                    html: '&emsp;&gt;&nbsp;' + option.text
+                });
+
+                $a.off('click').on('click', function() {
+                    option.onClick();
+                });
+
+                $a.appendTo($innerContent);
+            });
+
+            this.$dialog.show();
+        },
 
         _showPopup: function(title, alignment, text) {
             this.$largePopup.removeClass('right-aligned left-aligned').addClass('left-aligned');
