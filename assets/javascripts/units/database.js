@@ -9,7 +9,7 @@
                 maxHealth: 120,
                 manaRegen: 10,
                 attackSpeed: 0.6,
-                attackDamage: 1000
+                attackDamage: 4
             }
         },
         swashbuckler: {
@@ -53,6 +53,29 @@
                 maxHealth: 350,
                 attackSpeed: 0.5,
                 attackDamage: 30
+            }
+        },
+
+        road_vine: {
+            name: 'Vines',
+            stats: {
+                maxHealth: 30
+            }
+        },
+        road_chicken: {
+            name: 'Chicken',
+            stats: {
+                maxHealth: 20,
+                attackSpeed: 0.6,
+                attackDamage: 2
+            }
+        },
+
+        road_sign: {
+            name: 'Signpost',
+            stats: {
+                maxHealth: 10,
+                questObject: true
             }
         },
 

@@ -91,7 +91,12 @@
                 return null;
             }
 
-            return this.highestThreatOnTeam(this.opposingTeamId(unit.teamId));
+            if (unit.teamId === Game.Constants.teamIds.player) {
+                return this.firstTargetOnTeam(this.opposingTeamId(unit.teamId));
+            }
+            else {
+                return this.highestThreatOnTeam(this.opposingTeamId(unit.teamId));
+            }
         },
 
         highestThreatOnTeam: function(teamId) {
@@ -111,6 +116,25 @@
                 if (Math.random() < unit.threat.value()) {
                     return unit;
                 }
+            }
+            return null;
+        },
+
+        firstTargetOnTeam: function(teamId) {
+            var units = this.unitsForTeam(teamId);
+
+            for (var i = 0; i < units.length; i++) {
+                var unit = units[i];
+
+                if (unit.isDead()) {
+                    continue;
+                }
+
+                if (unit.questObject.value()) {
+                    continue;
+                }
+
+                return unit;
             }
             return null;
         },

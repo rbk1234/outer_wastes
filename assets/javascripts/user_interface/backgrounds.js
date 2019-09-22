@@ -4,6 +4,47 @@
 
     Game.namespace('UI').Backgrounds = {
 
+        road: {
+            doodads: {
+                r: 'road_ground', S: 'sky1', h: 'road_hill1', H: 'road_hill2', j: 'road_hill3',
+                f: 'road_fence1', F: 'road_fence2', t: 'tree'
+            },
+            layout: [
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                'S                                                                                                                            ',
+                '                                                                                                                             ',
+
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '              H                                                                                                             ',
+                ' h                             j                                                    h                            H        ',
+                '                                                                  H                              j                                   ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '              t                                                                 t                                          ',
+                '                                                                                                       t                     ',
+                ' f          f          f          F                                                                                       ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+                'r                                                                                                                            ',
+                '                                                                                                                             ',
+                '                                                                                                                             ',
+
+            ]
+        },
+
         tavernFirstFloor: {
             doodads: {
                 t: 'tavernFirstFloor', l: 'tavernTableLarge', s: 'tavernTableSmall', r: 'tavernRug',

@@ -481,7 +481,7 @@
             // image (only draw if it has changed)
             var newImage = unit.image();
             if (newImage !== frame.lastImage) {
-                Game.Util.paintImage(newImage, frame.$unitImage, unit.imageOffset(), '#f6d6bd');
+                Game.Util.paintImage(newImage, frame.$unitImage, unit.imageOffset(), '#f6d6bd', unit.imageOffsetY());
                 frame.lastImage = newImage;
             }
 

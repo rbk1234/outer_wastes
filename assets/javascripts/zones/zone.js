@@ -31,7 +31,9 @@
 
             Game.BackgroundUI.drawBackground(this.background);
             Game.BackgroundUI.setZoneName(this.name);
-            Game.CombatUI.logMessage('You have entered ' + this.name + '.', 'yellow');
+
+            var introSentence = this.introSentence ? this.introSentence : 'You have entered ' + this.name + '.';
+            Game.CombatUI.logMessage(introSentence, 'yellow');
         },
 
         loadNextEncounter: function() {
@@ -63,9 +65,9 @@
             // zone complete:
             // todo zone loot
             if (this.onFinish) {
-                this.onFinish();
+                Game.Util.makeCallback(this, this.onFinish)();
             }
-            Game.TownUI.zoneCompleted(this);
+            //Game.TownUI.zoneCompleted(this);
         },
 
         totalEncounters: function() {

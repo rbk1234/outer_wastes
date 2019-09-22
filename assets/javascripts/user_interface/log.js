@@ -49,7 +49,7 @@
 
             var $p = $('<p>')
                 .addClass(klass)
-                .text(message);
+                .html(message);
 
             //if (this._config.showGlow) {
             //    $p.addClass('glow');

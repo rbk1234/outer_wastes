@@ -4,6 +4,36 @@
 
     Game.namespace('Zones').Database = {
 
+        road: {
+            name: "Traveler's Road",
+            background: 'road',
+            introSentence: 'The road is made of dirt and rocks.',
+            groups: [
+                {
+                    amount: 1,
+                    encounters: ['road_vines']
+                },
+                {
+                    amount: 1,
+                    encounters: ['road_chickens']
+                },
+                {
+                    amount: 1,
+                    encounters: ['road_sign']
+                }
+            ],
+            onFinish: function() {
+                Game.PopupUI.showEndOfZone(
+                    'You have cleared ' + this.name + '.',
+                    '',
+                    'Enter the inn',
+                    function() {
+                        Game.TownUI.loadTavern();
+                    }
+                )
+            }
+        },
+
         crypt: {
             name: 'The Crypt',
             groups: [

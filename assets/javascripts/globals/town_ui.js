@@ -467,7 +467,7 @@
         zoneFailed: function() {
             var self = this;
 
-            this._showEndOfZone(
+            Game.PopupUI.showEndOfZone(
                 'Your party has been killed.',
                 'You keep any items gathered so far.',
                 'Return to ' + this.homeName(),
@@ -480,7 +480,7 @@
             var self = this;
 
             if (zone.returnHome) {
-                this._showEndOfZone(
+                Game.PopupUI.showEndOfZone(
                     'You have cleared ' + zone.name + '.',
                     '',
                     'Return to ' + this.homeName(),
@@ -490,7 +490,7 @@
                 )
             }
             else {
-                this._showEndOfZone(
+                Game.PopupUI.showEndOfZone(
                     'You have cleared ' + zone.name + '.',
                     '',
                     'Return to the map',
@@ -502,20 +502,6 @@
             }
         },
 
-        _showEndOfZone: function(mainText, subText, buttonText, onClick) {
-            var self = this;
-
-            this.$endOfZone.find('.main-text').html(mainText);
-            this.$endOfZone.find('.sub-text').html(subText);
-
-            this.$endOfZone.find('.end-zone').html(buttonText).off('click').on('click', function(evt) {
-                evt.preventDefault();
-                onClick();
-                self.$endOfZone.hide();
-            });
-
-            this.$endOfZone.show();
-        }
 
     };
 

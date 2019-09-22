@@ -75,6 +75,21 @@
             });
 
             this.$dialog.show();
+        },
+
+        showEndOfZone: function(mainText, subText, buttonText, onClick) {
+            var self = this;
+
+            this.$endOfZone.find('.main-text').html(mainText);
+            this.$endOfZone.find('.sub-text').html(subText);
+
+            this.$endOfZone.find('.end-zone').html(buttonText).off('click').on('click', function(evt) {
+                evt.preventDefault();
+                onClick();
+                self.$endOfZone.hide();
+            });
+
+            this.$endOfZone.show();
         }
     };
 

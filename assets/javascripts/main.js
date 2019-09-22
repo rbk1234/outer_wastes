@@ -47,6 +47,9 @@
 
     Game.Clock.run();
 
-    Game.TownUI.loadTavern();
+    //Game.TownUI.loadTavern();
+
+    Game.WorldMapUI.startZone('road');
+
 
 })(jQuery);

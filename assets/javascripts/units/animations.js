@@ -49,6 +49,60 @@
             }
         },
 
+        road_vine: {
+            portrait: [],
+            width: 1.7,
+            offset: 1,
+            idle: {
+                image: [
+                    '         ,',
+                    ' `·._ ,-.;_',
+                    '    .\'\\,-\' `--',
+                    '.--`  /`·.   `-,',
+                ]
+            }
+        },
+        road_chicken: {
+            portrait: [],
+            offset: 1,
+            offset_y: -8,
+            idle: {
+                image: [
+                    ' <O___/',
+                    '  ( >/',
+                    '   ""',
+                ],
+            },
+            attack: [
+                {
+                    image: [
+                        '<O___/',
+                        ' ( >/',
+                        '  ""',
+                    ],
+                    duration: 0.3
+                }
+            ]
+        },
+        road_sign: {
+            portrait: [
+                '|\\|',
+                '---'
+            ],
+            width: 1.2,
+            offset: 3,
+            idle: {
+                image: [
+                    ' ..',
+                    '|¯¯¯\\',
+                    '[___/',
+                    ' ||',
+                    ' ||',
+                    ' ||',
+                ]
+            }
+        },
+
         cobweb: {
             portrait: [
                 '`·/',

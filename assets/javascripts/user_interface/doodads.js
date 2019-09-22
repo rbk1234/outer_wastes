@@ -1,5 +1,96 @@
 
 Game.namespace('UI').Doodads = {
+
+    road_ground: {
+        image: [
+            '                    _      -          _                                                                    _        -',
+            '_     .      `                                    `         -      -       _        -      `       `',
+            '',
+            '',
+            '                                _      ·       _                                         _      ·        _        ·',
+            '    -    `      -      `                                  `        ·    -     ·                                        `'
+
+        ],
+        fills: [
+            '                    r      r          r                                                                    r        r',
+            'r     r      r                                    r         r      r       r        r      r       r',
+            '',
+            '',
+            '                                r      r       r                                         r      r        r        r',
+            '    r    r      r      r                                  r        r    r     r                                        r',
+        ],
+        colors: {
+            r: 'brown'
+        }
+    },
+    road_hill1: {
+        image: [
+            '     _.-`¯¯`-.._',
+            '..-`¯      --.  ¯¯`--..',
+        ],
+        fills: [
+            '     hhhhhhhhhhh',
+            'hhhhh      hhh  hhhhhhh',
+        ],
+        colors: {
+            h: 'green'
+        }
+    },
+    road_hill2: {
+        image: [
+            '         _,._',
+            '    _.-·`,   `·.',
+            '.--`   ·\'       `·.',
+        ],
+        fills: [
+            '         hhhh',
+            '    hhhhhh   hhh',
+            'hhhh   hh       hhh',
+        ],
+        colors: {
+            h: 'green'
+        }
+    },
+    road_hill3: {
+        image: [
+            '           _·;`¯`·._',
+            '     ,,·-\'¯     `·_  `-·._',
+            '..-\'\'                     `··-._',
+        ],
+        fills: [
+            '           hhhhhhhhh',
+            '     hhhhhh     hhh  hhhhh',
+            'hhhhh                     hhhhhh',
+        ],
+        colors: {
+            h: 'green'
+        }
+    },
+    road_fence1: {
+        image: [
+            '__         __',
+            '||-·-·T·---||',
+            '||    |    ||',
+            '||____._.__||',
+            '||    |    ||',
+        ]
+    },
+    road_fence2: {
+        image: [
+            '__',
+            '||-.          _',
+            '||  ¯`-x._   //',
+            '||__-_/   `-//',
+            '||   / ``-.//',
+        ]
+    },
+
+
+
+
+
+
+
     tavernSecondFloor: {
         image: [
             '                                   ·-·-=====================================-·-·',

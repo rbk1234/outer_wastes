@@ -4,6 +4,33 @@
 
     Game.namespace('Encounters').Database = {
 
+        road_vines: {
+            description: 'Vines and leaves block the path.',
+            enemies: ['road_vine']
+        },
+        road_chickens: {
+            description: 'A flock of chickens peck at the ground.',
+            enemies: ['road_chicken', 'road_chicken', 'road_chicken']
+        },
+        road_sign: {
+            description: 'You see a signpost up ahead.',
+            enemies: ['road_sign'],
+            onFinish: function() {
+                Game.UnitEngine.setTimeout(function() {
+                    Game.CombatUI.logMessage("Etched in to the wood it reads:");
+                }, 1500);
+                Game.UnitEngine.setTimeout(function() {
+                    Game.CombatUI.logMessage("&emsp; > > > Boar's Head Inn > > >", 'yellow');
+                }, 4000);
+                Game.UnitEngine.setTimeout(function() {
+                    Game.CombatUI.logMessage("You make your way to the inn...");
+                }, 7000);
+                Game.UnitEngine.setTimeout(function() {
+                    Game.UnitEngine.standardEncounterFinish();
+                }, 8000);
+            }
+        },
+
         cobwebs: {
             description: 'You enter a room full of cobwebs.',
             enemies: ['cobweb', 'cobweb', 'cobweb']

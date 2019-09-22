@@ -37,13 +37,16 @@
 
     var ENABLE_ERRORS = false;
 
-    Game.Util.paintImage = function(image, $pre, offset, color) {
+    Game.Util.paintImage = function(image, $pre, offset, color, y_offset) {
         $pre.empty();
 
         $pre.css('color', color);
 
+        $pre.css('margin-bottom', y_offset ? (y_offset + 'px') : 0);
+
         image.forEach(function(imageRow) {
             var offsetSpaces = offset >= 0 ? ' '.repeat(offset) : '';
+            imageRow = imageRow.replace('<', '&lt;').replace('>', '&gt;'); // todo hack...
             $('<span>'+offsetSpaces+imageRow+'</span><br>').appendTo($pre);
         });
     };

@@ -824,6 +824,9 @@
         imageOffset: function() {
             return this.animations.offset;
         },
+        imageOffsetY: function() {
+            return this.animations.offset_y;
+        },
 
         _startAttackAnimation: function() {
             if (!this._castAnimation) {
